@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "es2015",
+    "lib": ["dom", "es2015", "es2017"],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "paths": {
+      "@components/*": ["./src/components/*"],
+      "models/*": ["./src/models/*"]
+    }
+  },
+  "exclude": ["./node_modules/**/"]
+}

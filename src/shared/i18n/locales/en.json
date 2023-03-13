@@ -1,0 +1,31 @@
+{
+  "authentication": {},
+  "signUp": {},
+  "otp": {},
+  "resetPassword": {},
+  "notification": {},
+  "payment": {},
+  "account": {},
+  "label": {},
+  "button": {},
+  "error": {},
+  "tab": {
+    "home": "Home",
+    "online": "Trực tuyến",
+    "result": "Kết quả"
+  },
+  "success": {},
+  "pageTitle": {},
+  "language": {
+    "en": "English",
+    "vi": "Tiếng Việt"
+  },
+  "logout": {},
+  "deleteAccount": {},
+  "alert": {},
+  "forgetPassword": {},
+  "offline": {
+    "noNetwork": "No internet",
+    "retry": "Reconnect"
+  }
+}

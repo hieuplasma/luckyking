@@ -1,0 +1,32 @@
+{
+  "noConnection": "Không có kết nối mạng",
+  "authentication": {},
+  "signUp": {},
+  "otp": {},
+  "resetPassword": {},
+  "notification": {},
+  "payment": {},
+  "account": {},
+  "label": {},
+  "button": {},
+  "error": {},
+  "tab": {
+    "home": "Trang chủ",
+    "online": "Trực tuyến",
+    "result": "Kết quả"
+  },
+  "success": {},
+  "pageTitle": {},
+  "language": {
+    "en": "English",
+    "vi": "Tiếng Việt"
+  },
+  "logout": {},
+  "deleteAccount": {},
+  "alert": {},
+  "forgetPassword": {},
+  "offline": {
+    "noNetwork": "Không có kết nối mạng",
+    "retry": "Thử lại"
+  }
+}
