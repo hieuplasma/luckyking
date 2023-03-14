@@ -12,8 +12,10 @@
   "error": {},
   "tab": {
     "home": "Trang chủ",
-    "online": "Trực tuyến",
-    "result": "Kết quả"
+    "live": "Live",
+    "result": "Kết quả",
+    "scan": "Quét vé",
+    "statistical": "Thống kê"
   },
   "success": {},
   "pageTitle": {},

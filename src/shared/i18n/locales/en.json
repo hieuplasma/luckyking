@@ -1,4 +1,5 @@
 {
+  "noConnection": "Không có kết nối mạng",
   "authentication": {},
   "signUp": {},
   "otp": {},
@@ -10,9 +11,11 @@
   "button": {},
   "error": {},
   "tab": {
-    "home": "Home",
-    "online": "Trực tuyến",
-    "result": "Kết quả"
+    "home": "Trang chủ",
+    "live": "Live",
+    "result": "Kết quả",
+    "scan": "Quét vé",
+    "statistical": "Thống kê"
   },
   "success": {},
   "pageTitle": {},
@@ -25,7 +28,7 @@
   "alert": {},
   "forgetPassword": {},
   "offline": {
-    "noNetwork": "No internet",
-    "retry": "Reconnect"
+    "noNetwork": "Không có kết nối mạng",
+    "retry": "Thử lại"
   }
 }
