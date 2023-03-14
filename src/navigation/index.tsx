@@ -5,9 +5,8 @@ import {
   AuthenticationNavigation,
   AuthenticationStackParamList,
 } from './Authentication';
-import {ScreenName} from './ScreenName';
 import {MainNavigation} from './MainNavigation';
-import {HomeNavigation} from './HomeNavigation';
+import {ScreenName} from './ScreenName';
 
 export type RootStackParamsList = {
   SplashScreen: SplashScreenRouteParams;
@@ -34,13 +33,12 @@ export function RootNavigation(params?: {}) {
       <RootStack.Screen name={'Main'}>
         {props => <MainNavigation {...props} />}
       </RootStack.Screen>
-      <RootStack.Screen
-        name="HomeNavigation"
-        component={HomeNavigation}
-        options={{headerShown: false, title: undefined}}></RootStack.Screen>
     </RootStack.Navigator>
   );
 }
-export type {AuthenticationStackParamList, ScreenName};
 export * from './MainNavigation';
+export type {AuthenticationStackParamList, ScreenName};
 export * from './HomeNavigation';
+export * from './LiveNavigation';
+export * from './ResultNavigation';
+export * from './StatisticalNavigation';

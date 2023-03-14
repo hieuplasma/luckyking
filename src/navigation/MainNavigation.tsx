@@ -1,10 +1,10 @@
-import {HomeNavigation, RootStackParamsList} from '@navigation';
+import {HomeNavigation, RootStackParamsList, LiveNavigation} from '@navigation';
 import {
   BottomTabBarProps,
   createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs';
 import {RouteProp, useRoute} from '@react-navigation/native';
-import {LoginScreen, SignUpScreen, VerifyOTPScreen} from '@screen';
+import {ResultScreen, ScanScreen, StatisticalScreen} from '@screen';
 import {Icon, Label, LineSeparator, translate} from '@shared';
 import {Color, Dimension, Style} from '@styles';
 import React from 'react';
@@ -13,8 +13,10 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 export type MainBottomTabParamList = {
   Home: {};
-  SignUp: {};
-  VerifyOTP: {};
+  Live: {};
+  Result: {};
+  Scan: {};
+  Statistical: {};
 };
 
 const MainBottomTabNavigator =
@@ -73,44 +75,70 @@ export function MainNavigation() {
         },
       }}>
       <MainBottomTabNavigator.Screen
+        name="Live"
+        component={LiveNavigation}
+        options={{
+          tabBarIcon: ({focused}) =>
+            getTabBarIcon({
+              title: translate('tab.live'),
+              activeIconName: 'ic_live',
+              inactiveIconName: 'ic_live',
+              focused,
+            }),
+        }}
+      />
+      <MainBottomTabNavigator.Screen
+        name="Result"
+        component={ResultScreen}
+        options={{
+          tabBarIcon: ({focused}) =>
+            getTabBarIcon({
+              title: translate('tab.result'),
+              activeIconName: 'ic_result',
+              inactiveIconName: 'ic_result',
+              focused,
+            }),
+        }}
+      />
+      <MainBottomTabNavigator.Screen
         name="Home"
         component={HomeNavigation}
         options={{
           tabBarIcon: ({focused}) =>
             getTabBarIcon({
               title: translate('tab.home'),
-              activeIconName: 'home',
-              inactiveIconName: 'home',
-              focused,
-            }),
-        }}
-      />
-      {/* <MainBottomTabNavigator.Screen
-        name="SignUp"
-        component={SignUpScreen}
-        options={{
-          tabBarIcon: ({focused}) =>
-            getTabBarIcon({
-              title: translate('tab.online'),
-              activeIconName: 'home2',
-              inactiveIconName: 'home2',
+              activeIconName: 'ic_home',
+              inactiveIconName: 'ic_home',
               focused,
             }),
         }}
       />
       <MainBottomTabNavigator.Screen
-        name="VerifyOTP"
-        component={VerifyOTPScreen}
+        name="Scan"
+        component={ScanScreen}
         options={{
           tabBarIcon: ({focused}) =>
             getTabBarIcon({
-              title: translate('tab.result'),
-              activeIconName: 'home3',
-              inactiveIconName: 'home3',
+              title: translate('tab.scan'),
+              activeIconName: 'ic_scan',
+              inactiveIconName: 'ic_scan',
               focused,
             }),
         }}
-      /> */}
+      />
+      <MainBottomTabNavigator.Screen
+        name="Statistical"
+        component={StatisticalScreen}
+        options={{
+          tabBarIcon: ({focused}) =>
+            getTabBarIcon({
+              title: translate('tab.statistical'),
+              activeIconName: 'ic_statistical',
+              inactiveIconName: 'ic_statistical',
+              focused,
+            }),
+        }}
+      />
     </MainBottomTabNavigator.Navigator>
   );
 }
@@ -134,7 +162,7 @@ export const TabBar = (props: BottomTabBarProps) => {
             Style.Background.White,
             Style.Space.PaddingTop.small_8,
             {
-              paddingBottom: insets.bottom + Dimension.smallMargin,
+              paddingBottom: insets.bottom / 2 + Dimension.smallMargin,
             },
           ]}>
           {state.routes.map((route, index) => {
