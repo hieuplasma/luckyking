@@ -327,6 +327,9 @@ export const MarginLeft = {
   medium_12: {
     marginLeft: Dimension.mediumMargin,
   },
+  super_tiny_2: {
+    marginLeft: 2,
+  },
   zero: {
     marginLeft: 0,
   },

@@ -86,9 +86,10 @@ export default {
   primaryBackground3: 'rgb(187,215,255)',
   captcha: 'rgba(0, 0, 0, 0.7)',
   gray7: '#F3F3F3',
-  orange3 :'#F76E1E',
-  yellow3:'#FFAC0B',
-  red3:'#E02F26',
-  yellow4:'#D2A950',
-  yellow5:'#ffe5ac'
+  orange3: '#F76E1E',
+  yellow3: '#FFAC0B',
+  red3: '#E02F26',
+  yellow4: '#D2A950',
+  yellow5: '#ffe5ac',
+  purple: '#ff00ff',
 };

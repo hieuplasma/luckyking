@@ -9,10 +9,10 @@ import * as TextInput from "./TextInput";
 // export * from './KeyboardSpacer';
 // export * from './button';
 // export * from './DownloadableLink';
-// export * from './SimpleHeaderView';
+export * from './SimpleHeaderView';
 // export * from './CollapsibleView';
 // export * from './SimpleCheckbox';
-// export * from './ShadowView';
+export * from './ShadowView';
 // export * from './list';
 export * from './LineSeparator';
 // export * from './RootScreen';
@@ -23,6 +23,6 @@ export * from './LineSeparator';
 // export * from './InputComponent';
 // export * from './GradientComponent'
 // export * from './LinearGradientComponent'
-// export * from './BorderComponent'
+export * from './BorderComponent'
 
 export {TextInput, Icon, Label};
