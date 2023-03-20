@@ -20,7 +20,7 @@ const RootStack = createStackNavigator<RootStackParamsList>();
 export function RootNavigation(params?: {}) {
   return (
     <RootStack.Navigator
-      initialRouteName={'Main'}
+      initialRouteName={'Authentication'}
       screenOptions={{
         headerShown: false,
         gestureEnabled: false,
@@ -37,7 +37,7 @@ export function RootNavigation(params?: {}) {
   );
 }
 export * from './MainNavigation';
-export type {AuthenticationStackParamList, ScreenName};
+export {AuthenticationStackParamList, ScreenName};
 export * from './HomeNavigation';
 export * from './LiveNavigation';
 export * from './ResultNavigation';
