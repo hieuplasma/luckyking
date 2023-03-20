@@ -23,8 +23,7 @@ export function AuthenticationNavigation() {
   return (
     <AuthenticationStack.Navigator
       initialRouteName={'Login'}
-      screenOptions={({navigation}) => renderDefaultHeader(navigation, false)}
-      >
+      screenOptions={({navigation}) => renderDefaultHeader(navigation, false)}>
       <AuthenticationStack.Screen
         name={'Login'}
         component={LoginScreen}
@@ -38,14 +37,18 @@ export function AuthenticationNavigation() {
         name={'SignUp'}
         component={SignUpScreen}
         options={{
-          headerShown: true,
+          headerShown: false,
+          title: '',
+          animationEnabled: true,
         }}
       />
       <AuthenticationStack.Screen
         name={'VerifyOTP'}
         component={VerifyOTPScreen}
         options={{
-          headerShown: true,
+          headerShown: false,
+          title: '',
+          animationEnabled: true,
         }}
       />
     </AuthenticationStack.Navigator>
