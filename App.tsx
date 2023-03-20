@@ -9,7 +9,7 @@ export interface MainApplicationProps {}
 const MainApplication = (props?: MainApplicationProps) => {
   return (
     <>
-      <StatusBar barStyle={'dark-content'} />
+      <StatusBar barStyle={'light-content'} />
       <NavigationContainer ref={RootNavigationUtils.navigationRef}>
         <RootNavigation />
       </NavigationContainer>
