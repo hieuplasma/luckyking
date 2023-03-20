@@ -7,9 +7,17 @@
   "notification": {},
   "payment": {},
   "account": {},
-  "label": {},
-  "button": {},
-  "error": {},
+  "label": {
+    "login": "Đăng nhập",
+    "signup": "Đăng kí",
+    "otp": "Nhập OTP",
+    "confirmOtp": "Nhập mã OTP"
+  },
+  "error": {
+    "noInternet": "Không có kết nối mạng, vui lòng kiểm tra kết nối mạng và thử lại",
+    "noNetwork": "Không thể kết nối với máy chủ",
+    "generic": "Đã có lỗi xảy ra hoặc kết nối mạng không ổn định"
+  },
   "tab": {
     "home": "Trang chủ",
     "live": "Live",
@@ -30,5 +38,18 @@
   "offline": {
     "noNetwork": "Không có kết nối mạng",
     "retry": "Thử lại"
+  },
+  "input": {
+    "phoneNumber": "Số điện thoại",
+    "password": "Mật khẩu",
+    "repeatPassword": "Xác nhận mật khẩu"
+  },
+  "button": {
+    "login": "Đăng nhập",
+    "signUp": "Đăng kí",
+    "forgetPassword": "Quên mật khẩu",
+    "verifyOTP": "Nhập OTP",
+    "submit": "Xác nhận",
+    "resendOtp": "Gửi lại mã xác nhận"
   }
 }
