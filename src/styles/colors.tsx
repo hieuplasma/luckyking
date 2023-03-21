@@ -2,7 +2,7 @@ export default {
   primary: '#142331',
   primaryBackground: '#112344',
   blue: '#167EDE',
-  orange: '#F04F32',
+  orange: '#F97701',
   blue2: '#44BBBF',
   red2: '#EC7372',
   blueTiki: 'rgb(26, 148, 255)',
