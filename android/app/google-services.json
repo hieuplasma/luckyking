@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "854352751535",
+    "project_id": "luckyking-development",
+    "storage_bucket": "luckyking-development.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:854352751535:android:a76ae8702175fcbf5ddd5a",
+        "android_client_info": {
+          "package_name": "com.luckyking_app_react"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "854352751535-qlaivphn0b16pl0b170i85k0gjhfa59c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.luckyking_app_react",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "854352751535-3atb2p4hktc4khkl0dcgni11vbrsvlbn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyApQOmlJ3P2_njbdnNwIVAUsWxsVsuJWlM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "854352751535-3atb2p4hktc4khkl0dcgni11vbrsvlbn.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "854352751535-k5j16orgoe6kqrffrjfbu8i4e38a1289.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "vn.vietpointer.luckyking"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
