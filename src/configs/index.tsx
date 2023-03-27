@@ -4,7 +4,7 @@
 
 /** config for debug */
 const config = {
-  host: 'http://103.162.31.84:3003',
+  host: 'http://192.168.246.50:3001',
 };
 
 const API_HOST = config.host;
