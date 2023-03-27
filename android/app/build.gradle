@@ -148,6 +148,18 @@ android {
         }
     }
 
+    flavorDimensions "versions"
+    productFlavors {
+        staging {
+            // Assigns this product flavor to the "version" flavor dimension.
+            // If you are using only one dimension, this property is optional,
+            // and the plugin automatically assigns all the module's flavors to
+            // that dimension.
+        }
+        distribution {
+        }
+    }
+
     // applicationVariants are e.g. debug, release
     applicationVariants.all { variant ->
         variant.outputs.each { output ->
@@ -183,9 +195,9 @@ dependencies {
         implementation jscFlavor
     }
 
-    implementation platform('com.google.firebase:firebase-bom:31.3.0')
-    implementation 'com.google.firebase:firebase-analytics-ktx'
-    implementation project(path: ":@react-native-firebase_auth")
+    // implementation platform('com.google.firebase:firebase-bom:31.3.0')
+    // implementation 'com.google.firebase:firebase-analytics-ktx'
+    // implementation project(path: ":@react-native-firebase_auth")
 
 }
 
