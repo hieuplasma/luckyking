@@ -1,7 +1,6 @@
 export default {
   primary: '#142331',
   primaryBackground: '#112344',
-  blue: '#167EDE',
   orange: '#F97701',
   blue2: '#44BBBF',
   red2: '#EC7372',
@@ -92,4 +91,14 @@ export default {
   yellow4: '#D2A950',
   yellow5: '#ffe5ac',
   purple: '#ff00ff',
+
+
+  //new color
+  power:'#C38E32',
+  mega:'#BD2D24',
+  max3d:'#B93186',
+  max3dpro:"#890657",
+  keno:'#F97701',
+  vietlott:'#FC000C',
+  blue:'#0171F5'
 };
