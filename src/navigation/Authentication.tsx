@@ -1,5 +1,7 @@
 import {createStackNavigator} from '@react-navigation/stack';
 import {
+  ForgetPassword,
+  ForgetScreenRouteParams,
   LoginScreen,
   LoginScreenRouteParams,
   SignUpScreen,
@@ -14,6 +16,7 @@ export type AuthenticationStackParamList = {
   Login: LoginScreenRouteParams;
   SignUp: SignUpScreenRouteParams;
   VerifyOTP: VerifyOTPScreenRouteParams;
+  Forget: ForgetScreenRouteParams;
 };
 
 const AuthenticationStack =
@@ -45,6 +48,15 @@ export function AuthenticationNavigation() {
       <AuthenticationStack.Screen
         name={'VerifyOTP'}
         component={VerifyOTPScreen}
+        options={{
+          headerShown: false,
+          title: '',
+          animationEnabled: true,
+        }}
+      />
+      <AuthenticationStack.Screen
+        name={'Forget'}
+        component={ForgetPassword}
         options={{
           headerShown: false,
           title: '',

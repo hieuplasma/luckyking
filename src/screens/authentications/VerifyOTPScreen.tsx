@@ -4,6 +4,7 @@ import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {Icon, InputComponent, Label, ShadowView, translate} from '@shared';
 import {Color, Style} from '@styles';
+import {Button} from '@widgets';
 import React, {useCallback, useEffect} from 'react';
 import {TouchableOpacity, View} from 'react-native';
 
@@ -14,7 +15,9 @@ type NavigationProp = StackNavigationProp<
 
 type NavigationRoute = RouteProp<AuthenticationStackParamList, 'VerifyOTP'>;
 
-export interface VerifyOTPScreenRouteParams {}
+export interface VerifyOTPScreenRouteParams {
+  type?: string;
+}
 
 export interface VerifyOTPScreenProps {}
 
@@ -31,6 +34,8 @@ export const VerifyOTPScreen = React.memo((props?: VerifyOTPScreenProps) => {
   const onGoBack = useCallback(() => {
     navigation.goBack();
   }, [navigation]);
+
+  const onSubmit = useCallback(() => {}, []);
 
   const renderOtpInput = useCallback(() => {
     return (
@@ -51,13 +56,11 @@ export const VerifyOTPScreen = React.memo((props?: VerifyOTPScreenProps) => {
       <TouchableOpacity
         disabled={verifyOtpHooks.timeResend !== 0}
         style={[Style.Space.MarginTop.large_16]}
-        // onPress={onResendOtp}
-      >
+        onPress={verifyOtpHooks.onResendOtp}>
         <Label.Widget
           style={[
             Style.Label.Regular.PrimaryHeading_18,
             Style.Label.Align.Center,
-            // Style.Size.MatchParent,
           ]}>
           {verifyOtpHooks.timeResend !== 0
             ? verifyOtpHooks.getTimeToString(verifyOtpHooks.timeResend)
@@ -71,6 +74,22 @@ export const VerifyOTPScreen = React.memo((props?: VerifyOTPScreenProps) => {
     verifyOtpHooks.otp,
     verifyOtpHooks.onResendOtp,
   ]);
+
+  const renderSubmitButton = useCallback(() => {
+    return (
+      <Button.Widget
+        text={'button.submit'}
+        type="primary"
+        style={[
+          Style.Self.Center,
+          Style.Space.MarginTop.large_16,
+          {backgroundColor: Color.vietlott},
+        ]}
+        onClicked={onSubmit}
+        isLoading={verifyOtpHooks.isLoading}
+      />
+    );
+  }, [onSubmit, verifyOtpHooks.isLoading]);
 
   return (
     <View
@@ -103,6 +122,7 @@ export const VerifyOTPScreen = React.memo((props?: VerifyOTPScreenProps) => {
         </View>
         {renderOtpInput()}
         {renderTimer()}
+        {renderSubmitButton()}
       </ShadowView>
     </View>
   );

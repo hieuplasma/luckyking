@@ -37,16 +37,23 @@ export const LoginWidget = React.memo((props?: LoginScreenProps) => {
   const loginHooks = useLogin();
 
   const onLoginClick = useCallback(() => {
-    loginHooks.onLoginPress().then(() => {
-      NavigationUtils.resetGlobalStackWithScreen(navigation, ScreenName.Main);
-    }).catch((err)=>{
-      console.log('err',err);
-      Alert.alert("Error")
-    })
+    loginHooks
+      .onLoginPress()
+      .then(() => {
+        NavigationUtils.resetGlobalStackWithScreen(navigation, ScreenName.Main);
+      })
+      .catch(err => {
+        console.log('err', err);
+        Alert.alert('Error');
+      });
   }, [loginHooks.onLoginPress, navigation]);
 
   const onViewSignup = useCallback(() => {
     NavigationUtils.navigate(navigation, ScreenName.Authentications.SignUp);
+  }, [navigation]);
+
+  const onViewForgetPassword = useCallback(() => {
+    NavigationUtils.navigate(navigation, ScreenName.Authentications.Forget);
   }, [navigation]);
 
   const renderNumberInput = useCallback(() => {
@@ -92,11 +99,13 @@ export const LoginWidget = React.memo((props?: LoginScreenProps) => {
 
   const renderForgetPasswordButton = useCallback(() => {
     return (
-      <Label.Widget style={[Style.Label.Regular.PrimaryContentL_14]}>
+      <Label.Widget
+        style={[Style.Label.Regular.PrimaryContentL_14]}
+        onPress={onViewForgetPassword}>
         {translate('button.forgetPassword')}
       </Label.Widget>
     );
-  }, []);
+  }, [onViewForgetPassword]);
 
   const renderLoginButton = useCallback(() => {
     return (
@@ -104,9 +113,9 @@ export const LoginWidget = React.memo((props?: LoginScreenProps) => {
         text={'button.login'}
         type="primary"
         style={[
-          Style.Background.Primary,
           Style.Self.Center,
           Style.Space.MarginTop.large_16,
+          {backgroundColor: Color.vietlott},
         ]}
         onClicked={onLoginClick}
         isLoading={loginHooks.isLoading}

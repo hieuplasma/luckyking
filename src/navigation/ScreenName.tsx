@@ -6,6 +6,7 @@ export const ScreenName = {
     Login: 'Login',
     SignUp: 'SignUp',
     VerifyOTP: 'VerifyOTP',
+    Forget: 'Forget',
   },
   Tabs: {
     Account: 'Account',

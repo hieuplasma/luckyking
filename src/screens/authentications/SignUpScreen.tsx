@@ -99,9 +99,9 @@ export const SignUpScreen = React.memo((props?: SignUpScreenProps) => {
         text={'button.signUp'}
         type="primary"
         style={[
-          Style.Background.Primary,
           Style.Self.Center,
           Style.Space.MarginTop.large_16,
+          {backgroundColor: Color.vietlott},
         ]}
         onClicked={onSignupClick}
         isLoading={signupHooks.isLoading}

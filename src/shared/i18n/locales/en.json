@@ -11,7 +11,8 @@
     "login": "Đăng nhập",
     "signup": "Đăng kí",
     "otp": "Nhập OTP",
-    "confirmOtp": "Nhập mã OTP"
+    "confirmOtp": "Nhập mã OTP",
+    "forget": "Quên mật khẩu"
   },
   "error": {
     "noInternet": "Không có kết nối mạng, vui lòng kiểm tra kết nối mạng và thử lại",
