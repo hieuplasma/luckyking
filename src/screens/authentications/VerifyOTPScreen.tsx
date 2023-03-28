@@ -2,7 +2,14 @@ import {useVerifyOtp} from '@hooks';
 import {AuthenticationStackParamList} from '@navigation';
 import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
-import {Icon, InputComponent, Label, ShadowView, translate} from '@shared';
+import {
+  Icon,
+  InputComponent,
+  Label,
+  ScreenUtils,
+  ShadowView,
+  translate,
+} from '@shared';
 import {Color, Style} from '@styles';
 import {Button} from '@widgets';
 import React, {useCallback, useEffect} from 'react';
@@ -29,6 +36,7 @@ export const VerifyOTPScreen = React.memo((props?: VerifyOTPScreenProps) => {
   useEffect(verifyOtpHooks.countingTime, [
     verifyOtpHooks.incrementTimeSend,
     verifyOtpHooks.forceUpdate,
+    verifyOtpHooks.countingTime,
   ]);
 
   const onGoBack = useCallback(() => {
@@ -55,11 +63,26 @@ export const VerifyOTPScreen = React.memo((props?: VerifyOTPScreenProps) => {
     return (
       <TouchableOpacity
         disabled={verifyOtpHooks.timeResend !== 0}
-        style={[Style.Space.MarginTop.large_16]}
+        style={[
+          Style.Space.MarginTop.large_16,
+          Style.Content.CenterInVertical,
+          Style.Self.Center,
+          verifyOtpHooks.timeResend !== 0
+            ? [
+                {
+                  height: ScreenUtils.getSizeByHorizontal(32),
+                  width: ScreenUtils.getSizeByHorizontal(32),
+                  borderRadius: ScreenUtils.getSizeByHorizontal(16),
+                  borderColor: Color.black,
+                  borderWidth: 1,
+                },
+              ]
+            : undefined,
+        ]}
         onPress={verifyOtpHooks.onResendOtp}>
         <Label.Widget
           style={[
-            Style.Label.Regular.PrimaryHeading_18,
+            Style.Label.Regular.RedContentXL_16,
             Style.Label.Align.Center,
           ]}>
           {verifyOtpHooks.timeResend !== 0

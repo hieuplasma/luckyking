@@ -1,5 +1,5 @@
 import {useBase} from '@shared';
-import {useCallback, useState} from 'react';
+import {useCallback, useMemo, useState} from 'react';
 
 export const useVerifyOtp = () => {
   const [otp, setOtp] = useState<string | undefined>(undefined);
@@ -13,7 +13,9 @@ export const useVerifyOtp = () => {
   const [timeResend, setTimeResend] = useState(30);
   const [forceUpdate, setForceUpdate] = useState(true);
 
-  const onResendOtp = useCallback(() => {}, []);
+  const onResendOtp = useCallback(() => {
+    setTimeResend(30)
+  }, [forceUpdate]);
 
   const onVerifyOtp = useCallback(() => {}, [otp]);
 
@@ -25,23 +27,20 @@ export const useVerifyOtp = () => {
     setTimeResend(timeResend => +timeResend - 1);
   }, [timeResend]);
 
-  function countingTime() {
+  const countingTime = useCallback(() => {
     if (!timeResend) return setTimeResend(0);
     const to = setTimeout(incrementTimeSend, 1000);
     return () => {
       clearTimeout(to);
     };
-  }
+  }, [timeResend]);
 
-  function getTimeToString(time: number) {
+  const getTimeToString = useCallback((time?: number) => {
     if (!time) return '';
-    // let min: number | string = Math.floor(time / 60);
-    // if (min < 10) min = '0' + min;
     let sec: number | string = time % 60;
     if (sec < 10) sec = '0' + sec;
-    // return `${min}:${sec}`;
     return `${sec}`;
-  }
+  }, []);
 
   return {
     isLoading,
