@@ -51,11 +51,12 @@ export const LoginWidget = React.memo((props: any) => {
       password: password,
       deviceId: deviceId,
     }
+    console.log(body)
     const res = await authApi.login(body)
     if (res) {
       console.log(res.data)
       dispatch(updateToken(res.data.accessToken))
-      NavigationUtils.navigate(navigation, ScreenName.Main);
+      NavigationUtils.resetGlobalStackWithScreen(navigation, ScreenName.Main);
     }
     setLoading(false)
   }, [phoneNumber, password, deviceId]);
@@ -70,7 +71,7 @@ export const LoginWidget = React.memo((props: any) => {
 
   const onLoginClick = useCallback(() => {
     onLoginPress()
-  }, [navigation]);
+  }, [navigation, password, phoneNumber]);
 
   const onViewSignup = useCallback(() => {
     NavigationUtils.navigate(navigation, ScreenName.Authentications.SignUp);
@@ -147,7 +148,7 @@ export const LoginWidget = React.memo((props: any) => {
         isLoading={isLoading}
       />
     );
-  }, [onLoginPress, isLoading]);
+  }, [onLoginPress, isLoading, phoneNumber, password]);
 
   return (
     <View

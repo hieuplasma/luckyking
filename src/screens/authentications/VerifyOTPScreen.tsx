@@ -84,7 +84,7 @@ export const VerifyOTPScreen = React.memo((props?: any) => {
       if (res) {
         console.log(res.data)
         dispatch(updateToken(res.data.accessToken))
-        NavigationUtils.navigate(navigation, ScreenName.Main);
+        NavigationUtils.resetGlobalStackWithScreen(navigation, ScreenName.Main);
         verifyOtpHooks.setLoading(false)
       }
       // Some Android devices can automatically process the verification code (OTP) message, and the user would NOT need to enter the code.

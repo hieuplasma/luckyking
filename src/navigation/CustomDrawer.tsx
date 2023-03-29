@@ -10,12 +10,11 @@ function DrawerCustom(props: any) {
   const navigation = useNavigation<undefined>();
   const dispatch = useDispatch();
   return (
-    <View style={{ flex: 1, paddingTop: 20, paddingLeft: 20 }}>
+    <View style={{ flex: 1, paddingTop: 120, paddingLeft: 20 }}>
       <TouchableOpacity onPress={() => {
         dispatch(removeToken())
         props.navigation?.closeDrawer();
         NavigationUtils.resetGlobalStackWithScreen(navigation, ScreenName.Authentication);
-        let user = auth().currentUser;
         auth()
           .signOut()
           .then(() => console.log('User signed out!'));
