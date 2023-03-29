@@ -1,7 +1,7 @@
-import {useVerifyOtp} from '@hooks';
-import {AuthenticationStackParamList} from '@navigation';
-import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
-import {StackNavigationProp} from '@react-navigation/stack';
+import { useVerifyOtp } from '@hooks';
+import { AuthenticationStackParamList } from '@navigation';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import {
   Icon,
   InputComponent,
@@ -10,10 +10,15 @@ import {
   ShadowView,
   translate,
 } from '@shared';
-import {Color, Style} from '@styles';
-import {Button} from '@widgets';
-import React, {useCallback, useEffect} from 'react';
-import {TouchableOpacity, View} from 'react-native';
+import { Color, Style } from '@styles';
+import { Button } from '@widgets';
+import React, { useCallback, useEffect } from 'react';
+import { TouchableOpacity, View } from 'react-native';
+import auth from '@react-native-firebase/auth';
+import { authApi } from '@api';
+import DeviceInfo from 'react-native-device-info'; 
+import { useDispatch } from 'react-redux';
+import { updateToken } from '../../redux/reducer/auth';
 
 type NavigationProp = StackNavigationProp<
   AuthenticationStackParamList,
@@ -24,14 +29,19 @@ type NavigationRoute = RouteProp<AuthenticationStackParamList, 'VerifyOTP'>;
 
 export interface VerifyOTPScreenRouteParams {
   type?: string;
+  confirm?: any,
+  phoneNumber: string,
+  password: string
 }
 
-export interface VerifyOTPScreenProps {}
+export interface VerifyOTPScreenProps { }
 
 export const VerifyOTPScreen = React.memo((props?: VerifyOTPScreenProps) => {
   const navigation = useNavigation<NavigationProp>();
   const route = useRoute<NavigationRoute>();
   const verifyOtpHooks = useVerifyOtp();
+
+  console.log(route.params)
 
   useEffect(verifyOtpHooks.countingTime, [
     verifyOtpHooks.incrementTimeSend,
@@ -39,11 +49,55 @@ export const VerifyOTPScreen = React.memo((props?: VerifyOTPScreenProps) => {
     verifyOtpHooks.countingTime,
   ]);
 
+  async function confirmCode() {
+    try {
+      await route.params.confirm.confirm(verifyOtpHooks.onChangeOtp);
+    } catch (error) {
+      console.log('Invalid code.');
+    }
+  }
+
+  const dispatch = useDispatch()
+
+  // Handle login
+  function onAuthStateChanged(user: any) {
+    console.log('user', user);
+    if (user) {
+      authApi
+      .register({
+        phoneNumber: route.params.phoneNumber,
+        password: route.params.password,
+        deviceId: DeviceInfo.getDeviceId(),
+      })
+      .then(res => {
+        console.log('res', res);
+        // return Promise.resolve(res);
+        dispatch(updateToken(res.accessToken))
+      })
+      .catch(err => {
+        console.log('err', err);
+        return Promise.reject(err);
+      })
+      .finally(() => {
+        // setLoading(false);
+      });
+      // Some Android devices can automatically process the verification code (OTP) message, and the user would NOT need to enter the code.
+      // Actually, if he/she tries to enter it, he/she will get an error message because the code was already used in the background.
+      // In this function, make sure you hide the component(s) for entering the code and/or navigate away from this screen.
+      // It is also recommended to display a message to the user informing him/her that he/she has successfully logged in.
+    }
+  }
+
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber; // unsubscribe on unmount
+  }, []);
+
   const onGoBack = useCallback(() => {
     navigation.goBack();
   }, [navigation]);
 
-  const onSubmit = useCallback(() => {}, []);
+  const onSubmit = useCallback(() => { }, []);
 
   const renderOtpInput = useCallback(() => {
     return (
@@ -69,14 +123,14 @@ export const VerifyOTPScreen = React.memo((props?: VerifyOTPScreenProps) => {
           Style.Self.Center,
           verifyOtpHooks.timeResend !== 0
             ? [
-                {
-                  height: ScreenUtils.getSizeByHorizontal(32),
-                  width: ScreenUtils.getSizeByHorizontal(32),
-                  borderRadius: ScreenUtils.getSizeByHorizontal(16),
-                  borderColor: Color.black,
-                  borderWidth: 1,
-                },
-              ]
+              {
+                height: ScreenUtils.getSizeByHorizontal(32),
+                width: ScreenUtils.getSizeByHorizontal(32),
+                borderRadius: ScreenUtils.getSizeByHorizontal(16),
+                borderColor: Color.black,
+                borderWidth: 1,
+              },
+            ]
             : undefined,
         ]}
         onPress={verifyOtpHooks.onResendOtp}>
@@ -106,9 +160,9 @@ export const VerifyOTPScreen = React.memo((props?: VerifyOTPScreenProps) => {
         style={[
           Style.Self.Center,
           Style.Space.MarginTop.large_16,
-          {backgroundColor: Color.vietlott},
+          { backgroundColor: Color.vietlott },
         ]}
-        onClicked={onSubmit}
+        onClicked={() => confirmCode()}
         isLoading={verifyOtpHooks.isLoading}
       />
     );
@@ -138,7 +192,7 @@ export const VerifyOTPScreen = React.memo((props?: VerifyOTPScreenProps) => {
               Style.Label.Regular.WhiteContentXL_16,
               Style.Label.Align.Center,
               Style.Space.MarginRight.largeMargin_16,
-              {color: Color.black},
+              { color: Color.black },
             ]}>
             {translate('label.otp')}
           </Label.Widget>

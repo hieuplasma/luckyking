@@ -8,6 +8,7 @@ import { Connection } from '@api';
 import { Color } from '@styles';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
+import { SplashScreen } from '@screen';
 
 // export interface MainApplicationProps { }
 
@@ -72,14 +73,12 @@ class App extends React.PureComponent {
         </View>
       );
     }
-    console.log("store: " + JSON.stringify(store))
-
     return (
       <View style={{ flex: 1, }}>
         <StatusBar translucent={true} barStyle={'dark-content'} />
         <Provider store={store.store}>
           <PersistGate
-            // loading={<SplashScr />}
+            // loading={<SplashScreen />}
             persistor={store.persistor}>
             <StatusBar barStyle={'light-content'} />
             <NavigationContainer ref={RootNavigationUtils.navigationRef}>

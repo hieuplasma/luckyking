@@ -1,7 +1,7 @@
-import {useSignup} from '@hooks';
-import {AuthenticationStackParamList, ScreenName} from '@navigation';
-import {RouteProp, useNavigation} from '@react-navigation/native';
-import {StackNavigationProp} from '@react-navigation/stack';
+import { useSignup } from '@hooks';
+import { AuthenticationStackParamList, ScreenName } from '@navigation';
+import { RouteProp, useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import {
   Icon,
   InputComponent,
@@ -10,11 +10,12 @@ import {
   ShadowView,
   translate,
 } from '@shared';
-import {Color, Style} from '@styles';
-import {Button} from '@widgets';
-import React, {useCallback} from 'react';
-import {View} from 'react-native';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import { Color, Style } from '@styles';
+import { Button } from '@widgets';
+import React, { useCallback, useState } from 'react';
+import { Alert, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import auth from '@react-native-firebase/auth';
 
 type NavigationProp = StackNavigationProp<
   AuthenticationStackParamList,
@@ -23,24 +24,35 @@ type NavigationProp = StackNavigationProp<
 
 type NavigationRoute = RouteProp<AuthenticationStackParamList, 'SignUp'>;
 
-export interface SignUpScreenRouteParams {}
+export interface SignUpScreenRouteParams { }
 
-export interface SignUpScreenProps {}
+export interface SignUpScreenProps { }
 
 export const SignUpScreen = React.memo((props?: SignUpScreenProps) => {
   const navigation = useNavigation<NavigationProp>();
   const safeAreaInsets = useSafeAreaInsets();
   const signupHooks = useSignup();
 
-  const onSignupClick = useCallback(() => {
-    // signupHooks
-    //   .onSignupPress()
-    //   .then(() => {
-    //     NavigationUtils.navigate(navigation, ScreenName.Main);
-    //   })
-    //   .catch();
-    NavigationUtils.navigate(navigation, ScreenName.Authentications.VerifyOTP);
-  }, [signupHooks.onSignupPress, navigation]);
+  const [confirm, setConfirm]: any = useState(null);
+
+  async function signInWithPhoneNumber(phoneNumber: string) {
+    // const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
+    setConfirm(await auth().signInWithPhoneNumber(phoneNumber))
+  }
+
+  const onSignupClick = useCallback(async () => {
+    if (signupHooks.phoneNumber == "" || signupHooks.phoneNumber == undefined)
+      return (Alert.alert("Lỗi", "Bạn chưa nhập số điện thoại"))
+    if (signupHooks.password == "")
+      return (Alert.alert("Lỗi", "Bạn chưa nhập mật khẩu"))
+    if (signupHooks.password != signupHooks.repeatPassword)
+      return (Alert.alert("Lỗi", "Mật khẩu và xác nhận phải giống nhau"))
+    await signInWithPhoneNumber(signupHooks.phoneNumber.replace('0', '+84')).then(() => {
+      NavigationUtils.navigate(navigation, ScreenName.Authentications.VerifyOTP, {
+        confirm: confirm
+      });
+    })
+  }, [signupHooks.onSignupPress, navigation, confirm, signupHooks.phoneNumber, signupHooks.password]);
 
   const onGoBack = useCallback(() => {
     navigation.goBack();
@@ -73,6 +85,7 @@ export const SignUpScreen = React.memo((props?: SignUpScreenProps) => {
         containerStyle={[Style.Space.MarginTop.xLarge_24]}
         errorMessage={signupHooks.errorMessage?.password}
         secureTextEntry={true}
+        textContentType="oneTimeCode"
       />
     );
   }, [signupHooks.password, signupHooks.errorMessage?.password]);
@@ -89,6 +102,7 @@ export const SignUpScreen = React.memo((props?: SignUpScreenProps) => {
         containerStyle={[Style.Space.MarginTop.xLarge_24]}
         errorMessage={signupHooks.errorMessage?.password}
         secureTextEntry={true}
+        textContentType="oneTimeCode"
       />
     );
   }, [signupHooks.repeatPassword, signupHooks.errorMessage?.password]);
@@ -101,7 +115,7 @@ export const SignUpScreen = React.memo((props?: SignUpScreenProps) => {
         style={[
           Style.Self.Center,
           Style.Space.MarginTop.large_16,
-          {backgroundColor: Color.vietlott},
+          { backgroundColor: Color.vietlott },
         ]}
         onClicked={onSignupClick}
         isLoading={signupHooks.isLoading}
@@ -133,7 +147,7 @@ export const SignUpScreen = React.memo((props?: SignUpScreenProps) => {
               Style.Label.Regular.WhiteContentXL_16,
               Style.Label.Align.Center,
               Style.Space.MarginRight.largeMargin_16,
-              {color: Color.black},
+              { color: Color.black },
             ]}>
             {translate('label.signup')}
           </Label.Widget>

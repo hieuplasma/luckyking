@@ -23,7 +23,7 @@ export class AuthApi extends BaseApi {
     deviceId?: string;
   }) {
     return this.postMultipart(
-      'auth/register',
+      'auth/sercure/register',
       {
         phoneNumber: params?.phoneNumber,
         password: params?.password,

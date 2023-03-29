@@ -34,6 +34,8 @@ export const HomeScreen = React.memo((props?: HomeScreenProps) => {
         size={'large'}
         color={Color.white}
         style={[Style.Space.PaddingHorizontal.Zero]}
+        //@ts-ignore
+        onPressed= {()=> navigation.toggleDrawer()}
       />
     );
   }, []);

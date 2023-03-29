@@ -3,7 +3,7 @@ import {SplashScreen, SplashScreenRouteParams} from '@screen';
 import React from 'react';
 import {
   AuthenticationNavigation,
-  AuthenticationStackParamList,
+ type AuthenticationStackParamList,
 } from './Authentication';
 import {MainNavigation} from './MainNavigation';
 import {ScreenName} from './ScreenName';
@@ -18,9 +18,10 @@ export type RootStackParamsList = {
 const RootStack = createStackNavigator<RootStackParamsList>();
 
 export function RootNavigation(params?: {}) {
+
   return (
     <RootStack.Navigator
-      initialRouteName={'Authentication'}
+      initialRouteName={'SplashScreen'}
       screenOptions={{
         headerShown: false,
         gestureEnabled: false,

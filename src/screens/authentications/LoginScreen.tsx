@@ -1,7 +1,7 @@
-import {useLogin} from '@hooks';
-import {AuthenticationStackParamList, ScreenName} from '@navigation';
-import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
-import {StackNavigationProp} from '@react-navigation/stack';
+import { useLogin } from '@hooks';
+import { AuthenticationStackParamList, ScreenName } from '@navigation';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import {
   InputComponent,
   Label,
@@ -10,13 +10,16 @@ import {
   ShadowView,
   translate,
 } from '@shared';
-import {Color, Style} from '@styles';
-import React, {useCallback, useEffect, useState} from 'react';
-import {View, Button as ButtonRN, Alert} from 'react-native';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {Button} from '@widgets';
+import { Color, Style } from '@styles';
+import React, { useCallback, useEffect, useState } from 'react';
+import { View, Button as ButtonRN, Alert } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Button } from '@widgets';
 import auth from '@react-native-firebase/auth';
-import {TextInput} from 'react-native';
+import { TextInput } from 'react-native';
+
+import { useDispatch, useSelector } from 'react-redux';
+import { updateToken } from '../../redux/reducer/auth';
 
 type NavigationProp = StackNavigationProp<
   AuthenticationStackParamList,
@@ -28,23 +31,27 @@ export interface LoginScreenRouteParams {
   disableGoBack?: boolean;
 }
 
-export interface LoginScreenProps {}
+export interface LoginScreenProps { }
 
-export const LoginWidget = React.memo((props?: LoginScreenProps) => {
+export const LoginWidget = React.memo((props: any) => {
   const navigation = useNavigation<NavigationProp>();
   const route = useRoute<NavigationRoute>();
   const safeAreaInsets = useSafeAreaInsets();
   const loginHooks = useLogin();
+  const dispatch = useDispatch();
 
   const onLoginClick = useCallback(() => {
     loginHooks
       .onLoginPress()
-      .then(() => {
-        NavigationUtils.resetGlobalStackWithScreen(navigation, ScreenName.Main);
+      .then(async (res) => {
+        if (res) {
+          dispatch(updateToken({ payload: res.accessToken }))
+          NavigationUtils.resetGlobalStackWithScreen(navigation, ScreenName.Main);
+        }
       })
       .catch(err => {
         console.log('err', err);
-        Alert.alert('Error');
+        Alert.alert(err);
       });
   }, [loginHooks.onLoginPress, navigation]);
 
@@ -115,7 +122,7 @@ export const LoginWidget = React.memo((props?: LoginScreenProps) => {
         style={[
           Style.Self.Center,
           Style.Space.MarginTop.large_16,
-          {backgroundColor: Color.vietlott},
+          { backgroundColor: Color.vietlott },
         ]}
         onClicked={onLoginClick}
         isLoading={loginHooks.isLoading}
@@ -137,7 +144,7 @@ export const LoginWidget = React.memo((props?: LoginScreenProps) => {
           style={[
             Style.Label.Regular.WhiteContentXL_16,
             Style.Label.Align.Center,
-            {color: Color.black},
+            { color: Color.black },
           ]}>
           {translate('label.login')}
         </Label.Widget>
@@ -147,7 +154,7 @@ export const LoginWidget = React.memo((props?: LoginScreenProps) => {
           style={[
             Style.Space.MarginTop.large_16,
             Style.Size.FlexRow,
-            {justifyContent: 'space-between'},
+            { justifyContent: 'space-between' },
           ]}>
           {renderSignupButton()}
           {renderForgetPasswordButton()}
@@ -162,13 +169,13 @@ export const LoginScreen = LoginWidget;
 
 function PhoneSignIn() {
   // If null, no SMS has been sent
-  const [confirm, setConfirm] = useState(null);
+  const [confirm, setConfirm]: any = useState(null);
 
   // verification code (OTP - One-Time-Passcode)
   const [code, setCode] = useState('');
 
   // Handle login
-  function onAuthStateChanged(user) {
+  function onAuthStateChanged(user: any) {
     console.log('user', user);
 
     if (user) {
@@ -185,7 +192,7 @@ function PhoneSignIn() {
   }, []);
 
   // Handle the button press
-  async function signInWithPhoneNumber(phoneNumber) {
+  async function signInWithPhoneNumber(phoneNumber: string) {
     const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
     console.log('confirmation', confirmation);
 
