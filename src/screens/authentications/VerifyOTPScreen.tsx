@@ -1,47 +1,45 @@
 import { useVerifyOtp } from '@hooks';
-import { AuthenticationStackParamList } from '@navigation';
+import { AuthenticationStackParamList, ScreenName } from '@navigation';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import {
   Icon,
   InputComponent,
   Label,
+  NavigationUtils,
   ScreenUtils,
   ShadowView,
   translate,
 } from '@shared';
 import { Color, Style } from '@styles';
 import { Button } from '@widgets';
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import { authApi } from '@api';
-import DeviceInfo from 'react-native-device-info'; 
+import DeviceInfo from 'react-native-device-info';
 import { useDispatch } from 'react-redux';
 import { updateToken } from '../../redux/reducer/auth';
+import { API_HOST } from '@configs';
+import { API_URI } from '../../api/url';
 
-type NavigationProp = StackNavigationProp<
-  AuthenticationStackParamList,
-  'VerifyOTP'
->;
-
+type NavigationProp = StackNavigationProp<AuthenticationStackParamList, 'VerifyOTP'>;
 type NavigationRoute = RouteProp<AuthenticationStackParamList, 'VerifyOTP'>;
 
 export interface VerifyOTPScreenRouteParams {
   type?: string;
-  confirm?: any,
   phoneNumber: string,
   password: string
 }
 
 export interface VerifyOTPScreenProps { }
 
-export const VerifyOTPScreen = React.memo((props?: VerifyOTPScreenProps) => {
+export const VerifyOTPScreen = React.memo((props?: any) => {
+  const dispatch = useDispatch()
   const navigation = useNavigation<NavigationProp>();
   const route = useRoute<NavigationRoute>();
   const verifyOtpHooks = useVerifyOtp();
-
-  console.log(route.params)
+  const [confirm, setConfirm]: any = useState(null)
 
   useEffect(verifyOtpHooks.countingTime, [
     verifyOtpHooks.incrementTimeSend,
@@ -49,49 +47,52 @@ export const VerifyOTPScreen = React.memo((props?: VerifyOTPScreenProps) => {
     verifyOtpHooks.countingTime,
   ]);
 
-  async function confirmCode() {
+  const confirmCode = useCallback(async () => {
     try {
-      await route.params.confirm.confirm(verifyOtpHooks.onChangeOtp);
+      await confirm.confirm(verifyOtpHooks.otp);
     } catch (error) {
-      console.log('Invalid code.');
+      console.log('Invalid code.', error);
     }
-  }
+  }, [verifyOtpHooks.otp, confirm, navigation]);
 
-  const dispatch = useDispatch()
+  useEffect(() => {
+    async function signInWithPhoneNumber(phoneNumber: string) {
+      setConfirm(await auth().signInWithPhoneNumber(phoneNumber.replace('0', '+84')))
+    }
+    signInWithPhoneNumber(route.params.phoneNumber)
+  }, [])
+
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber; // unsubscribe on unmount
+  }, []);
 
   // Handle login
-  function onAuthStateChanged(user: any) {
+  async function onAuthStateChanged(user: any) {
     console.log('user', user);
     if (user) {
-      authApi
-      .register({
+      console.log(user)
+      console.log("firebaseTOken::::", await user.getIdToken())
+      verifyOtpHooks.setLoading(true)
+      const uri: string = API_URI.REGISTER
+      const body = {
         phoneNumber: route.params.phoneNumber,
         password: route.params.password,
         deviceId: DeviceInfo.getDeviceId(),
-      })
-      .then(res => {
-        console.log('res', res);
-        // return Promise.resolve(res);
-        dispatch(updateToken(res.accessToken))
-      })
-      .catch(err => {
-        console.log('err', err);
-        return Promise.reject(err);
-      })
-      .finally(() => {
-        // setLoading(false);
-      });
+      }
+      const res = await window.connection.requestApi("POST", uri, body, null, null, await user.getIdToken())
+      if (res) {
+        console.log(res.data)
+        dispatch(updateToken(res.data.accessToken))
+        NavigationUtils.navigate(navigation, ScreenName.Main);
+        verifyOtpHooks.setLoading(false)
+      }
       // Some Android devices can automatically process the verification code (OTP) message, and the user would NOT need to enter the code.
       // Actually, if he/she tries to enter it, he/she will get an error message because the code was already used in the background.
       // In this function, make sure you hide the component(s) for entering the code and/or navigate away from this screen.
       // It is also recommended to display a message to the user informing him/her that he/she has successfully logged in.
     }
   }
-
-  useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber; // unsubscribe on unmount
-  }, []);
 
   const onGoBack = useCallback(() => {
     navigation.goBack();
@@ -162,11 +163,11 @@ export const VerifyOTPScreen = React.memo((props?: VerifyOTPScreenProps) => {
           Style.Space.MarginTop.large_16,
           { backgroundColor: Color.vietlott },
         ]}
-        onClicked={() => confirmCode()}
+        onClicked={confirmCode}
         isLoading={verifyOtpHooks.isLoading}
       />
     );
-  }, [onSubmit, verifyOtpHooks.isLoading]);
+  }, [onSubmit, verifyOtpHooks.isLoading, confirm, verifyOtpHooks.otp]);
 
   return (
     <View
@@ -203,4 +204,5 @@ export const VerifyOTPScreen = React.memo((props?: VerifyOTPScreenProps) => {
       </ShadowView>
     </View>
   );
-});
+}
+)

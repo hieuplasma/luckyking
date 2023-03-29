@@ -10,11 +10,11 @@ export const useVerifyOtp = () => {
     | undefined
   >(undefined);
   const {isLoading, setLoading} = useBase();
-  const [timeResend, setTimeResend] = useState(30);
+  const [timeResend, setTimeResend] = useState(59);
   const [forceUpdate, setForceUpdate] = useState(true);
 
   const onResendOtp = useCallback(() => {
-    setTimeResend(30)
+    setTimeResend(59)
   }, [forceUpdate]);
 
   const onVerifyOtp = useCallback(() => {}, [otp]);
@@ -54,5 +54,6 @@ export const useVerifyOtp = () => {
     countingTime,
     getTimeToString,
     timeResend,
+    setLoading
   };
 };

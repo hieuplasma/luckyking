@@ -17,6 +17,13 @@ export type RootStackParamsList = {
 
 const RootStack = createStackNavigator<RootStackParamsList>();
 
+declare global {
+  interface Window {
+    connection: any;
+    _store: any;
+  }
+}
+
 export function RootNavigation(params?: {}) {
 
   return (

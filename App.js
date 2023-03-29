@@ -9,21 +9,7 @@ import { Color } from '@styles';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { SplashScreen } from '@screen';
-
-// export interface MainApplicationProps { }
-
-// const MainApplication = (props?: MainApplicationProps) => {
-//   return (
-//     <>
-//       <StatusBar barStyle={'light-content'} />
-//       <NavigationContainer ref={RootNavigationUtils.navigationRef}>
-//         <RootNavigation />
-//       </NavigationContainer>
-//     </>
-//   );
-// };
-
-// export default MainApplication;
+import auth from '@react-native-firebase/auth';
 
 class App extends React.PureComponent {
   constructor(props) {
@@ -40,7 +26,7 @@ class App extends React.PureComponent {
     };
   }
 
-  componentDidMount() { }
+  componentDidMount() {}
 
   render() {
     const { isLoading, store } = this.state;

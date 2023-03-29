@@ -1,37 +1,12 @@
-import {BaseApi} from './base-api';
+import { API_URI } from "./url";
 
-export class AuthApi extends BaseApi {
-  login(params?: {
-    phoneNumber?: string;
-    password?: string;
-    deviceId?: string;
-  }) {
-    return this.postMultipart(
-      'auth/login',
-      {
-        phoneNumber: params?.phoneNumber,
-        password: params?.password,
-        deviceId: params?.deviceId,
-      },
-      {},
-    );
-  }
-
-  register(params?: {
-    phoneNumber?: string;
-    password?: string;
-    deviceId?: string;
-  }) {
-    return this.postMultipart(
-      'auth/sercure/register',
-      {
-        phoneNumber: params?.phoneNumber,
-        password: params?.password,
-        deviceId: params?.deviceId,
-      },
-      {},
-    );
+class AuthApi {
+  login = async (body: any) => {
+    let fullUrl = API_URI.LOGIN;
+    console.log(JSON.stringify(body))
+    return await window.connection.POST(fullUrl, body)
   }
 }
 
-export default new AuthApi();
+const authApi = new AuthApi
+export default authApi

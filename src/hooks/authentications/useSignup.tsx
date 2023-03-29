@@ -23,23 +23,23 @@ export const useSignup = () => {
 
   const onSignupPress = useCallback(() => {
     setLoading(true);
-    return authApi
-      .register({
-        phoneNumber: phoneNumber,
-        password: password,
-        deviceId: deviceId,
-      })
-      .then(res => {
-        console.log('res', res);
-        return Promise.resolve(res);
-      })
-      .catch(err => {
-        console.log('err', err);
-        return Promise.reject(err);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    // return authApi
+    //   .register({
+    //     phoneNumber: phoneNumber,
+    //     password: password,
+    //     deviceId: deviceId,
+    //   })
+    //   .then(res => {
+    //     console.log('res', res);
+    //     return Promise.resolve(res);
+    //   })
+    //   .catch(err => {
+    //     console.log('err', err);
+    //     return Promise.reject(err);
+    //   })
+    //   .finally(() => {
+    //     setLoading(false);
+    //   });
   }, [phoneNumber, password, deviceId]);
 
   const onChangePhoneNumber = useCallback((phoneNumber?: string) => {

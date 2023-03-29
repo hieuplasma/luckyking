@@ -9,19 +9,17 @@ import {
   NavigationUtils,
   ShadowView,
   translate,
+  useBase,
 } from '@shared';
 import { Color, Style } from '@styles';
 import { Button } from '@widgets';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Alert, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import auth from '@react-native-firebase/auth';
+import DeviceInfo from 'react-native-device-info';
 
-type NavigationProp = StackNavigationProp<
-  AuthenticationStackParamList,
-  'SignUp'
->;
-
+type NavigationProp = StackNavigationProp<AuthenticationStackParamList, 'SignUp'>;
 type NavigationRoute = RouteProp<AuthenticationStackParamList, 'SignUp'>;
 
 export interface SignUpScreenRouteParams { }
@@ -31,28 +29,41 @@ export interface SignUpScreenProps { }
 export const SignUpScreen = React.memo((props?: SignUpScreenProps) => {
   const navigation = useNavigation<NavigationProp>();
   const safeAreaInsets = useSafeAreaInsets();
-  const signupHooks = useSignup();
+  const [password, setPassword] = useState<string | undefined>(undefined);
+  const [repeatPassword, setRepeatPassword] = useState<string | undefined>(
+    undefined,
+  );
+  const [phoneNumber, setPhoneNumber] = useState<string | undefined>(undefined);
+  const [errorMessage, setErrorMessage] = useState<
+    | {
+      phonenumber?: string;
+      password?: string;
+      repeatpassword?: string;
+    } | undefined>(undefined);
+  const { isLoading, setLoading } = useBase();
 
-  const [confirm, setConfirm]: any = useState(null);
+  const onChangePhoneNumber = useCallback((phoneNumber?: string) => {
+    setPhoneNumber(phoneNumber);
+  }, []);
 
-  async function signInWithPhoneNumber(phoneNumber: string) {
-    // const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
-    setConfirm(await auth().signInWithPhoneNumber(phoneNumber))
-  }
+  const onChangePassword = useCallback((password?: string) => {
+    setPassword(password);
+  }, []);
+  const onChangeRepeatPassword = useCallback((password?: string) => {
+    setRepeatPassword(password);
+  }, []);
 
-  const onSignupClick = useCallback(async () => {
-    if (signupHooks.phoneNumber == "" || signupHooks.phoneNumber == undefined)
+  const onSignupClick = async () => {
+    if (phoneNumber == "" || phoneNumber == undefined)
       return (Alert.alert("Lỗi", "Bạn chưa nhập số điện thoại"))
-    if (signupHooks.password == "")
+    if (password == "")
       return (Alert.alert("Lỗi", "Bạn chưa nhập mật khẩu"))
-    if (signupHooks.password != signupHooks.repeatPassword)
-      return (Alert.alert("Lỗi", "Mật khẩu và xác nhận phải giống nhau"))
-    await signInWithPhoneNumber(signupHooks.phoneNumber.replace('0', '+84')).then(() => {
-      NavigationUtils.navigate(navigation, ScreenName.Authentications.VerifyOTP, {
-        confirm: confirm
-      });
-    })
-  }, [signupHooks.onSignupPress, navigation, confirm, signupHooks.phoneNumber, signupHooks.password]);
+    if (password != repeatPassword)
+      return (Alert.alert("Lỗi", "Mật khẩu và mật khẩu xác nhận phải giống nhau"))
+    NavigationUtils.navigate(navigation, ScreenName.Authentications.VerifyOTP, {
+      phoneNumber: phoneNumber, password: password
+    });
+  }
 
   const onGoBack = useCallback(() => {
     navigation.goBack();
@@ -63,49 +74,49 @@ export const SignUpScreen = React.memo((props?: SignUpScreenProps) => {
       <InputComponent
         editable={true}
         keyboardType="phone-pad"
-        value={signupHooks.phoneNumber}
+        value={phoneNumber}
         placeholder={translate('input.phoneNumber')}
         label={translate('input.phoneNumber')}
-        onChangeText={signupHooks.onChangePhoneNumber}
+        onChangeText={onChangePhoneNumber}
         containerStyle={[Style.Space.MarginTop.xLarge_24]}
-        errorMessage={signupHooks.errorMessage?.phonenumber}
+        errorMessage={errorMessage?.phonenumber}
       />
     );
-  }, [signupHooks.phoneNumber, signupHooks.errorMessage?.phonenumber]);
+  }, [phoneNumber, errorMessage?.phonenumber]);
 
   const renderPasswordInput = useCallback(() => {
     return (
       <InputComponent
         editable={true}
         keyboardType="default"
-        value={signupHooks.password}
+        value={password}
         placeholder={translate('input.password')}
         label={translate('input.password')}
-        onChangeText={signupHooks.onChangePassword}
+        onChangeText={onChangePassword}
         containerStyle={[Style.Space.MarginTop.xLarge_24]}
-        errorMessage={signupHooks.errorMessage?.password}
+        errorMessage={errorMessage?.password}
         secureTextEntry={true}
         textContentType="oneTimeCode"
       />
     );
-  }, [signupHooks.password, signupHooks.errorMessage?.password]);
+  }, [password, errorMessage?.password]);
 
   const renderRepeatPasswordInput = useCallback(() => {
     return (
       <InputComponent
         editable={true}
         keyboardType="default"
-        value={signupHooks.repeatPassword}
+        value={repeatPassword}
         placeholder={translate('input.repeatPassword')}
         label={translate('input.repeatPassword')}
-        onChangeText={signupHooks.onChangeRepeatPassword}
+        onChangeText={onChangeRepeatPassword}
         containerStyle={[Style.Space.MarginTop.xLarge_24]}
-        errorMessage={signupHooks.errorMessage?.password}
+        errorMessage={errorMessage?.password}
         secureTextEntry={true}
         textContentType="oneTimeCode"
       />
     );
-  }, [signupHooks.repeatPassword, signupHooks.errorMessage?.password]);
+  }, [repeatPassword, errorMessage?.password]);
 
   const renderSignupButton = useCallback(() => {
     return (
@@ -118,10 +129,10 @@ export const SignUpScreen = React.memo((props?: SignUpScreenProps) => {
           { backgroundColor: Color.vietlott },
         ]}
         onClicked={onSignupClick}
-        isLoading={signupHooks.isLoading}
+        isLoading={isLoading}
       />
     );
-  }, [onSignupClick, signupHooks.isLoading]);
+  }, [onSignupClick, isLoading]);
 
   return (
     <View

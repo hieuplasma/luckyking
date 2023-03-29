@@ -9,22 +9,19 @@ import {
   RootNavigationUtils,
   ShadowView,
   translate,
+  useBase,
 } from '@shared';
 import { Color, Style } from '@styles';
 import React, { useCallback, useEffect, useState } from 'react';
 import { View, Button as ButtonRN, Alert } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Button } from '@widgets';
-import auth from '@react-native-firebase/auth';
-import { TextInput } from 'react-native';
-
-import { useDispatch, useSelector } from 'react-redux';
+import DeviceInfo from 'react-native-device-info';
+import { authApi } from '@api';
+import { useDispatch } from 'react-redux';
 import { updateToken } from '../../redux/reducer/auth';
 
-type NavigationProp = StackNavigationProp<
-  AuthenticationStackParamList,
-  'Login'
->;
+type NavigationProp = StackNavigationProp<AuthenticationStackParamList, 'Login'>;
 type NavigationRoute = RouteProp<AuthenticationStackParamList, 'Login'>;
 
 export interface LoginScreenRouteParams {
@@ -37,23 +34,43 @@ export const LoginWidget = React.memo((props: any) => {
   const navigation = useNavigation<NavigationProp>();
   const route = useRoute<NavigationRoute>();
   const safeAreaInsets = useSafeAreaInsets();
-  const loginHooks = useLogin();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
+
+
+  const [password, setPassword] = useState<string | undefined>(undefined);
+  const [phoneNumber, setPhoneNumber] = useState<string | undefined>(undefined);
+  const [errorMessage, setErrorMessage] = useState<| { phonenumber?: string; password?: string; } | undefined>(undefined);
+  const { isLoading, setLoading } = useBase();
+
+  const deviceId = DeviceInfo.getDeviceId();
+
+  const onLoginPress = useCallback(async () => {
+    setLoading(true);
+    const body = {
+      phoneNumber: phoneNumber,
+      password: password,
+      deviceId: deviceId,
+    }
+    const res = await authApi.login(body)
+    if (res) {
+      console.log(res.data)
+      dispatch(updateToken(res.data.accessToken))
+      NavigationUtils.navigate(navigation, ScreenName.Main);
+    }
+    setLoading(false)
+  }, [phoneNumber, password, deviceId]);
+
+  const onChangePhoneNumber = useCallback((phoneNumber?: string) => {
+    setPhoneNumber(phoneNumber);
+  }, []);
+
+  const onChangePassword = useCallback((password?: string) => {
+    setPassword(password);
+  }, []);
 
   const onLoginClick = useCallback(() => {
-    loginHooks
-      .onLoginPress()
-      .then(async (res) => {
-        if (res) {
-          dispatch(updateToken({ payload: res.accessToken }))
-          NavigationUtils.resetGlobalStackWithScreen(navigation, ScreenName.Main);
-        }
-      })
-      .catch(err => {
-        console.log('err', err);
-        Alert.alert(err);
-      });
-  }, [loginHooks.onLoginPress, navigation]);
+    onLoginPress()
+  }, [navigation]);
 
   const onViewSignup = useCallback(() => {
     NavigationUtils.navigate(navigation, ScreenName.Authentications.SignUp);
@@ -68,31 +85,31 @@ export const LoginWidget = React.memo((props: any) => {
       <InputComponent
         editable={true}
         keyboardType="phone-pad"
-        value={loginHooks.phoneNumber}
+        value={phoneNumber}
         placeholder={translate('input.phoneNumber')}
         label={translate('input.phoneNumber')}
-        onChangeText={loginHooks.onChangePhoneNumber}
+        onChangeText={onChangePhoneNumber}
         containerStyle={[Style.Space.MarginTop.xLarge_24]}
-        errorMessage={loginHooks.errorMessage?.phonenumber}
+        errorMessage={errorMessage?.phonenumber}
       />
     );
-  }, [loginHooks.phoneNumber, loginHooks.errorMessage?.phonenumber]);
+  }, [phoneNumber, errorMessage?.phonenumber]);
 
   const renderPasswordInput = useCallback(() => {
     return (
       <InputComponent
         editable={true}
         keyboardType="default"
-        value={loginHooks.password}
+        value={password}
         placeholder={translate('input.password')}
         label={translate('input.password')}
-        onChangeText={loginHooks.onChangePassword}
+        onChangeText={onChangePassword}
         containerStyle={[Style.Space.MarginTop.xLarge_24]}
-        errorMessage={loginHooks.errorMessage?.password}
+        errorMessage={errorMessage?.password}
         secureTextEntry={true}
       />
     );
-  }, [loginHooks.password, loginHooks.errorMessage?.password]);
+  }, [password, errorMessage?.password]);
 
   const renderSignupButton = useCallback(() => {
     return (
@@ -108,7 +125,9 @@ export const LoginWidget = React.memo((props: any) => {
     return (
       <Label.Widget
         style={[Style.Label.Regular.PrimaryContentL_14]}
-        onPress={onViewForgetPassword}>
+        // onPress={onViewForgetPassword}
+        onPress={() => { }}
+      >
         {translate('button.forgetPassword')}
       </Label.Widget>
     );
@@ -125,10 +144,10 @@ export const LoginWidget = React.memo((props: any) => {
           { backgroundColor: Color.vietlott },
         ]}
         onClicked={onLoginClick}
-        isLoading={loginHooks.isLoading}
+        isLoading={isLoading}
       />
     );
-  }, [loginHooks.onLoginPress, loginHooks.isLoading]);
+  }, [onLoginPress, isLoading]);
 
   return (
     <View
@@ -166,60 +185,3 @@ export const LoginWidget = React.memo((props: any) => {
 });
 
 export const LoginScreen = LoginWidget;
-
-function PhoneSignIn() {
-  // If null, no SMS has been sent
-  const [confirm, setConfirm]: any = useState(null);
-
-  // verification code (OTP - One-Time-Passcode)
-  const [code, setCode] = useState('');
-
-  // Handle login
-  function onAuthStateChanged(user: any) {
-    console.log('user', user);
-
-    if (user) {
-      // Some Android devices can automatically process the verification code (OTP) message, and the user would NOT need to enter the code.
-      // Actually, if he/she tries to enter it, he/she will get an error message because the code was already used in the background.
-      // In this function, make sure you hide the component(s) for entering the code and/or navigate away from this screen.
-      // It is also recommended to display a message to the user informing him/her that he/she has successfully logged in.
-    }
-  }
-
-  useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber; // unsubscribe on unmount
-  }, []);
-
-  // Handle the button press
-  async function signInWithPhoneNumber(phoneNumber: string) {
-    const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
-    console.log('confirmation', confirmation);
-
-    setConfirm(confirmation);
-  }
-
-  async function confirmCode() {
-    try {
-      await confirm.confirm(code);
-    } catch (error) {
-      console.log('Invalid code.');
-    }
-  }
-
-  if (!confirm) {
-    return (
-      <ButtonRN
-        title="Phone Number Sign In"
-        onPress={() => signInWithPhoneNumber('+84357799922')}
-      />
-    );
-  }
-
-  return (
-    <>
-      <TextInput value={code} onChangeText={text => setCode(text)} />
-      <ButtonRN title="Confirm Code" onPress={() => confirmCode()} />
-    </>
-  );
-}
