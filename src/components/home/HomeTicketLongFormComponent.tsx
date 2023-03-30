@@ -1,15 +1,18 @@
-import {HomeCountdownClockComponent} from '@components';
-import {BorderComponent, Icon, Image, Label} from '@shared';
-import {Color, Style} from '@styles';
+import { HomeCountdownClockComponent } from '@components';
+import { BorderComponent, Label } from '@shared';
+import { Image, Icon} from '@assets'
+import { Color, Style } from '@styles';
 import { ScreenUtils } from '@utils';
-import React, {useCallback, useMemo} from 'react';
-import {TouchableOpacity, View, ViewProps} from 'react-native';
+import React, { useCallback, useMemo } from 'react';
+import { TouchableOpacity, View, ViewProps } from 'react-native';
 
 export interface HomeTicketLongFormComponent extends ViewProps {
   image?: string;
   title?: string;
   totalPrize?: string;
   countdownTime?: string;
+  targetTime?: Date
+  action?: () => void
 
   leftView?: () => JSX.Element;
   rightView?: () => JSX.Element;
@@ -65,24 +68,24 @@ export const HomeTicketLongFormComponent = React.memo(
           <BorderComponent
             width={20}
             height={20}
-            borderStyle={[{backgroundColor: Color.red, borderColor: Color.red}]}
+            borderStyle={[{ backgroundColor: Color.red, borderColor: Color.red }]}
             style={[
               Style.AbsolutePosition.LeftTop,
               {
-                transform: [{rotate: '0deg'}],
+                transform: [{ rotate: '0deg' }],
               },
             ]}
           />
           <BorderComponent
             width={20}
             height={20}
-            borderStyle={[{backgroundColor: Color.red, borderColor: Color.red}]}
+            borderStyle={[{ backgroundColor: Color.red, borderColor: Color.red }]}
             style={[
               {
                 position: 'absolute',
                 left: 0,
                 bottom: 0,
-                transform: [{rotate: '270deg'}],
+                transform: [{ rotate: '270deg' }],
               },
             ]}
           />
@@ -103,7 +106,7 @@ export const HomeTicketLongFormComponent = React.memo(
             <Label.Widget
               style={[
                 Style.Label.Regular.RedContent_13,
-                {color: mainColor},
+                { color: mainColor },
                 Style.Space.PaddingHorizontal.Small_8,
                 Style.Space.MarginLeft.medium_12,
                 Style.Border.generateBorderStyle({
@@ -119,16 +122,16 @@ export const HomeTicketLongFormComponent = React.memo(
             style={[
               Style.Label.Bold.GrayContentXL_16,
               Style.Space.MarginTop.small_8,
-              {color: mainColor},
+              { color: mainColor },
             ]}>
             {'56.487.021.150 đ'}
           </Label.Widget>
           <HomeCountdownClockComponent
-            targetTime={new Date('2023-03-15T18:00:00Z')}
+            targetTime={props?.targetTime ? props.targetTime : new Date('2023-04-15T18:00:00Z')}
           />
         </View>
       );
-    }, [mainColor]);
+    }, [mainColor, props?.targetTime]);
 
     const renderRightView = useCallback(() => {
       return (
@@ -143,6 +146,8 @@ export const HomeTicketLongFormComponent = React.memo(
 
     return (
       <TouchableOpacity
+        activeOpacity={0.8}
+        onPress={props?.action}
         style={[
           Style.Size.MatchParentRow,
           Style.Space.MarginTop.medium_12,
@@ -170,22 +175,22 @@ export const HomeTicketLongFormComponent = React.memo(
           <BorderComponent
             width={20}
             height={20}
-            borderStyle={[{backgroundColor: Color.red, borderColor: Color.red}]}
+            borderStyle={[{ backgroundColor: Color.red, borderColor: Color.red }]}
             style={[
               Style.AbsolutePosition.RightTop,
               {
-                transform: [{rotate: '90deg'}],
+                transform: [{ rotate: '90deg' }],
               },
             ]}
           />
           <BorderComponent
             width={20}
             height={20}
-            borderStyle={[{backgroundColor: Color.red, borderColor: Color.red}]}
+            borderStyle={[{ backgroundColor: Color.red, borderColor: Color.red }]}
             style={[
               Style.AbsolutePosition.BottomRight,
               {
-                transform: [{rotate: '180deg'}],
+                transform: [{ rotate: '180deg' }],
               },
             ]}
           />

@@ -1,0 +1,16 @@
+export const Images = {
+  group: require('./image_group.png'),
+  background: require('./image_background.png'),
+  lucky: require('./image_lucky.png'),
+  power_logo: require('./power_logo.png'),
+  ball_grey: require('./ball_grey.png'),
+  ball_power: require('./ball_power.png'),
+  cart: require('./cart.png'),
+  filled_heart: require('./filled_heart.png'),
+  nofilled_heart: require('./nofilled_heart.png'),
+  power_logo: require('./power_logo.png'),
+  refresh: require('./refresh.png'),
+  trash: require('./trash.png'),
+  fast_pick: require('./fast_pick.png'),
+  down_arrow: require('./down_arrow.png'),
+};

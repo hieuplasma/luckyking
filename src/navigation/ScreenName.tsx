@@ -1,6 +1,6 @@
 export const ScreenName = {
   SplashScreen: 'SplashScreen',
-  Main: 'Main',
+
   Authentication: 'Authentication',
   Authentications: {
     Login: 'Login',
@@ -8,8 +8,20 @@ export const ScreenName = {
     VerifyOTP: 'VerifyOTP',
     Forget: 'Forget',
   },
+
+  Main: 'Main',
+  BottomTab: "BottomTab",
   Tabs: {
-    BottomTab: "BottomTab",
     Account: 'Account',
+    HomeStack:'HomeStack',
+    LiveStack:"LiveStack",
+    ScanStack:"ScanStack",
+    StatisticalStack:"StatisticalStack",
+    ResultStack: "ResultStack"
   },
+
+  HomeChild: {
+    HomeScreen:"HomeScreen",
+    PowerScreen:"PowerScreen"
+  }
 };

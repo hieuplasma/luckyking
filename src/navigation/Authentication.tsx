@@ -1,4 +1,4 @@
-import {createStackNavigator} from '@react-navigation/stack';
+import { createStackNavigator } from '@react-navigation/stack';
 import {
   ForgetPassword,
   ForgetScreenRouteParams,
@@ -10,7 +10,7 @@ import {
   VerifyOTPScreenRouteParams,
 } from '@screen';
 import React from 'react';
-import {renderDefaultHeader} from './HeaderConfig';
+import { renderDefaultHeader } from './HeaderConfig';
 
 export type AuthenticationStackParamList = {
   Login: LoginScreenRouteParams;
@@ -19,14 +19,13 @@ export type AuthenticationStackParamList = {
   Forget: ForgetScreenRouteParams;
 };
 
-const AuthenticationStack =
-  createStackNavigator<AuthenticationStackParamList>();
+const AuthenticationStack = createStackNavigator<AuthenticationStackParamList>();
 
 export function AuthenticationNavigation() {
   return (
     <AuthenticationStack.Navigator
       initialRouteName={'Login'}
-      screenOptions={({navigation}) => renderDefaultHeader(navigation, false)}>
+      screenOptions={({ navigation }) => renderDefaultHeader(navigation, false)}>
       <AuthenticationStack.Screen
         name={'Login'}
         component={LoginScreen}

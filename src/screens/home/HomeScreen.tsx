@@ -1,21 +1,22 @@
-import {HomeTicketLongFormComponent} from '@components';
-import {useBackButtonWithNavigation} from '@hooks';
-import {HomeStackParamList} from '@navigation';
-import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
-import {StackNavigationProp} from '@react-navigation/stack';
-import {Icon, SimpleHeaderView} from '@shared';
-import {Color, Style} from '@styles';
-import { ScreenUtils } from '@utils';
-import React, {useCallback} from 'react';
-import {ScrollView, View} from 'react-native';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import { HomeTicketLongFormComponent } from '@components';
+import { useBackButtonWithNavigation } from '@hooks';
+import { HomeStackParamList, ScreenName } from '@navigation';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { SimpleHeaderView, translate } from '@shared';
+import { Icon } from '@assets'
+import { Color, Style } from '@styles';
+import { NavigationUtils, ScreenUtils } from '@utils';
+import React, { useCallback } from 'react';
+import { ScrollView, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-type NavigationProp = StackNavigationProp<HomeStackParamList, 'Home'>;
-type NavigationRoute = RouteProp<HomeStackParamList, 'Home'>;
+type NavigationProp = StackNavigationProp<HomeStackParamList, 'HomeScreen'>;
+type NavigationRoute = RouteProp<HomeStackParamList, 'HomeScreen'>;
 
-export interface HomeScreenParamsList {}
+export interface HomeScreenParamsList { }
 
-export interface HomeScreenProps {}
+export interface HomeScreenProps { }
 
 export const HomeScreen = React.memo((props?: HomeScreenProps) => {
   const navigation = useNavigation<NavigationProp>();
@@ -36,7 +37,7 @@ export const HomeScreen = React.memo((props?: HomeScreenProps) => {
         color={Color.white}
         style={[Style.Space.PaddingHorizontal.Zero]}
         //@ts-ignore
-        onPressed= {()=> navigation.toggleDrawer()}
+        onPressed={() => navigation.toggleDrawer()}
       />
     );
   }, []);
@@ -66,10 +67,12 @@ export const HomeScreen = React.memo((props?: HomeScreenProps) => {
         disableRenderStatusBarView={true}
         leftView={renderHeaderLeftView()}
         rightView={renderHeaderRightView()}
+        title={translate('tab.home')}
+        titleStyle={[Style.Label.Bold.PrimaryHeadingXL_24, { color: Color.white }]}
         style={[
           Style.Background.Red,
           Style.Space.PaddingHorizontal.large_16,
-          {marginTop: safeAreaInsets.top, justifyContent: 'space-between'},
+          { marginTop: safeAreaInsets.top, justifyContent: 'space-between' },
         ]}
       />
     );
@@ -84,7 +87,7 @@ export const HomeScreen = React.memo((props?: HomeScreenProps) => {
           Style.Space.MarginTop.large_16,
           Style.Border.Standard.dialog,
           Style.Space.PaddingHorizontal.Medium_12,
-          {height: ScreenUtils.getSizeByHorizontal(120)},
+          { height: ScreenUtils.getSizeByHorizontal(120) },
         ]}
       />
     );
@@ -122,6 +125,8 @@ export const HomeScreen = React.memo((props?: HomeScreenProps) => {
       <HomeTicketLongFormComponent
         image="https://media.vietlott.vn//main/06.2018/cms/game/Power655.png"
         type="power"
+        targetTime={new Date('2023-03-30T18:00:00Z')}
+        action={() => NavigationUtils.navigate(navigation, ScreenName.HomeChild.PowerScreen)}
       />
     );
   }, []);

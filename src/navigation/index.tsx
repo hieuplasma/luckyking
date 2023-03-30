@@ -12,7 +12,6 @@ export type RootStackParamsList = {
   SplashScreen: SplashScreenRouteParams;
   Authentication: {};
   Main: {};
-  HomeNavigation: {};
 };
 
 const RootStack = createStackNavigator<RootStackParamsList>();
@@ -45,8 +44,10 @@ export function RootNavigation(params?: {}) {
   );
 }
 export * from './MainNavigation';
-export {AuthenticationStackParamList, ScreenName};
 export * from './HomeNavigation';
 export * from './LiveNavigation';
 export * from './ResultNavigation';
 export * from './StatisticalNavigation';
+export * from './ScanNavigation'
+export {AuthenticationStackParamList};
+export {ScreenName}

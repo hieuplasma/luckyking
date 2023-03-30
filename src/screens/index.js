@@ -1,4 +1,4 @@
-export * from './SplashScreen';
+export * from './splash';
 export * from './authentications';
 export * from './home';
 export * from './live';

@@ -1,7 +1,7 @@
-import {Label} from '@shared';
-import {Style} from '@styles';
-import React, {useEffect, useMemo, useState} from 'react';
-import {StyleProp, TextStyle, View, ViewProps} from 'react-native';
+import { Label } from '@shared';
+import { Style } from '@styles';
+import React, { useEffect, useMemo, useState } from 'react';
+import { StyleProp, TextStyle, View, ViewProps } from 'react-native';
 
 export interface HomeCountdownClockComponentProps extends ViewProps {
   targetTime: Date;
@@ -19,7 +19,7 @@ export const HomeCountdownClockComponent = React.memo(
         const distance = props.targetTime.getTime() - now;
         if (distance < 0) {
           clearInterval(interval);
-          setTimeRemaining({days: 0, hours: 0, minutes: 0, seconds: 0});
+          setTimeRemaining({ days: 0, hours: 0, minutes: 0, seconds: 0 });
         } else {
           const days = Math.floor(distance / (1000 * 60 * 60 * 24));
           const hours = Math.floor(
@@ -29,7 +29,7 @@ export const HomeCountdownClockComponent = React.memo(
             (distance % (1000 * 60 * 60)) / (1000 * 60),
           );
           const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-          setTimeRemaining({days, hours, minutes, seconds});
+          setTimeRemaining({ days, hours, minutes, seconds });
         }
         () => {
           clearInterval(interval);
@@ -45,10 +45,10 @@ export const HomeCountdownClockComponent = React.memo(
           style={[
             Style.Label.Bold.GrayContentXL_16,
             Style.Space.MarginTop.small_8,
-            {fontSize: 13},
+            { fontSize: 13 },
             props?.timeStyle,
           ]}>
-          {timeRemaining?.days} {' '} {timeRemaining?.hours} :{' '}
+          {timeRemaining?.days} :{' '}{timeRemaining?.hours} :{' '}
           {timeRemaining?.minutes} : {timeRemaining?.seconds} s
         </Label.Widget>
       </View>

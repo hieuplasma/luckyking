@@ -1,4 +1,3 @@
-import { useLogin } from '@hooks';
 import { AuthenticationStackParamList, ScreenName } from '@navigation';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -50,13 +49,12 @@ export const LoginWidget = React.memo((props: any) => {
       password: password,
       deviceId: deviceId,
     }
-    console.log(body)
     const res = await authApi.login(body)
-    if (res) {
-      console.log(res.data)
+    if (res?.data?.accessToken) {
       dispatch(updateToken(res.data.accessToken))
       NavigationUtils.resetGlobalStackWithScreen(navigation, ScreenName.Main);
     }
+    else { Alert.alert("Có lỗi xảy ra", res.data?.errorMessage) }
     setLoading(false)
   }, [phoneNumber, password, deviceId]);
 

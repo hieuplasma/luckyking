@@ -1,5 +1,5 @@
 import {StackNavigationProp} from '@react-navigation/stack';
-import {Icon} from '@shared';
+import {Icon} from '@assets';
 import {Color, Font, Style} from '@styles';
 import React from 'react';
 import {

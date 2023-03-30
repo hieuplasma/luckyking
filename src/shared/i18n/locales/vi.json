@@ -6,7 +6,9 @@
   "resetPassword": {},
   "notification": {},
   "payment": {},
-  "account": {},
+  "account": {
+    "balance":"Số dư tài khoản"
+  },
   "label": {
     "login": "Đăng nhập",
     "signup": "Đăng kí",

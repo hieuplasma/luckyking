@@ -100,5 +100,7 @@ export default {
   max3dpro:"#890657",
   keno:'#F97701',
   vietlott:'#FC000C',
-  blue:'#0171F5'
+  blue:'#0171F5',
+  buyLotteryBackGround: '#FAFAFA',
+  luckyKing: '#FC000C'
 };

@@ -3,7 +3,6 @@ import { AuthenticationStackParamList, ScreenName } from '@navigation';
 import { RouteProp, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import {
-  Icon,
   InputComponent,
   Label,
   ShadowView,
@@ -18,6 +17,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import auth from '@react-native-firebase/auth';
 import DeviceInfo from 'react-native-device-info';
 import { NavigationUtils } from '@utils';
+import { Icon } from '@assets';
 
 type NavigationProp = StackNavigationProp<AuthenticationStackParamList, 'SignUp'>;
 type NavigationRoute = RouteProp<AuthenticationStackParamList, 'SignUp'>;
