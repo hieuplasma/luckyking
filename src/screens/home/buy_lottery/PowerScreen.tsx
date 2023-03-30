@@ -5,9 +5,10 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { Icon, Image } from "@assets";
 import { Color, Dimension, Style } from "@styles";
 import { ScreenUtils } from "@utils";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { View, StyleSheet, Text, ScrollView, TouchableOpacity, Dimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import BottomSheet from '@gorhom/bottom-sheet';
 
 type NavigationProp = StackNavigationProp<HomeStackParamList, 'PowerScreen'>;
 type NavigationRoute = RouteProp<HomeStackParamList, 'PowerScreen'>;
@@ -55,6 +56,17 @@ export const PowerScreen = React.memo((props: any) => {
     const onGoBack = useCallback(() => {
         navigation.goBack();
     }, [navigation]);
+
+    // ref
+    const bottomSheetRef = useRef<BottomSheet>(null);
+
+    // variables
+    const snapPoints = useMemo(() => ["1%", '50%'], []);
+
+    // callbacks
+    const handleSheetChanges = useCallback((index: number) => {
+        console.log('handleSheetChanges', index);
+    }, []);
 
     const randomNumber = (index: number) => {
         const currentNumber = [...numberSet]
@@ -193,6 +205,18 @@ export const PowerScreen = React.memo((props: any) => {
                     </TouchableOpacity>
                 </View>
             </View>
+
+            {/* BottomSheet */}
+            <BottomSheet
+                ref={bottomSheetRef}
+                index={1}
+                snapPoints={snapPoints}
+                onChange={handleSheetChanges}
+            >
+                <View style={styles.bottomSheetContainer}>
+                    <Text>Awesome 🎉</Text>
+                </View>
+            </BottomSheet>
         </View>
     )
 })
@@ -248,5 +272,10 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around', alignItems: 'center',
         borderColor: '#FFC42C', backgroundColor: '#FDF9F9',
         borderWidth: 1
+    },
+
+    bottomSheetContainer: {
+        flex: 1,
+        alignItems: 'center',
     },
 })
