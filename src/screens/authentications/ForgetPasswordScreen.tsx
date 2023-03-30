@@ -1,19 +1,19 @@
-import {useForgetPassword} from '@hooks';
-import {AuthenticationStackParamList, ScreenName} from '@navigation';
-import {RouteProp, useNavigation} from '@react-navigation/native';
-import {StackNavigationProp} from '@react-navigation/stack';
+import { useForgetPassword } from '@hooks';
+import { AuthenticationStackParamList, ScreenName } from '@navigation';
+import { RouteProp, useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import {
   Icon,
   InputComponent,
   Label,
-  NavigationUtils,
   ShadowView,
   translate,
 } from '@shared';
-import {Color, Style} from '@styles';
-import {Button} from '@widgets';
-import React, {useCallback} from 'react';
-import {View} from 'react-native';
+import { NavigationUtils } from '@utils';
+import { Color, Style } from '@styles';
+import { Button } from '@widgets';
+import React, { useCallback } from 'react';
+import { View } from 'react-native';
 
 type NavigationProp = StackNavigationProp<
   AuthenticationStackParamList,
@@ -21,9 +21,9 @@ type NavigationProp = StackNavigationProp<
 >;
 type NavigationRoute = RouteProp<AuthenticationStackParamList, 'Forget'>;
 
-export interface ForgetScreenRouteParams {}
+export interface ForgetScreenRouteParams { }
 
-export interface ForgetScreenProps {}
+export interface ForgetScreenProps { }
 
 export const ForgetPassword = React.memo(() => {
   const navigation = useNavigation<NavigationProp>();
@@ -66,7 +66,7 @@ export const ForgetPassword = React.memo(() => {
         style={[
           Style.Self.Center,
           Style.Space.MarginTop.large_16,
-          {backgroundColor: Color.vietlott},
+          { backgroundColor: Color.vietlott },
         ]}
         onClicked={onSubmit}
         isLoading={forgetPasswordHooks.isLoading}
@@ -98,7 +98,7 @@ export const ForgetPassword = React.memo(() => {
               Style.Label.Regular.WhiteContentXL_16,
               Style.Label.Align.Center,
               Style.Space.MarginRight.largeMargin_16,
-              {color: Color.black},
+              { color: Color.black },
             ]}>
             {translate('label.forget')}
           </Label.Widget>

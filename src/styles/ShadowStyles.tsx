@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {Dimension} from '..';
+import Dimension from './dimens';
 
 class ShadowOffset {
   width?: number = 0;

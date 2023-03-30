@@ -1,4 +1,4 @@
-import { RootNavigationUtils } from '@shared';
+import { RootNavigationUtils } from '@utils';
 import React from 'react';
 import { ActivityIndicator, StatusBar, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';

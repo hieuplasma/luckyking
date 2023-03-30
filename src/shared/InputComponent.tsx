@@ -1,5 +1,5 @@
-import {Dimension, Label} from '@shared';
-import {Color, Style} from '@styles';
+import { Label} from '@shared';
+import {Color, Dimension, Style} from '@styles';
 import * as React from 'react';
 import {useMemo} from 'react';
 import {useCallback, useState} from 'react';

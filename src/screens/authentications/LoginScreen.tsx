@@ -5,12 +5,11 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import {
   InputComponent,
   Label,
-  NavigationUtils,
-  RootNavigationUtils,
   ShadowView,
   translate,
   useBase,
 } from '@shared';
+import { NavigationUtils } from '@utils'
 import { Color, Style } from '@styles';
 import React, { useCallback, useEffect, useState } from 'react';
 import { View, Button as ButtonRN, Alert } from 'react-native';

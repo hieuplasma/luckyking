@@ -1,8 +1,8 @@
-import {StyleSheet} from 'react-native';
-import {Color} from '..';
-import Dimension from '../../shared/styles/dimens';
-import * as Font from '../../shared/styles/fonts';
-import {BorderStyles} from '../../shared/styles';
+import { StyleSheet } from 'react-native';
+import Color from './colors';
+import Dimension from './dimens';
+import * as Font from './fonts';
+import * as BorderStyles from './BorderStyles';
 
 export const Regular = StyleSheet.create({
   HeadingXL_24: {

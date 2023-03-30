@@ -3,7 +3,7 @@ import * as RNLocalize from 'react-native-localize';
 import moment from 'moment/min/moment-with-locales';
 import en from './locales/en.json';
 import vi from './locales/vi.json';
-import {storage} from '../utils';
+import {storage} from '@utils';
 
 export const Locale = {
   Vietnamese: 'vi',

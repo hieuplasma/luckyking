@@ -1,6 +1,6 @@
-import * as Font from '../../shared/styles/fonts';
-import Dimension from '../dimens';
-import Color from '../colors';
+import * as Font from './fonts';
+import Dimension from './dimens';
+import Color from './colors';
 import {StyleSheet} from 'react-native';
 
 export const Tab = {

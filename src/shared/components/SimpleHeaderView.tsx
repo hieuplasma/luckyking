@@ -9,7 +9,7 @@ import {
   ViewStyle,
   Platform,
 } from 'react-native';
-import {ScreenUtils} from '../utils';
+import {ScreenUtils} from '@utils';
 import {LineSeparator} from '..';
 import {useCallback} from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';

@@ -18,7 +18,7 @@ export const NavigationUtils = {
 
   navigate<RouteName extends string>(
     navigation?: StackNavigationProp<any, any>,
-    screenName?: RouteName,
+    screenName?: RouteName | any,
     args?: any,
   ) {
     if (screenName) {

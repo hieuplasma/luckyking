@@ -7,9 +7,9 @@ import {
   ViewStyle,
   TouchableOpacityProps,
 } from 'react-native';
-import {ShadowStyles} from '../styles';
 import {Style} from '@styles';
 import {isEqual} from 'lodash';
+import { ShadowStyles } from '@styles';
 
 export interface ShadowViewProps extends ViewProps {
   onPress?: () => void;

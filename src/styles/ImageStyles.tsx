@@ -1,4 +1,4 @@
-import Dimension from '../dimens';
+import Dimension from './dimens';
 
 export const Avatar = {
   Avatar: {

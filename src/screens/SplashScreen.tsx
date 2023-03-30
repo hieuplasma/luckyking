@@ -1,7 +1,7 @@
 import { RootStackParamsList, ScreenName } from '@navigation';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { NavigationUtils } from '@shared';
+import { NavigationUtils } from '@utils';
 import React, { useEffect } from 'react';
 import { View } from 'react-native';
 import { useSelector } from 'react-redux';

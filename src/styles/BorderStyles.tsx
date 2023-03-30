@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {Color} from '@styles';
+import Color from './colors';
 
 export class BorderConfig {
   borderRadius?: number;

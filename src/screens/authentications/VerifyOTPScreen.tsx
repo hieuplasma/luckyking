@@ -6,10 +6,8 @@ import {
   Icon,
   InputComponent,
   Label,
-  NavigationUtils,
-  ScreenUtils,
-  ShadowView,
   translate,
+  ShadowView
 } from '@shared';
 import { Color, Style } from '@styles';
 import { Button } from '@widgets';
@@ -22,6 +20,7 @@ import { useDispatch } from 'react-redux';
 import { updateToken } from '../../redux/reducer/auth';
 import { API_HOST } from '@configs';
 import { API_URI } from '../../api/url';
+import { NavigationUtils, ScreenUtils } from '@utils';
 
 type NavigationProp = StackNavigationProp<AuthenticationStackParamList, 'VerifyOTP'>;
 type NavigationRoute = RouteProp<AuthenticationStackParamList, 'VerifyOTP'>;

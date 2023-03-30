@@ -9,6 +9,7 @@ export const ScreenName = {
     Forget: 'Forget',
   },
   Tabs: {
+    BottomTab: "BottomTab",
     Account: 'Account',
   },
 };

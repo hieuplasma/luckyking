@@ -1,6 +1,7 @@
 import {HomeCountdownClockComponent} from '@components';
-import {BorderComponent, Icon, Image, Label, ScreenUtils} from '@shared';
+import {BorderComponent, Icon, Image, Label} from '@shared';
 import {Color, Style} from '@styles';
+import { ScreenUtils } from '@utils';
 import React, {useCallback, useMemo} from 'react';
 import {TouchableOpacity, View, ViewProps} from 'react-native';
 

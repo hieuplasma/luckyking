@@ -43,7 +43,7 @@ export class Connection {
         if (firebaseToken) {
             token = firebaseToken
         };
-        
+
         let headers = {
             'Content-Type': isFormData ? 'multipart/form-data' : 'application/json',
             'X-Authorization': `Bearer ${token}`,
@@ -101,7 +101,7 @@ export class Connection {
                 };
             })
             .catch(async (error) => {
-                console.log("RES IN POST API OF " + uri + " :::::::::::>", error)
+                console.log("ERROR IN POST API OF " + uri + " :::::::::::>", error.response?.data)
             })
     }
 }

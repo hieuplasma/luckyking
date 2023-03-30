@@ -12,7 +12,7 @@ import {
   ViewStyle,
 } from 'react-native';
 import {createIconSetFromIcoMoon} from 'react-native-vector-icons';
-import {ContentStyles, Dimension, SpaceStyles} from '../../styles';
+import {ContentStyles, Dimension, SpaceStyles} from '@styles';
 import config from './selection.json';
 const VectorIcon = createIconSetFromIcoMoon(
   config,
@@ -234,4 +234,5 @@ const TextButton = React.memo(
   (prev, next) => isEqual(prev, next),
 );
 
+//@ts-ignore
 export {Button, Default, Circle, CircleButton, TextButton, IconSize};

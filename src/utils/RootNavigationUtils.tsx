@@ -1,6 +1,6 @@
 import {NavigationContainerRef} from '@react-navigation/native';
 import * as React from 'react';
-
+//@ts-ignore
 export const navigationRef = React.createRef<NavigationContainerRef>();
 
 export function navigate<T extends object>(name?: string, params?: T) {

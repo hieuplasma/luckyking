@@ -1,6 +1,6 @@
 import * as SpaceStyles from './SpaceStyles';
 import {StyleSheet} from 'react-native';
-import {Color} from '@styles';
+import Color from './colors';
 
 export const ContentStyles = StyleSheet.create({
   Center: {

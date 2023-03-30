@@ -1,5 +1,6 @@
-import {Dimension as SharedDimension, Font, ScreenUtils, translate} from '@shared';
-import {Color, Dimension, Style} from '@styles';
+import { translate} from '@shared';
+import {Color, Dimension, Font, Style} from '@styles';
+import { ScreenUtils } from '@utils';
 import React from 'react';
 import {
   ActivityIndicator,
@@ -307,7 +308,7 @@ class Widget extends React.PureComponent<Props, State> {
 const defaultStyles = StyleSheet.create({
   // container style
   container: {
-    paddingHorizontal: ScreenUtils.getSizeByHorizontal(SharedDimension.xLargeMargin),
+    paddingHorizontal: ScreenUtils.getSizeByHorizontal(Dimension.xLargeMargin),
     minWidth: ScreenUtils.getSizeByHorizontal(Dimension.buttonMinWidth),
     borderRadius: Dimension.buttonCornerRadius,
     borderWidth: Dimension.buttonBorderWidth,
@@ -397,7 +398,7 @@ const defaultStyles = StyleSheet.create({
     left: 0,
   },
   loadingIndicator: {
-    marginHorizontal: SharedDimension.tinyMargin,
+    marginHorizontal: Dimension.tinyMargin,
   },
 });
 

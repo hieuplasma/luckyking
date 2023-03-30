@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import { NavigationUtils } from '@shared';
+import { NavigationUtils } from '@utils';
 import { Text, TouchableOpacity, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { removeToken } from '../redux/reducer/auth';
