@@ -1,11 +1,13 @@
 import { API_HOST } from '@configs';
 import authApi from './auth-api';
+import userApi from './user-api';
+import lotteryApi from './lottery-api';
 import { RESPONSE_TIMEOUT, TIMEOUT_MESSAGE, TYPE_API } from './enum';
 import jwtDecode from 'jwt-decode';
 import { Alert } from 'react-native';
 const axios = require('axios').default;
 
-export { authApi };
+export { authApi, userApi, lotteryApi };
 
 export class Connection {
     static init(store) {

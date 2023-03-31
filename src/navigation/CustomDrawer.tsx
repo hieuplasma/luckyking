@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { removeToken } from '../redux/reducer/auth';
 import { ScreenName } from './ScreenName';
 import auth from '@react-native-firebase/auth';
+import { removeUser } from '@redux';
 
 function DrawerCustom(props: any) {
   const navigation = useNavigation<undefined>();
@@ -13,6 +14,7 @@ function DrawerCustom(props: any) {
     <View style={{ flex: 1, paddingTop: 120, paddingLeft: 20 }}>
       <TouchableOpacity onPress={() => {
         dispatch(removeToken())
+        dispatch(removeUser())
         props.navigation?.closeDrawer();
         NavigationUtils.resetGlobalStackWithScreen(navigation, ScreenName.Authentication);
         auth()

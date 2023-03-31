@@ -138,7 +138,7 @@ export const TabBar = (props: BottomTabBarProps) => {
 };
 
 type NavigationRoute = RouteProp<RootStackParamsList, 'Main'>;
-function BottonTabNavigator() {
+function BottomTabNavigator() {
   const insets = useSafeAreaInsets();
   const route = useRoute<NavigationRoute>();
 
@@ -191,7 +191,6 @@ function BottonTabNavigator() {
           tabBarStyle: ((route) => {
             const routeName = getFocusedRouteNameFromRoute(route) ?? ""
             setCurrentRoute(routeName)
-            console.log(routeName)
             return { display: "none" }
           })(route),
           tabBarIcon: ({ focused }) =>
@@ -240,7 +239,7 @@ export function MainNavigation(props: any) {
       drawerContent={(props) => <DrawerCustom {...props} />}
       screenOptions={{ headerShown: false, drawerType: 'front' }}
     >
-      <Drawer.Screen name={ScreenName.BottomTab} component={BottonTabNavigator} />
+      <Drawer.Screen name={ScreenName.BottomTab} component={BottomTabNavigator} />
     </Drawer.Navigator>
   )
 }

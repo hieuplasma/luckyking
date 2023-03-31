@@ -13,4 +13,6 @@ export const Images = {
   trash: require('./trash.png'),
   fast_pick: require('./fast_pick.png'),
   down_arrow: require('./down_arrow.png'),
+  check_box: require('./check_box.png'),
+  checked_box: require('./checked_box.png'),
 };

@@ -4,11 +4,15 @@ import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Icon, Image } from "@assets";
 import { Color, Dimension, Style } from "@styles";
-import { ScreenUtils } from "@utils";
+import { convolutions, printDraw, printMoney, ScreenUtils } from "@utils";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { View, StyleSheet, Text, ScrollView, TouchableOpacity, Dimensions } from "react-native";
+import { View, StyleSheet, Text, ScrollView, TouchableOpacity, Dimensions, StatusBar } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import BottomSheet from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
+import { ChooseTypeSheet } from "./component/ChooseTypeSheet";
+import { useSelector } from "react-redux";
+import { lotteryApi } from "@api";
+import { ChooseDrawSheet } from "./component/ChooseDrawSheet";
 
 type NavigationProp = StackNavigationProp<HomeStackParamList, 'PowerScreen'>;
 type NavigationRoute = RouteProp<HomeStackParamList, 'PowerScreen'>;
@@ -16,23 +20,6 @@ type NavigationRoute = RouteProp<HomeStackParamList, 'PowerScreen'>;
 export interface PowerScreenParamsList { }
 
 export interface PowerScreenProps { }
-
-const types = [
-    { label: "Bao 5", value: 5 }, //0
-    { label: "Cơ bản", value: 6 }, //1
-    { label: "Bao 7", value: 7 },//2
-    { label: "Bao 8", value: 8 },//3
-    { label: "Bao 9", value: 9 },//3
-    { label: "Bao 10", value: 10 },//5
-    { label: "Bao 11", value: 11 },//6
-    { label: "Bao 12", value: 12 },//7
-    { label: "Bao 13", value: 13 },//8
-    { label: "Bao 14", value: 14 },//9
-    { label: "Bao 15", value: 15 },//10
-    { label: "Bao 16", value: 16 },//11
-    { label: "Bao 17", value: 17 },//12
-    { label: "Bao 18", value: 18 },//13
-]
 
 const initNumber = [
     [false, false, false, false, false, false], //  numberA:
@@ -49,24 +36,70 @@ export const PowerScreen = React.memo((props: any) => {
     const route = useRoute<NavigationRoute>();
     const safeAreaInsets = useSafeAreaInsets();
 
-    const [typePlay, setType]: any = useState(types[13]);
+    const [showBottomSheet, setShowBottomSheet] = useState(false)
+    const [typePlay, setType]: any = useState({ label: "Cơ bản", value: 6 });
     const [numberSet, setNumbers]: any = useState(initNumber)
-    const [value, setValue] = useState(0)
+    const [totalCost, setTotalCost] = useState(0)
+    // [Choose Type, Choose Draw ...]
+    const [indexSheet, setIndexSheet] = useState([-1, -1])
+    const [drawSelected, setDraw]: any = useState(false)
+    const [listDraw, setListDraw]: any = useState([])
+
+    // ref
+    const chooseTypeRef = useRef<BottomSheet>(null);
+    const chooseDrawRef = useRef<BottomSheet>(null);
+
+    const MoneyAccount = useSelector((state: any) => state.userReducer.MoneyAccount);
 
     const onGoBack = useCallback(() => {
         navigation.goBack();
     }, [navigation]);
 
-    // ref
-    const bottomSheetRef = useRef<BottomSheet>(null);
-
-    // variables
-    const snapPoints = useMemo(() => ["1%", '50%'], []);
-
-    // callbacks
-    const handleSheetChanges = useCallback((index: number) => {
-        console.log('handleSheetChanges', index);
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setShowBottomSheet(true);
+        }, 500); // change delay as needed
+        return () => clearTimeout(timer);
     }, []);
+
+    useEffect(() => {
+        const level: number = typePlay.value
+        let set = 0
+        for (let i = 0; i < numberSet.length; i++) {
+            const element = numberSet[i]
+            if (element[0] || element[1]) set++
+        }
+        setTotalCost(set * 10000 * convolutions(6, level))
+    }, [numberSet])
+
+    useEffect(() => {
+        async function getFirstDraw() {
+            const res = await lotteryApi.getSchedulePower({ take: 6 })
+            if (res) {
+                if (res.data.length > 0) {
+                    setDraw(res.data[0])
+                    setListDraw(res.data)
+                }
+            }
+        }
+        getFirstDraw()
+    }, [])
+
+    const toggleSheet = (newIndex: number, position: number) => {
+        const currentIndexSet: number[] = [...indexSheet]
+        currentIndexSet[position] = newIndex
+        setIndexSheet(currentIndexSet)
+    }
+
+    const openBottomSheet = (ref: any) => {
+        ref.current?.expand()
+    }
+
+    const onChangeType = (type: any) => {
+        setType(type)
+        const arr = Array.from({ length: 6 }, () => Array(type.value).fill(false));
+        setNumbers(arr)
+    }
 
     const randomNumber = (index: number) => {
         const currentNumber = [...numberSet]
@@ -91,8 +124,43 @@ export const PowerScreen = React.memo((props: any) => {
         setNumbers(currentNumber)
     }
 
+    const fastPick = () => {
+        let array = [];
+        const currentLevel = typePlay.value
+        for (let i = 0; i < 6; i++) {
+            const randomNumbers = new Set();
+            while (randomNumbers.size < currentLevel) {
+                const randomNumber = Math.floor(Math.random() * 55) + 1;
+                let tmp: string = randomNumber + ''
+                if (randomNumber < 10) tmp = '0' + randomNumber
+                randomNumbers.add(tmp);
+            }
+            const resultArray = Array.from(randomNumbers);
+            array.push(resultArray);
+        }
+        setNumbers(array)
+    }
+
+    const selfPick = () => {
+        const currentNumber = [...numberSet]
+        const currentLevel = typePlay.value
+        for (let i = 0; i < 6; i++) {
+            currentNumber[i] = Array(currentLevel).fill("TC");
+        }
+        setNumbers(currentNumber)
+    }
+
+    const bookLottery = () => {
+        const currentNumber = [...numberSet]
+        const numbers: string[] = []
+        for (let i = 0; i< currentNumber.length; i++) {
+            
+        }
+    }
+
     return (
         <View style={styles.container}>
+            <StatusBar translucent={true} barStyle={'dark-content'} backgroundColor={"transparent"} />
             {/* //Header */}
             <View style={[styles.headerContainer, { marginTop: safeAreaInsets.top }]}>
                 <Icon.Button
@@ -118,53 +186,55 @@ export const PowerScreen = React.memo((props: any) => {
                         {"Số dư tài khoản: "}
                     </Text>
                     <Text style={{ fontSize: 16, color: Color.luckyKing, fontWeight: 'bold' }}>
-                        {"10.000.000"}
+                        {`${printMoney(MoneyAccount)} đ`}
                     </Text>
                 </View>
                 <View style={{ flexDirection: 'row', paddingTop: 10, justifyContent: 'space-between' }}>
-                    <TouchableOpacity activeOpacity={0.6} style={styles.dropDown}>
+                    <TouchableOpacity activeOpacity={0.6} style={styles.dropDown} onPress={() => openBottomSheet(chooseTypeRef)}>
                         <Text style={{ fontSize: 13, color: Color.black, lineHeight: 24 }}>{typePlay.label}</Text>
                         <Image source={Images.down_arrow} style={{ width: 12, height: 6 }}></Image>
                     </TouchableOpacity>
 
-                    <TouchableOpacity activeOpacity={0.6} style={styles.dropDown}>
-                        <Text style={{ fontSize: 13, color: Color.black, lineHeight: 24 }}>{'01/01/2025'}</Text>
+                    <TouchableOpacity activeOpacity={0.6} style={[styles.dropDown, { paddingHorizontal: 4 }]} onPress={() => openBottomSheet(chooseDrawRef)}>
+                        <Text style={{ fontSize: 13, color: Color.black, lineHeight: 24 }}>{drawSelected ? printDraw(drawSelected) : "------"}</Text>
                         <Image source={Images.down_arrow} style={{ width: 12, height: 6 }}></Image>
                     </TouchableOpacity>
                 </View>
             </View>
 
             {/* //Chon so */}
-            <ScrollView style={{ flex: 1, paddingHorizontal: 16, paddingVertical: 8 }}>
-                {numberSet.map((item: any, index: number) => {
-                    return (
-                        <View style={styles.lineNumber}>
-                            <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{String.fromCharCode(65 + index)}</Text>
-                            <View style={{ flex: 1, flexDirection: 'row', marginHorizontal: 18, flexWrap: 'wrap' }}>
-                                {item.map((number: any) => {
-                                    return (
-                                        <View style={styles.ballContainer}>
-                                            <Image source={number ? Images.ball_power : Images.ball_grey} style={styles.ballStyle}>
-                                                <Text style={{ color: Color.white }}>{number}</Text>
-                                            </Image>
-                                        </View>
-                                    )
-                                })}
+            <ScrollView style={{ flex: 1 }}>
+                <View style={{ paddingHorizontal: 16, paddingVertical: 8 }}>
+                    {numberSet.map((item: any, index: number) => {
+                        return (
+                            <View style={styles.lineNumber} key={index}>
+                                <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{String.fromCharCode(65 + index)}</Text>
+                                <View style={{ flex: 1, flexDirection: 'row', marginHorizontal: 18, flexWrap: 'wrap' }}>
+                                    {item.map((number: any, index2: number) => {
+                                        return (
+                                            <View style={styles.ballContainer} key={index2}>
+                                                <Image source={number ? Images.ball_power : Images.ball_grey} style={styles.ballStyle}>
+                                                    <Text style={{ color: Color.white }}>{number}</Text>
+                                                </Image>
+                                            </View>
+                                        )
+                                    })}
+                                </View>
+                                <View style={{ flexDirection: 'row', alignItems: 'center', width: 60, justifyContent: 'space-between' }}>
+                                    <Image source={Images.nofilled_heart} style={{ width: 22, height: 22, }}></Image>
+                                    {item[0] ?
+                                        <TouchableOpacity onPress={() => deleteNumber(index)}>
+                                            <Image source={Images.trash} style={{ width: 26, height: 26 }}></Image>
+                                        </TouchableOpacity>
+                                        : <TouchableOpacity onPress={() => randomNumber(index)}>
+                                            <Image source={Images.refresh} style={{ width: 26, height: 26 }}></Image>
+                                        </TouchableOpacity>
+                                    }
+                                </View>
                             </View>
-                            <View style={{ flexDirection: 'row', alignItems: 'center', width: 60, justifyContent: 'space-between' }}>
-                                <Image source={Images.nofilled_heart} style={{ width: 22, height: 22, }}></Image>
-                                {item[0] ?
-                                    <TouchableOpacity onPress={() => deleteNumber(index)}>
-                                        <Image source={Images.trash} style={{ width: 26, height: 26 }}></Image>
-                                    </TouchableOpacity>
-                                    : <TouchableOpacity onPress={() => randomNumber(index)}>
-                                        <Image source={Images.refresh} style={{ width: 26, height: 26 }}></Image>
-                                    </TouchableOpacity>
-                                }
-                            </View>
-                        </View>
-                    )
-                })}
+                        )
+                    })}
+                </View>
             </ScrollView>
 
             {/* //Footer */}
@@ -174,11 +244,11 @@ export const PowerScreen = React.memo((props: any) => {
                         <Image source={Images.filled_heart} style={{ width: 21, height: 19 }}></Image>
                         <Text style={styles.textFooterUp}>{"Yêu thích"}</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.buttonFooterUp} activeOpacity={0.6}>
+                    <TouchableOpacity style={styles.buttonFooterUp} activeOpacity={0.6} onPress={() => fastPick()}>
                         <Image source={Images.fast_pick} style={{ width: 19, height: 19 }}></Image>
                         <Text style={styles.textFooterUp}>{"Chọn nhanh"}</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.buttonFooterUp} activeOpacity={0.6}>
+                    <TouchableOpacity style={styles.buttonFooterUp} activeOpacity={0.6} onPress={() => selfPick()}>
                         <View style={{ width: 21, height: 21, borderRadius: 99, backgroundColor: Color.luckyKing, justifyContent: 'center', alignItems: 'center' }}>
                             <Text style={{ fontSize: 12, color: Color.white }}>TC</Text>
                         </View>
@@ -188,7 +258,7 @@ export const PowerScreen = React.memo((props: any) => {
 
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 24 }}>
                     <Text style={{ color: Color.black, fontSize: 16 }}>{"Giá vé tạm tính"}</Text>
-                    <Text style={{ color: Color.luckyKing, fontSize: 16 }}>{`${value} đ`}</Text>
+                    <Text style={{ color: Color.luckyKing, fontSize: 16 }}>{`${printMoney(totalCost)} đ`}</Text>
                 </View>
 
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 4 }}>
@@ -207,16 +277,26 @@ export const PowerScreen = React.memo((props: any) => {
             </View>
 
             {/* BottomSheet */}
-            <BottomSheet
-                ref={bottomSheetRef}
-                index={1}
-                snapPoints={snapPoints}
-                onChange={handleSheetChanges}
-            >
-                <View style={styles.bottomSheetContainer}>
-                    <Text>Awesome 🎉</Text>
-                </View>
-            </BottomSheet>
+            {showBottomSheet ?
+                <>
+                    <ChooseTypeSheet
+                        bottomSheetRef={chooseTypeRef}
+                        isVisible={indexSheet[0] == -1 ? false : true}
+                        onToggle={(newIndex) => toggleSheet(newIndex, 0)}
+                        currentChoose={typePlay}
+                        onChoose={(type) => onChangeType(type)}
+                    />
+                    <ChooseDrawSheet
+                        bottomSheetRef={chooseDrawRef}
+                        isVisible={indexSheet[1] == -1 ? false : true}
+                        onToggle={(newIndex) => toggleSheet(newIndex, 1)}
+                        currentChoose={drawSelected}
+                        onChoose={(draw) => setDraw(draw)}
+                        listDraw={listDraw}
+                    />
+                </>
+                : <></>}
+
         </View>
     )
 })
@@ -278,4 +358,9 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
     },
+    sheetStyle: {
+        borderTopLeftRadius: 0,
+        borderTopRightRadius: 20,
+        // width: '100%', backgroundColor: '#F4F4F4'
+    }
 })

@@ -6,10 +6,13 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { SimpleHeaderView, translate } from '@shared';
 import { Icon } from '@assets'
 import { Color, Style } from '@styles';
-import { NavigationUtils, ScreenUtils } from '@utils';
-import React, { useCallback } from 'react';
+import { dateConvert, NavigationUtils, ScreenUtils } from '@utils';
+import React, { useCallback, useEffect, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useDispatch, useSelector } from 'react-redux';
+import { lotteryApi, userApi } from '@api';
+import { updateUser } from '@redux';
 
 type NavigationProp = StackNavigationProp<HomeStackParamList, 'HomeScreen'>;
 type NavigationRoute = RouteProp<HomeStackParamList, 'HomeScreen'>;
@@ -22,6 +25,30 @@ export const HomeScreen = React.memo((props?: HomeScreenProps) => {
   const navigation = useNavigation<NavigationProp>();
   const route = useRoute<NavigationRoute>();
   const safeAreaInsets = useSafeAreaInsets();
+  const dispatch = useDispatch()
+
+  const [firstDrawPower, setFirstDrawPower]: any = useState(false)
+
+  async function getUser() {
+    const res = await userApi.getuserInfo()
+    console.log(res.data)
+    if (res?.data) {
+      dispatch(updateUser(res.data))
+    }
+  }
+  async function getFirstDraw() {
+    const res = await lotteryApi.getSchedulePower({ take: 1 })
+    if (res) {
+      if (res.data.length > 0) setFirstDrawPower(res.data[0])
+    }
+  }
+  useEffect(() => {
+    async function init() {
+      getFirstDraw()
+      getUser()
+    }
+    init()
+  }, [])
 
   useBackButtonWithNavigation(
     React.useCallback(() => {
@@ -125,8 +152,10 @@ export const HomeScreen = React.memo((props?: HomeScreenProps) => {
       <HomeTicketLongFormComponent
         image="https://media.vietlott.vn//main/06.2018/cms/game/Power655.png"
         type="power"
-        targetTime={new Date('2023-03-30T18:00:00Z')}
+        targetTime={firstDrawPower ? new Date(firstDrawPower.drawTime) : undefined}
         action={() => NavigationUtils.navigate(navigation, ScreenName.HomeChild.PowerScreen)}
+        nextDate={firstDrawPower ? dateConvert(new Date(firstDrawPower.drawTime)) : ""}
+        QSMT={'T3, T5, T7'}
       />
     );
   }, []);

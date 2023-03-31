@@ -48,7 +48,7 @@ export const HomeCountdownClockComponent = React.memo(
             { fontSize: 13 },
             props?.timeStyle,
           ]}>
-          {timeRemaining?.days} :{' '}{timeRemaining?.hours} :{' '}
+          {timeRemaining?.days} {' '}{timeRemaining?.hours} :{' '}
           {timeRemaining?.minutes} : {timeRemaining?.seconds} s
         </Label.Widget>
       </View>

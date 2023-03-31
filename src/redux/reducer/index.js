@@ -2,8 +2,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { combineReducers } from '@reduxjs/toolkit';
 import { persistReducer } from 'redux-persist';
 
-import booksReducer from './book'
 import authReducer from './auth'
+import userReducer from './user'
 
 // const bookSetup = {
 //     key: "book",
@@ -11,11 +11,16 @@ import authReducer from './auth'
 // }
 
 const authSetup = {
-    key: "book",
+    key: "auth",
+    storage: AsyncStorage,
+}
+
+const userSetup = {
+    key: "user",
     storage: AsyncStorage,
 }
 export const rootReducer = combineReducers({
-    // booksReducer: persistReducer(bookSetup, booksReducer)
-    authReducer: persistReducer(authSetup, authReducer)
+    authReducer: persistReducer(authSetup, authReducer),
+    userReducer: persistReducer(userSetup, userReducer)
 })
 
