@@ -17,7 +17,6 @@ interface ChooseTypeSheetProps {
     onOpen?: () => void
     onClose?: () => void
     onToggle: (data: number) => void,
-    currentChoose: any,
     onChoose: (data: any) => void,
     numberSet: any,
     page?: number
@@ -52,7 +51,7 @@ export const ChooseNumberSheet = React.memo(({ isVisible, bottomSheetRef, onTogg
 
     // callbacks
     const handleSheetChanges = useCallback((index: number) => {
-        if (index == 0) setCurrentNumbers([...numberSet])
+        // if (index == 0) setCurrentNumbers([...numberSet])
         onToggle(index)
     }, []);
 

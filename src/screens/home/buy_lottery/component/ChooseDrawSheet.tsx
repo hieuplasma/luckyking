@@ -34,7 +34,7 @@ export const ChooseDrawSheet = React.memo(({ isVisible, bottomSheetRef, onToggle
 
     // callbacks
     const handleSheetChanges = useCallback((index: number) => {
-        if (index == 0) setCurrentDraw(currentChoose)
+        // if (index == 0) setCurrentDraw(currentChoose)
         onToggle(index)
     }, []);
 

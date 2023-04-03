@@ -54,7 +54,7 @@ export const ChooseTypeSheet = ({ isVisible, bottomSheetRef, onToggle, currentCh
 
     // callbacks
     const handleSheetChanges = useCallback((index: number) => {
-        if (index == 0) setCurrentType(currentChoose)
+        // if (index == 0) setCurrentType(currentChoose)
         onToggle(index)
     }, []);
 

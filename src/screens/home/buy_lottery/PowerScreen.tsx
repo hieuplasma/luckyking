@@ -307,7 +307,6 @@ export const PowerScreen = React.memo((props: any) => {
                         bottomSheetRef={chooseNumberRef}
                         isVisible={indexSheet[2] == -1 ? false : true}
                         onToggle={(newIndex) => toggleSheet(newIndex, 2)}
-                        currentChoose={drawSelected}
                         onChoose={(set) => setNumbers(set)}
                         numberSet={numberSet}
                         page={pageNumber}
