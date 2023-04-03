@@ -4,9 +4,9 @@ import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Icon, Image } from "@assets";
 import { Color, Dimension, Style } from "@styles";
-import { convolutions, printDraw, printMoney, ScreenUtils } from "@utils";
+import { calSurcharge, convolutions, printDraw, printMoney, ScreenUtils } from "@utils";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { View, StyleSheet, Text, ScrollView, TouchableOpacity, Dimensions, StatusBar } from "react-native";
+import { View, StyleSheet, Text, ScrollView, TouchableOpacity, Dimensions, StatusBar, Alert } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
 import { ChooseTypeSheet } from "./component/ChooseTypeSheet";
@@ -14,6 +14,7 @@ import { useSelector } from "react-redux";
 import { lotteryApi } from "@api";
 import { ChooseDrawSheet } from "./component/ChooseDrawSheet";
 import { ChooseNumberSheet } from "./component/ChooseNumberSheet";
+import { LotteryType, OrderMethod, OrderStatus } from "@common";
 
 type NavigationProp = StackNavigationProp<HomeStackParamList, 'PowerScreen'>;
 type NavigationRoute = RouteProp<HomeStackParamList, 'PowerScreen'>;
@@ -158,11 +159,37 @@ export const PowerScreen = React.memo((props: any) => {
         return number
     }
 
-    const bookLottery = () => {
+    const bookLottery = async () => {
+        console.log("bo so::::", numberSet)
         const currentNumber = [...numberSet]
-        const numbers: string[] = []
+        let numbers: string[] = []
         for (let i = 0; i < currentNumber.length; i++) {
-
+            let tmp = ""
+            if (currentNumber[i][0] !== false) {
+                currentNumber[i].map((item: number, index: number) => {
+                    if (index == 0) tmp = tmp + item
+                    else tmp = tmp + "-" + item
+                })
+                numbers.push(tmp)
+            }
+        }
+        let body: any = {
+            lotteryType: LotteryType.Power,
+            amount: totalCost,
+            surchagre: calSurcharge(totalCost),
+            status: OrderStatus.PENDING,
+            method: OrderMethod.Keep,
+            level: typePlay.value,
+            drawCode: drawSelected.drawCode,
+            numbers: numbers
+        }
+        const res = await lotteryApi.bookLotteryPower(body)
+        console.log(res)
+        if (res) {
+            Alert.alert("Thành công", "Đã đặt mua vé thành công, vui lòng chờ xác nhận của đại lý!")
+            setDraw(listDraw[0])
+            setType({ label: "Cơ bản", value: 6 })
+            setNumbers(initNumber)
         }
     }
 
@@ -281,7 +308,7 @@ export const PowerScreen = React.memo((props: any) => {
                             style={[Style.Space.Padding.Zero]}
                         />
                     </TouchableOpacity>
-                    <TouchableOpacity style={[styles.buttonFooterDown, { backgroundColor: '#C38E32' }]} activeOpacity={0.6}>
+                    <TouchableOpacity style={[styles.buttonFooterDown, { backgroundColor: '#C38E32' }]} activeOpacity={0.6} onPress={() => bookLottery()}>
                         <Text style={{ color: Color.white, fontWeight: 'bold', fontSize: 16 }}>{"ĐẶT VÉ"}</Text>
                     </TouchableOpacity>
                 </View>

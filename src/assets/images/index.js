@@ -29,5 +29,6 @@ export const Images = {
   eye_close: require('./eye_close.png'),
   home: require('./home.png'),
   history_note: require('./history_note.png'),
-  logout:require('./log_out.png'),
+  logout: require('./log_out.png'),
+  left_arrow: require('./left_arrow.png'),
 };

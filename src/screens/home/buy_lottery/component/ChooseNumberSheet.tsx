@@ -38,7 +38,7 @@ export const ChooseNumberSheet = React.memo(({ isVisible, bottomSheetRef, onTogg
     useEffect(() => {
         setCurrentNumbers([...numberSet])
         setCurrentLevel([...numberSet[0]].length)
-    }, [numberSet, isVisible])
+    }, [isVisible])
 
     useEffect(() => {
         (page || page === 0) ? swiperRef.current?.scrollToIndex({ animated: false, index: page }) : {}
@@ -151,7 +151,21 @@ export const ChooseNumberSheet = React.memo(({ isVisible, bottomSheetRef, onTogg
             onChange={handleSheetChanges}
         >
             <View style={{ flex: 1 }}>
-                <Text style={styles.title}>{`Chọn bộ số ${String.fromCharCode(65 + indexPage)} (${totalSelected()}/${currentLevel})`}</Text>
+                <View style={{ flexDirection: 'row', paddingHorizontal: 18 }}>
+                    <TouchableOpacity disabled={indexPage == 0 ? true : false} style={{ flex: 1, alignItems: 'center', flexDirection: 'row' }}
+                        onPress={() => swiperRef.current?.scrollToIndex({ animated: true, index: indexPage - 1 })}
+                    >
+                        {indexPage > 0 ?
+                            <Image source={Images.left_arrow} style={{ width: 12, height: 24 }} tintColor={Color.black} /> : <></>}
+                    </TouchableOpacity>
+                    <Text style={styles.title}>{`Chọn bộ số ${String.fromCharCode(65 + indexPage)} (${totalSelected()}/${currentLevel})`}</Text>
+                    <TouchableOpacity disabled={indexPage == 5 ? true : false} style={{ flex: 1, flexDirection: 'row-reverse', alignItems: 'center' }} 
+                      onPress={() => swiperRef.current?.scrollToIndex({ animated: true, index: indexPage + 1 })}
+                    >
+                        {indexPage < 5 ?
+                            <Image source={Images.right_arrow} style={{ width: 12, height: 24 }} tintColor={Color.black} /> : <></>}
+                    </TouchableOpacity>
+                </View>
                 <View style={{ flex: 1, marginTop: 12 }}>
                     <SwiperFlatList
                         index={0}
@@ -165,7 +179,7 @@ export const ChooseNumberSheet = React.memo(({ isVisible, bottomSheetRef, onTogg
                     <Text style={styles.textConfirm}>{`Xác nhận`.toUpperCase()}</Text>
                 </TouchableOpacity>
             </View>
-        </BottomSheet>
+        </BottomSheet >
     );
 });
 

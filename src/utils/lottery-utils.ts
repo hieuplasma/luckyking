@@ -31,3 +31,7 @@ export function printDraw(param: any) {
     if (code < 1000) return "#00" + code + " - " + dateConvert(date)
     return "#0" + code + " - " + dateConvert(date)
 }
+
+export function calSurcharge(cost: number) {
+    return Math.floor(cost * 2 / 100)
+}

@@ -26,7 +26,7 @@ export const ChooseDrawSheet = React.memo(({ isVisible, bottomSheetRef, onToggle
     const [currentDraw, setCurrentDraw] = useState(currentChoose)
     useEffect(() => {
         setCurrentDraw(currentChoose)
-    }, [currentChoose, isVisible])
+    }, [isVisible])
 
     const handleClose = () => {
         setCurrentDraw(currentChoose)

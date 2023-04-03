@@ -1,5 +1,5 @@
 export * from './splash';
-export * from './authentications';
+export * from './auth';
 export * from './home';
 export * from './live';
 export * from './result';
