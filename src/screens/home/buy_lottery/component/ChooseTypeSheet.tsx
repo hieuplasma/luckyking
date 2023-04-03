@@ -46,7 +46,7 @@ export const ChooseTypeSheet = ({ isVisible, bottomSheetRef, onToggle, currentCh
     const [currentType, setCurrentType] = useState(currentChoose)
     useEffect(() => {
         setCurrentType(currentChoose)
-    }, [currentChoose])
+    }, [currentChoose, isVisible])
 
     const handleClose = () => {
         bottomSheetRef.current?.close();
@@ -54,7 +54,6 @@ export const ChooseTypeSheet = ({ isVisible, bottomSheetRef, onToggle, currentCh
 
     // callbacks
     const handleSheetChanges = useCallback((index: number) => {
-        // if (index == 0) setCurrentType(currentChoose)
         onToggle(index)
     }, []);
 

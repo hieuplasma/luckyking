@@ -105,6 +105,8 @@ export const PowerScreen = React.memo((props: any) => {
         setNumbers(arr)
     }
 
+
+
     const randomNumber = (index: number) => {
         const currentNumber = [...numberSet]
         const currentLevel = typePlay.value

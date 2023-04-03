@@ -8,7 +8,6 @@ import Animated, {
     interpolate,
     useAnimatedStyle,
 } from "react-native-reanimated";
-import { printDraw } from '@utils';
 import { SwiperFlatList } from 'react-native-swiper-flatlist';
 
 interface ChooseTypeSheetProps {
@@ -39,7 +38,7 @@ export const ChooseNumberSheet = React.memo(({ isVisible, bottomSheetRef, onTogg
     useEffect(() => {
         setCurrentNumbers([...numberSet])
         setCurrentLevel([...numberSet[0]].length)
-    }, [numberSet])
+    }, [numberSet, isVisible])
 
     useEffect(() => {
         (page || page === 0) ? swiperRef.current?.scrollToIndex({ animated: false, index: page }) : {}
@@ -51,7 +50,6 @@ export const ChooseNumberSheet = React.memo(({ isVisible, bottomSheetRef, onTogg
 
     // callbacks
     const handleSheetChanges = useCallback((index: number) => {
-        // if (index == 0) setCurrentNumbers([...numberSet])
         onToggle(index)
     }, []);
 
