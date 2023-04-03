@@ -6,16 +6,16 @@ export type LiveStackParamList = {
   Live: LiveScreenParamsList;
 };
 
-const HomeStack = createStackNavigator<LiveStackParamList>();
+const LiveStack = createStackNavigator<LiveStackParamList>();
 
 export function LiveNavigation() {
   return (
-    <HomeStack.Navigator initialRouteName={'Live'}>
-      <HomeStack.Screen
+    <LiveStack.Navigator initialRouteName={'Live'}>
+      <LiveStack.Screen
         name={'Live'}
         component={LiveScreen}
         options={{headerShown: false, title: undefined}}
       />
-    </HomeStack.Navigator>
+    </LiveStack.Navigator>
   );
 }

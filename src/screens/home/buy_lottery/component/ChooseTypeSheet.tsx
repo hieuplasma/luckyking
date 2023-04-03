@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Dimensions } from 'react-native';
 import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
 import { Color } from '@styles';
@@ -41,21 +41,20 @@ const types = [
     { label: "Bao 18", value: 18 },//13
 ]
 
-export const ChooseTypeSheet = ({ isVisible, bottomSheetRef, onOpen, onClose, onToggle, currentChoose, onChoose }: ChooseTypeSheetProps) => {
+export const ChooseTypeSheet = ({ isVisible, bottomSheetRef, onToggle, currentChoose, onChoose }: ChooseTypeSheetProps) => {
 
     const [currentType, setCurrentType] = useState(currentChoose)
-    const handleOpen = () => {
-        bottomSheetRef.current?.snapToIndex(1);
-        onOpen
-    };
+    useEffect(() => {
+        setCurrentType(currentChoose)
+    }, [currentChoose])
 
     const handleClose = () => {
         bottomSheetRef.current?.close();
-        onClose;
     };
 
     // callbacks
     const handleSheetChanges = useCallback((index: number) => {
+        if (index == 0) setCurrentType(currentChoose)
         onToggle(index)
     }, []);
 
@@ -80,10 +79,9 @@ export const ChooseTypeSheet = ({ isVisible, bottomSheetRef, onOpen, onClose, on
         [styles.background, containerAnimatedStyle]
     );
 
-    const choosing = (type:any) => {
+    const choosing = (type: any) => {
         onChoose(type)
         bottomSheetRef.current?.close();
-        onClose;
     }
 
     return (
@@ -116,7 +114,7 @@ export const ChooseTypeSheet = ({ isVisible, bottomSheetRef, onOpen, onClose, on
                         )
                     })}
                 </View>
-                <TouchableOpacity style={styles.confirmButton} onPress={()=> choosing(currentType)}>
+                <TouchableOpacity style={styles.confirmButton} onPress={() => choosing(currentType)}>
                     <Text style={styles.textConfirm}>{`Xác nhận`.toUpperCase()}</Text>
                 </TouchableOpacity>
             </View>

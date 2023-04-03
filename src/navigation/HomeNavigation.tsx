@@ -1,11 +1,12 @@
 import { createStackNavigator } from '@react-navigation/stack';
-import { HomeScreen, HomeScreenParamsList, PowerScreen } from '@screen';
+import { CartScreen, CartScreenParamsList, HomeScreen, HomeScreenParamsList, PowerScreen } from '@screen';
 import React from 'react';
 import { PowerScreenParamsList } from '@screen';
 
 export type HomeStackParamList = {
   HomeScreen: HomeScreenParamsList;
-  PowerScreen: PowerScreenParamsList
+  PowerScreen: PowerScreenParamsList;
+  CartScreen: CartScreenParamsList
 };
 
 const HomeStack = createStackNavigator<HomeStackParamList>();
@@ -21,6 +22,11 @@ export function HomeNavigation() {
        <HomeStack.Screen
         name={'PowerScreen'}
         component={PowerScreen}
+        options={{ headerShown: false, title: undefined }}
+      />
+       <HomeStack.Screen
+        name={'CartScreen'}
+        component={CartScreen}
         options={{ headerShown: false, title: undefined }}
       />
     </HomeStack.Navigator>

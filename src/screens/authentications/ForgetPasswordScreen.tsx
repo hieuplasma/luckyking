@@ -3,7 +3,6 @@ import { AuthenticationStackParamList, ScreenName } from '@navigation';
 import { RouteProp, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import {
-  Icon,
   InputComponent,
   Label,
   ShadowView,
@@ -14,6 +13,7 @@ import { Color, Style } from '@styles';
 import { Button } from '@widgets';
 import React, { useCallback } from 'react';
 import { View } from 'react-native';
+import { Icon } from '@assets';
 
 type NavigationProp = StackNavigationProp<
   AuthenticationStackParamList,

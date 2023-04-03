@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Dimensions } from 'react-native';
 import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
 import { Color } from '@styles';
@@ -21,21 +21,20 @@ interface ChooseTypeSheetProps {
     listDraw: any
 }
 
-export const ChooseDrawSheet = ({ isVisible, bottomSheetRef, onOpen, onClose, onToggle, currentChoose, onChoose, listDraw }: ChooseTypeSheetProps) => {
+export const ChooseDrawSheet = React.memo(({ isVisible, bottomSheetRef, onToggle, currentChoose, onChoose, listDraw }: ChooseTypeSheetProps) => {
 
     const [currentDraw, setCurrentDraw] = useState(currentChoose)
-    const handleOpen = () => {
-        bottomSheetRef.current?.snapToIndex(1);
-        onOpen
-    };
+    useEffect(() => {
+        setCurrentDraw(currentChoose)
+    }, [currentChoose])
 
     const handleClose = () => {
         bottomSheetRef.current?.close();
-        onClose;
     };
 
     // callbacks
     const handleSheetChanges = useCallback((index: number) => {
+        if (index == 0) setCurrentDraw(currentChoose)
         onToggle(index)
     }, []);
 
@@ -63,7 +62,6 @@ export const ChooseDrawSheet = ({ isVisible, bottomSheetRef, onOpen, onClose, on
     const choosing = (type: any) => {
         onChoose(type)
         bottomSheetRef.current?.close();
-        onClose;
     }
 
     return (
@@ -103,7 +101,7 @@ export const ChooseDrawSheet = ({ isVisible, bottomSheetRef, onOpen, onClose, on
             </View>
         </BottomSheet>
     );
-};
+});
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;

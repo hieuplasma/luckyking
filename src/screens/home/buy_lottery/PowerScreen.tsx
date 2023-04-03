@@ -13,6 +13,7 @@ import { ChooseTypeSheet } from "./component/ChooseTypeSheet";
 import { useSelector } from "react-redux";
 import { lotteryApi } from "@api";
 import { ChooseDrawSheet } from "./component/ChooseDrawSheet";
+import { ChooseNumberSheet } from "./component/ChooseNumberSheet";
 
 type NavigationProp = StackNavigationProp<HomeStackParamList, 'PowerScreen'>;
 type NavigationRoute = RouteProp<HomeStackParamList, 'PowerScreen'>;
@@ -40,14 +41,16 @@ export const PowerScreen = React.memo((props: any) => {
     const [typePlay, setType]: any = useState({ label: "Cơ bản", value: 6 });
     const [numberSet, setNumbers]: any = useState(initNumber)
     const [totalCost, setTotalCost] = useState(0)
-    // [Choose Type, Choose Draw ...]
-    const [indexSheet, setIndexSheet] = useState([-1, -1])
+    // [Choose Type, Choose Draw, Choose Number ...]
+    const [indexSheet, setIndexSheet] = useState([-1, -1, -1])
     const [drawSelected, setDraw]: any = useState(false)
     const [listDraw, setListDraw]: any = useState([])
 
     // ref
     const chooseTypeRef = useRef<BottomSheet>(null);
     const chooseDrawRef = useRef<BottomSheet>(null);
+    const chooseNumberRef = useRef<BottomSheet>(null);
+    const [pageNumber, setPageNumber] = useState(0)
 
     const MoneyAccount = useSelector((state: any) => state.userReducer.MoneyAccount);
 
@@ -62,6 +65,7 @@ export const PowerScreen = React.memo((props: any) => {
         return () => clearTimeout(timer);
     }, []);
 
+    // sort and calculate total money
     useEffect(() => {
         const level: number = typePlay.value
         let set = 0
@@ -107,11 +111,9 @@ export const PowerScreen = React.memo((props: any) => {
         const randomNumbers = new Set();
         while (randomNumbers.size < currentLevel) {
             const randomNumber = Math.floor(Math.random() * 55) + 1;
-            let tmp: string = randomNumber + ''
-            if (randomNumber < 10) tmp = '0' + randomNumber
-            randomNumbers.add(tmp);
+            randomNumbers.add(randomNumber);
         }
-        const resultArray = Array.from(randomNumbers);
+        const resultArray = Array.from(randomNumbers).map(Number).sort((a, b) => a - b);
         currentNumber[index] = resultArray
         setNumbers(currentNumber)
     }
@@ -131,14 +133,12 @@ export const PowerScreen = React.memo((props: any) => {
             const randomNumbers = new Set();
             while (randomNumbers.size < currentLevel) {
                 const randomNumber = Math.floor(Math.random() * 55) + 1;
-                let tmp: string = randomNumber + ''
-                if (randomNumber < 10) tmp = '0' + randomNumber
-                randomNumbers.add(tmp);
+                randomNumbers.add(randomNumber);
             }
-            const resultArray = Array.from(randomNumbers);
+            const resultArray = Array.from(randomNumbers).map(Number).sort((a, b) => a - b);
             array.push(resultArray);
         }
-        setNumbers(array)
+        setNumbers(array.sort((a, b) => a[0] - b[0]))
     }
 
     const selfPick = () => {
@@ -150,11 +150,17 @@ export const PowerScreen = React.memo((props: any) => {
         setNumbers(currentNumber)
     }
 
+    const printNumber = (number: any) => {
+        if (number === false) return ""
+        if (number < 10) return '0' + number
+        return number
+    }
+
     const bookLottery = () => {
         const currentNumber = [...numberSet]
         const numbers: string[] = []
-        for (let i = 0; i< currentNumber.length; i++) {
-            
+        for (let i = 0; i < currentNumber.length; i++) {
+
         }
     }
 
@@ -209,17 +215,20 @@ export const PowerScreen = React.memo((props: any) => {
                         return (
                             <View style={styles.lineNumber} key={index}>
                                 <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{String.fromCharCode(65 + index)}</Text>
-                                <View style={{ flex: 1, flexDirection: 'row', marginHorizontal: 18, flexWrap: 'wrap' }}>
-                                    {item.map((number: any, index2: number) => {
+                                <TouchableOpacity style={{ flex: 1, flexDirection: 'row', marginHorizontal: 18, flexWrap: 'wrap' }} onPress={() => {
+                                    setPageNumber(index)
+                                    openBottomSheet(chooseNumberRef)
+                                }}>
+                                    {item.sort((a: any, b: any) => a - b).map((number: any, index2: number) => {
                                         return (
                                             <View style={styles.ballContainer} key={index2}>
                                                 <Image source={number ? Images.ball_power : Images.ball_grey} style={styles.ballStyle}>
-                                                    <Text style={{ color: Color.white }}>{number}</Text>
+                                                    <Text style={{ color: Color.white }}>{printNumber(number)}</Text>
                                                 </Image>
                                             </View>
                                         )
                                     })}
-                                </View>
+                                </TouchableOpacity>
                                 <View style={{ flexDirection: 'row', alignItems: 'center', width: 60, justifyContent: 'space-between' }}>
                                     <Image source={Images.nofilled_heart} style={{ width: 22, height: 22, }}></Image>
                                     {item[0] ?
@@ -293,6 +302,15 @@ export const PowerScreen = React.memo((props: any) => {
                         currentChoose={drawSelected}
                         onChoose={(draw) => setDraw(draw)}
                         listDraw={listDraw}
+                    />
+                    <ChooseNumberSheet
+                        bottomSheetRef={chooseNumberRef}
+                        isVisible={indexSheet[2] == -1 ? false : true}
+                        onToggle={(newIndex) => toggleSheet(newIndex, 2)}
+                        currentChoose={drawSelected}
+                        onChoose={(set) => setNumbers(set)}
+                        numberSet={numberSet}
+                        page={pageNumber}
                     />
                 </>
                 : <></>}

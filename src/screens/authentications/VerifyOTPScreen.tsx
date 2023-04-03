@@ -3,7 +3,6 @@ import { AuthenticationStackParamList, ScreenName } from '@navigation';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import {
-  Icon,
   InputComponent,
   Label,
   translate,
@@ -21,6 +20,7 @@ import { updateToken } from '../../redux/reducer/auth';
 import { API_HOST } from '@configs';
 import { API_URI } from '../../api/url';
 import { NavigationUtils, ScreenUtils } from '@utils';
+import { Icon } from '@assets';
 
 type NavigationProp = StackNavigationProp<AuthenticationStackParamList, 'VerifyOTP'>;
 type NavigationRoute = RouteProp<AuthenticationStackParamList, 'VerifyOTP'>;
