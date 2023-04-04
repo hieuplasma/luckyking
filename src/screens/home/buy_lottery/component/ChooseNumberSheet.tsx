@@ -159,8 +159,8 @@ export const ChooseNumberSheet = React.memo(({ isVisible, bottomSheetRef, onTogg
                             <Image source={Images.left_arrow} style={{ width: 12, height: 24 }} tintColor={Color.black} /> : <></>}
                     </TouchableOpacity>
                     <Text style={styles.title}>{`Chọn bộ số ${String.fromCharCode(65 + indexPage)} (${totalSelected()}/${currentLevel})`}</Text>
-                    <TouchableOpacity disabled={indexPage == 5 ? true : false} style={{ flex: 1, flexDirection: 'row-reverse', alignItems: 'center' }} 
-                      onPress={() => swiperRef.current?.scrollToIndex({ animated: true, index: indexPage + 1 })}
+                    <TouchableOpacity disabled={indexPage == 5 ? true : false} style={{ flex: 1, flexDirection: 'row-reverse', alignItems: 'center' }}
+                        onPress={() => swiperRef.current?.scrollToIndex({ animated: true, index: indexPage + 1 })}
                     >
                         {indexPage < 5 ?
                             <Image source={Images.right_arrow} style={{ width: 12, height: 24 }} tintColor={Color.black} /> : <></>}

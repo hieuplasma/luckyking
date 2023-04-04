@@ -5,3 +5,4 @@ export * from './screen-utils';
 export * from './NetworkUtils'
 export * from './navigation-utils'
 export * from './lottery-utils'
+export * from './other-utils'

@@ -31,4 +31,8 @@ export const Images = {
   history_note: require('./history_note.png'),
   logout: require('./log_out.png'),
   left_arrow: require('./left_arrow.png'),
+  bg_header: require('./bg_header.png'),
+  star: require('./star.png'),
+  big_lock: require('./big_lock.png'),
+  small_lock: require('./small_lock.png'),
 };

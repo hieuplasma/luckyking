@@ -4,9 +4,10 @@ import {
   createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-
 import { getFocusedRouteNameFromRoute, NavigationContainer, RouteProp, useRoute } from '@react-navigation/native';
-import { ResultScreen, ScanScreen, StatisticalScreen } from '@screen';
+import {
+  ResultScreen, ScanScreen, StatisticalScreen,
+} from '@screen';
 import { Label, LineSeparator, translate } from '@shared';
 import { Icon } from '@assets'
 import { Color, Dimension, Style } from '@styles';
@@ -14,6 +15,7 @@ import React, { useEffect, useState } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import DrawerCustom from './CustomDrawer';
+import { UserNavigation } from './UserNavigation';
 
 export type MainBottomTabParamList = {
   HomeStack: {};
@@ -23,8 +25,13 @@ export type MainBottomTabParamList = {
   StatisticalStack: {};
 };
 
+export type MainDrawerParamList = {
+  BottomTab: {}
+  UserStack: {}
+};
+
 const BottomTab = createBottomTabNavigator<MainBottomTabParamList>();
-const Drawer = createDrawerNavigator();
+const Drawer = createDrawerNavigator<MainDrawerParamList>();
 
 const getTabBarIcon = (args?: {
   activeIconName: string;
@@ -233,13 +240,13 @@ function BottomTabNavigator() {
 }
 
 export function MainNavigation(props: any) {
-
   return (
     <Drawer.Navigator
       drawerContent={(props) => <DrawerCustom {...props} />}
       screenOptions={{ headerShown: false, drawerType: 'front' }}
     >
-      <Drawer.Screen name={ScreenName.BottomTab} component={BottomTabNavigator} />
+      <Drawer.Screen name={'BottomTab'} component={BottomTabNavigator} />
+      <Drawer.Screen name={'UserStack'} component={UserNavigation} />
     </Drawer.Navigator>
   )
 }

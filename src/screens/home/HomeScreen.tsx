@@ -72,14 +72,14 @@ export const HomeScreen = React.memo((props?: HomeScreenProps) => {
   const renderHeaderRightView = useCallback(() => {
     return (
       <View style={[Style.Size.FlexRow]}>
-        <Icon.Button
-          name="ic_cart"
+          <Icon.Button
+          name="ic_notification"
           size={'large'}
           color={Color.white}
           style={[Style.Space.PaddingHorizontal.Medium_12]}
         />
         <Icon.Button
-          name="ic_notification"
+          name="ic_cart"
           size={'large'}
           color={Color.white}
           style={[Style.Space.PaddingHorizontal.Zero]}

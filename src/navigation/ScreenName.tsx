@@ -10,18 +10,25 @@ export const ScreenName = {
   },
 
   Main: 'Main',
+
+  Drawer: {
+    UserStack:"UserStack",
+    UserScreen: "UserScreen",
+    ChangePassScreen: "ChangePassScreen"
+  },
+
   BottomTab: "BottomTab",
   Tabs: {
     Account: 'Account',
-    HomeStack:'HomeStack',
-    LiveStack:"LiveStack",
-    ScanStack:"ScanStack",
-    StatisticalStack:"StatisticalStack",
+    HomeStack: 'HomeStack',
+    LiveStack: "LiveStack",
+    ScanStack: "ScanStack",
+    StatisticalStack: "StatisticalStack",
     ResultStack: "ResultStack"
   },
 
   HomeChild: {
-    HomeScreen:"HomeScreen",
-    PowerScreen:"PowerScreen"
+    HomeScreen: "HomeScreen",
+    PowerScreen: "PowerScreen"
   }
 };

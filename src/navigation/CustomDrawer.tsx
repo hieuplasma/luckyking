@@ -14,7 +14,7 @@ import { userApi } from '@api';
 const PADDING_TOP = 60
 
 function DrawerCustom(props: any) {
-  const navigation = useNavigation<undefined>();
+  const navigation = props.navigation
   const dispatch = useDispatch();
   const user = useSelector((state: any) => state.userReducer)
 
@@ -51,7 +51,7 @@ function DrawerCustom(props: any) {
       {/* Drawer Heaer */}
       <Image source={Images.draw_top} style={{ paddingTop: PADDING_TOP, padding: 8, width: '100%', height: PADDING_TOP + 76 + 8, flexDirection: 'row' }}>
         <Image source={user.avatar != "" ? { uri: user.avatar } : Images.default_avatar} style={{ width: 76, height: 76 }}></Image>
-        <TouchableOpacity style={{ flexDirection: 'row' }} activeOpacity={0.7}>
+        <TouchableOpacity style={{ flexDirection: 'row' }} activeOpacity={0.7} onPress={() => NavigationUtils.navigate(navigation, ScreenName.Drawer.UserStack)}>
           <View style={{ marginLeft: 8, justifyContent: 'center' }}>
             <Text style={{ fontSize: 18, fontWeight: 'bold', color: Color.white }}>{user.fullName}</Text>
             <Text style={{ fontSize: 15, fontWeight: 'bold', color: Color.white, marginTop: 7 }}>{user.personNumber}</Text>
@@ -83,11 +83,11 @@ function DrawerCustom(props: any) {
           </TouchableOpacity>
         </View>
 
-        <TouchableOpacity style={styles.lineItem2} activeOpacity={.6}>
+        <TouchableOpacity style={[styles.lineItem2, { borderColor: Color.luckyKing }]} activeOpacity={.6}onPress={() => NavigationUtils.navigate(navigation, ScreenName.BottomTab)}>
           <Image source={Images.home} style={styles.icon_default}></Image>
           <Text style={styles.aloneText}>{"Trang chủ"}</Text>
           <View style={{ flex: 1 }} />
-          <Image source={Images.right_arrow} style={styles.icon_arrow} tintColor={Color.black}></Image>
+          <Image source={Images.right_arrow} style={styles.icon_arrow} tintColor={Color.luckyKing}></Image>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.lineItem2} activeOpacity={.6}>

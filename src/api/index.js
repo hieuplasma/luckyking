@@ -104,6 +104,7 @@ export class Connection {
             })
             .catch(async (error) => {
                 console.log("ERROR IN POST API OF " + uri + " :::::::::::>", error.response?.data)
+                Alert.alert("Lỗi", JSON.stringify(error.response?.data).toString())
             })
     }
 }

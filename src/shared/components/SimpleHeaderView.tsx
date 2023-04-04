@@ -9,9 +9,9 @@ import {
   ViewStyle,
   Platform,
 } from 'react-native';
-import {ScreenUtils} from '@utils';
-import {LineSeparator} from '..';
-import {useCallback} from 'react';
+import { ScreenUtils } from '@utils';
+import { LineSeparator } from '..';
+import { useCallback } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export interface SimpleHeaderViewProps extends ViewProps {
@@ -52,10 +52,10 @@ export const SimpleHeaderView = React.memo((props?: SimpleHeaderViewProps) => {
           statusBarStyle,
         ]}></View>
     );
-  }, [statusBarStyle,inssts.top]);
+  }, [statusBarStyle, inssts.top]);
 
   const renderTitle = useCallback(() => {
-    const {title, titleStyle} = props ?? {};
+    const { title, titleStyle } = props ?? {};
     return (
       <Text numberOfLines={1} ellipsizeMode={'tail'} style={[styles.headerText, titleStyle]}>
         {title}
@@ -67,9 +67,9 @@ export const SimpleHeaderView = React.memo((props?: SimpleHeaderViewProps) => {
     <>
       {!disableRenderStatusBarView ? renderStatusBarView() : null}
       <View style={[styles.headerContainer, style]}>
-        {leftView ? leftView : null}
+        <View style={{ flex: 1 }}>{leftView ? leftView : null}</View>
         {titleView ? titleView : renderTitle()}
-        {rightView ? rightView : null}
+        <View style={{ flex: 1 , flexDirection:'row-reverse'}}>{rightView ? rightView : null}</View>
       </View>
       {showLineSeparator ? <LineSeparator /> : null}
     </>
