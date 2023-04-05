@@ -35,4 +35,7 @@ export const Images = {
   star: require('./star.png'),
   big_lock: require('./big_lock.png'),
   small_lock: require('./small_lock.png'),
+  cart_nofilled: require('./cart_nofilled.png'),
+  edit_pen: require('./edit_pen.png'),
+  add_cart: require('./add_cart.png'),
 };

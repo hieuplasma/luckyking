@@ -123,7 +123,7 @@ export const ChooseNumberSheet = React.memo(({ isVisible, bottomSheetRef, onTogg
                     const check = (item.includes(number) ? true : false)
                     return (
                         <View style={styles.ballContainer} key={index + ':::' + index2}  >
-                            <TouchableOpacity style={[styles.ball, { backgroundColor: check ? '#C38E32' : '#E9E6E6' }]} onPress={() => changeNumber(number)}>
+                            <TouchableOpacity style={[styles.ball, { backgroundColor: check ? Color.power : '#E9E6E6' }]} onPress={() => changeNumber(number)}>
                                 <Text style={[styles.textBall, { color: check ? Color.white : Color.black }]}>{printNumber(number)}</Text>
                             </TouchableOpacity>
                         </View>
@@ -175,7 +175,7 @@ export const ChooseNumberSheet = React.memo(({ isVisible, bottomSheetRef, onTogg
                         renderItem={({ item, index }) => ItemView(item, index)}
                     />
                 </View>
-                <TouchableOpacity disabled={!checkIsOk()} style={[styles.confirmButton, { backgroundColor: checkIsOk() ? '#C38E32' : '#FCCF81' }]} onPress={() => choosing()}>
+                <TouchableOpacity disabled={!checkIsOk()} style={[styles.confirmButton, { backgroundColor: checkIsOk() ? Color.power : '#FCCF81' }]} onPress={() => choosing()}>
                     <Text style={styles.textConfirm}>{`Xác nhận`.toUpperCase()}</Text>
                 </TouchableOpacity>
             </View>
@@ -209,7 +209,7 @@ const styles = StyleSheet.create({
     },
     textBall: { fontWeight: '400', fontSize: 16, color: Color.black },
     confirmButton: {
-        margin: 16, backgroundColor: '#C38E32', borderRadius: 10,
+        margin: 16, backgroundColor: Color.power, borderRadius: 10,
         justifyContent: 'center', alignItems: 'center',
         height: 44, width: windowWidth - 32
     },

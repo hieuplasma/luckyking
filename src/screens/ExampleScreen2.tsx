@@ -31,12 +31,14 @@ export const UserScreen = () => {
                         size={'small'}
                         color={Color.white}
                         name="ic_back"
-                        style={[Style.Space.Padding.Zero]}
+                        style={{ paddingHorizontal: 0 }}
                         onPressed={onGoBack}
                     />
                 </View>
-                <Text style={{ color: Color.white, fontWeight: 'bold', fontSize: 16 }}>{"THÔNG TIN TÀI KHOẢN"}</Text>
-                <View style={{ flex: 1 }} />
+                <Text style={styles.textTitle}>{"THÔNG TIN TÀI KHOẢN"}</Text>
+                <View style={{ flex: 1, alignItems: 'flex-end' }} >
+                    <Image source={Images.trash} style={{ width: 26, height: 26 }}></Image>
+                </View>
             </Image>
         </View>
     )
@@ -50,7 +52,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: Color.white
     },
-    textTitle: {},
+    textTitle: { color: Color.white, fontWeight: 'bold', fontSize: 16 },
     headerContainer: {
         flexDirection: 'row',
         height: 100,

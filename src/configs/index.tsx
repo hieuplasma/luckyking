@@ -1,10 +1,11 @@
+/** config for debug */
 const config = {
-host: 'http://103.162.31.84:3003',
+  host: 'http://192.168.246.50:3001',
 };
 
-/** config for debug */
+/** config for VPS */
 // const config = {
-//   host: 'http://192.168.246.50:3001',
+// host: 'http://103.162.31.84:3003',
 // };
 
 const API_HOST = config.host;

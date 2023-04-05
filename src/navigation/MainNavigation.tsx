@@ -1,4 +1,3 @@
-import { HomeNavigation, RootStackParamsList, LiveNavigation, ScreenName } from '@navigation';
 import {
   BottomTabBarProps,
   createBottomTabNavigator,
@@ -16,6 +15,10 @@ import { TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import DrawerCustom from './CustomDrawer';
 import { UserNavigation } from './UserNavigation';
+import { ScreenName } from './ScreenName';
+import { LiveNavigation } from './LiveNavigation';
+import { HomeNavigation } from './HomeNavigation';
+// import { RootStackParamsList } from './index';
 
 export type MainBottomTabParamList = {
   HomeStack: {};
@@ -144,16 +147,21 @@ export const TabBar = (props: BottomTabBarProps) => {
   );
 };
 
-type NavigationRoute = RouteProp<RootStackParamsList, 'Main'>;
+const hideTabBar = [
+  ScreenName.HomeChild.PowerScreen,
+  ScreenName.HomeChild.CartScreen
+]
+
+// type NavigationRoute = RouteProp<RootStackParamsList, 'Main'>;
 function BottomTabNavigator() {
   const insets = useSafeAreaInsets();
-  const route = useRoute<NavigationRoute>();
+  // const route = useRoute<NavigationRoute>();
 
   const [currentRoute, setCurrentRoute] = useState('HomeStack')
   return (
     <BottomTab.Navigator
       initialRouteName={'HomeStack'}
-      tabBar={props => currentRoute === ScreenName.HomeChild.PowerScreen ? null : <TabBar {...props} />}
+      tabBar={props => hideTabBar.includes(currentRoute) ? null : <TabBar {...props} />}
       screenOptions={{
         headerShown: false,
         tabBarHideOnKeyboard: true,

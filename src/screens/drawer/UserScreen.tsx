@@ -159,7 +159,7 @@ export const UserScreen = React.memo(() => {
                         force={false}
                     />
                     <ItemView
-                        label={"Address"}
+                        label={"Địa chỉ"}
                         value={address}
                         setValue={(text: string) => setAddress(text)}
                         force={false}
@@ -188,7 +188,7 @@ const ItemView = ({ label, value, setValue, force, disable }: any) => {
     return (
         <View style={styles.borderItem}>
             <Text style={styles.textItem}>{label}</Text>
-            {force ? <Image source={Images.star} style={{ width: 12, height: 12, marginTop: -12, marginLeft: 2 }}></Image> : <></>}
+            {force ? <Image source={Images.star} style={{ width: 8, height: 8, marginTop: -9, marginLeft: 2 }}></Image> : <></>}
             <View style={{ flex: 1 }} />
             <TextInput
                 style={{ backgroundColor: Color.white, height: 43 }}

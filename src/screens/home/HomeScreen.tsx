@@ -29,13 +29,6 @@ export const HomeScreen = React.memo((props?: HomeScreenProps) => {
 
   const [firstDrawPower, setFirstDrawPower]: any = useState(false)
 
-  async function getUser() {
-    const res = await userApi.getuserInfo()
-    console.log(res.data)
-    if (res?.data) {
-      dispatch(updateUser(res.data))
-    }
-  }
   async function getFirstDraw() {
     const res = await lotteryApi.getSchedulePower({ take: 1 })
     if (res) {
@@ -45,7 +38,6 @@ export const HomeScreen = React.memo((props?: HomeScreenProps) => {
   useEffect(() => {
     async function init() {
       getFirstDraw()
-      getUser()
     }
     init()
   }, [])

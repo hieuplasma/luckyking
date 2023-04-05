@@ -52,7 +52,7 @@ export const LoginWidget = React.memo((props: any) => {
     const res = await authApi.login(body)
     if (res?.data?.accessToken) {
       dispatch(updateToken(res.data.accessToken))
-      NavigationUtils.resetGlobalStackWithScreen(navigation, ScreenName.Main);
+      NavigationUtils.resetGlobalStackWithScreen(navigation, ScreenName.SplashScreen);
     }
     else { Alert.alert("Có lỗi xảy ra", res.data?.errorMessage) }
     setLoading(false)

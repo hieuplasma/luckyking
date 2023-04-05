@@ -12,7 +12,7 @@ export const ScreenName = {
   Main: 'Main',
 
   Drawer: {
-    UserStack:"UserStack",
+    UserStack: "UserStack",
     UserScreen: "UserScreen",
     ChangePassScreen: "ChangePassScreen"
   },
@@ -29,6 +29,7 @@ export const ScreenName = {
 
   HomeChild: {
     HomeScreen: "HomeScreen",
-    PowerScreen: "PowerScreen"
+    PowerScreen: "PowerScreen",
+    CartScreen: "CartScreen"
   }
 };

@@ -1,20 +1,21 @@
 import { Images } from "@assets";
-import { HomeStackParamList } from "@navigation";
+import { HomeStackParamList, ScreenName } from "@navigation";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Icon, Image } from "@assets";
 import { Color, Dimension, Style } from "@styles";
-import { calSurcharge, convolutions, printDraw, printMoney, ScreenUtils } from "@utils";
+import { calSurcharge, convolutions, NavigationUtils, printDraw, printMoney, ScreenUtils } from "@utils";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { View, StyleSheet, Text, ScrollView, TouchableOpacity, Dimensions, StatusBar, Alert } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
 import { ChooseTypeSheet } from "./component/ChooseTypeSheet";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { lotteryApi } from "@api";
 import { ChooseDrawSheet } from "./component/ChooseDrawSheet";
 import { ChooseNumberSheet } from "./component/ChooseNumberSheet";
 import { LotteryType, OrderMethod, OrderStatus } from "@common";
+import { addLottery, getCart } from "@redux";
 
 type NavigationProp = StackNavigationProp<HomeStackParamList, 'PowerScreen'>;
 type NavigationRoute = RouteProp<HomeStackParamList, 'PowerScreen'>;
@@ -37,6 +38,7 @@ export const PowerScreen = React.memo((props: any) => {
     const navigation = useNavigation<NavigationProp>();
     const route = useRoute<NavigationRoute>();
     const safeAreaInsets = useSafeAreaInsets();
+    const dispatch = useDispatch()
 
     const [showBottomSheet, setShowBottomSheet] = useState(false)
     const [typePlay, setType]: any = useState({ label: "Cơ bản", value: 6 });
@@ -54,6 +56,7 @@ export const PowerScreen = React.memo((props: any) => {
     const [pageNumber, setPageNumber] = useState(0)
 
     const MoneyAccount = useSelector((state: any) => state.userReducer.MoneyAccount);
+    const cart = useSelector((state: any) => state.cartReducer.cart)
 
     const onGoBack = useCallback(() => {
         navigation.goBack();
@@ -105,7 +108,6 @@ export const PowerScreen = React.memo((props: any) => {
         const arr = Array.from({ length: 6 }, () => Array(type.value).fill(false));
         setNumbers(arr)
     }
-
 
 
     const randomNumber = (index: number) => {
@@ -160,7 +162,6 @@ export const PowerScreen = React.memo((props: any) => {
     }
 
     const bookLottery = async () => {
-        console.log("bo so::::", numberSet)
         const currentNumber = [...numberSet]
         let numbers: string[] = []
         for (let i = 0; i < currentNumber.length; i++) {
@@ -173,6 +174,9 @@ export const PowerScreen = React.memo((props: any) => {
                 numbers.push(tmp)
             }
         }
+        if (numbers.length == 0) {
+            return Alert.alert("Thông báo", "Bạn chưa chọn bộ số nào")
+        }
         let body: any = {
             lotteryType: LotteryType.Power,
             amount: totalCost,
@@ -184,13 +188,50 @@ export const PowerScreen = React.memo((props: any) => {
             numbers: numbers
         }
         const res = await lotteryApi.bookLotteryPower(body)
-        console.log(res)
         if (res) {
             Alert.alert("Thành công", "Đã đặt mua vé thành công, vui lòng chờ xác nhận của đại lý!")
-            setDraw(listDraw[0])
-            setType({ label: "Cơ bản", value: 6 })
-            setNumbers(initNumber)
+            refreshChoosing()
         }
+    }
+
+    const addToCart = async () => {
+        const currentNumber = [...numberSet]
+        let numbers: string[] = []
+        for (let i = 0; i < currentNumber.length; i++) {
+            let tmp = ""
+            if (currentNumber[i][0] !== false) {
+                currentNumber[i].map((item: number, index: number) => {
+                    if (index == 0) tmp = tmp + item
+                    else tmp = tmp + "-" + item
+                })
+                numbers.push(tmp)
+            }
+        }
+        if (numbers.length == 0) {
+            return Alert.alert("Thông báo", "Bạn chưa chọn bộ số nào")
+        }
+        let body: any = {
+            lotteryType: LotteryType.Power,
+            amount: totalCost,
+            status: OrderStatus.CART,
+            level: typePlay.value,
+            drawCode: drawSelected.drawCode,
+            drawTime: drawSelected.drawTime,
+            numbers: numbers
+        }
+        const res = await lotteryApi.addPowerMegaToCart(body)
+        console.log(res)
+        if (res) {
+            Alert.alert("Thành công", "Đã thêm vé vào giỏ hànd!")
+            refreshChoosing()
+            dispatch(addLottery(res.data))
+        }
+    }
+
+    const refreshChoosing = () => {
+        setDraw(listDraw[0])
+        setType({ label: "Cơ bản", value: 6 })
+        setNumbers(initNumber)
     }
 
     return (
@@ -198,21 +239,28 @@ export const PowerScreen = React.memo((props: any) => {
             <StatusBar translucent={true} barStyle={'dark-content'} backgroundColor={"transparent"} />
             {/* //Header */}
             <View style={[styles.headerContainer, { marginTop: safeAreaInsets.top }]}>
-                <Icon.Button
-                    size={'small'}
-                    color={Color.gray}
-                    name="ic_back"
-                    style={[Style.Space.Padding.Zero]}
-                    onPressed={onGoBack}
-                />
+                <View style={{ flex: 1 }}>
+                    <Icon.Button
+                        size={'small'}
+                        color={Color.gray}
+                        name="ic_back"
+                        style={[Style.Space.Padding.Zero]}
+                        onPressed={onGoBack}
+                    />
+                </View>
                 <Image source={Images.power_logo} style={styles.imageLogo} />
-                <Icon.Button
-                    size={'large'}
-                    color={Color.gray}
-                    name="ic_cart"
-                    style={[Style.Space.Padding.Zero]}
-                    onPressed={() => { }}
-                />
+                <View style={{ flex: 1, alignItems: 'flex-end' }}>
+                    <TouchableOpacity onPress={() => NavigationUtils.navigate(navigation, ScreenName.HomeChild.CartScreen)}>
+                        <Image source={Images.cart_nofilled} style={{ width: 26, height: 26 }}>
+                            {
+                                cart.length > 0 ?
+                                    <View style={styles.bageNumber}>
+                                        <Text style={styles.textBage}>{cart.length}</Text>
+                                    </View> : <></>
+                            }
+                        </Image>
+                    </TouchableOpacity>
+                </View>
             </View>
             {/* //Body */}
             <View style={styles.body}>
@@ -226,12 +274,12 @@ export const PowerScreen = React.memo((props: any) => {
                 </View>
                 <View style={{ flexDirection: 'row', paddingTop: 10, justifyContent: 'space-between' }}>
                     <TouchableOpacity activeOpacity={0.6} style={styles.dropDown} onPress={() => openBottomSheet(chooseTypeRef)}>
-                        <Text style={{ fontSize: 13, color: Color.black, lineHeight: 24 }}>{typePlay.label}</Text>
+                        <Text style={{ fontSize: 13, color: Color.black }}>{typePlay.label}</Text>
                         <Image source={Images.down_arrow} style={{ width: 12, height: 6 }}></Image>
                     </TouchableOpacity>
 
                     <TouchableOpacity activeOpacity={0.6} style={[styles.dropDown, { paddingHorizontal: 4 }]} onPress={() => openBottomSheet(chooseDrawRef)}>
-                        <Text style={{ fontSize: 13, color: Color.black, lineHeight: 24 }}>{drawSelected ? printDraw(drawSelected) : "------"}</Text>
+                        <Text style={{ fontSize: 13, color: Color.black }}>{drawSelected ? printDraw(drawSelected) : "------"}</Text>
                         <Image source={Images.down_arrow} style={{ width: 12, height: 6 }}></Image>
                     </TouchableOpacity>
                 </View>
@@ -279,7 +327,7 @@ export const PowerScreen = React.memo((props: any) => {
             <View style={{ paddingHorizontal: 16, paddingBottom: 30 }}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <TouchableOpacity style={styles.buttonFooterUp} activeOpacity={0.6}>
-                        <Image source={Images.filled_heart} style={{ width: 21, height: 19 }}></Image>
+                        <Image source={Images.filled_heart} style={{ width: 19, height: 19 }}></Image>
                         <Text style={styles.textFooterUp}>{"Yêu thích"}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.buttonFooterUp} activeOpacity={0.6} onPress={() => fastPick()}>
@@ -300,15 +348,10 @@ export const PowerScreen = React.memo((props: any) => {
                 </View>
 
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 4 }}>
-                    <TouchableOpacity style={[styles.buttonFooterDown, { backgroundColor: '#0171F5' }]} activeOpacity={0.6}>
-                        <Icon.Default
-                            size={'large'}
-                            color={'white'}
-                            name="ic_cart"
-                            style={[Style.Space.Padding.Zero]}
-                        />
+                    <TouchableOpacity style={[styles.buttonFooterDown, { backgroundColor: '#0171F5' }]} activeOpacity={0.6} onPress={() => addToCart()}>
+                        <Image source={Images.add_cart} style={{ width: 26, height: 26 }}></Image>
                     </TouchableOpacity>
-                    <TouchableOpacity style={[styles.buttonFooterDown, { backgroundColor: '#C38E32' }]} activeOpacity={0.6} onPress={() => bookLottery()}>
+                    <TouchableOpacity style={[styles.buttonFooterDown, { backgroundColor: Color.power }]} activeOpacity={0.6} onPress={() => bookLottery()}>
                         <Text style={{ color: Color.white, fontWeight: 'bold', fontSize: 16 }}>{"ĐẶT VÉ"}</Text>
                     </TouchableOpacity>
                 </View>
@@ -364,6 +407,17 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingHorizontal: 16,
         justifyContent: 'space-between',
+    },
+    bageNumber: {
+        position: 'absolute', top: 0, right: 0,
+        width: 11, height: 11, borderRadius: 99,
+        backgroundColor: Color.luckyKing,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+
+    textBage: {
+        fontSize: 7, fontWeight: 'bold', color: Color.white
     },
     body: {
         marginTop: 10,

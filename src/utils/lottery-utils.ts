@@ -1,3 +1,4 @@
+import { LotteryType } from "@common";
 import { dateConvert } from "./time-utils";
 
 export function convolutions(a: number, b: number) {
@@ -25,6 +26,12 @@ export function printMoney(param: any) {
     return amount.toLocaleString()
 }
 
+export function printDrawCode(drawCode: any) {
+    const code = parseInt(drawCode.toString())
+    if (code < 1000) return "#00" + code
+    return "#0" + code
+}
+
 export function printDraw(param: any) {
     const code = parseInt(param.drawCode.toString())
     const date = new Date(param.drawTime)
@@ -32,6 +39,31 @@ export function printDraw(param: any) {
     return "#0" + code + " - " + dateConvert(date)
 }
 
+export function printNumber(number: any) {
+    if (number === false) return ""
+    if (number < 10) return '0' + number
+    return number
+}
+
 export function calSurcharge(cost: number) {
     return Math.floor(cost * 2 / 100)
+}
+
+export function printTypePlay(value: number, type: string) {
+    let result;
+    switch (type) {
+        case LotteryType.Power:
+        case LotteryType.Mega:
+            result = PowerMegaType(value);
+            break;
+        default:
+            result = "Invalid type";
+            break;
+    }
+
+    return result;
+}
+
+function PowerMegaType(value: number) {
+    return value === 6 ? "Cơ bản" : "Bao " + value;
 }

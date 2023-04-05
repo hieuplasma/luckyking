@@ -4,6 +4,7 @@ import { persistReducer } from 'redux-persist';
 
 import authReducer from './auth'
 import userReducer from './user'
+import cartReducer from './cart'
 
 // const bookSetup = {
 //     key: "book",
@@ -19,8 +20,14 @@ const userSetup = {
     key: "user",
     storage: AsyncStorage,
 }
+
+const cartSetup = {
+    key: "cart",
+    storage: AsyncStorage,
+}
 export const rootReducer = combineReducers({
     authReducer: persistReducer(authSetup, authReducer),
-    userReducer: persistReducer(userSetup, userReducer)
+    userReducer: persistReducer(userSetup, userReducer),
+    cartReducer: persistReducer(cartSetup, cartReducer)
 })
 

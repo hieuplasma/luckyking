@@ -20,21 +20,20 @@ function DrawerCustom(props: any) {
 
   const [loading, setLoading] = useState(false)
 
-  async function getUser() {
-    const res = await userApi.getuserInfo()
-    console.log(res.data)
-    if (res?.data) {
-      dispatch(updateUser(res.data))
-    }
-  }
+  // async function getUser() {
+  //   const res = await userApi.getuserInfo()
+  //   console.log(res.data)
+  //   if (res?.data) {
+  //     dispatch(updateUser(res.data))
+  //   }
+  // }
 
-  useEffect(() => {
-    async function init() {
-      getUser()
-    }
-    init()
-  }, [])
-
+  // useEffect(() => {
+  //   async function init() {
+  //     getUser()
+  //   }
+  //   init()
+  // }, [])
 
   const logOut = () => {
     dispatch(removeToken())
