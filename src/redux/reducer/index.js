@@ -6,11 +6,6 @@ import authReducer from './auth'
 import userReducer from './user'
 import cartReducer from './cart'
 
-// const bookSetup = {
-//     key: "book",
-//     storage: AsyncStorage,
-// }
-
 const authSetup = {
     key: "auth",
     storage: AsyncStorage,

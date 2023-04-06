@@ -15,7 +15,7 @@ import { lotteryApi } from "@api";
 import { ChooseDrawSheet } from "./component/ChooseDrawSheet";
 import { ChooseNumberSheet } from "./component/ChooseNumberSheet";
 import { LotteryType, OrderMethod, OrderStatus } from "@common";
-import { addLottery, getCart } from "@redux";
+import { addLottery, getCart, updateUser } from "@redux";
 import { CartIcon } from "@components";
 
 type NavigationProp = StackNavigationProp<HomeStackParamList, 'PowerScreen'>;
@@ -56,8 +56,7 @@ export const PowerScreen = React.memo((props: any) => {
     const chooseNumberRef = useRef<BottomSheet>(null);
     const [pageNumber, setPageNumber] = useState(0)
 
-    const MoneyAccount = useSelector((state: any) => state.userReducer.MoneyAccount);
-    const cart = useSelector((state: any) => state.cartReducer.cart)
+    const luckykingBalance = useSelector((state: any) => state.userReducer.luckykingBalance);
 
     const onGoBack = useCallback(() => {
         navigation.goBack();
@@ -178,21 +177,26 @@ export const PowerScreen = React.memo((props: any) => {
         if (numbers.length == 0) {
             return Alert.alert("Thông báo", "Bạn chưa chọn bộ số nào")
         }
+        const total = totalCost
+        const surchagre = calSurcharge(totalCost)
         let body: any = {
             lotteryType: LotteryType.Power,
-            amount: totalCost,
-            surchagre: calSurcharge(totalCost),
+            amount: total,
+            surchagre: surchagre,
             status: OrderStatus.PENDING,
             method: OrderMethod.Keep,
             level: typePlay.value,
             drawCode: drawSelected.drawCode,
             numbers: numbers
         }
+        window.loadingIndicator.show()
         const res = await lotteryApi.bookLotteryPower(body)
         if (res) {
-            Alert.alert("Thành công", "Đã đặt mua vé thành công, vui lòng chờ xác nhận của đại lý!")
+            Alert.alert("Thành công", "Đã thanh toán mua vé thành công!")
+            dispatch(updateUser({ luckykingBalance: luckykingBalance - total - surchagre }))
             refreshChoosing()
         }
+        window.loadingIndicator.hide()
     }
 
     const addToCart = async () => {
@@ -220,6 +224,7 @@ export const PowerScreen = React.memo((props: any) => {
             drawTime: drawSelected.drawTime,
             numbers: numbers
         }
+        window.loadingIndicator.show()
         const res = await lotteryApi.addPowerMegaToCart(body)
         console.log(res)
         if (res) {
@@ -227,6 +232,7 @@ export const PowerScreen = React.memo((props: any) => {
             refreshChoosing()
             dispatch(addLottery(res.data))
         }
+        window.loadingIndicator.hide()
     }
 
     const refreshChoosing = () => {
@@ -261,7 +267,7 @@ export const PowerScreen = React.memo((props: any) => {
                         {"Số dư tài khoản: "}
                     </Text>
                     <Text style={{ fontSize: 16, color: Color.luckyKing, fontWeight: 'bold' }}>
-                        {`${printMoney(MoneyAccount)} đ`}
+                        {`${printMoney(luckykingBalance)} đ`}
                     </Text>
                 </View>
                 <View style={{ flexDirection: 'row', paddingTop: 10, justifyContent: 'space-between' }}>

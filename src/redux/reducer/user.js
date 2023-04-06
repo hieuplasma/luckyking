@@ -10,8 +10,8 @@ const initialState = {
     role: "",
     avatar: "",
     personNumber: "",
-    MoneyAccount: 0,
-    RewardWallet: 0
+    luckykingBalance: 0,
+    rewardWalletBalance: 0
 }
 
 // Create Redux state slice
@@ -31,8 +31,8 @@ const userSlice = createSlice({
             state.role = action.payload.role || newState.role
             state.avatar = action.payload.avatar || newState.avatar
             state.personNumber = action.payload.personNumber || newState.personNumber
-            state.MoneyAccount = action.payload.luckykingBalance || newState.MoneyAccount
-            state.RewardWallet = action.payload.rewardWalletBalance || newState.RewardWallet
+            state.luckykingBalance = action.payload.luckykingBalance || newState.MoneyAccount
+            state.rewardWalletBalance = action.payload.rewardWalletBalance || newState.RewardWallet
         },
         removeUser: (state) => {
             state = initialState

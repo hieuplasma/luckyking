@@ -59,10 +59,10 @@ export class LoadingIndicator extends PureComponent {
                                 alignItems: 'center',
                                 justifyContent: 'center',
                                 flexDirection: 'row',
-                                backgroundColor: 'rgba(0,0,0,0.1)',
                                 minHeight: 100,
                                 minWidth: 100,
                                 borderRadius: 8,
+                                backgroundColor: 'rgba(0,0,0,0.1)',
                                 shadowColor: "#f2f2f2",
                                 shadowOffset: {
                                     width: 0,
@@ -71,7 +71,6 @@ export class LoadingIndicator extends PureComponent {
                                 shadowOpacity: 0.2,
                                 shadowRadius: 4.65,
                             }}>
-                            {/* <ActivityIndicator size="large" color={'white'} /> */}
                             <LottieView source={require('./loading.json')}
                                 autoPlay style={{ height: 100, width: 100 }} />
                         </View>

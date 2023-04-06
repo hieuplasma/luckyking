@@ -2,15 +2,16 @@ import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { HomeStackParamList } from '@navigation';
-import { StatusBar, View, Text, Dimensions, StyleSheet, ScrollView, FlatList, RefreshControl, TouchableOpacity } from 'react-native'
+import { StatusBar, View, Text, Dimensions, StyleSheet, ScrollView, FlatList, RefreshControl, TouchableOpacity, Alert } from 'react-native'
 import React, { useCallback, useState } from 'react';
 import { Icon, Image, Images } from '@assets';
 import { Color } from '@styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { lotteryApi } from '@api';
-import { getCart } from '@redux';
+import { getCart, removeCart, removeLottery, updateLottery } from '@redux';
 import { printDraw, printDrawCode, printMoney, printNumber, printTypePlay, printWeekDate } from '@utils';
 import { LotteryType, NumberDetail } from '@common';
+import { ModalConfirm } from '@components';
 
 type NavigationProp = StackNavigationProp<HomeStackParamList, 'CartScreen'>;
 type NavigationRoute = RouteProp<HomeStackParamList, 'CartScreen'>;
@@ -52,8 +53,54 @@ export const CartScreen = React.memo(() => {
         return total
     }
 
-    const deleteLottety = (id: string) => {
+    const [modal1, setModal1] = useState(false)
+    const [modal2, setModal2] = useState(false)
+    const [modal3, setModal3] = useState(false)
 
+    const [currItem, setCurrItem]: any = useState(null)
+
+    const deleteLottety = async (id: string) => {
+        window.loadingIndicator.show()
+        const res = await lotteryApi.deleteItemCart({ lotteryId: id })
+        if (res) {
+            dispatch(removeLottery({ lotteryId: id }))
+            Alert.alert("Đã xoá vé thành công!")
+            setCurrItem(null)
+        }
+        window.loadingIndicator.hide()
+    }
+
+    const deleteNumber = async (id: string, index: number, lotteryId: string) => {
+        window.loadingIndicator.show()
+        const res = await lotteryApi.deleteNumberLottery({ numberId: id, position: index })
+        if (res) {
+            dispatch(updateLottery({ lotteryId: lotteryId, number: res.data }))
+            Alert.alert("Đã xoá bộ số thành công!")
+            setCurrItem(null)
+        }
+        window.loadingIndicator.hide()
+    }
+
+    const deleteAll = async () => {
+        window.loadingIndicator.show()
+        const res = await lotteryApi.emptyCart({})
+        if (res) {
+            dispatch(removeCart())
+            Alert.alert("Đã làm trống giỏ hàng!")
+            setCurrItem(null)
+        }
+        window.loadingIndicator.hide()
+    }
+
+
+    const openModalDeleteLottery = (lottery: any) => {
+        setCurrItem(lottery)
+        setModal1(true)
+    }
+
+    const openModalDeleteNumber = (param: any) => {
+        setCurrItem(param)
+        setModal2(true)
     }
 
     return (
@@ -70,9 +117,9 @@ export const CartScreen = React.memo(() => {
                     />
                 </View>
                 <Text style={styles.textTitle}>{"GIỎ HÀNG"}</Text>
-                <View style={{ flex: 1, alignItems: 'flex-end' }} >
+                <TouchableOpacity style={{ flex: 1, alignItems: 'flex-end' }} onPress={() => setModal3(true)} >
                     <Image source={Images.trash} style={{ width: 26, height: 26 }}></Image>
-                </View>
+                </TouchableOpacity>
             </Image>
 
             {/* Body View */}
@@ -108,7 +155,17 @@ export const CartScreen = React.memo(() => {
                                                             })
                                                         }
                                                     </View>
-                                                    <Image source={Images.trash} style={styles.iconTrash}></Image>
+                                                    {/* <TouchableOpacity onPress={() => {
+                                                        openModalDeleteNumber({
+                                                            lotteryId: item.id,
+                                                            id: item.NumberLottery.id,
+                                                            indexLott: index,
+                                                            indexNum: id,
+                                                            type: item.type
+                                                        })
+                                                    }}>
+                                                        <Image source={Images.trash} style={styles.iconTrash}></Image>
+                                                    </TouchableOpacity> */}
                                                 </View>
                                                 <View style={styles.underLine} />
                                             </View>
@@ -130,7 +187,7 @@ export const CartScreen = React.memo(() => {
                                     {`${printMoney(item.bets)}đ`}
                                 </Text>
                                 <View style={{ flex: 1 }} />
-                                <TouchableOpacity onPress={() => deleteLottety(item.id)}>
+                                <TouchableOpacity onPress={() => openModalDeleteLottery(item)}>
                                     <Image source={Images.trash} style={styles.iconTrash}></Image>
                                 </TouchableOpacity>
                             </View>
@@ -156,6 +213,40 @@ export const CartScreen = React.memo(() => {
                     </View>
                     : <></>
             }
+
+            {/* Modal xoa ve */}
+            <ModalConfirm
+                visible={modal1}
+                message={`Bạn có muốn xoá vé ${currItem?.type} này không?`}
+                onConfirm={() => {
+                    setModal1(false)
+                    deleteLottety(currItem.id)
+                }}
+                onCancel={() => setModal1(false)}
+            />
+
+            {/* Modal xoa bo so */}
+            {/* <ModalConfirm
+                visible={modal2}
+                message={`Bạn có muốn xoá bộ vé ${String.fromCharCode(65 + currItem?.indexNum)} loại hình ${currItem?.type} của vé ${printNumber(currItem?.indexLott + 1)} không?`}
+                onConfirm={() => {
+                    setModal2(false)
+                    deleteNumber(currItem?.id, currItem?.indexNum, currItem?.lotteryId)
+                }}
+                onCancel={() => setModal2(false)}
+            /> */}
+
+            {/* Modal Empty Cart */}
+            <ModalConfirm
+                visible={modal3}
+                message={`Bạn có muốn xóa tất cả vé trong giỏ hàng không?`}
+                onConfirm={() => {
+                    setModal3(false)
+                    deleteAll()
+                }}
+                onCancel={() => setModal3(false)}
+            />
+
         </View>
     )
 });
@@ -176,7 +267,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
         justifyContent: 'space-between',
     },
-
     borderItem: {
         width: windowWidth - 32,
         // shadow

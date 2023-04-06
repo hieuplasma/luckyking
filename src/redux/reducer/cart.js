@@ -18,14 +18,22 @@ const cartSlice = createSlice({
         addLottery: (state, action) => {
             state.cart = [...state.cart, action.payload]
         },
+        updateLottery: (state, action) => {
+            let tmp = [...state.cart]
+            const index = tmp.findIndex(item => item.id == action.payload.lotteryId);
+            tmp[index].NumberLottery = action.payload.number || tmp[index].NumberLottery
+            tmp[index].drawCode = action.payload.drawCode || tmp[index].drawCode
+            tmp[index].drawTime = action.payload.drawTime || tmp[index].drawTime
+            state.cart = tmp
+        },
         removeLottery: (state, action) => {
-            state.cart = state.cart.filter((b) => b.id !== action.payload.id)
+            state.cart = state.cart.filter((b) => b.id !== action.payload.lotteryId)
         },
         removeCart: (state) => {
-            state = initialState
+            state.cart = []
         },
     },
 })
 
-export const { getCart, addLottery, removeLottery, removeCart } = cartSlice.actions
+export const { getCart, addLottery, removeLottery, updateLottery, removeCart } = cartSlice.actions
 export default cartReducer = cartSlice.reducer

@@ -25,6 +25,16 @@ class LotteryApi {
         let fullUrl = API_URI.DELETE_LOTTERY_CART;
         return await window.connection.POST(fullUrl, body)
     }
+
+    deleteNumberLottery = async (body: any) => {
+        let fullUrl = API_URI.DELETE_LOTTERY_NUMBER;
+        return await window.connection.POST(fullUrl, body)
+    }
+
+    emptyCart = async (body: any) => {
+        let fullUrl = API_URI.EMPTY_CART;
+        return await window.connection.POST(fullUrl, body)
+    }
 }
 
 const lotteryApi = new LotteryApi

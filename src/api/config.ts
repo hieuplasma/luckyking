@@ -7,14 +7,14 @@ export const RESPONSE_TIMEOUT = 15000;
 export const TIMEOUT_MESSAGE = "request timeout"
 
 /** config for debug */
-// const config = {
-//   host: 'http://192.168.246.50:3001',
-// };
+const config = {
+  host: 'http://192.168.246.50:3001',
+};
 
 /** config for VPS */
-const config = {
-    host: 'http://103.162.31.84:3003',
-};
+// const config = {
+//     host: 'http://103.162.31.84:3003',
+// };
 
 export const API_HOST = config.host;
 
@@ -35,5 +35,7 @@ export const API_URI = {
     GET_LIST_ITEM_CART: "/cart/list",
     ADD_POWER_MEGA_CART: "/cart/add-power-mega",
     DELETE_LOTTERY_CART: "/cart/delete",
-    EDIT_LOTTERT_CART: "/cart/update"
+    DELETE_LOTTERY_NUMBER:"/cart/delete-number",
+    EDIT_LOTTERY_CART: "/cart/update",
+    EMPTY_CART:"/cart/empty"
 }
