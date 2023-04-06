@@ -156,12 +156,15 @@ const hideTabBar = [
 function BottomTabNavigator() {
   const insets = useSafeAreaInsets();
   // const route = useRoute<NavigationRoute>();
-
-  const [currentRoute, setCurrentRoute] = useState('HomeStack')
   return (
     <BottomTab.Navigator
       initialRouteName={'HomeStack'}
-      tabBar={props => hideTabBar.includes(currentRoute) ? null : <TabBar {...props} />}
+      tabBar={props => {
+        const index = props.navigation.getState().index
+        const routeName = getFocusedRouteNameFromRoute(props.state.routes[index]) ?? ""
+        console.log("current screen::::" + index + ":::::=> " + routeName)
+        return hideTabBar.includes(routeName) ? null : <TabBar {...props} />
+      }}
       screenOptions={{
         headerShown: false,
         tabBarHideOnKeyboard: true,
@@ -203,11 +206,6 @@ function BottomTabNavigator() {
         name='HomeStack'
         component={HomeNavigation}
         options={({ route }) => ({
-          tabBarStyle: ((route) => {
-            const routeName = getFocusedRouteNameFromRoute(route) ?? ""
-            setCurrentRoute(routeName)
-            return { display: "none" }
-          })(route),
           tabBarIcon: ({ focused }) =>
             getTabBarIcon({
               title: translate('tab.home'),

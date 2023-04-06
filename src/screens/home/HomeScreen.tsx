@@ -1,4 +1,4 @@
-import { HomeTicketLongFormComponent } from '@components';
+import { CartIcon, HomeTicketLongFormComponent } from '@components';
 import { useBackButtonWithNavigation } from '@hooks';
 import { HomeStackParamList, ScreenName } from '@navigation';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
@@ -63,19 +63,14 @@ export const HomeScreen = React.memo((props?: HomeScreenProps) => {
 
   const renderHeaderRightView = useCallback(() => {
     return (
-      <View style={[Style.Size.FlexRow]}>
-          <Icon.Button
+      <View style={[Style.Size.FlexRow, { alignItems: 'center' }]}>
+        <Icon.Button
           name="ic_notification"
           size={'large'}
           color={Color.white}
           style={[Style.Space.PaddingHorizontal.Medium_12]}
         />
-        <Icon.Button
-          name="ic_cart"
-          size={'large'}
-          color={Color.white}
-          style={[Style.Space.PaddingHorizontal.Zero]}
-        />
+        <CartIcon navigation={navigation} badgeStyle={{backgroundColor: "#FDB703"}} tintColor={Color.white} />
       </View>
     );
   }, []);

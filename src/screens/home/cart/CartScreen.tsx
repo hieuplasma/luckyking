@@ -3,7 +3,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { HomeStackParamList } from '@navigation';
 import { StatusBar, View, Text, Dimensions, StyleSheet, ScrollView, FlatList, RefreshControl, TouchableOpacity } from 'react-native'
-import { useCallback, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Icon, Image, Images } from '@assets';
 import { Color } from '@styles';
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,7 +17,7 @@ type NavigationRoute = RouteProp<HomeStackParamList, 'CartScreen'>;
 
 export interface CartScreenParamsList { }
 
-export const CartScreen = () => {
+export const CartScreen = React.memo(() => {
     const navigation = useNavigation<NavigationProp>();
     const route = useRoute<NavigationRoute>();
     const safeAreaInsets = useSafeAreaInsets();
@@ -77,11 +77,10 @@ export const CartScreen = () => {
                 data={cart}
                 renderItem={({ item, index }: any) => {
                     const numberDetail: NumberDetail[] = JSON.parse(item.NumberLottery.numberDetail.toString())
-                    console.log(item.drawCode)
                     return (
                         <View style={styles.borderItem}>
                             <Image source={Images.power_logo} style={{ height: 44.12, width: 60, alignSelf: 'center' }}></Image>
-                            <Text style={styles.textType}>{`${printTypePlay(item.NumberLottery.level, LotteryType.Power)}`}</Text>
+                            <Text style={styles.textType}>{`${printTypePlay(item.NumberLottery.level, item.type)}`}</Text>
                             <View>
                                 {
                                     numberDetail.map((it: any, id: number) => {
@@ -141,7 +140,7 @@ export const CartScreen = () => {
             </FlatList>
             {
                 calculateAll() > 0 ?
-                    <View style={{ marginBottom: 30, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16 }}>
+                    <View style={{ marginBottom: 30, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, paddingTop: 16 }}>
                         <Text style={{ fontSize: 14, fontWeight: '400' }}>{'Tổng cộng'}</Text>
                         <View style={{ flex: 1 }} />
                         <Text style={{ fontSize: 16, fontWeight: 'bold', marginRight: 16 }}>{`${printMoney(calculateAll())}đ`}</Text>
@@ -153,7 +152,7 @@ export const CartScreen = () => {
             }
         </View>
     )
-};
+});
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;

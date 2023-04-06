@@ -27,6 +27,10 @@ export const ScreenName = {
     ResultStack: "ResultStack"
   },
 
+  LiveChild: {
+    LiveScreen: "LiveScreen"
+  },
+
   HomeChild: {
     HomeScreen: "HomeScreen",
     PowerScreen: "PowerScreen",

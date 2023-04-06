@@ -3,16 +3,16 @@ import {LiveScreen, LiveScreenParamsList} from '@screen';
 import React from 'react';
 
 export type LiveStackParamList = {
-  Live: LiveScreenParamsList;
+  LiveScreen: LiveScreenParamsList;
 };
 
 const LiveStack = createStackNavigator<LiveStackParamList>();
 
 export function LiveNavigation() {
   return (
-    <LiveStack.Navigator initialRouteName={'Live'}>
+    <LiveStack.Navigator initialRouteName={'LiveScreen'}>
       <LiveStack.Screen
-        name={'Live'}
+        name={'LiveScreen'}
         component={LiveScreen}
         options={{headerShown: false, title: undefined}}
       />

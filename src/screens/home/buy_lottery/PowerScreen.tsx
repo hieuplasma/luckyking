@@ -16,6 +16,7 @@ import { ChooseDrawSheet } from "./component/ChooseDrawSheet";
 import { ChooseNumberSheet } from "./component/ChooseNumberSheet";
 import { LotteryType, OrderMethod, OrderStatus } from "@common";
 import { addLottery, getCart } from "@redux";
+import { CartIcon } from "@components";
 
 type NavigationProp = StackNavigationProp<HomeStackParamList, 'PowerScreen'>;
 type NavigationRoute = RouteProp<HomeStackParamList, 'PowerScreen'>;
@@ -222,7 +223,7 @@ export const PowerScreen = React.memo((props: any) => {
         const res = await lotteryApi.addPowerMegaToCart(body)
         console.log(res)
         if (res) {
-            Alert.alert("Thành công", "Đã thêm vé vào giỏ hànd!")
+            Alert.alert("Thành công", "Đã thêm vé vào giỏ hàng!")
             refreshChoosing()
             dispatch(addLottery(res.data))
         }
@@ -250,16 +251,7 @@ export const PowerScreen = React.memo((props: any) => {
                 </View>
                 <Image source={Images.power_logo} style={styles.imageLogo} />
                 <View style={{ flex: 1, alignItems: 'flex-end' }}>
-                    <TouchableOpacity onPress={() => NavigationUtils.navigate(navigation, ScreenName.HomeChild.CartScreen)}>
-                        <Image source={Images.cart_nofilled} style={{ width: 26, height: 26 }}>
-                            {
-                                cart.length > 0 ?
-                                    <View style={styles.bageNumber}>
-                                        <Text style={styles.textBage}>{cart.length}</Text>
-                                    </View> : <></>
-                            }
-                        </Image>
-                    </TouchableOpacity>
+                    <CartIcon navigation={navigation} />
                 </View>
             </View>
             {/* //Body */}
