@@ -26,6 +26,7 @@
     "i18n-js": "3.8.0",
     "jwt-decode": "^3.1.2",
     "lodash": "4.17.21",
+    "lottie-react-native": "^6.0.0-rc.3",
     "moment": "2.29.4",
     "qs": "6.11.1",
     "react": "18.2.0",

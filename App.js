@@ -1,15 +1,11 @@
-import { RootNavigationUtils } from '@utils';
 import React from 'react';
 import { ActivityIndicator, StatusBar, View } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
 import { RootNavigation } from '@navigation';
 import reduxConfig from './src/redux/config-store';
 import { Connection } from '@api';
 import { Color } from '@styles';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
-import { SplashScreen } from '@screen';
-import auth from '@react-native-firebase/auth';
 
 class App extends React.PureComponent {
   constructor(props) {
@@ -26,7 +22,7 @@ class App extends React.PureComponent {
     };
   }
 
-  componentDidMount() {}
+  componentDidMount() { }
 
   render() {
     const { isLoading, store } = this.state;
@@ -67,9 +63,7 @@ class App extends React.PureComponent {
             // loading={<SplashScreen />}
             persistor={store.persistor}>
             <StatusBar barStyle={'light-content'} />
-            <NavigationContainer ref={RootNavigationUtils.navigationRef}>
-              <RootNavigation />
-            </NavigationContainer>
+            <RootNavigation />
           </PersistGate>
         </Provider>
       </View>
