@@ -2,7 +2,7 @@ import { lotteryApi, userApi } from '@api';
 import { RootStackParamsList, ScreenName } from '@navigation';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { getCart, updateUser } from '@redux';
+import { getCart, getMegaDraw, getPowerDraw, updateUser } from '@redux';
 import { Color } from '@styles';
 import { doNotExits, NavigationUtils } from '@utils';
 import React, { useEffect } from 'react';
@@ -25,14 +25,31 @@ export const SplashScreen = React.memo(() => {
     if (doNotExits(token))
       NavigationUtils.resetGlobalStackWithScreen(navigation, ScreenName.Authentication);
     else {
+
       const user = await userApi.getuserInfo()
       if (user?.data) {
         dispatch(updateUser(user.data))
       }
+
       const cart = await lotteryApi.getListItemCart()
       if (cart) {
         dispatch(getCart(cart.data))
       }
+
+      const listPower = await lotteryApi.getSchedulePower({ take: 6, skip: 0 })
+      if (listPower) {
+        if (listPower.data.length > 0) {
+          dispatch(getPowerDraw(listPower.data))
+        }
+      }
+
+      const listMega = await lotteryApi.getScheduleMega({ take: 6, skip: 0 })
+      if (listMega) {
+        if (listMega.data.length > 0) {
+          dispatch(getMegaDraw(listMega.data))
+        }
+      }
+
       NavigationUtils.resetGlobalStackWithScreen(navigation, ScreenName.Main);
     }
   }

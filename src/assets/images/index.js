@@ -38,4 +38,6 @@ export const Images = {
   cart_nofilled: require('./cart_nofilled.png'),
   edit_pen: require('./edit_pen.png'),
   add_cart: require('./add_cart.png'),
+  mega_logo: require('./mega_logo.png'),
+  ball_mega:require('./ball_mega.png')
 };

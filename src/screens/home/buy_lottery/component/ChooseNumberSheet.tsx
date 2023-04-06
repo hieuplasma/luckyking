@@ -9,6 +9,8 @@ import Animated, {
     useAnimatedStyle,
 } from "react-native-reanimated";
 import { SwiperFlatList } from 'react-native-swiper-flatlist';
+import { LotteryType } from '@common';
+import { getColorLott } from '@utils';
 
 interface ChooseTypeSheetProps {
     isVisible?: boolean
@@ -18,12 +20,15 @@ interface ChooseTypeSheetProps {
     onToggle: (data: number) => void,
     onChoose: (data: any) => void,
     numberSet: any,
-    page?: number
+    page?: number,
+    type: keyof LotteryType
 }
 
 const fullNumber = Array.from({ length: 55 }, (_, index) => index + 1);
 
-export const ChooseNumberSheet = React.memo(({ isVisible, bottomSheetRef, onToggle, onChoose, numberSet, page }: ChooseTypeSheetProps) => {
+export const ChooseNumberSheet = React.memo(({ isVisible, bottomSheetRef, onToggle, onChoose, numberSet, page, type }: ChooseTypeSheetProps) => {
+
+    const lottColor = getColorLott(type)
 
     // ref
     const swiperRef = useRef<SwiperFlatList>(null);
@@ -123,7 +128,7 @@ export const ChooseNumberSheet = React.memo(({ isVisible, bottomSheetRef, onTogg
                     const check = (item.includes(number) ? true : false)
                     return (
                         <View style={styles.ballContainer} key={index + ':::' + index2}  >
-                            <TouchableOpacity style={[styles.ball, { backgroundColor: check ? Color.power : '#E9E6E6' }]} onPress={() => changeNumber(number)}>
+                            <TouchableOpacity style={[styles.ball, { backgroundColor: check ? lottColor : '#E9E6E6' }]} onPress={() => changeNumber(number)}>
                                 <Text style={[styles.textBall, { color: check ? Color.white : Color.black }]}>{printNumber(number)}</Text>
                             </TouchableOpacity>
                         </View>
@@ -175,7 +180,7 @@ export const ChooseNumberSheet = React.memo(({ isVisible, bottomSheetRef, onTogg
                         renderItem={({ item, index }) => ItemView(item, index)}
                     />
                 </View>
-                <TouchableOpacity disabled={!checkIsOk()} style={[styles.confirmButton, { backgroundColor: checkIsOk() ? Color.power : '#FCCF81' }]} onPress={() => choosing()}>
+                <TouchableOpacity disabled={!checkIsOk()} style={[styles.confirmButton, { backgroundColor: checkIsOk() ? lottColor : '#FCCF81' }]} onPress={() => choosing()}>
                     <Text style={styles.textConfirm}>{`Xác nhận`.toUpperCase()}</Text>
                 </TouchableOpacity>
             </View>

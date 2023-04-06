@@ -8,7 +8,8 @@ import Animated, {
     interpolate,
     useAnimatedStyle,
 } from "react-native-reanimated";
-import { printDraw } from '@utils';
+import { getColorLott, printDraw } from '@utils';
+import { LotteryType } from '@common';
 
 interface ChooseTypeSheetProps {
     isVisible?: boolean
@@ -18,10 +19,13 @@ interface ChooseTypeSheetProps {
     onToggle: (data: number) => void,
     currentChoose: any,
     onChoose: (data: any) => void,
-    listDraw: any
+    listDraw: any,
+    type: keyof LotteryType
 }
 
-export const ChooseDrawSheet = React.memo(({ isVisible, bottomSheetRef, onToggle, currentChoose, onChoose, listDraw }: ChooseTypeSheetProps) => {
+export const ChooseDrawSheet = React.memo(({ isVisible, bottomSheetRef, onToggle, currentChoose, onChoose, listDraw, type }: ChooseTypeSheetProps) => {
+
+    const lottColor = getColorLott(type)
 
     const [currentDraw, setCurrentDraw] = useState(currentChoose)
     useEffect(() => {
@@ -87,7 +91,11 @@ export const ChooseDrawSheet = React.memo(({ isVisible, bottomSheetRef, onToggle
                     {listDraw.map((item: any, index: number) => {
                         return (
                             <TouchableOpacity activeOpacity={0.4} key={index} style={styles.item} onPress={() => setCurrentDraw(item)}>
-                                <Image source={item.drawCode == currentDraw.drawCode ? Images.checked_box : Images.check_box} style={{ width: 24, height: 24 }}></Image>
+                                <Image
+                                    source={item.drawCode == currentDraw.drawCode ? Images.checked_box : Images.check_box}
+                                    style={{ width: 24, height: 24 }}
+                                    tintColor={item.drawCode == currentDraw.drawCode ? lottColor : '#130F26'}
+                                />
                                 <Text style={{ fontSize: 14, marginLeft: 18, color: Color.black }}>
                                     {`${printDraw(item)}`}
                                 </Text>
@@ -95,7 +103,7 @@ export const ChooseDrawSheet = React.memo(({ isVisible, bottomSheetRef, onToggle
                         )
                     })}
                 </View>
-                <TouchableOpacity style={styles.confirmButton} onPress={() => choosing(currentDraw)}>
+                <TouchableOpacity style={[styles.confirmButton, { backgroundColor: lottColor }]} onPress={() => choosing(currentDraw)}>
                     <Text style={styles.textConfirm}>{`Xác nhận`.toUpperCase()}</Text>
                 </TouchableOpacity>
             </View>

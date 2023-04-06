@@ -6,8 +6,13 @@ class LotteryApi {
         return await window.connection.GET(fullUrl, params)
     }
 
-    bookLotteryPower = async (body: any) => {
-        let fullUrl = API_URI.BOOK_LOTTERY_POWER;
+    getScheduleMega = async (params: any) => {
+        let fullUrl = API_URI.GET_SCHEDULE_MEGA;
+        return await window.connection.GET(fullUrl, params)
+    }
+
+    bookLotteryPowerMega = async (body: any) => {
+        let fullUrl = API_URI.BOOK_LOTTERY_POWER_MEGA;
         return await window.connection.POST(fullUrl, body)
     }
 

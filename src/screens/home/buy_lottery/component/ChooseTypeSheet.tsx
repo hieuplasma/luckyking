@@ -8,6 +8,8 @@ import Animated, {
     interpolate,
     useAnimatedStyle,
 } from "react-native-reanimated";
+import { LotteryType } from '@common';
+import { getBallLott, getColorLott } from '@utils';
 
 interface Type {
     label: string,
@@ -21,7 +23,8 @@ interface ChooseTypeSheetProps {
     onClose?: () => void
     onToggle: (data: number) => void,
     currentChoose: any,
-    onChoose: (data: any) => void
+    onChoose: (data: any) => void,
+    type: keyof LotteryType
 }
 
 const types = [
@@ -41,7 +44,9 @@ const types = [
     { label: "Bao 18", value: 18 },//13
 ]
 
-export const ChooseTypeSheet = ({ isVisible, bottomSheetRef, onToggle, currentChoose, onChoose }: ChooseTypeSheetProps) => {
+export const ChooseTypeSheet = ({ isVisible, bottomSheetRef, onToggle, currentChoose, onChoose, type }: ChooseTypeSheetProps) => {
+
+    const lottColor = getColorLott(type)
 
     const [currentType, setCurrentType] = useState(currentChoose)
     useEffect(() => {
@@ -107,13 +112,13 @@ export const ChooseTypeSheet = ({ isVisible, bottomSheetRef, onToggle, currentCh
                         return (
                             <TouchableOpacity activeOpacity={0.4} key={index} style={styles.item} onPress={() => setCurrentType(item)}>
                                 {index % 2 == 1 ? <View style={{ flex: 1 }} /> : <></>}
-                                <Image source={currentType.value == item.value ? Images.ball_power : Images.ball_grey} style={styles.ball}></Image>
+                                <Image source={currentType.value == item.value ? getBallLott(type) : Images.ball_grey} style={styles.ball}></Image>
                                 <Text style={{ marginLeft: 12, width: 50 }}>{`${item.label}`}</Text>
                             </TouchableOpacity>
                         )
                     })}
                 </View>
-                <TouchableOpacity style={styles.confirmButton} onPress={() => choosing(currentType)}>
+                <TouchableOpacity style={[styles.confirmButton, {backgroundColor: lottColor}]} onPress={() => choosing(currentType)}>
                     <Text style={styles.textConfirm}>{`Xác nhận`.toUpperCase()}</Text>
                 </TouchableOpacity>
             </View>

@@ -15,15 +15,15 @@ import { lotteryApi } from "@api";
 import { ChooseDrawSheet } from "./component/ChooseDrawSheet";
 import { ChooseNumberSheet } from "./component/ChooseNumberSheet";
 import { LotteryType, OrderMethod, OrderStatus } from "@common";
-import { addLottery, getCart, getPowerDraw, updateUser } from "@redux";
+import { addLottery, getCart, getMegaDraw, updateUser } from "@redux";
 import { CartIcon } from "@components";
 
-type NavigationProp = StackNavigationProp<HomeStackParamList, 'PowerScreen'>;
-type NavigationRoute = RouteProp<HomeStackParamList, 'PowerScreen'>;
+type NavigationProp = StackNavigationProp<HomeStackParamList, 'MegaScreen'>;
+type NavigationRoute = RouteProp<HomeStackParamList, 'MegaScreen'>;
 
-export interface PowerScreenParamsList { }
+export interface MegaScreenParamsList { }
 
-export interface PowerScreenProps { }
+export interface MegaScreenProps { }
 
 const initNumber = [
     [false, false, false, false, false, false], //  numberA:
@@ -34,16 +34,16 @@ const initNumber = [
     [false, false, false, false, false, false] // numberF:
 ]
 
-const POWER_NUMBER = 45
+const MEGA_NUMBER = 45
 
-export const PowerScreen = React.memo((props: any) => {
+export const MegaScreen = React.memo((props: any) => {
 
     const navigation = useNavigation<NavigationProp>();
     const route = useRoute<NavigationRoute>();
     const safeAreaInsets = useSafeAreaInsets();
     const dispatch = useDispatch()
 
-    const listDraw = useSelector((state: any) => state.drawReducer.listPowerDraw)
+    const listDraw = useSelector((state: any) => state.drawReducer.listMegaDraw)
 
     const [showBottomSheet, setShowBottomSheet] = useState(false)
     const [typePlay, setType]: any = useState({ label: "Cơ bản", value: 6 });
@@ -85,9 +85,9 @@ export const PowerScreen = React.memo((props: any) => {
 
     useEffect(() => {
         async function getFirstDraw() {
-            const res = await lotteryApi.getSchedulePower({ take: 6 })
+            const res = await lotteryApi.getScheduleMega({ take: 6 })
             if (res) {
-                if (res.data.length > 0) dispatch(getPowerDraw(res.data))
+                if (res.data.length > 0) dispatch(getMegaDraw(res.data))
             }
         }
         getFirstDraw()
@@ -115,7 +115,7 @@ export const PowerScreen = React.memo((props: any) => {
         const currentLevel = typePlay.value
         const randomNumbers = new Set();
         while (randomNumbers.size < currentLevel) {
-            const randomNumber = Math.floor(Math.random() * POWER_NUMBER) + 1;
+            const randomNumber = Math.floor(Math.random() * MEGA_NUMBER) + 1;
             randomNumbers.add(randomNumber);
         }
         const resultArray = Array.from(randomNumbers).map(Number).sort((a, b) => a - b);
@@ -137,7 +137,7 @@ export const PowerScreen = React.memo((props: any) => {
         for (let i = 0; i < 6; i++) {
             const randomNumbers = new Set();
             while (randomNumbers.size < currentLevel) {
-                const randomNumber = Math.floor(Math.random() * POWER_NUMBER) + 1;
+                const randomNumber = Math.floor(Math.random() * MEGA_NUMBER) + 1;
                 randomNumbers.add(randomNumber);
             }
             const resultArray = Array.from(randomNumbers).map(Number).sort((a, b) => a - b);
@@ -216,7 +216,7 @@ export const PowerScreen = React.memo((props: any) => {
             return Alert.alert("Thông báo", "Bạn chưa chọn bộ số nào")
         }
         let body: any = {
-            lotteryType: LotteryType.Power,
+            lotteryType: LotteryType.Mega,
             amount: totalCost,
             status: OrderStatus.CART,
             level: typePlay.value,
@@ -255,7 +255,7 @@ export const PowerScreen = React.memo((props: any) => {
                         onPressed={onGoBack}
                     />
                 </View>
-                <Image source={Images.power_logo} style={styles.imageLogo} />
+                <Image source={Images.mega_logo} style={styles.imageLogo} />
                 <View style={{ flex: 1, alignItems: 'flex-end' }}>
                     <CartIcon navigation={navigation} />
                 </View>
@@ -297,7 +297,7 @@ export const PowerScreen = React.memo((props: any) => {
                                     {item.sort((a: any, b: any) => a - b).map((number: any, index2: number) => {
                                         return (
                                             <View style={styles.ballContainer} key={index2}>
-                                                <Image source={number ? Images.ball_power : Images.ball_grey} style={styles.ballStyle}>
+                                                <Image source={number ? Images.ball_mega : Images.ball_grey} style={styles.ballStyle}>
                                                     <Text style={{ color: Color.white }}>{printNumber(number)}</Text>
                                                 </Image>
                                             </View>
@@ -349,7 +349,7 @@ export const PowerScreen = React.memo((props: any) => {
                     <TouchableOpacity style={[styles.buttonFooterDown, { backgroundColor: '#0171F5' }]} activeOpacity={0.6} onPress={() => addToCart()}>
                         <Image source={Images.add_cart} style={{ width: 26, height: 26 }}></Image>
                     </TouchableOpacity>
-                    <TouchableOpacity style={[styles.buttonFooterDown, { backgroundColor: Color.power }]} activeOpacity={0.6} onPress={() => bookLottery()}>
+                    <TouchableOpacity style={[styles.buttonFooterDown, { backgroundColor: Color.mega }]} activeOpacity={0.6} onPress={() => bookLottery()}>
                         <Text style={{ color: Color.white, fontWeight: 'bold', fontSize: 16 }}>{"ĐẶT VÉ"}</Text>
                     </TouchableOpacity>
                 </View>
@@ -375,7 +375,7 @@ export const PowerScreen = React.memo((props: any) => {
                         onChoose={(draw) => setDraw(draw)}
                         listDraw={listDraw}
                         //@ts-ignore
-                        type={LotteryType.Power}
+                        type={LotteryType.Mega}
                     />
                     <ChooseNumberSheet
                         bottomSheetRef={chooseNumberRef}
@@ -384,8 +384,8 @@ export const PowerScreen = React.memo((props: any) => {
                         onChoose={(set) => setNumbers(set)}
                         numberSet={numberSet}
                         page={pageNumber}
-                        //@ts-ignore
-                        type={LotteryType.Power}
+                            //@ts-ignore
+                            type={LotteryType.Mega}
                     />
                 </>
                 : <></>}
@@ -403,7 +403,7 @@ const styles = StyleSheet.create({
         backgroundColor: Color.buyLotteryBackGround
     },
     imageLogo: {
-        height: 44.12, width: 60
+        height: 44, width: 78.57
     },
     headerContainer: {
         flexDirection: 'row',

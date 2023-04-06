@@ -9,9 +9,9 @@ import { Color } from '@styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { lotteryApi } from '@api';
 import { getCart, removeCart, removeLottery, updateLottery } from '@redux';
-import { printDraw, printDrawCode, printMoney, printNumber, printTypePlay, printWeekDate } from '@utils';
+import { getColorLott, printDraw, printDrawCode, printMoney, printNumber, printTypePlay, printWeekDate } from '@utils';
 import { LotteryType, NumberDetail } from '@common';
-import { ModalConfirm } from '@components';
+import { LogoIcon, ModalConfirm } from '@components';
 
 type NavigationProp = StackNavigationProp<HomeStackParamList, 'CartScreen'>;
 type NavigationRoute = RouteProp<HomeStackParamList, 'CartScreen'>;
@@ -128,9 +128,10 @@ export const CartScreen = React.memo(() => {
                 data={cart}
                 renderItem={({ item, index }: any) => {
                     const numberDetail: NumberDetail[] = JSON.parse(item.NumberLottery.numberDetail.toString())
+                    const lottColor = getColorLott(item.type)
                     return (
                         <View style={styles.borderItem}>
-                            <Image source={Images.power_logo} style={{ height: 44.12, width: 60, alignSelf: 'center' }}></Image>
+                            <LogoIcon type={item.type}/>
                             <Text style={styles.textType}>{`${printTypePlay(item.NumberLottery.level, item.type)}`}</Text>
                             <View>
                                 {
@@ -146,7 +147,7 @@ export const CartScreen = React.memo(() => {
                                                         {
                                                             numbers.map((number: number, id2: number) => {
                                                                 return (
-                                                                    <View key={number + '' + id} style={styles.ball}>
+                                                                    <View key={number + '' + id2} style={[styles.ball, {backgroundColor: lottColor}]}>
                                                                         <Text style={styles.textBall}>
                                                                             {`${printNumber(number)}`}
                                                                         </Text>
@@ -183,7 +184,7 @@ export const CartScreen = React.memo(() => {
                                 <Text style={{ fontSize: 14, fontWeight: 'bold' }}>
                                     {`Vé ${printNumber(index + 1)}:`}
                                 </Text>
-                                <Text style={{ color: Color.power, marginLeft: 12, fontSize: 14, fontWeight: 'bold' }}>
+                                <Text style={{ color: lottColor, marginLeft: 12, fontSize: 14, fontWeight: 'bold' }}>
                                     {`${printMoney(item.bets)}đ`}
                                 </Text>
                                 <View style={{ flex: 1 }} />

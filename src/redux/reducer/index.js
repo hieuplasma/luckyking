@@ -5,6 +5,7 @@ import { persistReducer } from 'redux-persist';
 import authReducer from './auth'
 import userReducer from './user'
 import cartReducer from './cart'
+import drawReducer from './draw';
 
 const authSetup = {
     key: "auth",
@@ -23,6 +24,7 @@ const cartSetup = {
 export const rootReducer = combineReducers({
     authReducer: persistReducer(authSetup, authReducer),
     userReducer: persistReducer(userSetup, userReducer),
-    cartReducer: persistReducer(cartSetup, cartReducer)
+    cartReducer: persistReducer(cartSetup, cartReducer),
+    drawReducer
 })
 

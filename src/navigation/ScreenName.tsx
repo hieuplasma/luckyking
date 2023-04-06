@@ -34,6 +34,7 @@ export const ScreenName = {
   HomeChild: {
     HomeScreen: "HomeScreen",
     PowerScreen: "PowerScreen",
+    MegaScreen: "MegaScreen",
     CartScreen: "CartScreen"
   }
 };

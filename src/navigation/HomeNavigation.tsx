@@ -2,6 +2,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import {
   CartScreen, CartScreenParamsList,
   HomeScreen, HomeScreenParamsList,
+  MegaScreen,
+  MegaScreenParamsList,
   PowerScreen, PowerScreenParamsList
 } from '@screen';
 import React from 'react';
@@ -9,6 +11,7 @@ import React from 'react';
 export type HomeStackParamList = {
   HomeScreen: HomeScreenParamsList;
   PowerScreen: PowerScreenParamsList;
+  MegaScreen: MegaScreenParamsList;
   CartScreen: CartScreenParamsList
 };
 
@@ -30,6 +33,11 @@ export function HomeNavigation() {
       <HomeStack.Screen
         name={'CartScreen'}
         component={CartScreen}
+        options={{ headerShown: false, title: undefined }}
+      />
+        <HomeStack.Screen
+        name={'MegaScreen'}
+        component={MegaScreen}
         options={{ headerShown: false, title: undefined }}
       />
     </HomeStack.Navigator>

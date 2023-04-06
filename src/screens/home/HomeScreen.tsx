@@ -27,20 +27,8 @@ export const HomeScreen = React.memo((props?: HomeScreenProps) => {
   const safeAreaInsets = useSafeAreaInsets();
   const dispatch = useDispatch()
 
-  const [firstDrawPower, setFirstDrawPower]: any = useState(false)
-
-  async function getFirstDraw() {
-    const res = await lotteryApi.getSchedulePower({ take: 1 })
-    if (res) {
-      if (res.data.length > 0) setFirstDrawPower(res.data[0])
-    }
-  }
-  useEffect(() => {
-    async function init() {
-      getFirstDraw()
-    }
-    init()
-  }, [])
+  const firstDrawPower = useSelector((state:any)=> state.drawReducer.powerFirstDraw)
+  const firstDrawMega = useSelector((state:any)=> state.drawReducer.megaFirstDraw)
 
   useBackButtonWithNavigation(
     React.useCallback(() => {
@@ -121,6 +109,10 @@ export const HomeScreen = React.memo((props?: HomeScreenProps) => {
       <HomeTicketLongFormComponent
         image="https://media.vietlott.vn//main/06.2018/cms/game/mega-645_full-color_cut-copy.png"
         type="mega"
+        targetTime={firstDrawMega ? new Date(firstDrawMega.drawTime) : undefined}
+        action={() => NavigationUtils.navigate(navigation, ScreenName.HomeChild.MegaScreen)}
+        nextDate={firstDrawMega ? dateConvert(new Date(firstDrawMega.drawTime)) : ""}
+        QSMT={'T4, T6, CN'}
       />
     );
   }, []);

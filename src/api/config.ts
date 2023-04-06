@@ -28,9 +28,10 @@ export const API_URI = {
 
     UPDATE_PASSWORD: "/auth/update-password",
 
-    BOOK_LOTTERY_POWER: "/order/add-power-mega",
+    BOOK_LOTTERY_POWER_MEGA: "/order/add-power-mega",
 
     GET_SCHEDULE_POWER: "/result/schedule/power",
+    GET_SCHEDULE_MEGA: "/result/schedule/mega",
 
     GET_LIST_ITEM_CART: "/cart/list",
     ADD_POWER_MEGA_CART: "/cart/add-power-mega",

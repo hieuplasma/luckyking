@@ -149,6 +149,7 @@ export const TabBar = (props: BottomTabBarProps) => {
 
 const hideTabBar = [
   ScreenName.HomeChild.PowerScreen,
+  ScreenName.HomeChild.MegaScreen,
   ScreenName.HomeChild.CartScreen
 ]
 
