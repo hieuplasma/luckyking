@@ -1,4 +1,4 @@
-import { API_URI } from "./url";
+import { API_URI } from "../config";
 
 class UserApi {
   getuserInfo = async () => {

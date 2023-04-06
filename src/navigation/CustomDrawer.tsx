@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { removeToken } from '../redux/reducer/auth';
 import { ScreenName } from './ScreenName';
 import auth from '@react-native-firebase/auth';
-import { removeUser, updateUser } from '@redux';
+import { removeCart, removeUser, updateUser } from '@redux';
 import { useEffect, useState } from 'react';
 import { Image, Images } from '@assets';
 import { Color } from '@styles';
@@ -20,24 +20,10 @@ function DrawerCustom(props: any) {
 
   const [loading, setLoading] = useState(false)
 
-  // async function getUser() {
-  //   const res = await userApi.getuserInfo()
-  //   console.log(res.data)
-  //   if (res?.data) {
-  //     dispatch(updateUser(res.data))
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   async function init() {
-  //     getUser()
-  //   }
-  //   init()
-  // }, [])
-
   const logOut = () => {
     dispatch(removeToken())
     dispatch(removeUser())
+    dispatch(removeCart())
     props.navigation?.closeDrawer();
     NavigationUtils.resetGlobalStackWithScreen(navigation, ScreenName.Authentication);
     auth()
@@ -82,7 +68,7 @@ function DrawerCustom(props: any) {
           </TouchableOpacity>
         </View>
 
-        <TouchableOpacity style={[styles.lineItem2, { borderColor: Color.luckyKing }]} activeOpacity={.6}onPress={() => NavigationUtils.navigate(navigation, ScreenName.BottomTab)}>
+        <TouchableOpacity style={[styles.lineItem2, { borderColor: Color.luckyKing }]} activeOpacity={.6} onPress={() => NavigationUtils.navigate(navigation, ScreenName.BottomTab)}>
           <Image source={Images.home} style={styles.icon_default}></Image>
           <Text style={styles.aloneText}>{"Trang chủ"}</Text>
           <View style={{ flex: 1 }} />

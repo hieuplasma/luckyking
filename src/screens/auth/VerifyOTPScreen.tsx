@@ -13,12 +13,10 @@ import { Button } from '@widgets';
 import React, { useCallback, useEffect, useState } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import auth from '@react-native-firebase/auth';
-import { authApi } from '@api';
 import DeviceInfo from 'react-native-device-info';
 import { useDispatch } from 'react-redux';
 import { updateToken } from '../../redux/reducer/auth';
-import { API_HOST } from '@configs';
-import { API_URI } from '../../api/url';
+import { API_URI } from '../../api/config';
 import { NavigationUtils, ScreenUtils } from '@utils';
 import { Icon } from '@assets';
 

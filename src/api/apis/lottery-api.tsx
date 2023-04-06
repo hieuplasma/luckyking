@@ -1,4 +1,4 @@
-import { API_URI } from "./url";
+import { API_URI } from "../config";
 
 class LotteryApi {
     getSchedulePower = async (params: any) => {
@@ -19,6 +19,11 @@ class LotteryApi {
     getListItemCart = async () => {
         let fullUrl = API_URI.GET_LIST_ITEM_CART;
         return await window.connection.GET(fullUrl)
+    }
+
+    deleteItemCart = async (body: any) => {
+        let fullUrl = API_URI.DELETE_LOTTERY_CART;
+        return await window.connection.POST(fullUrl, body)
     }
 }
 

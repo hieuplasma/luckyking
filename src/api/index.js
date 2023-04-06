@@ -1,8 +1,8 @@
-import { API_HOST } from '@configs';
-import authApi from './auth-api';
-import userApi from './user-api';
-import lotteryApi from './lottery-api';
-import { RESPONSE_TIMEOUT, TIMEOUT_MESSAGE, TYPE_API } from './enum';
+import authApi from './apis/auth-api';
+import userApi from './apis/user-api';
+import lotteryApi from './apis/lottery-api';
+
+import { RESPONSE_TIMEOUT, TIMEOUT_MESSAGE, TYPE_API, API_HOST } from './config';
 import jwtDecode from 'jwt-decode';
 import { Alert } from 'react-native';
 const axios = require('axios').default;

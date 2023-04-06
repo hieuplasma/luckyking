@@ -52,6 +52,10 @@ export const CartScreen = React.memo(() => {
         return total
     }
 
+    const deleteLottety = (id: string) => {
+
+    }
+
     return (
         <View style={styles.container}>
             <StatusBar translucent={true} barStyle={'light-content'} backgroundColor={"transparent"} />
@@ -126,7 +130,9 @@ export const CartScreen = React.memo(() => {
                                     {`${printMoney(item.bets)}đ`}
                                 </Text>
                                 <View style={{ flex: 1 }} />
-                                <Image source={Images.trash} style={styles.iconTrash}></Image>
+                                <TouchableOpacity onPress={() => deleteLottety(item.id)}>
+                                    <Image source={Images.trash} style={styles.iconTrash}></Image>
+                                </TouchableOpacity>
                             </View>
                         </View>
                     )

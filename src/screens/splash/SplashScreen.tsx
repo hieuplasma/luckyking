@@ -63,7 +63,7 @@ export const SplashScreen = React.memo(() => {
         minWidth: 100,
         borderRadius: 8,
       }}>
-      <ActivityIndicator size="large" color={Color.red} />
+      <ActivityIndicator size="large" color={Color.luckyKing} />
     </View>
   </View>
 });
