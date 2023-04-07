@@ -7,7 +7,7 @@ export function doNotExits(param: any) {
     else return false
 }
 
-export function getColorLott(params: keyof LotteryType) {
+export function getColorLott(params: LotteryType) {
     switch (params) {
         case LotteryType.Power:
             return Color.power
@@ -24,7 +24,7 @@ export function getColorLott(params: keyof LotteryType) {
     }
 }
 
-export function getBallLott(params: keyof LotteryType) {
+export function getBallLott(params:  LotteryType) {
     switch (params) {
         case LotteryType.Power:
             return Images.ball_power

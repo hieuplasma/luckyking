@@ -1,87 +1,52 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Dimensions } from 'react-native';
-import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
+import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
+import { StyleSheet, View, Text, TouchableOpacity, Dimensions, Animated } from 'react-native';
+import BottomSheet from '@gorhom/bottom-sheet';
 import { Color } from '@styles';
 import { Image, Images } from '@assets'
-import Animated, {
-    Extrapolate,
-    interpolate,
-    useAnimatedStyle,
-} from "react-native-reanimated";
 import { SwiperFlatList } from 'react-native-swiper-flatlist';
 import { LotteryType } from '@common';
 import { getColorLott } from '@utils';
 
 interface ChooseTypeSheetProps {
-    isVisible?: boolean
-    bottomSheetRef: any
-    onOpen?: () => void
-    onClose?: () => void
-    onToggle: (data: number) => void,
     onChoose: (data: any) => void,
     numberSet: any,
     page?: number,
-    type: keyof LotteryType
+    type: LotteryType
 }
 
 const fullNumber = Array.from({ length: 55 }, (_, index) => index + 1);
 
-export const ChooseNumberSheet = React.memo(({ isVisible, bottomSheetRef, onToggle, onChoose, numberSet, page, type }: ChooseTypeSheetProps) => {
+export const ChooseNumberSheet = forwardRef(({ onChoose, numberSet, page, type }: ChooseTypeSheetProps, ref) => {
 
     const lottColor = getColorLott(type)
 
     // ref
+    const bottomSheetRef = useRef<BottomSheet>(null);
     const swiperRef = useRef<SwiperFlatList>(null);
+
+    useEffect(() => {
+        console.log('ChooseNumberSheet has been re-rendered');
+    });
+
+    useImperativeHandle(ref, () => ({
+        openSheet: onOpen,
+        closeSheet: onClose
+    }));
 
     const [indexPage, setIndexPage] = useState(0)
     const onChangeIndex = (index: any) => {
         setIndexPage(index.index)
     }
-
-    const [currentNumbers, setCurrentNumbers] = useState([...numberSet])
-    const [currentLevel, setCurrentLevel] = useState([...numberSet[0]].length)
-    useEffect(() => {
-        setCurrentNumbers([...numberSet])
-        setCurrentLevel([...numberSet[0]].length)
-    }, [isVisible])
-
     useEffect(() => {
         (page || page === 0) ? swiperRef.current?.scrollToIndex({ animated: false, index: page }) : {}
     }, [page])
 
-    const handleClose = () => {
-        bottomSheetRef.current?.close();
-    };
-
-    // callbacks
-    const handleSheetChanges = useCallback((index: number) => {
-        onToggle(index)
-    }, []);
-
-    const containerAnimatedStyle = useAnimatedStyle(() => ({
-        opacity: interpolate(
-            BACKGROUND_OPACITY,
-            [0, 1],
-            [0, 1],
-            Extrapolate.CLAMP
-        ),
-    }));
-
-    // styles
-    const containerStyle = useMemo(
-        () => [
-            styles.background,
-            {
-                backgroundColor: "#101010",
-            },
-            containerAnimatedStyle,
-        ],
-        [styles.background, containerAnimatedStyle]
-    );
+    const [currentNumbers, setCurrentNumbers] = useState([...numberSet])
+    const [currentLevel, setCurrentLevel] = useState([...numberSet[0]].length)
 
     const choosing = () => {
+        onClose()
         onChoose(currentNumbers)
-        bottomSheetRef.current?.close();
     }
 
     const totalSelected = () => {
@@ -138,22 +103,60 @@ export const ChooseNumberSheet = React.memo(({ isVisible, bottomSheetRef, onTogg
         )
     }, [changeNumber]);
 
+    const [opacity, setOpacity] = useState(new Animated.Value(0))
+    const [isOpen, setIsOpen] = useState(false)
+    const onClose = () => {
+        Animated.timing(opacity, {
+            toValue: 0,
+            duration: 500,
+            useNativeDriver: true,
+        }).start();
+        bottomSheetRef.current?.close()
+        setTimeout(() => {
+            setIsOpen(false)
+        }, 50);
+    };
+
+    const onOpen = () => {
+        setIsOpen(true)
+        setCurrentNumbers([...numberSet])
+        setCurrentLevel([...numberSet[0]].length)
+        bottomSheetRef.current?.expand()
+        Animated.timing(opacity, {
+            toValue: BACKGROUND_OPACITY,
+            duration: 500,
+            useNativeDriver: true,
+        }).start();
+    };
+
+    const renderBackDrop = () => (
+        <Animated.View
+            style={[styles.background, { opacity: opacity }]}>
+            <TouchableOpacity
+                style={{ flex: 1 }}
+                activeOpacity={1}
+                onPress={onClose}
+            />
+        </Animated.View>
+    );
+
+    const handleSheetAnimate = (from: number, to: number) => {
+        if (to == -1) onClose()
+    }
+
     return (
         <BottomSheet
             ref={bottomSheetRef}
             snapPoints={[SHEET_HEIGHT]}
             enablePanDownToClose={true}
             index={-1}
-            backgroundStyle={styles.sheetContainer}
             backdropComponent={() => (
-                isVisible ?
-                    <Animated.View style={containerStyle}>
-                        <TouchableOpacity style={{ flex: 1 }} onPress={handleClose}>
-                        </TouchableOpacity>
-                    </Animated.View>
+                isOpen ?
+                    renderBackDrop()
                     : null
             )}
-            onChange={handleSheetChanges}
+            onAnimate={handleSheetAnimate}
+            backgroundStyle={styles.sheetContainer}
         >
             <View style={{ flex: 1 }}>
                 <View style={{ flexDirection: 'row', paddingHorizontal: 18 }}>
@@ -196,9 +199,12 @@ const BACKGROUND_OPACITY = 0.85
 const styles = StyleSheet.create({
     sheetContainer: { backgroundColor: '#F4F4F4', borderTopLeftRadius: 20, borderTopRightRadius: 20 },
     background: {
-        height: windowHeight, width: windowWidth,
-        // backgroundColor: '#101010', opacity: BACKGROUND_OPACITY,
-        position: 'absolute'
+        backgroundColor: '#000',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
     },
     title: {
         fontSize: 18, color: Color.black, alignSelf: 'center', fontWeight: 'bold'

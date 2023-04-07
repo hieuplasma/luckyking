@@ -2,9 +2,13 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
     powerFirstDraw: "",
-    listPowerDraw: [],
+    powerListDraw: [],
+
     megaFirstDraw: "",
-    listMegaDraw:[]
+    megaListDraw: [],
+
+    max3dFirstDraw: "",
+    max3dListDraw: []
 }
 
 // Create Redux state slice
@@ -14,14 +18,18 @@ const drawSlice = createSlice({
     reducers: {
         getPowerDraw: (state, action) => {
             state.powerFirstDraw = action.payload[0]
-            state.listPowerDraw = action.payload
+            state.powerListDraw = action.payload
         },
         getMegaDraw: (state, action) => {
             state.megaFirstDraw = action.payload[0]
-            state.listMegaDraw = action.payload
+            state.megaListDraw = action.payload
+        },
+        getMax3dDraw: (state, action) => {
+            state.max3dFirstDraw = action.payload[0]
+            state.max3dListDraw = action.payload
         },
     },
 })
 
-export const { getPowerDraw, getMegaDraw } = drawSlice.actions
+export const { getPowerDraw, getMegaDraw, getMax3dDraw } = drawSlice.actions
 export default drawReducer = drawSlice.reducer

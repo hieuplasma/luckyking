@@ -8,7 +8,6 @@ import { calSurcharge, convolutions, NavigationUtils, printDraw, printMoney, Scr
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { View, StyleSheet, Text, ScrollView, TouchableOpacity, Dimensions, StatusBar, Alert } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
 import { ChooseTypeSheet } from "./component/ChooseTypeSheet";
 import { useDispatch, useSelector } from "react-redux";
 import { lotteryApi } from "@api";
@@ -43,23 +42,24 @@ export const MegaScreen = React.memo((props: any) => {
     const safeAreaInsets = useSafeAreaInsets();
     const dispatch = useDispatch()
 
-    const listDraw = useSelector((state: any) => state.drawReducer.listMegaDraw)
+    useEffect(() => {
+        console.log("mega screen re-render")
+    })
+
+    const listDraw = useSelector((state: any) => state.drawReducer.megaListDraw)
+    const luckykingBalance = useSelector((state: any) => state.userReducer.luckykingBalance);
 
     const [showBottomSheet, setShowBottomSheet] = useState(false)
     const [typePlay, setType]: any = useState({ label: "Cơ bản", value: 6 });
+    const [drawSelected, setDraw]: any = useState(listDraw[0])
     const [numberSet, setNumbers]: any = useState(initNumber)
     const [totalCost, setTotalCost] = useState(0)
-    // [Choose Type, Choose Draw, Choose Number ...]
-    const [indexSheet, setIndexSheet] = useState([-1, -1, -1])
-    const [drawSelected, setDraw]: any = useState(listDraw[0])
 
     // ref
-    const chooseTypeRef = useRef<BottomSheet>(null);
-    const chooseDrawRef = useRef<BottomSheet>(null);
-    const chooseNumberRef = useRef<BottomSheet>(null);
+    const chooseTypeRef: any = useRef(null);
+    const chooseDrawRef: any = useRef(null);
+    const chooseNumberRef: any = useRef(null);
     const [pageNumber, setPageNumber] = useState(0)
-
-    const luckykingBalance = useSelector((state: any) => state.userReducer.luckykingBalance);
 
     const onGoBack = useCallback(() => {
         navigation.goBack();
@@ -92,23 +92,6 @@ export const MegaScreen = React.memo((props: any) => {
         }
         getFirstDraw()
     }, [])
-
-    const toggleSheet = (newIndex: number, position: number) => {
-        const currentIndexSet: number[] = [...indexSheet]
-        currentIndexSet[position] = newIndex
-        setIndexSheet(currentIndexSet)
-    }
-
-    const openBottomSheet = (ref: any) => {
-        ref.current?.expand()
-    }
-
-    const onChangeType = (type: any) => {
-        setType(type)
-        const arr = Array.from({ length: 6 }, () => Array(type.value).fill(false));
-        setNumbers(arr)
-    }
-
 
     const randomNumber = (index: number) => {
         const currentNumber = [...numberSet]
@@ -180,7 +163,7 @@ export const MegaScreen = React.memo((props: any) => {
         const total = totalCost
         const surchagre = calSurcharge(totalCost)
         let body: any = {
-            lotteryType: LotteryType.Power,
+            lotteryType: LotteryType.Mega,
             amount: total,
             surchagre: surchagre,
             status: OrderStatus.PENDING,
@@ -241,6 +224,51 @@ export const MegaScreen = React.memo((props: any) => {
         setNumbers(initNumber)
     }
 
+    const onChangeType = useCallback((type: any) => {
+        setType(type)
+        const arr = Array.from({ length: 6 }, () => Array(type.value).fill(false));
+        setNumbers(arr)
+    }, [])
+    const openTypeSheet = useCallback(() => { chooseTypeRef.current?.openSheet() }, [chooseTypeRef])
+    const renderTypeSheet = useCallback(() => {
+        return (
+            <ChooseTypeSheet
+                ref={chooseTypeRef}
+                currentChoose={typePlay}
+                onChoose={onChangeType}
+                type={LotteryType.Mega}
+            />
+        )
+    }, [chooseTypeRef, onChangeType, typePlay])
+
+    const onChangeDraw = useCallback((draw: any) => setDraw(draw), [])
+    const openDrawSheet = useCallback(() => { chooseDrawRef.current?.openSheet() }, [chooseDrawRef])
+    const renderDrawSheet = useCallback(() => {
+        return (
+            <ChooseDrawSheet
+                ref={chooseDrawRef}
+                currentChoose={drawSelected}
+                onChoose={onChangeDraw}
+                listDraw={listDraw}
+                type={LotteryType.Mega}
+            />
+        )
+    }, [chooseDrawRef, onChangeDraw, drawSelected, listDraw])
+
+    const onChangeNumber = useCallback((set: any) => setNumbers(set), [])
+    const openNumberSheet = useCallback(() => { chooseNumberRef.current?.openSheet() }, [chooseNumberRef])
+    const renderNumberSheet = useCallback(() => {
+        return (
+            <ChooseNumberSheet
+                ref={chooseNumberRef}
+                onChoose={onChangeNumber}
+                numberSet={numberSet}
+                page={pageNumber}
+                type={LotteryType.Mega}
+            />
+        )
+    }, [chooseNumberRef, numberSet, pageNumber])
+
     return (
         <View style={styles.container}>
             <StatusBar translucent={true} barStyle={'dark-content'} backgroundColor={"transparent"} />
@@ -271,12 +299,12 @@ export const MegaScreen = React.memo((props: any) => {
                     </Text>
                 </View>
                 <View style={{ flexDirection: 'row', paddingTop: 10, justifyContent: 'space-between' }}>
-                    <TouchableOpacity activeOpacity={0.6} style={styles.dropDown} onPress={() => openBottomSheet(chooseTypeRef)}>
+                    <TouchableOpacity activeOpacity={0.6} style={styles.dropDown} onPress={openTypeSheet}>
                         <Text style={{ fontSize: 13, color: Color.black }}>{typePlay.label}</Text>
                         <Image source={Images.down_arrow} style={{ width: 12, height: 6 }}></Image>
                     </TouchableOpacity>
 
-                    <TouchableOpacity activeOpacity={0.6} style={[styles.dropDown, { paddingHorizontal: 4 }]} onPress={() => openBottomSheet(chooseDrawRef)}>
+                    <TouchableOpacity activeOpacity={0.6} style={[styles.dropDown, { paddingHorizontal: 4 }]} onPress={openDrawSheet}>
                         <Text style={{ fontSize: 13, color: Color.black }}>{drawSelected ? printDraw(drawSelected) : "------"}</Text>
                         <Image source={Images.down_arrow} style={{ width: 12, height: 6 }}></Image>
                     </TouchableOpacity>
@@ -292,7 +320,7 @@ export const MegaScreen = React.memo((props: any) => {
                                 <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{String.fromCharCode(65 + index)}</Text>
                                 <TouchableOpacity style={{ flex: 1, flexDirection: 'row', marginHorizontal: 18, flexWrap: 'wrap' }} onPress={() => {
                                     setPageNumber(index)
-                                    openBottomSheet(chooseNumberRef)
+                                    openNumberSheet()
                                 }}>
                                     {item.sort((a: any, b: any) => a - b).map((number: any, index2: number) => {
                                         return (
@@ -346,10 +374,10 @@ export const MegaScreen = React.memo((props: any) => {
                 </View>
 
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 4 }}>
-                    <TouchableOpacity style={[styles.buttonFooterDown, { backgroundColor: '#0171F5' }]} activeOpacity={0.6} onPress={() => addToCart()}>
+                    <TouchableOpacity style={[styles.buttonFooterDown, { backgroundColor: '#0171F5' }]} activeOpacity={0.6} onPress={addToCart}>
                         <Image source={Images.add_cart} style={{ width: 26, height: 26 }}></Image>
                     </TouchableOpacity>
-                    <TouchableOpacity style={[styles.buttonFooterDown, { backgroundColor: Color.mega }]} activeOpacity={0.6} onPress={() => bookLottery()}>
+                    <TouchableOpacity style={[styles.buttonFooterDown, { backgroundColor: Color.mega }]} activeOpacity={0.6} onPress={bookLottery}>
                         <Text style={{ color: Color.white, fontWeight: 'bold', fontSize: 16 }}>{"ĐẶT VÉ"}</Text>
                     </TouchableOpacity>
                 </View>
@@ -358,35 +386,9 @@ export const MegaScreen = React.memo((props: any) => {
             {/* BottomSheet */}
             {showBottomSheet ?
                 <>
-                    <ChooseTypeSheet
-                        bottomSheetRef={chooseTypeRef}
-                        isVisible={indexSheet[0] == -1 ? false : true}
-                        onToggle={(newIndex) => toggleSheet(newIndex, 0)}
-                        currentChoose={typePlay}
-                        onChoose={(type) => onChangeType(type)}
-                          //@ts-ignore
-                          type={LotteryType.Mega}
-                    />
-                    <ChooseDrawSheet
-                        bottomSheetRef={chooseDrawRef}
-                        isVisible={indexSheet[1] == -1 ? false : true}
-                        onToggle={(newIndex) => toggleSheet(newIndex, 1)}
-                        currentChoose={drawSelected}
-                        onChoose={(draw) => setDraw(draw)}
-                        listDraw={listDraw}
-                        //@ts-ignore
-                        type={LotteryType.Mega}
-                    />
-                    <ChooseNumberSheet
-                        bottomSheetRef={chooseNumberRef}
-                        isVisible={indexSheet[2] == -1 ? false : true}
-                        onToggle={(newIndex) => toggleSheet(newIndex, 2)}
-                        onChoose={(set) => setNumbers(set)}
-                        numberSet={numberSet}
-                        page={pageNumber}
-                            //@ts-ignore
-                            type={LotteryType.Mega}
-                    />
+                    {renderTypeSheet()}
+                    {renderDrawSheet()}
+                    {renderNumberSheet()}
                 </>
                 : <></>}
 

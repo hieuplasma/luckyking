@@ -8,6 +8,9 @@ export enum LotteryType {
     Max3DPro = "max3dpro"
 }
 
+export type LotteryEnumType = keyof typeof LotteryType;
+
+
 export enum OrderMethod {
     Keep = "keep",
     Deliver = "deliver"

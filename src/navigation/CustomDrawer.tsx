@@ -51,7 +51,7 @@ function DrawerCustom(props: any) {
       <ScrollView style={{ padding: 16, paddingTop: 5 }}>
         <View style={styles.lineItem1}>
           <Image source={Images.wallet} style={{ width: 26, height: 26 }}></Image>
-          <Text style={styles.textMoney}>{`${printMoney(user.MoneyAccount)}đ`}</Text>
+          <Text style={styles.textMoney}>{`${printMoney(user.luckykingBalance)}đ`}</Text>
           <Image source={Images.eye_open} style={styles.eye}></Image>
           <View style={{ flex: 1 }} />
           <TouchableOpacity style={styles.button} activeOpacity={0.8}>
@@ -60,7 +60,7 @@ function DrawerCustom(props: any) {
         </View>
         <View style={styles.lineItem1}>
           <Image source={Images.trophy} style={{ width: 44, height: 35, marginLeft: -8, marginRight: -10 }}></Image>
-          <Text style={styles.textMoney}>{`${printMoney(user.RewardWallet)}đ`}</Text>
+          <Text style={styles.textMoney}>{`${printMoney(user.rewardWalletBalance)}đ`}</Text>
           <Image source={Images.eye_open} style={styles.eye}></Image>
           <View style={{ flex: 1 }} />
           <TouchableOpacity style={styles.button} activeOpacity={0.6}>

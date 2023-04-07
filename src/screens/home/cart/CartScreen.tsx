@@ -3,7 +3,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { HomeStackParamList } from '@navigation';
 import { StatusBar, View, Text, Dimensions, StyleSheet, ScrollView, FlatList, RefreshControl, TouchableOpacity, Alert } from 'react-native'
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Icon, Image, Images } from '@assets';
 import { Color } from '@styles';
 import { useDispatch, useSelector } from 'react-redux';
@@ -23,6 +23,10 @@ export const CartScreen = React.memo(() => {
     const route = useRoute<NavigationRoute>();
     const safeAreaInsets = useSafeAreaInsets();
     const dispatch = useDispatch()
+
+    useEffect(()=> {
+        console.log("cart screen re-render")
+    })
 
     const cart = useSelector((state: any) => state.cartReducer.cart)
 

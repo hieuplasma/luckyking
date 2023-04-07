@@ -1,71 +1,77 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Dimensions } from 'react-native';
-import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
+import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
+import { StyleSheet, View, Text, TouchableOpacity, Dimensions, Animated } from 'react-native';
+import BottomSheet from '@gorhom/bottom-sheet';
 import { Color } from '@styles';
 import { Image, Images } from '@assets'
-import Animated, {
-    Extrapolate,
-    interpolate,
-    useAnimatedStyle,
-} from "react-native-reanimated";
 import { getColorLott, printDraw } from '@utils';
 import { LotteryType } from '@common';
 
 interface ChooseTypeSheetProps {
-    isVisible?: boolean
-    bottomSheetRef: any
-    onOpen?: () => void
-    onClose?: () => void
-    onToggle: (data: number) => void,
     currentChoose: any,
     onChoose: (data: any) => void,
     listDraw: any,
-    type: keyof LotteryType
+    type: LotteryType
 }
 
-export const ChooseDrawSheet = React.memo(({ isVisible, bottomSheetRef, onToggle, currentChoose, onChoose, listDraw, type }: ChooseTypeSheetProps) => {
+const ChooseDrawSheetComponent = forwardRef(({ currentChoose, onChoose, listDraw, type }: ChooseTypeSheetProps, ref) => {
+
+    const bottomSheetRef = useRef<BottomSheet>(null);
 
     const lottColor = getColorLott(type)
-
     const [currentDraw, setCurrentDraw] = useState(currentChoose)
-    useEffect(() => {
-        setCurrentDraw(currentChoose)
-    }, [isVisible])
 
-    const handleClose = () => {
-        setCurrentDraw(currentChoose)
-        bottomSheetRef.current?.close();
-    };
-
-    // callbacks
-    const handleSheetChanges = useCallback((index: number) => {
-        onToggle(index)
-    }, []);
-
-    const containerAnimatedStyle = useAnimatedStyle(() => ({
-        opacity: interpolate(
-            BACKGROUND_OPACITY,
-            [0, 1],
-            [0, 1],
-            Extrapolate.CLAMP
-        ),
+    useImperativeHandle(ref, () => ({
+        openSheet: onOpen,
+        closeSheet: onClose
     }));
 
-    // styles
-    const containerStyle = useMemo(
-        () => [
-            styles.background,
-            {
-                backgroundColor: "#101010",
-            },
-            containerAnimatedStyle,
-        ],
-        [styles.background, containerAnimatedStyle]
-    );
+    useEffect(() => {
+        console.log('ChooseDrawSheet has been re-rendered, ');
+    });
 
     const choosing = (type: any) => {
-        onChoose(type)
-        bottomSheetRef.current?.close();
+        onClose()
+        onChoose(type);
+    }
+
+    const [opacity, setOpacity] = useState(new Animated.Value(0))
+    const [isOpen, setIsOpen] = useState(false)
+    const onClose = () => {
+        Animated.timing(opacity, {
+            toValue: 0,
+            duration: 350,
+            useNativeDriver: true,
+        }).start();
+        bottomSheetRef.current?.close()
+        setTimeout(() => {
+            setIsOpen(false)
+        }, 50);
+    };
+
+    const onOpen = () => {
+        setIsOpen(true)
+        setCurrentDraw(currentChoose)
+        bottomSheetRef.current?.expand()
+        Animated.timing(opacity, {
+            toValue: BACKGROUND_OPACITY,
+            duration: 300,
+            useNativeDriver: true,
+        }).start();
+    };
+
+    const renderBackDrop = () => (
+        <Animated.View
+            style={[styles.background, { opacity: opacity }]}>
+            <TouchableOpacity
+                style={{ flex: 1 }}
+                activeOpacity={1}
+                onPress={onClose}
+            />
+        </Animated.View>
+    );
+
+    const handleSheetAnimate = (from: number, to: number) => {
+        if (to == -1) onClose()
     }
 
     return (
@@ -74,16 +80,13 @@ export const ChooseDrawSheet = React.memo(({ isVisible, bottomSheetRef, onToggle
             snapPoints={[SHEET_HEIGHT]}
             enablePanDownToClose={true}
             index={-1}
-            backgroundStyle={styles.sheetContainer}
             backdropComponent={() => (
-                isVisible ?
-                    <Animated.View style={containerStyle}>
-                        <TouchableOpacity style={{ flex: 1 }} onPress={handleClose}>
-                        </TouchableOpacity>
-                    </Animated.View>
+                isOpen ?
+                    renderBackDrop()
                     : null
             )}
-            onChange={handleSheetChanges}
+            onAnimate={handleSheetAnimate}
+            backgroundStyle={styles.sheetContainer}
         >
             <View style={{ flex: 1 }}>
                 <Text style={{ fontSize: 18, color: Color.black, alignSelf: 'center', fontWeight: 'bold' }}>{"Chọn kì quay"}</Text>
@@ -111,6 +114,8 @@ export const ChooseDrawSheet = React.memo(({ isVisible, bottomSheetRef, onToggle
     );
 });
 
+export const ChooseDrawSheet = React.memo(ChooseDrawSheetComponent);
+
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 const SHEET_HEIGHT = 415
@@ -119,9 +124,12 @@ const BACKGROUND_OPACITY = 0.85
 const styles = StyleSheet.create({
     sheetContainer: { backgroundColor: '#F4F4F4', borderTopLeftRadius: 20, borderTopRightRadius: 20 },
     background: {
-        height: windowHeight, width: windowWidth,
-        // backgroundColor: '#101010', opacity: BACKGROUND_OPACITY,
-        position: 'absolute'
+        backgroundColor: '#000',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
     },
     item: { alignItems: 'center', width: '100%', flexDirection: 'row', marginVertical: 6 },
     ball: {
