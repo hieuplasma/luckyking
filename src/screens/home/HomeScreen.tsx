@@ -27,8 +27,9 @@ export const HomeScreen = React.memo((props?: HomeScreenProps) => {
   const safeAreaInsets = useSafeAreaInsets();
   const dispatch = useDispatch()
 
-  const firstDrawPower = useSelector((state:any)=> state.drawReducer.powerFirstDraw)
-  const firstDrawMega = useSelector((state:any)=> state.drawReducer.megaFirstDraw)
+  const powerFirstDraw = useSelector((state: any) => state.drawReducer.powerFirstDraw)
+  const megaFirstDraw = useSelector((state: any) => state.drawReducer.megaFirstDraw)
+  const max3dFirstDraw = useSelector((state: any) => state.drawReducer.max3dFirstDraw)
 
   useBackButtonWithNavigation(
     React.useCallback(() => {
@@ -58,7 +59,7 @@ export const HomeScreen = React.memo((props?: HomeScreenProps) => {
           color={Color.white}
           style={[Style.Space.PaddingHorizontal.Medium_12]}
         />
-        <CartIcon navigation={navigation} badgeStyle={{backgroundColor: "#FDB703"}} tintColor={Color.white} />
+        <CartIcon navigation={navigation} badgeStyle={{ backgroundColor: "#FDB703" }} tintColor={Color.white} />
       </View>
     );
   }, []);
@@ -109,9 +110,9 @@ export const HomeScreen = React.memo((props?: HomeScreenProps) => {
       <HomeTicketLongFormComponent
         image="https://media.vietlott.vn//main/06.2018/cms/game/mega-645_full-color_cut-copy.png"
         type="mega"
-        targetTime={firstDrawMega ? new Date(firstDrawMega.drawTime) : undefined}
+        targetTime={megaFirstDraw ? new Date(megaFirstDraw.drawTime) : undefined}
         action={() => NavigationUtils.navigate(navigation, ScreenName.HomeChild.MegaScreen)}
-        nextDate={firstDrawMega ? dateConvert(new Date(firstDrawMega.drawTime)) : ""}
+        nextDate={megaFirstDraw ? dateConvert(new Date(megaFirstDraw.drawTime)) : ""}
         QSMT={'T4, T6, CN'}
       />
     );
@@ -122,6 +123,10 @@ export const HomeScreen = React.memo((props?: HomeScreenProps) => {
       <HomeTicketLongFormComponent
         image="https://media.vietlott.vn//main/04.2019/bcc/game/thumbnail_max3d-01.jpg"
         type="max"
+        targetTime={max3dFirstDraw ? new Date(max3dFirstDraw.drawTime) : undefined}
+        action={() => NavigationUtils.navigate(navigation, ScreenName.HomeChild.Max3dScreen)}
+        nextDate={max3dFirstDraw ? dateConvert(new Date(max3dFirstDraw.drawTime)) : ""}
+        QSMT={'T4, T6, CN'}
       />
     );
   }, []);
@@ -131,9 +136,9 @@ export const HomeScreen = React.memo((props?: HomeScreenProps) => {
       <HomeTicketLongFormComponent
         image="https://media.vietlott.vn//main/06.2018/cms/game/Power655.png"
         type="power"
-        targetTime={firstDrawPower ? new Date(firstDrawPower.drawTime) : undefined}
+        targetTime={powerFirstDraw ? new Date(powerFirstDraw.drawTime) : undefined}
         action={() => NavigationUtils.navigate(navigation, ScreenName.HomeChild.PowerScreen)}
-        nextDate={firstDrawPower ? dateConvert(new Date(firstDrawPower.drawTime)) : ""}
+        nextDate={powerFirstDraw ? dateConvert(new Date(powerFirstDraw.drawTime)) : ""}
         QSMT={'T3, T5, T7'}
       />
     );

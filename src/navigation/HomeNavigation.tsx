@@ -2,9 +2,9 @@ import { createStackNavigator } from '@react-navigation/stack';
 import {
   CartScreen, CartScreenParamsList,
   HomeScreen, HomeScreenParamsList,
-  MegaScreen,
-  MegaScreenParamsList,
-  PowerScreen, PowerScreenParamsList
+  MegaScreen, MegaScreenParamsList,
+  PowerScreen, PowerScreenParamsList,
+  Max3dScreen, Max3dScreenParamsList
 } from '@screen';
 import React from 'react';
 
@@ -12,6 +12,7 @@ export type HomeStackParamList = {
   HomeScreen: HomeScreenParamsList;
   PowerScreen: PowerScreenParamsList;
   MegaScreen: MegaScreenParamsList;
+  Max3dScreen: Max3dScreenParamsList
   CartScreen: CartScreenParamsList
 };
 
@@ -35,9 +36,14 @@ export function HomeNavigation() {
         component={CartScreen}
         options={{ headerShown: false, title: undefined }}
       />
-        <HomeStack.Screen
+      <HomeStack.Screen
         name={'MegaScreen'}
         component={MegaScreen}
+        options={{ headerShown: false, title: undefined }}
+      />
+      <HomeStack.Screen
+        name={'Max3dScreen'}
+        component={Max3dScreen}
         options={{ headerShown: false, title: undefined }}
       />
     </HomeStack.Navigator>

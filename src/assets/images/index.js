@@ -39,5 +39,11 @@ export const Images = {
   edit_pen: require('./edit_pen.png'),
   add_cart: require('./add_cart.png'),
   mega_logo: require('./mega_logo.png'),
-  ball_mega:require('./ball_mega.png')
+  ball_mega: require('./ball_mega.png'),
+  ball_max3d: require('./ball_max3d.png'),
+  ball_3dpro: require('./ball_3dpro.png'),
+  ball_keno: require('./ball_keno.png'),
+  max3d_logo: require('./max3d_logo.png'),
+  max3dpro_logo: require('./max3dpro_logo.png'),
+  max3dplus_logo: require('./max3dplus_logo.png')
 };

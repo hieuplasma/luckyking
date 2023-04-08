@@ -13,9 +13,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { lotteryApi } from "@api";
 import { ChooseDrawSheet } from "./component/ChooseDrawSheet";
 import { ChooseNumberSheet } from "./component/ChooseNumberSheet";
-import { LotteryType, OrderMethod, OrderStatus } from "@common";
+import { LotteryType, MAX_SET, MEGA_NUMBER, OrderMethod, OrderStatus } from "@common";
 import { addLottery, getCart, getMegaDraw, updateUser } from "@redux";
-import { CartIcon } from "@components";
+import { CartIcon, HeaderBuyLottery } from "@components";
+import { ViewAbove } from "./component/ViewAbove";
 
 type NavigationProp = StackNavigationProp<HomeStackParamList, 'MegaScreen'>;
 type NavigationRoute = RouteProp<HomeStackParamList, 'MegaScreen'>;
@@ -32,8 +33,6 @@ const initNumber = [
     [false, false, false, false, false, false], //  numberE:
     [false, false, false, false, false, false] // numberF:
 ]
-
-const MEGA_NUMBER = 45
 
 export const MegaScreen = React.memo((props: any) => {
 
@@ -61,10 +60,6 @@ export const MegaScreen = React.memo((props: any) => {
     const chooseNumberRef: any = useRef(null);
     const [pageNumber, setPageNumber] = useState(0)
 
-    const onGoBack = useCallback(() => {
-        navigation.goBack();
-    }, [navigation]);
-
     useEffect(() => {
         const timer = setTimeout(() => {
             setShowBottomSheet(true);
@@ -80,7 +75,7 @@ export const MegaScreen = React.memo((props: any) => {
             const element = numberSet[i]
             if (element[0] || element[1]) set++
         }
-        setTotalCost(set * 10000 * convolutions(6, level))
+        setTotalCost(set * 10000 * convolutions(MAX_SET, level))
     }, [numberSet])
 
     useEffect(() => {
@@ -117,7 +112,7 @@ export const MegaScreen = React.memo((props: any) => {
     const fastPick = () => {
         let array = [];
         const currentLevel = typePlay.value
-        for (let i = 0; i < 6; i++) {
+        for (let i = 0; i < MAX_SET; i++) {
             const randomNumbers = new Set();
             while (randomNumbers.size < currentLevel) {
                 const randomNumber = Math.floor(Math.random() * MEGA_NUMBER) + 1;
@@ -132,7 +127,7 @@ export const MegaScreen = React.memo((props: any) => {
     const selfPick = () => {
         const currentNumber = [...numberSet]
         const currentLevel = typePlay.value
-        for (let i = 0; i < 6; i++) {
+        for (let i = 0; i < MAX_SET; i++) {
             currentNumber[i] = Array(currentLevel).fill("TC");
         }
         setNumbers(currentNumber)
@@ -218,15 +213,15 @@ export const MegaScreen = React.memo((props: any) => {
         window.loadingIndicator.hide()
     }
 
-    const refreshChoosing = () => {
+    const refreshChoosing = useCallback(() => {
         setDraw(listDraw[0])
         setType({ label: "Cơ bản", value: 6 })
         setNumbers(initNumber)
-    }
+    }, [])
 
     const onChangeType = useCallback((type: any) => {
         setType(type)
-        const arr = Array.from({ length: 6 }, () => Array(type.value).fill(false));
+        const arr = Array.from({ length: MAX_SET }, () => Array(type.value).fill(false));
         setNumbers(arr)
     }, [])
     const openTypeSheet = useCallback(() => { chooseTypeRef.current?.openSheet() }, [chooseTypeRef])
@@ -271,46 +266,10 @@ export const MegaScreen = React.memo((props: any) => {
 
     return (
         <View style={styles.container}>
-            <StatusBar translucent={true} barStyle={'dark-content'} backgroundColor={"transparent"} />
             {/* //Header */}
-            <View style={[styles.headerContainer, { marginTop: safeAreaInsets.top }]}>
-                <View style={{ flex: 1 }}>
-                    <Icon.Button
-                        size={'small'}
-                        color={Color.gray}
-                        name="ic_back"
-                        style={[Style.Space.Padding.Zero]}
-                        onPressed={onGoBack}
-                    />
-                </View>
-                <Image source={Images.mega_logo} style={styles.imageLogo} />
-                <View style={{ flex: 1, alignItems: 'flex-end' }}>
-                    <CartIcon navigation={navigation} />
-                </View>
-            </View>
+            <HeaderBuyLottery navigation={navigation} lotteryType={LotteryType.Mega} />
             {/* //Body */}
-            <View style={styles.body}>
-                <View style={{ flexDirection: 'row' }}>
-                    <Text style={{ fontSize: 16, color: Color.black }}>
-                        {"Số dư tài khoản: "}
-                    </Text>
-                    <Text style={{ fontSize: 16, color: Color.luckyKing, fontWeight: 'bold' }}>
-                        {`${printMoney(luckykingBalance)} đ`}
-                    </Text>
-                </View>
-                <View style={{ flexDirection: 'row', paddingTop: 10, justifyContent: 'space-between' }}>
-                    <TouchableOpacity activeOpacity={0.6} style={styles.dropDown} onPress={openTypeSheet}>
-                        <Text style={{ fontSize: 13, color: Color.black }}>{typePlay.label}</Text>
-                        <Image source={Images.down_arrow} style={{ width: 12, height: 6 }}></Image>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity activeOpacity={0.6} style={[styles.dropDown, { paddingHorizontal: 4 }]} onPress={openDrawSheet}>
-                        <Text style={{ fontSize: 13, color: Color.black }}>{drawSelected ? printDraw(drawSelected) : "------"}</Text>
-                        <Image source={Images.down_arrow} style={{ width: 12, height: 6 }}></Image>
-                    </TouchableOpacity>
-                </View>
-            </View>
-
+            <ViewAbove typePlay={typePlay} drawSelected={drawSelected} openTypeSheet={openTypeSheet} openDrawSheet={openDrawSheet} />
             {/* //Chon so */}
             <ScrollView style={{ flex: 1 }}>
                 <View style={{ paddingHorizontal: 16, paddingVertical: 8 }}>
@@ -404,37 +363,6 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: Color.buyLotteryBackGround
     },
-    imageLogo: {
-        height: 44, width: 78.57
-    },
-    headerContainer: {
-        flexDirection: 'row',
-        height: ScreenUtils.getHeaderHeight(),
-        alignItems: 'center',
-        paddingHorizontal: 16,
-        justifyContent: 'space-between',
-    },
-    bageNumber: {
-        position: 'absolute', top: 0, right: 0,
-        width: 11, height: 11, borderRadius: 99,
-        backgroundColor: Color.luckyKing,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-
-    textBage: {
-        fontSize: 7, fontWeight: 'bold', color: Color.white
-    },
-    body: {
-        marginTop: 10,
-        paddingHorizontal: 16
-    },
-    dropDown: {
-        width: (windowWidth - 44) / 2, height: 36,
-        borderRadius: 10, padding: 6, paddingHorizontal: 12,
-        justifyContent: 'space-between',
-        borderColor: Color.black, borderWidth: 1, flexDirection: 'row', alignItems: 'center'
-    },
     lineNumber: {
         flexDirection: 'row', marginVertical: 4,
         justifyContent: 'space-between',
@@ -458,15 +386,5 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around', alignItems: 'center',
         borderColor: '#FFC42C', backgroundColor: '#FDF9F9',
         borderWidth: 1
-    },
-
-    bottomSheetContainer: {
-        flex: 1,
-        alignItems: 'center',
-    },
-    sheetStyle: {
-        borderTopLeftRadius: 0,
-        borderTopRightRadius: 20,
-        // width: '100%', backgroundColor: '#F4F4F4'
     }
 })

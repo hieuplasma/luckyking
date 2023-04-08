@@ -183,7 +183,7 @@ export const ChooseNumberSheet = forwardRef(({ onChoose, numberSet, page, type }
                         renderItem={({ item, index }) => ItemView(item, index)}
                     />
                 </View>
-                <TouchableOpacity disabled={!checkIsOk()} style={[styles.confirmButton, { backgroundColor: checkIsOk() ? lottColor : '#FCCF81' }]} onPress={() => choosing()}>
+                <TouchableOpacity disabled={!checkIsOk()} style={[styles.confirmButton, { backgroundColor: lottColor, opacity: checkIsOk() ? 1 : 0.4 }]} onPress={choosing}>
                     <Text style={styles.textConfirm}>{`Xác nhận`.toUpperCase()}</Text>
                 </TouchableOpacity>
             </View>
