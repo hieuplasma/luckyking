@@ -15,7 +15,7 @@ import { ChooseDrawSheet } from "./component/ChooseDrawSheet";
 import { ChooseNumberSheet } from "./component/ChooseNumberSheet";
 import { LotteryType, MAX_SET, MEGA_NUMBER, OrderMethod, OrderStatus } from "@common";
 import { addLottery, getCart, getMegaDraw, updateUser } from "@redux";
-import { CartIcon, HeaderBuyLottery } from "@components";
+import { CartIcon, ConsolasText, HeaderBuyLottery, IText } from "@components";
 import { ViewAbove } from "./component/ViewAbove";
 
 type NavigationProp = StackNavigationProp<HomeStackParamList, 'MegaScreen'>;
@@ -276,7 +276,7 @@ export const MegaScreen = React.memo((props: any) => {
                     {numberSet.map((item: any, index: number) => {
                         return (
                             <View style={styles.lineNumber} key={index}>
-                                <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{String.fromCharCode(65 + index)}</Text>
+                                <IText style={{ fontSize: 18, fontWeight: 'bold' }}>{String.fromCharCode(65 + index)}</IText>
                                 <TouchableOpacity style={{ flex: 1, flexDirection: 'row', marginHorizontal: 18, flexWrap: 'wrap' }} onPress={() => {
                                     setPageNumber(index)
                                     openNumberSheet()
@@ -285,7 +285,7 @@ export const MegaScreen = React.memo((props: any) => {
                                         return (
                                             <View style={styles.ballContainer} key={index2}>
                                                 <Image source={number ? Images.ball_mega : Images.ball_grey} style={styles.ballStyle}>
-                                                    <Text style={{ color: Color.white }}>{printNumber(number)}</Text>
+                                                    <ConsolasText style={{ color: Color.white, fontSize: 16 }}>{printNumber(number)}</ConsolasText>
                                                 </Image>
                                             </View>
                                         )
@@ -313,23 +313,23 @@ export const MegaScreen = React.memo((props: any) => {
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <TouchableOpacity style={styles.buttonFooterUp} activeOpacity={0.6}>
                         <Image source={Images.filled_heart} style={{ width: 19, height: 19 }}></Image>
-                        <Text style={styles.textFooterUp}>{"Yêu thích"}</Text>
+                        <IText style={styles.textFooterUp}>{"Yêu thích"}</IText>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.buttonFooterUp} activeOpacity={0.6} onPress={() => fastPick()}>
                         <Image source={Images.fast_pick} style={{ width: 19, height: 19 }}></Image>
-                        <Text style={styles.textFooterUp}>{"Chọn nhanh"}</Text>
+                        <IText style={styles.textFooterUp}>{"Chọn nhanh"}</IText>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.buttonFooterUp} activeOpacity={0.6} onPress={() => selfPick()}>
                         <View style={{ width: 21, height: 21, borderRadius: 99, backgroundColor: Color.luckyKing, justifyContent: 'center', alignItems: 'center' }}>
-                            <Text style={{ fontSize: 12, color: Color.white }}>TC</Text>
+                            <ConsolasText style={{ fontSize: 14, color: Color.white }}>TC</ConsolasText>
                         </View>
-                        <Text style={styles.textFooterUp}>{"Tự chọn"}</Text>
+                        <IText style={styles.textFooterUp}>{"Tự chọn"}</IText>
                     </TouchableOpacity>
                 </View>
 
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 24 }}>
-                    <Text style={{ color: Color.black, fontSize: 16 }}>{"Giá vé tạm tính"}</Text>
-                    <Text style={{ color: Color.luckyKing, fontSize: 16 }}>{`${printMoney(totalCost)} đ`}</Text>
+                    <IText style={{ color: Color.black, fontSize: 16 }}>{"Giá vé tạm tính"}</IText>
+                    <IText style={{ color: Color.luckyKing, fontSize: 16 }}>{`${printMoney(totalCost)} đ`}</IText>
                 </View>
 
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 4 }}>
@@ -337,7 +337,7 @@ export const MegaScreen = React.memo((props: any) => {
                         <Image source={Images.add_cart} style={{ width: 26, height: 26 }}></Image>
                     </TouchableOpacity>
                     <TouchableOpacity style={[styles.buttonFooterDown, { backgroundColor: Color.mega }]} activeOpacity={0.6} onPress={bookLottery}>
-                        <Text style={{ color: Color.white, fontWeight: 'bold', fontSize: 16 }}>{"ĐẶT VÉ"}</Text>
+                        <IText style={{ color: Color.white, fontWeight: 'bold', fontSize: 16 }}>{"ĐẶT VÉ"}</IText>
                     </TouchableOpacity>
                 </View>
             </View>

@@ -11,7 +11,7 @@ import { lotteryApi } from '@api';
 import { getCart, removeCart, removeLottery, updateLottery } from '@redux';
 import { getColorLott, printDraw, printDrawCode, printMoney, printNumber, printTypePlay, printWeekDate } from '@utils';
 import { LotteryType, NumberDetail } from '@common';
-import { LogoIcon, ModalConfirm } from '@components';
+import { ConsolasText, IText, LogoIcon, ModalConfirm } from '@components';
 
 type NavigationProp = StackNavigationProp<HomeStackParamList, 'CartScreen'>;
 type NavigationRoute = RouteProp<HomeStackParamList, 'CartScreen'>;
@@ -120,7 +120,7 @@ export const CartScreen = React.memo(() => {
                         onPressed={onGoBack}
                     />
                 </View>
-                <Text style={styles.textTitle}>{"GIỎ HÀNG"}</Text>
+                <IText style={styles.textTitle}>{"GIỎ HÀNG"}</IText>
                 <TouchableOpacity style={{ flex: 1, alignItems: 'flex-end' }} onPress={() => setModal3(true)} >
                     <Image source={Images.trash} style={{ width: 26, height: 26 }}></Image>
                 </TouchableOpacity>
@@ -136,7 +136,7 @@ export const CartScreen = React.memo(() => {
                     return (
                         <View style={styles.borderItem}>
                             <LogoIcon type={item.type}/>
-                            <Text style={styles.textType}>{`${printTypePlay(item.NumberLottery.level, item.type)}`}</Text>
+                            <IText style={styles.textType}>{`${printTypePlay(item.NumberLottery.level, item.type)}`}</IText>
                             <View>
                                 {
                                     numberDetail.map((it: any, id: number) => {
@@ -144,17 +144,17 @@ export const CartScreen = React.memo(() => {
                                         return (
                                             <View key={'' + it.boSo + id}>
                                                 <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 8 }}>
-                                                    <Text style={{ fontSize: 18, fontWeight: '600', color: Color.black }}>
+                                                    <IText style={{ fontSize: 18, fontWeight: '600', color: Color.black }}>
                                                         {String.fromCharCode(65 + id)}
-                                                    </Text>
+                                                    </IText>
                                                     <View style={{ marginLeft: 5, flexDirection: 'row', flexWrap: 'wrap', flex: 1 }}>
                                                         {
                                                             numbers.map((number: number, id2: number) => {
                                                                 return (
                                                                     <View key={number + '' + id2} style={[styles.ball, {backgroundColor: lottColor}]}>
-                                                                        <Text style={styles.textBall}>
+                                                                        <ConsolasText style={styles.textBall}>
                                                                             {`${printNumber(number)}`}
-                                                                        </Text>
+                                                                        </ConsolasText>
                                                                     </View>
                                                                 )
                                                             })
@@ -179,18 +179,18 @@ export const CartScreen = React.memo(() => {
                                 }
                             </View>
                             <View style={styles.lineBottom}>
-                                <Text style={{ fontSize: 14, fontWeight: '400' }}>
+                                <IText style={{ fontSize: 14, fontWeight: '400' }}>
                                     {`Kỳ ${printDrawCode(item.drawCode)} - ${printWeekDate(new Date(item.drawTime))}`}
-                                </Text>
+                                </IText>
                                 <Image source={Images.edit_pen} style={styles.iconTrash}></Image>
                             </View>
                             <View style={styles.lineBottom}>
-                                <Text style={{ fontSize: 14, fontWeight: 'bold' }}>
+                                <IText style={{ fontSize: 14, fontWeight: 'bold' }}>
                                     {`Vé ${printNumber(index + 1)}:`}
-                                </Text>
-                                <Text style={{ color: lottColor, marginLeft: 12, fontSize: 14, fontWeight: 'bold' }}>
+                                </IText>
+                                <IText style={{ color: lottColor, marginLeft: 12, fontSize: 14, fontWeight: 'bold' }}>
                                     {`${printMoney(item.bets)}đ`}
-                                </Text>
+                                </IText>
                                 <View style={{ flex: 1 }} />
                                 <TouchableOpacity onPress={() => openModalDeleteLottery(item)}>
                                     <Image source={Images.trash} style={styles.iconTrash}></Image>
@@ -209,11 +209,11 @@ export const CartScreen = React.memo(() => {
             {
                 calculateAll() > 0 ?
                     <View style={{ marginBottom: 30, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, paddingTop: 16 }}>
-                        <Text style={{ fontSize: 14, fontWeight: '400' }}>{'Tổng cộng'}</Text>
+                        <IText style={{ fontSize: 14, fontWeight: '400' }}>{'Tổng cộng'}</IText>
                         <View style={{ flex: 1 }} />
-                        <Text style={{ fontSize: 16, fontWeight: 'bold', marginRight: 16 }}>{`${printMoney(calculateAll())}đ`}</Text>
+                        <IText style={{ fontSize: 16, fontWeight: 'bold', marginRight: 16 }}>{`${printMoney(calculateAll())}đ`}</IText>
                         <TouchableOpacity style={styles.buttonPay}>
-                            <Text style={{ fontWeight: 'bold', fontSize: 14, color: Color.white }}>{'THANH TOÁN'}</Text>
+                            <IText style={{ fontWeight: 'bold', fontSize: 14, color: Color.white }}>{'THANH TOÁN'}</IText>
                         </TouchableOpacity>
                     </View>
                     : <></>

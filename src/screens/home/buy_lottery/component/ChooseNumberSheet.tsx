@@ -6,7 +6,7 @@ import { Image, Images } from '@assets'
 import { SwiperFlatList } from 'react-native-swiper-flatlist';
 import { LotteryType } from '@common';
 import { getColorLott } from '@utils';
-import { ConsolasText } from '@components';
+import { ConsolasText, IText } from '@components';
 
 interface ChooseTypeSheetProps {
     onChoose: (data: any) => void,
@@ -167,7 +167,7 @@ export const ChooseNumberSheet = forwardRef(({ onChoose, numberSet, page, type }
                         {indexPage > 0 ?
                             <Image source={Images.left_arrow} style={{ width: 12, height: 24 }} tintColor={Color.black} /> : <></>}
                     </TouchableOpacity>
-                    <Text style={styles.title}>{`Chọn bộ số ${String.fromCharCode(65 + indexPage)} (${totalSelected()}/${currentLevel})`}</Text>
+                    <IText style={styles.title}>{`Chọn bộ số ${String.fromCharCode(65 + indexPage)} (${totalSelected()}/${currentLevel})`}</IText>
                     <TouchableOpacity disabled={indexPage == 5 ? true : false} style={{ flex: 1, flexDirection: 'row-reverse', alignItems: 'center' }}
                         onPress={() => swiperRef.current?.scrollToIndex({ animated: true, index: indexPage + 1 })}
                     >
@@ -185,7 +185,7 @@ export const ChooseNumberSheet = forwardRef(({ onChoose, numberSet, page, type }
                     />
                 </View>
                 <TouchableOpacity disabled={!checkIsOk()} style={[styles.confirmButton, { backgroundColor: lottColor, opacity: checkIsOk() ? 1 : 0.4 }]} onPress={choosing}>
-                    <Text style={styles.textConfirm}>{`Xác nhận`.toUpperCase()}</Text>
+                    <IText style={styles.textConfirm}>{`Xác nhận`.toUpperCase()}</IText>
                 </TouchableOpacity>
             </View>
         </BottomSheet >
@@ -228,6 +228,6 @@ const styles = StyleSheet.create({
     textConfirm: {
         color: Color.white,
         fontSize: 16,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
     }
 })

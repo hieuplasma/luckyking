@@ -5,6 +5,7 @@ import { Color } from '@styles';
 import { Image, Images } from '@assets'
 import { getColorLott, printDraw } from '@utils';
 import { LotteryType } from '@common';
+import { IText } from '@components';
 
 interface ChooseTypeSheetProps {
     currentChoose: any,
@@ -89,7 +90,7 @@ const ChooseDrawSheetComponent = forwardRef(({ currentChoose, onChoose, listDraw
             backgroundStyle={styles.sheetContainer}
         >
             <View style={{ flex: 1 }}>
-                <Text style={{ fontSize: 18, color: Color.black, alignSelf: 'center', fontWeight: 'bold' }}>{"Chọn kì quay"}</Text>
+                <IText style={{ fontSize: 18, color: Color.black, alignSelf: 'center', fontWeight: 'bold' }}>{"Chọn kì quay"}</IText>
                 <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', paddingHorizontal: 24, paddingVertical: 6, flex: 1 }}>
                     {listDraw.map((item: any, index: number) => {
                         return (
@@ -99,15 +100,15 @@ const ChooseDrawSheetComponent = forwardRef(({ currentChoose, onChoose, listDraw
                                     style={{ width: 24, height: 24 }}
                                     tintColor={item.drawCode == currentDraw.drawCode ? lottColor : '#130F26'}
                                 />
-                                <Text style={{ fontSize: 14, marginLeft: 18, color: Color.black }}>
+                                <IText style={{ fontSize: 14, marginLeft: 18, color: Color.black }}>
                                     {`${printDraw(item)}`}
-                                </Text>
+                                </IText>
                             </TouchableOpacity>
                         )
                     })}
                 </View>
                 <TouchableOpacity style={[styles.confirmButton, { backgroundColor: lottColor }]} onPress={() => choosing(currentDraw)}>
-                    <Text style={styles.textConfirm}>{`Xác nhận`.toUpperCase()}</Text>
+                    <IText style={styles.textConfirm}>{`Xác nhận`.toUpperCase()}</IText>
                 </TouchableOpacity>
             </View>
         </BottomSheet>

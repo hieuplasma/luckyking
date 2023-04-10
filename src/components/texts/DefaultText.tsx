@@ -41,6 +41,7 @@ export { DefaultText }
 
 const styles = StyleSheet.create({
     default: {
-        fontSize: 14, color: Color.black
+        fontSize: 14,
+        color: Color.black
     }
 })

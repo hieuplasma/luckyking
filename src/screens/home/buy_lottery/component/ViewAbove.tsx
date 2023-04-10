@@ -32,8 +32,8 @@ export const ViewAbove = React.memo(({ typePlay, drawSelected, openTypeSheet, op
                     <Image source={Images.down_arrow} style={{ width: 12, height: 6 }}></Image>
                 </TouchableOpacity>
 
-                <TouchableOpacity activeOpacity={0.6} style={[styles.dropDown, { paddingHorizontal: 4 }]} onPress={openDrawSheet}>
-                    <IText style={{ fontSize: 13, color: Color.black }}>{drawSelected ? printDraw(drawSelected) : "------"}</IText>
+                <TouchableOpacity activeOpacity={0.6} style={[styles.dropDown]} onPress={openDrawSheet}>
+                    <IText style={{ fontSize: 13}}>{drawSelected ? printDraw(drawSelected) : "------"}</IText>
                     <Image source={Images.down_arrow} style={{ width: 12, height: 6 }}></Image>
                 </TouchableOpacity>
             </View>

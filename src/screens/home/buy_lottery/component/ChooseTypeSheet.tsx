@@ -5,6 +5,7 @@ import { Color } from '@styles';
 import { Image, Images } from '@assets'
 import { LotteryType } from '@common';
 import { getBallLott, getColorLott } from '@utils';
+import { IText } from '@components';
 
 interface Type {
     label: string,
@@ -110,20 +111,20 @@ const ChooseTypeSheetComponent = forwardRef(({ currentChoose, onChoose, type }: 
             backgroundStyle={styles.sheetContainer}
         >
             <View style={{ flex: 1 }}>
-                <Text style={{ fontSize: 18, color: Color.black, alignSelf: 'center', fontWeight: 'bold' }}>{"Chọn cách chơi"}</Text>
+                <IText style={{ fontSize: 18, color: Color.black, alignSelf: 'center', fontWeight: 'bold' }}>{"Chọn cách chơi"}</IText>
                 <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', paddingHorizontal: 50, paddingVertical: 6, flex: 1 }}>
                     {types.map((item: any, index: number) => {
                         return (
                             <TouchableOpacity activeOpacity={0.4} key={index} style={styles.item} onPress={() => setCurrentType(item)}>
                                 {index % 2 == 1 ? <View style={{ flex: 1 }} /> : <></>}
                                 <Image source={currentType.value == item.value ? getBallLott(type) : Images.ball_grey} style={styles.ball}></Image>
-                                <Text style={{ marginLeft: 12, width: 50 }}>{`${item.label}`}</Text>
+                                <IText style={{ marginLeft: 12, width: 50 }}>{`${item.label}`}</IText>
                             </TouchableOpacity>
                         )
                     })}
                 </View>
                 <TouchableOpacity style={[styles.confirmButton, { backgroundColor: lottColor }]} onPress={() => choosing(currentType)}>
-                    <Text style={styles.textConfirm}>{`Xác nhận`.toUpperCase()}</Text>
+                    <IText style={styles.textConfirm}>{`Xác nhận`.toUpperCase()}</IText>
                 </TouchableOpacity>
             </View>
         </BottomSheet>
