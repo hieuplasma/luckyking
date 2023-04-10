@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
     background: {
         backgroundColor: '#000',
         position: 'absolute',
-        top: 0,
+        top: -1000,
         left: 0,
         right: 0,
         bottom: 0,

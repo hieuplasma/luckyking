@@ -26,6 +26,11 @@ export function printMoney(param: any) {
     return amount.toLocaleString()
 }
 
+export function printMoneyK(param: any) {
+    let amount = parseInt(param.toString()) / 1000
+    return amount.toLocaleString() + 'K'
+}
+
 export function printDrawCode(drawCode: any) {
     const code = parseInt(drawCode.toString())
     if (code < 1000) return "#00" + code
@@ -66,4 +71,35 @@ export function printTypePlay(value: number, type: string) {
 
 function PowerMegaType(value: number) {
     return value === 6 ? "Cơ bản" : "Bao " + value;
+}
+
+export function generateStrings(nums: number[], current = "") {
+    if (current.length === 3) {
+        return [current];
+    } else {
+        let result: string[] = [];
+        for (let i = 0; i < nums.length; i++) {
+            let temp = generateStrings(nums, current + nums[i].toString());
+            result = [...result, ...temp];
+        }
+        return result;
+    }
+}
+
+export function generateUniqueStrings(nums: number[], current = "", used = []) {
+    if (current.length === 3) {
+        return [current];
+    } else {
+        let result: string[] = [];
+        for (let i = 0; i < nums.length; i++) {
+            //@ts-ignore
+            if (!used.includes(nums[i])) {
+                let tempUsed = [...used, nums[i]];
+                //@ts-ignore
+                let temp = generateUniqueStrings(nums, current + nums[i].toString(), tempUsed);
+                result = [...result, ...temp];
+            }
+        }
+        return result;
+    }
 }

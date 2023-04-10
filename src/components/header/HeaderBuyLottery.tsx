@@ -31,7 +31,7 @@ export const HeaderBuyLottery = React.memo(({ navigation, lotteryType }: HeaderB
                 setLogo({ source: Images.max3d_logo, style: { height: 82.79, width: 90 } })
                 break;
             case LotteryType.Max3DPlus:
-                setLogo({ source: Images.max3dplus_logo, style: { height: 82.79, width: 90 } })
+                setLogo({ source: Images.max3dplus_logo, style: { height: 44, width: 80 } })
                 break;
             default:
                 break;

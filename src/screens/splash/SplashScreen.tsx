@@ -1,4 +1,5 @@
 import { lotteryApi, userApi } from '@api';
+import { LotteryType } from '@common';
 import { RootStackParamsList, ScreenName } from '@navigation';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -50,7 +51,7 @@ export const SplashScreen = React.memo(() => {
         }
       }
 
-      const listMax3d = await lotteryApi.getScheduleMax3d({ take: 6, skip: 0 })
+      const listMax3d = await lotteryApi.getScheduleMax3d({ type: LotteryType.Max3D, take: 6, skip: 0 })
       if (listMax3d) {
         if (listMax3d.data.length > 0) {
           dispatch(getMax3dDraw(listMax3d.data))

@@ -1,16 +1,17 @@
-import { Icon, Images, Image } from '@assets';
+import { lotteryApi } from '@api';
 import { LotteryType } from '@common';
-import { CartIcon, HeaderBuyLottery } from '@components';
+import { HeaderBuyLottery, IText } from '@components';
 import { HomeStackParamList } from '@navigation';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { Color, Style } from '@styles';
-import { ScreenUtils } from '@utils';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { StyleSheet, View, Dimensions, StatusBar } from 'react-native';
+import { getMax3dDraw } from '@redux';
+import { Color } from '@styles';
+import { useEffect, useState } from 'react';
+import { StyleSheet, View, Dimensions, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useSelector } from 'react-redux';
-import { ViewAbove } from './component/ViewAbove';
+import { useDispatch } from 'react-redux';
+import { Max3dPlusTab } from './max3component/max3dplus/Max3dPlus';
+import { Max3dTab } from './max3component/max3d/Max3dTab';
 
 type NavigationProp = StackNavigationProp<HomeStackParamList, 'Max3dScreen'>;
 type NavigationRoute = RouteProp<HomeStackParamList, 'Max3dScreen'>;
@@ -21,23 +22,24 @@ export const Max3dScreen = () => {
     const navigation = useNavigation<NavigationProp>();
     const route = useRoute<NavigationRoute>();
     const safeAreaInsets = useSafeAreaInsets();
+    const dispatch = useDispatch()
 
     const [lotteryType, setLotteryType] = useState(LotteryType.Max3D)
 
-    const listDraw = useSelector((state: any) => state.drawReducer.max3dListDraw)
+    const getListDraw = async() => {
+        const listMax3d = await lotteryApi.getScheduleMax3d({ type: LotteryType.Max3D, take: 6, skip: 0 })
+        if (listMax3d) {
+          if (listMax3d.data.length > 0) {
+            dispatch(getMax3dDraw(listMax3d.data))
+          }
+        }
+    }
+
+    useEffect(()=> {
+        getListDraw()
+    }, [])
 
     const [showBottomSheet, setShowBottomSheet] = useState(false)
-    const [typePlay, setType]: any = useState({ label: "Cơ bản", value: 6 });
-    const [drawSelected, setDraw]: any = useState(listDraw[0])
-    // const [numberSet, setNumbers]: any = useState(initNumber)
-    const [totalCost, setTotalCost] = useState(0)
-
-    // ref
-    const chooseTypeRef: any = useRef(null);
-    const chooseDrawRef: any = useRef(null);
-    const chooseNumberRef: any = useRef(null);
-    const [pageNumber, setPageNumber] = useState(0)
-
     useEffect(() => {
         const timer = setTimeout(() => {
             setShowBottomSheet(true);
@@ -48,9 +50,34 @@ export const Max3dScreen = () => {
     return (
         <View style={styles.container}>
             <HeaderBuyLottery navigation={navigation} lotteryType={lotteryType} />
-            <ViewAbove typePlay={typePlay} drawSelected={drawSelected} openTypeSheet={()=> {}} openDrawSheet={()=> {}} />
-            {/* Body View */}
 
+            {/* Body View */}
+            <View style={{ height: 32, width: windowWidth - 32, marginHorizontal: 16, flexDirection: 'row' }}>
+                <TouchableOpacity
+                    activeOpacity={0.8}
+                    onPress={() => setLotteryType(LotteryType.Max3D)}
+                    style={[styles.button, { backgroundColor: lotteryType == LotteryType.Max3D ? Color.max3d : Color.white }]}
+                >
+                    <IText style={{ fontSize: 16, color: lotteryType == LotteryType.Max3D ? Color.white : Color.max3d }}>
+                        {"Max 3D"}
+                    </IText>
+                </TouchableOpacity>
+                <View style={{ width: 8 }} />
+                <TouchableOpacity
+                    activeOpacity={0.8}
+                    onPress={() => setLotteryType(LotteryType.Max3DPlus)}
+                    style={[styles.button, { backgroundColor: lotteryType == LotteryType.Max3DPlus ? Color.max3d : Color.white }]}
+                >
+                    <IText style={{ fontSize: 16, color: lotteryType == LotteryType.Max3DPlus ? Color.white : Color.max3d }}>
+                        {"Max 3D+"}
+                    </IText>
+                </TouchableOpacity>
+            </View>
+
+            <>
+                {lotteryType == LotteryType.Max3D ?
+                    <Max3dTab showBottomSheet={showBottomSheet} /> : <Max3dPlusTab />}
+            </>
         </View>
     )
 };
@@ -63,4 +90,10 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: Color.buyLotteryBackGround
     },
+    button: {
+        flex: 1,
+        justifyContent: 'center', alignItems: 'center',
+        borderRadius: 10, borderWidth: 1,
+        borderColor: Color.max3d
+    }
 })

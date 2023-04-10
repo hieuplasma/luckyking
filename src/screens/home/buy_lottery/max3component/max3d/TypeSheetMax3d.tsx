@@ -3,32 +3,39 @@ import { StyleSheet, View, Text, TouchableOpacity, Dimensions, Animated } from '
 import BottomSheet from '@gorhom/bottom-sheet';
 import { Color } from '@styles';
 import { Image, Images } from '@assets'
-import { getColorLott, printDraw } from '@utils';
 import { LotteryType } from '@common';
+import { getBallLott, getColorLott } from '@utils';
 import { IText } from '@components';
 
-interface ChooseTypeSheetProps {
+interface Type {
+    label: string,
+    value: number
+}
+
+interface Props {
     currentChoose: any,
     onChoose: (data: any) => void,
-    listDraw: any,
     type: LotteryType
 }
 
-const ChooseDrawSheetComponent = forwardRef(({ currentChoose, onChoose, listDraw, type }: ChooseTypeSheetProps, ref) => {
+const types = [
+    { label: "Cơ bản", value: 1 },
+    { label: "Đảo số", value: 2 },
+    // { label: "Ôm một vị trí", value: 3 },
+    // { label: "Bao bộ số", value: 4 }
+]
+
+const Wiget = forwardRef(({ currentChoose, onChoose, type }: Props, ref) => {
 
     const bottomSheetRef = useRef<BottomSheet>(null);
 
     const lottColor = getColorLott(type)
-    const [currentDraw, setCurrentDraw] = useState(currentChoose)
+    const [currentType, setCurrentType] = useState(currentChoose)
 
     useImperativeHandle(ref, () => ({
         openSheet: onOpen,
         closeSheet: onClose
     }));
-
-    useEffect(() => {
-        console.log('ChooseDrawSheet has been re-rendered, ');
-    });
 
     const choosing = (type: any) => {
         onClose()
@@ -51,7 +58,7 @@ const ChooseDrawSheetComponent = forwardRef(({ currentChoose, onChoose, listDraw
 
     const onOpen = () => {
         setIsOpen(true)
-        setCurrentDraw(currentChoose)
+        setCurrentType(currentChoose)
         bottomSheetRef.current?.expand()
         Animated.timing(opacity, {
             toValue: BACKGROUND_OPACITY,
@@ -90,24 +97,18 @@ const ChooseDrawSheetComponent = forwardRef(({ currentChoose, onChoose, listDraw
             backgroundStyle={styles.sheetContainer}
         >
             <View style={{ flex: 1 }}>
-                <IText style={{ fontSize: 18, color: Color.black, alignSelf: 'center', fontWeight: 'bold' }}>{"Chọn kì quay"}</IText>
-                <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', paddingHorizontal: 24, paddingVertical: 6, flex: 1 }}>
-                    {listDraw.map((item: any, index: number) => {
+                <IText style={{ fontSize: 18, color: Color.black, alignSelf: 'center', fontWeight: 'bold' }}>{"Chọn cách chơi"}</IText>
+                <View style={{ paddingHorizontal: 32, paddingVertical: 6, flex: 1 }}>
+                    {types.map((item: any, index: number) => {
                         return (
-                            <TouchableOpacity activeOpacity={0.4} key={index} style={styles.item} onPress={() => setCurrentDraw(item)}>
-                                <Image
-                                    source={item.drawCode == currentDraw.drawCode ? Images.checked_box : Images.check_box}
-                                    style={{ width: 24, height: 24 }}
-                                    tintColor={item.drawCode == currentDraw.drawCode ? lottColor : '#130F26'}
-                                />
-                                <IText style={{ fontSize: 14, marginLeft: 18, color: Color.black }}>
-                                    {`${printDraw(item)}`}
-                                </IText>
+                            <TouchableOpacity activeOpacity={0.4} key={index} style={styles.item} onPress={() => setCurrentType(item)}>
+                                <Image source={currentType.value == item.value ? getBallLott(type) : Images.ball_grey} style={styles.ball}></Image>
+                                <IText style={{ marginLeft: 12}}>{`${item.label}`}</IText>
                             </TouchableOpacity>
                         )
                     })}
                 </View>
-                <TouchableOpacity style={[styles.confirmButton, { backgroundColor: lottColor }]} onPress={() => choosing(currentDraw)}>
+                <TouchableOpacity style={[styles.confirmButton, { backgroundColor: lottColor }]} onPress={() => choosing(currentType)}>
                     <IText style={styles.textConfirm}>{`Xác nhận`.toUpperCase()}</IText>
                 </TouchableOpacity>
             </View>
@@ -115,11 +116,11 @@ const ChooseDrawSheetComponent = forwardRef(({ currentChoose, onChoose, listDraw
     );
 });
 
-export const ChooseDrawSheet = React.memo(ChooseDrawSheetComponent);
+export const TypeSheetMax3d = React.memo(Wiget);
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
-const SHEET_HEIGHT = 415
+const SHEET_HEIGHT = 285
 const BACKGROUND_OPACITY = 0.85
 
 const styles = StyleSheet.create({
@@ -132,7 +133,7 @@ const styles = StyleSheet.create({
         right: 0,
         bottom: 0,
     },
-    item: { alignItems: 'center', width: '100%', flexDirection: 'row', marginVertical: 6 },
+    item: { alignItems: 'center', flexDirection: 'row', marginVertical: 6 },
     ball: {
         width: 26, height: 26
     },

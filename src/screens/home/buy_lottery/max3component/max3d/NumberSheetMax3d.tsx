@@ -8,26 +8,23 @@ import { LotteryType } from '@common';
 import { getColorLott, printNumber } from '@utils';
 import { ConsolasText, IText } from '@components';
 
-interface ChooseTypeSheetProps {
+interface NumberSheetMax3dProps {
     onChoose: (data: any) => void,
     numberSet: any,
     page?: number,
     type: LotteryType
 }
 
-const fullNumber = Array.from({ length: 55 }, (_, index) => index + 1);
+const column = [0, 1, 2]
+const fullNumber = Array.from({ length: 10 }, (_, index) => index);
 
-export const ChooseNumberSheet = forwardRef(({ onChoose, numberSet, page, type }: ChooseTypeSheetProps, ref) => {
+export const NumberSheetMax3d = forwardRef(({ onChoose, numberSet, page, type }: NumberSheetMax3dProps, ref) => {
 
     const lottColor = getColorLott(type)
 
     // ref
     const bottomSheetRef = useRef<BottomSheet>(null);
     const swiperRef = useRef<SwiperFlatList>(null);
-
-    useEffect(() => {
-        console.log('ChooseNumberSheet has been re-rendered');
-    });
 
     useImperativeHandle(ref, () => ({
         openSheet: onOpen,
@@ -50,20 +47,11 @@ export const ChooseNumberSheet = forwardRef(({ onChoose, numberSet, page, type }
         onChoose(currentNumbers)
     }
 
-    const totalSelected = () => {
-        const curr = [...currentNumbers]
-        let count = 0;
-        for (let i = 0; i < curr[indexPage].length; i++) {
-            if (curr[indexPage][i] !== false) count++
-        }
-        return count
-    }
-
-    const changeNumber = (number: number) => {
+    const changeNumber = (number: number, columnId: number,) => {
         let curr = [...currentNumbers]
         let tmp = [...curr[indexPage]]
-        if (tmp.includes(number)) tmp[tmp.indexOf(number)] = false
-        else tmp[tmp.indexOf(false)] = number
+        if (tmp[columnId] === number) tmp[columnId] = false
+        else tmp[columnId] = number
         curr[indexPage] = tmp
         setCurrentNumbers(curr)
     }
@@ -84,20 +72,28 @@ export const ChooseNumberSheet = forwardRef(({ onChoose, numberSet, page, type }
 
     const ItemView = useCallback((item: any, index: number) => {
         return (
-            <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginHorizontal: 24, width: windowWidth - 48 }} key={index}>
-                {fullNumber.map((number: number, index2: number) => {
-                    const check = (item.includes(number) ? true : false)
+            <View style={{ marginHorizontal: 32, width: windowWidth - 64, flexDirection: 'row' }} key={index}>
+                {column.map((columnId: number) => {
                     return (
-                        <View style={styles.ballContainer} key={index + ':::' + index2}  >
-                            <TouchableOpacity style={[styles.ball, { backgroundColor: check ? lottColor : '#E9E6E6' }]} onPress={() => changeNumber(number)}>
-                                <ConsolasText style={[styles.textBall, { color: check ? Color.white : Color.black }]}>{printNumber(number)}</ConsolasText>
-                            </TouchableOpacity>
+                        <View key={columnId + ""}>
+                            {
+                                fullNumber.map((number: number, index2: number) => {
+                                    const check = (item[columnId] === number ? true : false)
+                                    return (
+                                        <View style={styles.ballContainer} key={number + ':::' + index2}  >
+                                            <TouchableOpacity style={[styles.ball, { backgroundColor: check ? lottColor : '#E9E6E6' }]} onPress={() => changeNumber(number, columnId)}>
+                                                <ConsolasText style={[styles.textBall, { color: check ? Color.white : Color.black }]}>{printNumber(number)}</ConsolasText>
+                                            </TouchableOpacity>
+                                        </View>
+                                    )
+                                })
+                            }
                         </View>
                     )
                 })}
             </View>
         )
-    }, [changeNumber]);
+    }, [numberSet, changeNumber]);
 
     const [opacity, setOpacity] = useState(new Animated.Value(0))
     const [isOpen, setIsOpen] = useState(false)
@@ -162,7 +158,7 @@ export const ChooseNumberSheet = forwardRef(({ onChoose, numberSet, page, type }
                         {indexPage > 0 ?
                             <Image source={Images.left_arrow} style={{ width: 12, height: 24 }} tintColor={Color.black} /> : <></>}
                     </TouchableOpacity>
-                    <IText style={styles.title}>{`Chọn bộ số ${String.fromCharCode(65 + indexPage)} (${totalSelected()}/${currentLevel})`}</IText>
+                    <IText style={styles.title}>{`Chọn bộ số ${String.fromCharCode(65 + indexPage)}`}</IText>
                     <TouchableOpacity disabled={indexPage == 5 ? true : false} style={{ flex: 1, flexDirection: 'row-reverse', alignItems: 'center' }}
                         onPress={() => swiperRef.current?.scrollToIndex({ animated: true, index: indexPage + 1 })}
                     >
@@ -189,7 +185,7 @@ export const ChooseNumberSheet = forwardRef(({ onChoose, numberSet, page, type }
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
-const SHEET_HEIGHT = 520
+const SHEET_HEIGHT = 630
 const BACKGROUND_OPACITY = 0.85
 
 const styles = StyleSheet.create({

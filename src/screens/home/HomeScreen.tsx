@@ -126,7 +126,7 @@ export const HomeScreen = React.memo((props?: HomeScreenProps) => {
         targetTime={max3dFirstDraw ? new Date(max3dFirstDraw.drawTime) : undefined}
         action={() => NavigationUtils.navigate(navigation, ScreenName.HomeChild.Max3dScreen)}
         nextDate={max3dFirstDraw ? dateConvert(new Date(max3dFirstDraw.drawTime)) : ""}
-        QSMT={'T4, T6, CN'}
+        QSMT={'T2, T4, T6'}
       />
     );
   }, []);

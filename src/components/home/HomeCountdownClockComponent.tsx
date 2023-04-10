@@ -1,5 +1,6 @@
 import { Label } from '@shared';
 import { Style } from '@styles';
+import { printNumber } from '@utils';
 import React, { useEffect, useMemo, useState } from 'react';
 import { StyleProp, TextStyle, View, ViewProps } from 'react-native';
 
@@ -47,10 +48,10 @@ export const HomeCountdownClockComponent = React.memo(
             Style.Space.MarginTop.small_8,
             { fontSize: 13 },
             props?.timeStyle,
-            // {fontFamily:'digital-number'}
+            { fontFamily: 'digital-7' }
           ]}>
-          {timeRemaining?.days} {' '}{timeRemaining?.hours} :{' '}
-          {timeRemaining?.minutes} : {timeRemaining?.seconds} s
+          {printNumber(timeRemaining?.days)} :{' '}{printNumber(timeRemaining?.hours)} :{' '}
+          {printNumber(timeRemaining?.minutes)} : {printNumber(timeRemaining?.seconds)}
         </Label.Widget>
       </View>
     );

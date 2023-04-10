@@ -17,6 +17,8 @@ export function getColorLott(params: LotteryType) {
             return Color.keno
         case LotteryType.Max3D:
             return Color.max3d
+        case LotteryType.Max3DPlus:
+            return Color.max3d
         case LotteryType.Max3DPro:
             return Color.max3dpro
         default:
@@ -30,12 +32,14 @@ export function getBallLott(params: LotteryType) {
             return Images.ball_power
         case LotteryType.Mega:
             return Images.ball_mega
-        // case LotteryType.Keno:
-        //     return Color.keno
-        // case LotteryType.Max3D:
-        //     return Color.max3d
-        // case LotteryType.Max3DPro:
-        //     return Color.max3dpro
+        case LotteryType.Keno:
+            return Images.ball_keno
+        case LotteryType.Max3D:
+            return Images.ball_max3d
+        case LotteryType.Max3DPlus:
+            return Images.ball_max3d
+        case LotteryType.Max3DPro:
+            return Images.ball_3dpro
         default:
             return Color.power
     }

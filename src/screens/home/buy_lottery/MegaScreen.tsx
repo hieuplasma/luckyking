@@ -4,7 +4,7 @@ import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Icon, Image } from "@assets";
 import { Color, Dimension, Style } from "@styles";
-import { calSurcharge, convolutions, NavigationUtils, printDraw, printMoney, ScreenUtils } from "@utils";
+import { calSurcharge, convolutions, NavigationUtils, printDraw, printMoney, printNumber, ScreenUtils } from "@utils";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { View, StyleSheet, Text, ScrollView, TouchableOpacity, Dimensions, StatusBar, Alert } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -17,6 +17,8 @@ import { LotteryType, MAX_SET, MEGA_NUMBER, OrderMethod, OrderStatus } from "@co
 import { addLottery, getCart, getMegaDraw, updateUser } from "@redux";
 import { CartIcon, ConsolasText, HeaderBuyLottery, IText } from "@components";
 import { ViewAbove } from "./component/ViewAbove";
+import { ViewFooter1 } from "./component/ViewFoooter1";
+import { ViewFooter2 } from "./component/ViewFooter2";
 
 type NavigationProp = StackNavigationProp<HomeStackParamList, 'MegaScreen'>;
 type NavigationRoute = RouteProp<HomeStackParamList, 'MegaScreen'>;
@@ -32,6 +34,23 @@ const initNumber = [
     [false, false, false, false, false, false], // numberD: 
     [false, false, false, false, false, false], //  numberE:
     [false, false, false, false, false, false] // numberF:
+]
+
+const types = [
+    { label: "Bao 5", value: 5 }, //0
+    { label: "Cơ bản", value: 6 }, //1
+    { label: "Bao 7", value: 7 },//2
+    { label: "Bao 8", value: 8 },//3
+    { label: "Bao 9", value: 9 },//3
+    { label: "Bao 10", value: 10 },//5
+    { label: "Bao 11", value: 11 },//6
+    { label: "Bao 12", value: 12 },//7
+    { label: "Bao 13", value: 13 },//8
+    { label: "Bao 14", value: 14 },//9
+    { label: "Bao 15", value: 15 },//10
+    { label: "Bao 16", value: 16 },//11
+    { label: "Bao 17", value: 17 },//12
+    { label: "Bao 18", value: 18 },//13
 ]
 
 export const MegaScreen = React.memo((props: any) => {
@@ -131,12 +150,6 @@ export const MegaScreen = React.memo((props: any) => {
             currentNumber[i] = Array(currentLevel).fill("TC");
         }
         setNumbers(currentNumber)
-    }
-
-    const printNumber = (number: any) => {
-        if (number === false) return ""
-        if (number < 10) return '0' + number
-        return number
     }
 
     const bookLottery = async () => {
@@ -309,37 +322,14 @@ export const MegaScreen = React.memo((props: any) => {
             </ScrollView>
 
             {/* //Footer */}
-            <View style={{ paddingHorizontal: 16, paddingBottom: 30 }}>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <TouchableOpacity style={styles.buttonFooterUp} activeOpacity={0.6}>
-                        <Image source={Images.filled_heart} style={{ width: 19, height: 19 }}></Image>
-                        <IText style={styles.textFooterUp}>{"Yêu thích"}</IText>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.buttonFooterUp} activeOpacity={0.6} onPress={() => fastPick()}>
-                        <Image source={Images.fast_pick} style={{ width: 19, height: 19 }}></Image>
-                        <IText style={styles.textFooterUp}>{"Chọn nhanh"}</IText>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.buttonFooterUp} activeOpacity={0.6} onPress={() => selfPick()}>
-                        <View style={{ width: 21, height: 21, borderRadius: 99, backgroundColor: Color.luckyKing, justifyContent: 'center', alignItems: 'center' }}>
-                            <ConsolasText style={{ fontSize: 14, color: Color.white }}>TC</ConsolasText>
-                        </View>
-                        <IText style={styles.textFooterUp}>{"Tự chọn"}</IText>
-                    </TouchableOpacity>
-                </View>
-
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 24 }}>
-                    <IText style={{ color: Color.black, fontSize: 16 }}>{"Giá vé tạm tính"}</IText>
-                    <IText style={{ color: Color.luckyKing, fontSize: 16 }}>{`${printMoney(totalCost)} đ`}</IText>
-                </View>
-
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 4 }}>
-                    <TouchableOpacity style={[styles.buttonFooterDown, { backgroundColor: '#0171F5' }]} activeOpacity={0.6} onPress={addToCart}>
-                        <Image source={Images.add_cart} style={{ width: 26, height: 26 }}></Image>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={[styles.buttonFooterDown, { backgroundColor: Color.mega }]} activeOpacity={0.6} onPress={bookLottery}>
-                        <IText style={{ color: Color.white, fontWeight: 'bold', fontSize: 16 }}>{"ĐẶT VÉ"}</IText>
-                    </TouchableOpacity>
-                </View>
+            <View style={{ paddingHorizontal: 16, marginBottom: 30 }}>
+                <ViewFooter1 fastPick={fastPick} selfPick={selfPick} />
+                <ViewFooter2
+                    totalCost={totalCost}
+                    addToCart={addToCart}
+                    bookLottery={bookLottery}
+                    lotteryType={LotteryType.Mega}
+                />
             </View>
 
             {/* BottomSheet */}
@@ -371,20 +361,5 @@ const styles = StyleSheet.create({
     ballContainer: { width: (windowWidth - 146) / 6, justifyContent: 'center', alignItems: 'center', marginVertical: 8 },
     ballStyle: {
         width: 28, height: 28, justifyContent: 'center', alignItems: 'center'
-    },
-    buttonFooterUp: {
-        width: (windowWidth - 48) / 3, height: 32,
-        borderRadius: 10, padding: 6,
-        justifyContent: 'space-around', alignItems: 'center',
-        borderColor: '#FFC42C', backgroundColor: '#FDF9F9',
-        borderWidth: 1, flexDirection: 'row'
-    },
-    textFooterUp: { fontSize: 12, color: Color.luckyKing },
-    buttonFooterDown: {
-        width: (windowWidth - 36) / 2, height: 44,
-        borderRadius: 10, padding: 6,
-        justifyContent: 'space-around', alignItems: 'center',
-        borderColor: '#FFC42C', backgroundColor: '#FDF9F9',
-        borderWidth: 1
     }
 })
