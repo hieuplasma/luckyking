@@ -54,7 +54,6 @@ export const LoginWidget = React.memo((props: any) => {
       dispatch(updateToken(res.data.accessToken))
       NavigationUtils.resetGlobalStackWithScreen(navigation, ScreenName.SplashScreen);
     }
-    else { Alert.alert("Có lỗi xảy ra", res.data?.errorMessage) }
     setLoading(false)
   }, [phoneNumber, password, deviceId]);
 
@@ -65,10 +64,6 @@ export const LoginWidget = React.memo((props: any) => {
   const onChangePassword = useCallback((password?: string) => {
     setPassword(password);
   }, []);
-
-  const onLoginClick = useCallback(() => {
-    onLoginPress()
-  }, [navigation, password, phoneNumber]);
 
   const onViewSignup = useCallback(() => {
     NavigationUtils.navigate(navigation, ScreenName.Authentications.SignUp);
@@ -141,7 +136,7 @@ export const LoginWidget = React.memo((props: any) => {
           Style.Space.MarginTop.large_16,
           { backgroundColor: Color.vietlott },
         ]}
-        onClicked={onLoginClick}
+        onClicked={onLoginPress}
         isLoading={isLoading}
       />
     );

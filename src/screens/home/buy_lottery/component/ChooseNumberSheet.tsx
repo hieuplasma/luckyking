@@ -6,6 +6,7 @@ import { Image, Images } from '@assets'
 import { SwiperFlatList } from 'react-native-swiper-flatlist';
 import { LotteryType } from '@common';
 import { getColorLott } from '@utils';
+import { ConsolasText } from '@components';
 
 interface ChooseTypeSheetProps {
     onChoose: (data: any) => void,
@@ -94,7 +95,7 @@ export const ChooseNumberSheet = forwardRef(({ onChoose, numberSet, page, type }
                     return (
                         <View style={styles.ballContainer} key={index + ':::' + index2}  >
                             <TouchableOpacity style={[styles.ball, { backgroundColor: check ? lottColor : '#E9E6E6' }]} onPress={() => changeNumber(number)}>
-                                <Text style={[styles.textBall, { color: check ? Color.white : Color.black }]}>{printNumber(number)}</Text>
+                                <ConsolasText style={[styles.textBall, { color: check ? Color.white : Color.black }]}>{printNumber(number)}</ConsolasText>
                             </TouchableOpacity>
                         </View>
                     )
@@ -218,7 +219,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center', alignItems: 'center',
         borderRadius: 99, backgroundColor: '#E9E6E6'
     },
-    textBall: { fontWeight: '400', fontSize: 16, color: Color.black },
+    textBall: { fontSize: 16, marginTop: 2 },
     confirmButton: {
         margin: 16, backgroundColor: Color.power, borderRadius: 10,
         justifyContent: 'center', alignItems: 'center',

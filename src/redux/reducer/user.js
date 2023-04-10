@@ -31,8 +31,8 @@ const userSlice = createSlice({
             state.role = action.payload.role || newState.role
             state.avatar = action.payload.avatar || newState.avatar
             state.personNumber = action.payload.personNumber || newState.personNumber
-            state.luckykingBalance = action.payload.luckykingBalance || newState.MoneyAccount
-            state.rewardWalletBalance = action.payload.rewardWalletBalance || newState.RewardWallet
+            state.luckykingBalance = action.payload.luckykingBalance || newState.luckykingBalance
+            state.rewardWalletBalance = action.payload.rewardWalletBalance || newState.rewardWalletBalance
         },
         removeUser: (state) => {
             state = initialState

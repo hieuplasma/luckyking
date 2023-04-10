@@ -47,13 +47,25 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Bebeboo-Italic.ttf</string>
 		<string>Bebeboo-Regular.ttf</string>
 		<string>Bebeboo-SemiBold.ttf</string>
 		<string>LuckyKingIcon.ttf</string>
+		<string>myriadpro-bold.ttf</string>
+		<string>myriadpro-boldcond.ttf</string>
+		<string>myriadpro-boldcondit.ttf</string>
+		<string>myriadpro-boldit.ttf</string>
+		<string>myriadpro-cond.ttf</string>
+		<string>myriadpro-condit.ttf</string>
+		<string>myriadpro-light.ttf</string>
+		<string>myriadpro-regular.ttf</string>
+		<string>myriadpro-semibold.ttf</string>
+		<string>myriadpro-semiboldit.ttf</string>
+		<string>consolas.ttf</string>
+		<string>digital-7.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

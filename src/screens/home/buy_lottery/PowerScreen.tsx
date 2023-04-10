@@ -15,7 +15,8 @@ import { ChooseDrawSheet } from "./component/ChooseDrawSheet";
 import { ChooseNumberSheet } from "./component/ChooseNumberSheet";
 import { LotteryType, MAX_SET, OrderMethod, OrderStatus, POWER_NUMBER } from "@common";
 import { addLottery, getCart, getPowerDraw, updateUser } from "@redux";
-import { CartIcon, HeaderBuyLottery } from "@components";
+import { CartIcon, ConsolasText, DigitalText, HeaderBuyLottery } from "@components";
+import { ViewAbove } from "./component/ViewAbove";
 
 type NavigationProp = StackNavigationProp<HomeStackParamList, 'PowerScreen'>;
 type NavigationRoute = RouteProp<HomeStackParamList, 'PowerScreen'>;
@@ -267,28 +268,7 @@ export const PowerScreen = React.memo((props: PowerScreenProps) => {
         <View style={styles.container}>
             <HeaderBuyLottery navigation={navigation} lotteryType={LotteryType.Power} />
             {/* //Body */}
-            <View style={styles.body}>
-                <View style={{ flexDirection: 'row' }}>
-                    <Text style={{ fontSize: 16, color: Color.black }}>
-                        {"Số dư tài khoản: "}
-                    </Text>
-                    <Text style={{ fontSize: 16, color: Color.luckyKing, fontWeight: 'bold' }}>
-                        {`${printMoney(luckykingBalance)} đ`}
-                    </Text>
-                </View>
-                <View style={{ flexDirection: 'row', paddingTop: 10, justifyContent: 'space-between' }}>
-                    <TouchableOpacity activeOpacity={0.6} style={styles.dropDown} onPress={openTypeSheet}>
-                        <Text style={{ fontSize: 13, color: Color.black }}>{typePlay.label}</Text>
-                        <Image source={Images.down_arrow} style={{ width: 12, height: 6 }}></Image>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity activeOpacity={0.6} style={[styles.dropDown, { paddingHorizontal: 4 }]} onPress={openDrawSheet}>
-                        <Text style={{ fontSize: 13, color: Color.black }}>{drawSelected ? printDraw(drawSelected) : "------"}</Text>
-                        <Image source={Images.down_arrow} style={{ width: 12, height: 6 }}></Image>
-                    </TouchableOpacity>
-                </View>
-            </View>
-
+            <ViewAbove typePlay={typePlay} drawSelected={drawSelected} openTypeSheet={openTypeSheet} openDrawSheet={openDrawSheet} />
             {/* //Chon so */}
             <ScrollView style={{ flex: 1 }}>
                 <View style={{ paddingHorizontal: 16, paddingVertical: 8 }}>
@@ -304,7 +284,7 @@ export const PowerScreen = React.memo((props: PowerScreenProps) => {
                                         return (
                                             <View style={styles.ballContainer} key={index2}>
                                                 <Image source={number ? Images.ball_power : Images.ball_grey} style={styles.ballStyle}>
-                                                    <Text style={{ color: Color.white }}>{printNumber(number)}</Text>
+                                                    <ConsolasText style={{ color: Color.white, fontSize: 16, marginTop: 2 }}>{printNumber(number)}</ConsolasText>
                                                 </Image>
                                             </View>
                                         )
@@ -381,16 +361,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: Color.buyLotteryBackGround
-    },
-    body: {
-        marginTop: 10,
-        paddingHorizontal: 16
-    },
-    dropDown: {
-        width: (windowWidth - 44) / 2, height: 36,
-        borderRadius: 10, padding: 6, paddingHorizontal: 12,
-        justifyContent: 'space-between',
-        borderColor: Color.black, borderWidth: 1, flexDirection: 'row', alignItems: 'center'
     },
     lineNumber: {
         flexDirection: 'row', marginVertical: 4,

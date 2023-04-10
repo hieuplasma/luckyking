@@ -47,6 +47,7 @@ export const HomeCountdownClockComponent = React.memo(
             Style.Space.MarginTop.small_8,
             { fontSize: 13 },
             props?.timeStyle,
+            // {fontFamily:'digital-number'}
           ]}>
           {timeRemaining?.days} {' '}{timeRemaining?.hours} :{' '}
           {timeRemaining?.minutes} : {timeRemaining?.seconds} s

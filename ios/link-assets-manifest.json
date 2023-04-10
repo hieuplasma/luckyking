@@ -1,0 +1,53 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "src/assets/fonts/consolas.ttf",
+      "sha1": "0673725185269095be019eda0446c05d1c3bbbae"
+    },
+    {
+      "path": "src/assets/fonts/digital-7.ttf",
+      "sha1": "7e1cf55ecbeaaa82465624ffb32b54e85453325c"
+    },
+    {
+      "path": "src/assets/fonts/myriadpro-bold.ttf",
+      "sha1": "01ceb5eaff2ddf8eb436400b9e5db9e285bd73fc"
+    },
+    {
+      "path": "src/assets/fonts/myriadpro-boldcond.ttf",
+      "sha1": "d04eb9386ba6e4471208a11127c0277bed8e7ba5"
+    },
+    {
+      "path": "src/assets/fonts/myriadpro-boldcondit.ttf",
+      "sha1": "9b966a300f7a01dcd19e15b47f04d307fa09ab4a"
+    },
+    {
+      "path": "src/assets/fonts/myriadpro-boldit.ttf",
+      "sha1": "5dfa70fc3e8d1c79f7967e29499d3b18db913267"
+    },
+    {
+      "path": "src/assets/fonts/myriadpro-cond.ttf",
+      "sha1": "35dc786476020d5a4c9e47a9d4eafd1ee29b14ec"
+    },
+    {
+      "path": "src/assets/fonts/myriadpro-condit.ttf",
+      "sha1": "b7d5d1088df17f637459e0ed7e8a01c490884d70"
+    },
+    {
+      "path": "src/assets/fonts/myriadpro-light.ttf",
+      "sha1": "acd506da33221333d490268cd2c9d32d960d0cd7"
+    },
+    {
+      "path": "src/assets/fonts/myriadpro-regular.ttf",
+      "sha1": "a4e962f6c88e3f377e43f6d8f7f79efe45d844a0"
+    },
+    {
+      "path": "src/assets/fonts/myriadpro-semibold.ttf",
+      "sha1": "6c4021e4ba7b7aabb7978d3ad767f8484c23bf6d"
+    },
+    {
+      "path": "src/assets/fonts/myriadpro-semiboldit.ttf",
+      "sha1": "0684c1cf0ac460af9a443b38ad7cd730f8124541"
+    }
+  ]
+}

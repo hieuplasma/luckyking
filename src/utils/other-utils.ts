@@ -24,7 +24,7 @@ export function getColorLott(params: LotteryType) {
     }
 }
 
-export function getBallLott(params:  LotteryType) {
+export function getBallLott(params: LotteryType) {
     switch (params) {
         case LotteryType.Power:
             return Images.ball_power

@@ -97,6 +97,10 @@ export class Connection {
         }))
             .then((res) => {
                 console.log("RES IN POST API OF " + uri + " :::::::::::>", res)
+                if (res.data.errorCode) {
+                    Alert.alert("Lỗi", res.data.errorMessage)
+                    return 0
+                }
                 return {
                     ...res,
                     success: true
@@ -105,6 +109,7 @@ export class Connection {
             .catch(async (error) => {
                 console.log("ERROR IN POST API OF " + uri + " :::::::::::>", error.response?.data)
                 Alert.alert("Lỗi", JSON.stringify(error.response?.data).toString())
+                return 0
             })
     }
 }

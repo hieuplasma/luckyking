@@ -1,4 +1,5 @@
 import { Image, Images } from "@assets";
+import { IText } from "@components";
 import { Color } from "@styles";
 import { printDraw, printMoney } from "@utils";
 import React from "react";
@@ -18,21 +19,21 @@ export const ViewAbove = React.memo(({ typePlay, drawSelected, openTypeSheet, op
     return (
         <View style={styles.body}>
             <View style={{ flexDirection: 'row' }}>
-                <Text style={{ fontSize: 16, color: Color.black }}>
+                <IText style={{ fontSize: 16 }}>
                     {"Số dư tài khoản: "}
-                </Text>
-                <Text style={{ fontSize: 16, color: Color.luckyKing, fontWeight: 'bold' }}>
+                </IText>
+                <IText style={{ fontSize: 16, color: Color.luckyKing, fontWeight: 'bold' }}>
                     {`${printMoney(luckykingBalance)} đ`}
-                </Text>
+                </IText>
             </View>
             <View style={{ flexDirection: 'row', paddingTop: 10, justifyContent: 'space-between' }}>
                 <TouchableOpacity activeOpacity={0.6} style={styles.dropDown} onPress={openTypeSheet}>
-                    <Text style={{ fontSize: 13, color: Color.black }}>{typePlay.label}</Text>
+                    <IText style={{ fontSize: 13 }}>{typePlay.label}</IText>
                     <Image source={Images.down_arrow} style={{ width: 12, height: 6 }}></Image>
                 </TouchableOpacity>
 
                 <TouchableOpacity activeOpacity={0.6} style={[styles.dropDown, { paddingHorizontal: 4 }]} onPress={openDrawSheet}>
-                    <Text style={{ fontSize: 13, color: Color.black }}>{drawSelected ? printDraw(drawSelected) : "------"}</Text>
+                    <IText style={{ fontSize: 13, color: Color.black }}>{drawSelected ? printDraw(drawSelected) : "------"}</IText>
                     <Image source={Images.down_arrow} style={{ width: 12, height: 6 }}></Image>
                 </TouchableOpacity>
             </View>
