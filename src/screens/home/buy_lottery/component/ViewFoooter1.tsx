@@ -37,16 +37,9 @@ const styles = StyleSheet.create({
     buttonFooterUp: {
         width: (windowWidth - 48) / 3, height: 32,
         borderRadius: 10, padding: 6,
-        justifyContent: 'space-around', alignItems: 'center',
+        justifyContent: 'center', alignItems: 'center',
         borderColor: '#FFC42C', backgroundColor: '#FDF9F9',
         borderWidth: 1, flexDirection: 'row'
     },
-    textFooterUp: { fontSize: 12, color: Color.luckyKing },
-    buttonFooterDown: {
-        width: (windowWidth - 36) / 2, height: 44,
-        borderRadius: 10, padding: 6,
-        justifyContent: 'space-around', alignItems: 'center',
-        borderColor: '#FFC42C', backgroundColor: '#FDF9F9',
-        borderWidth: 1
-    }
+    textFooterUp: { fontSize: 16, color: Color.luckyKing, marginTop: -1 }
 })

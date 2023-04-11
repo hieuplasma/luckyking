@@ -4,12 +4,14 @@ import { ConsolasText, IText } from "@components";
 import { Color } from "@styles";
 import { generateUniqueStrings, printMoneyK, printNumber } from "@utils";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { StyleSheet, TouchableOpacity, ScrollView, View, Dimensions } from "react-native";
+import { StyleSheet, TouchableOpacity, ScrollView, View, Dimensions, Alert } from "react-native";
 import { useSelector } from "react-redux";
+import { ChangeBetButton } from "../../component/ChangeBetButton";
 import { ChooseDrawSheet } from "../../component/ChooseDrawSheet";
 import { ViewAbove } from "../../component/ViewAbove";
 import { ViewFooter1 } from "../../component/ViewFoooter1";
 import { ViewFooter2 } from "../../component/ViewFooter2";
+import { Max3dBagView } from "./Max3dBagView";
 import { NumberSheetMax3d } from "./NumberSheetMax3d";
 import { TypeSheetMax3d } from "./TypeSheetMax3d";
 
@@ -26,10 +28,9 @@ const initNumber = [
     [false, false, false],
 ]
 
-const listBets = [
-    10000, 20000, 30000, 50000, 100000, 200000, 300000
-]
 const initBets = [10000, 10000, 10000, 10000, 10000, 10000]
+const lottColor = Color.max3d
+const fullNumber = Array.from({ length: 10 }, (_, index) => index);
 
 export const Max3dTab = React.memo((props: Props) => {
 
@@ -38,9 +39,11 @@ export const Max3dTab = React.memo((props: Props) => {
     const [typePlay, setType]: any = useState({ label: "Cơ bản", value: 1 });
     const [drawSelected, setDraw]: any = useState(listDraw[0])
     const [numberSet, setNumbers]: any = useState(initNumber)
-    const [bets, setBets]: any = useState(initBets)
-    const [generated, setGenrated]: any = useState([])
+    const [bets, setBets] = useState(initBets)
+    const [generated, setGenrated] = useState([])
+    const [generatedBets, setGeneratedBets] = useState([])
     const [totalCost, setTotalCost] = useState(0)
+    const [hugePosition, setHugePosition] = useState(-1)
 
     // ref
     const chooseTypeRef: any = useRef(null);
@@ -48,14 +51,19 @@ export const Max3dTab = React.memo((props: Props) => {
     const chooseNumberRef: any = useRef(null);
     const [pageNumber, setPageNumber] = useState(0)
 
+    const type4Ref: any = useRef(null);
+
+    const [totalCostBag, setTotalCostBag] = useState(0)
+
     const randomNumber = (index: number) => {
         const currentNumber = [...numberSet]
-        const randomNumbers = new Set();
-        while (randomNumbers.size < 3) {
+        const randomNumbers = [];
+        while (randomNumbers.length < 3) {
             const randomNumber = Math.floor(Math.random() * MAX3D_NUMBER);
-            randomNumbers.add(randomNumber);
+            randomNumbers.push(randomNumber);
         }
-        const resultArray = Array.from(randomNumbers).map(Number).sort((a, b) => a - b);
+        let resultArray = Array.from(randomNumbers).map(Number)
+        if (typePlay.value == 3) resultArray[hugePosition] = 10
         currentNumber[index] = resultArray
         setNumbers(currentNumber)
     }
@@ -63,33 +71,98 @@ export const Max3dTab = React.memo((props: Props) => {
     const deleteNumber = (index: number) => {
         const currentNumber = [...numberSet]
         const resultArray = Array(3).fill(false);
+        if (typePlay.value == 3) resultArray[hugePosition] = 10
         currentNumber[index] = resultArray
         setNumbers(currentNumber)
     }
 
+    const fastPick = useCallback(() => {
+        let tmp = []
+        for (let i = 0; i < MAX_SET; i++) {
+            const randomNumbers = [];
+            while (randomNumbers.length < 3) {
+                const randomNumber = Math.floor(Math.random() * MAX3D_NUMBER);
+                randomNumbers.push(randomNumber);
+            }
+            let resultArray = Array.from(randomNumbers).map(Number)
+            if (typePlay.value == 3) resultArray[hugePosition] = 10
+            tmp[i] = resultArray
+        }
+        setNumbers(tmp)
+    }, [typePlay, hugePosition])
+
+    const selfPick = useCallback(() => {
+        Alert.alert("Thông báo", "Vé tự chọn hiện không khả dụng cho loại hình chơi MAX3D")
+    }, [])
+
     useEffect(() => {
         const currentNumber = [...numberSet]
         const level = typePlay.value
-        console.log(level)
-        let tmp: any = []
+        let tmpGenerated: any = []
+        let tmpBets: any = []
         switch (level) {
             case 1:
-                currentNumber.map(item => (item[0] !== false) ? tmp.push('' + item[0] + item[1] + item[2]) : null)
+                currentNumber.map((item, index) => {
+                    if (item[0] !== false) {
+                        tmpGenerated.push('' + item[0] + item[1] + item[2])
+                        tmpBets.push(bets[index])
+                    }
+                })
                 break;
             case 2:
-                currentNumber.map(item => (item[0] !== false) ? tmp = tmp.concat(generateUniqueStrings(item)) : null)
+                currentNumber.map((item, index) => {
+                    if (item[0] !== false) {
+                        const result = generateUniqueStrings(item)
+                        tmpGenerated = tmpGenerated.concat(result)
+                        tmpBets = tmpBets.concat(Array(result.length).fill(bets[index]))
+                    }
+                })
+                break;
+            case 3:
+                currentNumber.map((item, index) => {
+                    if (item[0] !== false && item[1] !== false) {
+                        fullNumber.map(number => {
+                            let tmp = [...item]
+                            tmp[hugePosition] = number
+                            tmpGenerated.push('' + tmp[0] + tmp[1] + tmp[2])
+                        })
+                        tmpBets = tmpBets.concat(Array(10).fill(bets[index]))
+                    }
+                })
                 break;
             default:
                 break;
         }
-        console.log("tmp", tmp)
-        setGenrated(tmp)
-    }, [numberSet])
+        let total = 0
+        tmpBets.map((item: number) => total = total + item)
+        setGenrated(tmpGenerated)
+        setGeneratedBets(tmpBets)
+        setTotalCost(total)
+    }, [numberSet, bets])
+
+    const onChangeHugePositon = useCallback((position: number) => {
+        let tmp = [
+            [false, false, false], [false, false, false], [false, false, false],
+            [false, false, false], [false, false, false], [false, false, false],
+        ]
+        tmp.map((item: any) => item[position] = 10)
+        setHugePosition(position)
+        setNumbers(tmp)
+    }, [])
 
     const onChangeType = useCallback((type: any) => {
         setType(type)
         setNumbers(initNumber)
         setBets(initBets)
+        setHugePosition(-1)
+        if (type.value == 3) {
+            let tmp = [
+                [10, false, false], [10, false, false], [10, false, false],
+                [10, false, false], [10, false, false], [10, false, false],
+            ]
+            setNumbers(tmp)
+            setHugePosition(0)
+        }
     }, [])
     const openTypeSheet = useCallback(() => { chooseTypeRef.current?.openSheet() }, [chooseTypeRef])
     const renderTypeSheet = useCallback(() => {
@@ -117,7 +190,10 @@ export const Max3dTab = React.memo((props: Props) => {
         )
     }, [chooseDrawRef, onChangeDraw, drawSelected, listDraw])
 
-    const onChangeNumber = useCallback((set: any) => setNumbers(set), [])
+    const onChangeNumber = useCallback((set: any, bets: any) => {
+        setNumbers(set)
+        setBets(bets)
+    }, [])
     const openNumberSheet = useCallback((page: number) => {
         setPageNumber(page)
         chooseNumberRef.current?.openSheet()
@@ -129,80 +205,102 @@ export const Max3dTab = React.memo((props: Props) => {
                 onChoose={onChangeNumber}
                 numberSet={numberSet}
                 page={pageNumber}
+                listBets={bets}
                 type={LotteryType.Max3D}
+                hugePosition={hugePosition}
             />
         )
     }, [chooseNumberRef, numberSet, pageNumber])
 
     return (
+        console.log(type4Ref.current),
         <View style={{ flex: 1 }}>
             <ViewAbove typePlay={typePlay} drawSelected={drawSelected} openTypeSheet={openTypeSheet} openDrawSheet={openDrawSheet} />
 
             {
-                typePlay == 2 ?
-                    <View style={{ alignSelf: 'center' }}>
-
+                typePlay.value == 3 ?
+                    <View style={{ alignSelf: 'center', marginTop: 16, flexDirection: 'row', alignItems: 'center' }}>
+                        <IText style={{ fontSize: 16 }}>{"Chọn 1 vị trí ÔM"}</IText>
+                        <View style={styles.hugeContainer}>
+                            {
+                                [0, 1, 2].map((item) => {
+                                    return (
+                                        <TouchableOpacity key={item + ""} activeOpacity={1} style={styles.circleOutside} onPress={() => onChangeHugePositon(item)}>
+                                            <View style={[styles.circleInside, { backgroundColor: hugePosition == item ? lottColor : Color.white }]} />
+                                        </TouchableOpacity>
+                                    )
+                                })
+                            }
+                        </View>
                     </View >
                     : <></>
             }
+
             {/* //Chon so */}
-            <ScrollView style={{ flex: 1 }}>
-                <View style={{ paddingHorizontal: 16, paddingVertical: 8 }}>
-                    {numberSet.map((item: any, index: number) => {
-                        return (
-                            <View style={styles.lineNumber} key={index}>
-                                <IText style={{ fontSize: 18, fontWeight: 'bold' }}>{String.fromCharCode(65 + index)}</IText>
-                                <TouchableOpacity style={{ flex: 1, flexDirection: 'row', marginHorizontal: 18, justifyContent: 'center' }} onPress={() => openNumberSheet(index)}>
-                                    {item.sort((a: any, b: any) => a - b).map((number: any, index2: number) => {
-                                        return (
-                                            <View style={styles.ballContainer} key={index2}>
-                                                <Image source={number !== false ? Images.ball_max3d : Images.ball_grey} style={styles.ballStyle}>
-                                                    <ConsolasText style={{ color: Color.white, fontSize: 16 }}>{printNumber(number)}</ConsolasText>
-                                                </Image>
-                                            </View>
+            {
+                typePlay.value == 4 ?
+                    <Max3dBagView ref={type4Ref} changeCost={(data: number) => setTotalCostBag(data)} />
+                    : <ScrollView style={{ flex: 1 }}>
+                        <View style={{ paddingHorizontal: 16, paddingVertical: 8 }}>
+                            {numberSet.map((item: any, index: number) => {
+                                return (
+                                    <View style={styles.lineNumber} key={index}>
+                                        <IText style={{ fontSize: 18, fontWeight: 'bold' }}>{String.fromCharCode(65 + index)}</IText>
+                                        <TouchableOpacity style={{ flex: 1, flexDirection: 'row', marginHorizontal: 18, justifyContent: 'center' }} onPress={() => openNumberSheet(index)}>
+                                            {item.map((number: any, index2: number) => {
+                                                return (
+                                                    <View style={styles.ballContainer} key={index2}>
+                                                        <Image source={number !== false ? Images.ball_max3d : Images.ball_grey} style={styles.ballStyle}>
+                                                            <ConsolasText style={{ color: Color.white, fontSize: 16 }}>{number < 10 ? number : "✽"}</ConsolasText>
+                                                        </Image>
+                                                    </View>
+                                                )
+                                            })}
+                                        </TouchableOpacity>
+                                        <TouchableOpacity style={styles.buttonBets} onPress={() => openNumberSheet(index)}>
+                                            <IText style={{ fontSize: 16, color: '#0171F5' }}>{printMoneyK(bets[index])}</IText>
+                                        </TouchableOpacity>
+                                        <View style={{ flexDirection: 'row', alignItems: 'center', width: 60, justifyContent: 'space-between' }}>
+                                            <Image source={Images.nofilled_heart} style={{ width: 22, height: 22, }}></Image>
+                                            {(item[0] !== false && item[1] !== false) ?
+                                                <TouchableOpacity onPress={() => deleteNumber(index)}>
+                                                    <Image source={Images.trash} style={{ width: 26, height: 26 }}></Image>
+                                                </TouchableOpacity>
+                                                : <TouchableOpacity onPress={() => randomNumber(index)}>
+                                                    <Image source={Images.refresh} style={{ width: 26, height: 26 }}></Image>
+                                                </TouchableOpacity>
+                                            }
+                                        </View>
+                                    </View>
+                                )
+                            })}
+                        </View>
+                    </ScrollView>
+            }
+
+            <View style={{ paddingHorizontal: 16, marginBottom: 5 }}>
+                {
+                    typePlay.value == 4 ?
+                        <></>
+                        : <>
+                            <ViewFooter1 fastPick={fastPick} selfPick={selfPick} />
+
+                            <IText style={{ fontSize: 16, color: '#0171F5', fontWeight: 'bold', marginTop: 5, alignSelf: 'center' }}>
+                                {`Các bộ số được tạo (${generated.length} bộ)`}
+                            </IText>
+                            <ScrollView style={styles.boxGenerated}>
+                                <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+                                    {
+                                        generated.map((item: any, index: number) =>
+                                            <ConsolasText key={index + ""} style={{ fontSize: 16, color: lottColor, marginHorizontal: 8, marginVertical: 5 }}>{item}</ConsolasText>
                                         )
-                                    })}
-                                </TouchableOpacity>
-                                <TouchableOpacity style={styles.buttonBets} onPress={() => openNumberSheet(index)}>
-                                    <IText style={{ fontSize: 16, color: '#0171F5' }}>{printMoneyK(bets[index])}</IText>
-                                </TouchableOpacity>
-                                <View style={{ flexDirection: 'row', alignItems: 'center', width: 60, justifyContent: 'space-between' }}>
-                                    <Image source={Images.nofilled_heart} style={{ width: 22, height: 22, }}></Image>
-                                    {item[0] !== false ?
-                                        <TouchableOpacity onPress={() => deleteNumber(index)}>
-                                            <Image source={Images.trash} style={{ width: 26, height: 26 }}></Image>
-                                        </TouchableOpacity>
-                                        : <TouchableOpacity onPress={() => randomNumber(index)}>
-                                            <Image source={Images.refresh} style={{ width: 26, height: 26 }}></Image>
-                                        </TouchableOpacity>
                                     }
                                 </View>
-                            </View>
-                        )
-                    })}
-                </View>
-            </ScrollView>
-
-
-
-            <View style={{ paddingHorizontal: 16, marginBottom: 30 }}>
-                <ViewFooter1 fastPick={() => { }} selfPick={() => { }} />
-
-                <IText style={{ fontSize: 16, color: '#0171F5', fontWeight: 'bold', marginTop: 10, alignSelf: 'center' }}>
-                    {`Các bộ số được tạo (${generated.length} bộ)`}
-                </IText>
-                <ScrollView style={styles.boxGenerated}>
-                    <View style={{ flexDirection: 'row', flexWrap: 'wrap', }}>
-                        {
-                            generated.map((item: any, index: number) =>
-                                <IText key={index + ""} style={{ fontSize: 16, color: Color.max3d, marginHorizontal: 16, marginVertical: 5 }}>{item}</IText>
-                            )
-                        }
-                    </View>
-                </ScrollView>
-
+                            </ScrollView>
+                        </>
+                }
                 <ViewFooter2
-                    totalCost={totalCost}
+                    totalCost={typePlay.value != 4 ? totalCost : totalCostBag}
                     addToCart={() => { }}
                     bookLottery={() => { }}
                     lotteryType={LotteryType.Max3D}
@@ -229,7 +327,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
     },
-    ballContainer: { width: (windowWidth - 146) / 6, justifyContent: 'center', alignItems: 'center', marginVertical: 8 },
+    ballContainer: { width: (windowWidth - 146) / 6, justifyContent: 'center', alignItems: 'center', marginVertical: 4 },
     ballStyle: {
         width: 28, height: 28, justifyContent: 'center', alignItems: 'center'
     },
@@ -241,8 +339,27 @@ const styles = StyleSheet.create({
         borderWidth: 1, marginRight: 12
     },
     boxGenerated: {
-        height: 86, width: windowWidth - 32, marginTop: 10,
+        height: 86, width: windowWidth - 32,
         borderRadius: 10, backgroundColor: '#F3F2F2',
         padding: 5
+    },
+    hugeContainer: {
+        width: 73, height: 24,
+        borderRadius: 20, borderColor: lottColor,
+        borderWidth: 1, marginLeft: 4,
+        justifyContent: 'space-around', flexDirection: 'row',
+        alignItems: 'center'
+    },
+    circleOutside: {
+        width: 16, height: 16,
+        borderRadius: 99, borderWidth: 1,
+        borderColor: lottColor,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    circleInside: {
+        width: 11, height: 11,
+        borderRadius: 99, borderWidth: 1,
+        borderColor: lottColor
     }
 })

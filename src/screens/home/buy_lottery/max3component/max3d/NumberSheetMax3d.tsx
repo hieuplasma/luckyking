@@ -5,20 +5,27 @@ import { Color } from '@styles';
 import { Image, Images } from '@assets'
 import { SwiperFlatList } from 'react-native-swiper-flatlist';
 import { LotteryType } from '@common';
-import { getColorLott, printNumber } from '@utils';
+import { getColorLott, printMoney, printMoneyK, printNumber } from '@utils';
 import { ConsolasText, IText } from '@components';
+import { ChangeBetButton } from '../../component/ChangeBetButton';
 
 interface NumberSheetMax3dProps {
-    onChoose: (data: any) => void,
+    onChoose: (data1: any, data2: any) => void,
     numberSet: any,
     page?: number,
-    type: LotteryType
+    type: LotteryType,
+    listBets: number[],
+    hugePosition: number
 }
+
+const betMilestones = [
+    10000, 20000, 30000, 50000, 100000, 200000, 300000
+]
 
 const column = [0, 1, 2]
 const fullNumber = Array.from({ length: 10 }, (_, index) => index);
 
-export const NumberSheetMax3d = forwardRef(({ onChoose, numberSet, page, type }: NumberSheetMax3dProps, ref) => {
+export const NumberSheetMax3d = forwardRef(({ onChoose, numberSet, page, type, listBets, hugePosition }: NumberSheetMax3dProps, ref) => {
 
     const lottColor = getColorLott(type)
 
@@ -40,11 +47,11 @@ export const NumberSheetMax3d = forwardRef(({ onChoose, numberSet, page, type }:
     }, [page])
 
     const [currentNumbers, setCurrentNumbers] = useState([...numberSet])
-    const [currentLevel, setCurrentLevel] = useState([...numberSet[0]].length)
+    const [currentBets, setCurrentBets] = useState([...listBets])
 
     const choosing = () => {
         onClose()
-        onChoose(currentNumbers)
+        onChoose(currentNumbers, currentBets)
     }
 
     const changeNumber = (number: number, columnId: number,) => {
@@ -56,9 +63,16 @@ export const NumberSheetMax3d = forwardRef(({ onChoose, numberSet, page, type }:
         setCurrentNumbers(curr)
     }
 
+    const changeBet = useCallback((bet: number, index: number) => {
+        let curr = [...currentBets]
+        curr[index] = bet
+        setCurrentBets(curr)
+    }, [currentBets])
+
     const checkIsOk = useCallback(() => {
         const tmp = [...currentNumbers]
-        const len = tmp[0].length
+        let len = tmp[0].length
+        if (hugePosition > -1) len--
         for (let i = 0; i < tmp.length; i++) {
             const element = tmp[i]
             let count = 0;
@@ -71,9 +85,11 @@ export const NumberSheetMax3d = forwardRef(({ onChoose, numberSet, page, type }:
     }, [numberSet, currentNumbers])
 
     const ItemView = useCallback((item: any, index: number) => {
+        const other = betMilestones.includes(currentBets[indexPage]) ? false : true
         return (
-            <View style={{ marginHorizontal: 32, width: windowWidth - 64, flexDirection: 'row' }} key={index}>
+            <View style={{ marginHorizontal: 32, width: windowWidth - 64, height: 440, flexDirection: 'row', justifyContent: 'space-between' }} key={index}>
                 {column.map((columnId: number) => {
+                    const filled = columnId == hugePosition ? true : false
                     return (
                         <View key={columnId + ""}>
                             {
@@ -81,8 +97,8 @@ export const NumberSheetMax3d = forwardRef(({ onChoose, numberSet, page, type }:
                                     const check = (item[columnId] === number ? true : false)
                                     return (
                                         <View style={styles.ballContainer} key={number + ':::' + index2}  >
-                                            <TouchableOpacity style={[styles.ball, { backgroundColor: check ? lottColor : '#E9E6E6' }]} onPress={() => changeNumber(number, columnId)}>
-                                                <ConsolasText style={[styles.textBall, { color: check ? Color.white : Color.black }]}>{printNumber(number)}</ConsolasText>
+                                            <TouchableOpacity disabled={filled} activeOpacity={0.8} style={[styles.ball, { backgroundColor: check ? lottColor : '#E9E6E6' }]} onPress={() => changeNumber(number, columnId)}>
+                                                <ConsolasText style={[styles.textBall, { color: check ? Color.white : Color.black }]}>{filled ? "✽" : number}</ConsolasText>
                                             </TouchableOpacity>
                                         </View>
                                     )
@@ -91,9 +107,35 @@ export const NumberSheetMax3d = forwardRef(({ onChoose, numberSet, page, type }:
                         </View>
                     )
                 })}
+                <View style={{}}>
+                    {
+                        betMilestones.map((bet: number) => {
+                            const check = bet == currentBets[indexPage] ? true : false
+                            return (
+                                <TouchableOpacity key={bet} style={[styles.betBlock, { backgroundColor: check ? Color.max3d : Color.white }]}
+                                    onPress={() => changeBet(bet, index)}>
+                                    <IText style={[styles.textBet, { color: check ? Color.white : Color.max3d }]}>{printMoneyK(bet)}</IText>
+                                </TouchableOpacity>
+                            )
+                        })
+                    }
+                    {/* <View style={[styles.betBlock, { backgroundColor: other ? Color.max3d : Color.white }]}>
+                        <IText style={[styles.textBet, { color: other ? Color.white : Color.max3d }]}>{"Khác"}
+                        </IText>
+                    </View> */}
+                    <View style={{ flex: 1 }}></View>
+                    <ChangeBetButton
+                        currentBet={currentBets[indexPage]}
+                        increase={() => changeBet(currentBets[indexPage] + 10000, indexPage)}
+                        decrease={() => changeBet(currentBets[indexPage] - 10000, indexPage)}
+                        color={lottColor}
+                        max={300000}
+                        min={10000}
+                    />
+                </View>
             </View>
         )
-    }, [numberSet, changeNumber]);
+    }, [numberSet, currentBets, changeBet, changeNumber]);
 
     const [opacity, setOpacity] = useState(new Animated.Value(0))
     const [isOpen, setIsOpen] = useState(false)
@@ -112,7 +154,7 @@ export const NumberSheetMax3d = forwardRef(({ onChoose, numberSet, page, type }:
     const onOpen = () => {
         setIsOpen(true)
         setCurrentNumbers([...numberSet])
-        setCurrentLevel([...numberSet[0]].length)
+        setCurrentBets([...listBets])
         bottomSheetRef.current?.expand()
         Animated.timing(opacity, {
             toValue: BACKGROUND_OPACITY,
@@ -220,5 +262,14 @@ const styles = StyleSheet.create({
         color: Color.white,
         fontSize: 16,
         fontWeight: 'bold',
+    },
+
+    betBlock: {
+        width: 63, height: 26, marginVertical: 9,
+        borderRadius: 10, borderWidth: 1, borderColor: Color.max3d,
+        justifyContent: 'center', alignItems: 'center', alignSelf: 'center'
+    },
+    textBet: {
+        fontSize: 16, color: Color.max3d
     }
 })

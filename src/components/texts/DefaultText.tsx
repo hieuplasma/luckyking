@@ -42,6 +42,8 @@ export { DefaultText }
 const styles = StyleSheet.create({
     default: {
         fontSize: 14,
+        lineHeight: 20,
+        marginTop: 2,
         color: Color.black
     }
 })

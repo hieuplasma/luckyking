@@ -18,7 +18,7 @@ export const ViewFooter2 = React.memo(({ totalCost, addToCart, bookLottery, lott
     const lottColor = getColorLott(lotteryType)
     return (
         <>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 24 }}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 4 }}>
                 <IText style={{ color: Color.black, fontSize: 16 }}>{"Giá vé tạm tính"}</IText>
                 <IText style={{ color: Color.luckyKing, fontSize: 16 }}>{`${printMoney(totalCost)} đ`}</IText>
             </View>

@@ -42,7 +42,7 @@ export const HeaderBuyLottery = React.memo(({ navigation, lotteryType }: HeaderB
         <>
             <StatusBar translucent={true} barStyle={'dark-content'} backgroundColor={"transparent"} />
             {/* //Header */}
-            <View style={[styles.headerContainer, { marginTop: safeAreaInsets.top }]}>
+            <View style={[styles.headerContainer, { marginTop: 0 }]}>
                 <View style={{ flex: 1 }}>
                     <Icon.Button
                         size={'small'}

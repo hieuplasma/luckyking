@@ -8,7 +8,7 @@ import { getMax3dDraw } from '@redux';
 import { Color } from '@styles';
 import { useEffect, useState } from 'react';
 import { StyleSheet, View, Dimensions, TouchableOpacity } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
 import { Max3dPlusTab } from './max3component/max3dplus/Max3dPlus';
 import { Max3dTab } from './max3component/max3d/Max3dTab';
@@ -48,7 +48,7 @@ export const Max3dScreen = () => {
     }, []);
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <HeaderBuyLottery navigation={navigation} lotteryType={lotteryType} />
 
             {/* Body View */}
@@ -78,7 +78,7 @@ export const Max3dScreen = () => {
                 {lotteryType == LotteryType.Max3D ?
                     <Max3dTab showBottomSheet={showBottomSheet} /> : <Max3dPlusTab />}
             </>
-        </View>
+        </SafeAreaView>
     )
 };
 

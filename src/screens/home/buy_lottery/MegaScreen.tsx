@@ -7,7 +7,7 @@ import { Color, Dimension, Style } from "@styles";
 import { calSurcharge, convolutions, NavigationUtils, printDraw, printMoney, printNumber, ScreenUtils } from "@utils";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { View, StyleSheet, Text, ScrollView, TouchableOpacity, Dimensions, StatusBar, Alert } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import { ChooseTypeSheet } from "./component/ChooseTypeSheet";
 import { useDispatch, useSelector } from "react-redux";
 import { lotteryApi } from "@api";
@@ -278,7 +278,7 @@ export const MegaScreen = React.memo((props: any) => {
     }, [chooseNumberRef, numberSet, pageNumber])
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             {/* //Header */}
             <HeaderBuyLottery navigation={navigation} lotteryType={LotteryType.Mega} />
             {/* //Body */}
@@ -322,7 +322,7 @@ export const MegaScreen = React.memo((props: any) => {
             </ScrollView>
 
             {/* //Footer */}
-            <View style={{ paddingHorizontal: 16, marginBottom: 30 }}>
+            <View style={{ paddingHorizontal: 16, marginBottom: 5 }}>
                 <ViewFooter1 fastPick={fastPick} selfPick={selfPick} />
                 <ViewFooter2
                     totalCost={totalCost}
@@ -341,7 +341,7 @@ export const MegaScreen = React.memo((props: any) => {
                 </>
                 : <></>}
 
-        </View>
+        </SafeAreaView>
     )
 })
 

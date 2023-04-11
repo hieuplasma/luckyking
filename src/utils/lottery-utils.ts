@@ -86,20 +86,43 @@ export function generateStrings(nums: number[], current = "") {
     }
 }
 
-export function generateUniqueStrings(nums: number[], current = "", used = []) {
-    if (current.length === 3) {
-        return [current];
-    } else {
-        let result: string[] = [];
-        for (let i = 0; i < nums.length; i++) {
-            //@ts-ignore
-            if (!used.includes(nums[i])) {
-                let tempUsed = [...used, nums[i]];
-                //@ts-ignore
-                let temp = generateUniqueStrings(nums, current + nums[i].toString(), tempUsed);
-                result = [...result, ...temp];
+export function generateUniqueStrings(arr: number[]) {
+    const results: string[] = [];
+
+    const generatePermutations = (arr: number[], currentString: string, counts: number[], length: number, results: string[]) => {
+        if (currentString.length === length) {
+            results.push(currentString);
+            return;
+        }
+        for (let i = 0; i < arr.length; i++) {
+            if (counts[i] > 0) {
+                counts[i]--;
+                generatePermutations(arr, currentString + arr[i], counts, length, results);
+                counts[i]++;
             }
         }
-        return result;
+    };
+
+    generatePermutations(arr, "", [1, 1, 1], 3, results);
+
+    return results.filter(onlyUnique);
+}
+
+function onlyUnique(value: any, index: number, array: any[]) {
+    return array.indexOf(value) === index;
+}
+
+export function generateStringsFromArray(arr: number[]) {
+    let result: string[] = [];
+    function generateCombinations(prefix: any, remaining: any) {
+        if (prefix.length === 3) {
+            result.push(prefix);
+        } else {
+            for (let i = 0; i < remaining.length; i++) {
+                generateCombinations(prefix + remaining[i], remaining);
+            }
+        }
     }
+    generateCombinations("", arr);
+    return result;
 }

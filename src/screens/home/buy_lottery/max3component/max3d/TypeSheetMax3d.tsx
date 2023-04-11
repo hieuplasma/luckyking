@@ -21,8 +21,8 @@ interface Props {
 const types = [
     { label: "Cơ bản", value: 1 },
     { label: "Đảo số", value: 2 },
-    // { label: "Ôm một vị trí", value: 3 },
-    // { label: "Bao bộ số", value: 4 }
+    { label: "Ôm một vị trí", value: 3 },
+    { label: "Bao bộ số", value: 4 }
 ]
 
 const Wiget = forwardRef(({ currentChoose, onChoose, type }: Props, ref) => {
@@ -103,7 +103,7 @@ const Wiget = forwardRef(({ currentChoose, onChoose, type }: Props, ref) => {
                         return (
                             <TouchableOpacity activeOpacity={0.4} key={index} style={styles.item} onPress={() => setCurrentType(item)}>
                                 <Image source={currentType.value == item.value ? getBallLott(type) : Images.ball_grey} style={styles.ball}></Image>
-                                <IText style={{ marginLeft: 12}}>{`${item.label}`}</IText>
+                                <IText style={{ marginLeft: 12 }}>{`${item.label}`}</IText>
                             </TouchableOpacity>
                         )
                     })}
