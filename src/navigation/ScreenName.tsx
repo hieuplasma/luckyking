@@ -21,7 +21,8 @@ export const ScreenName = {
     BankRechargeScreen: "BankRechargeScreen",
 
     WithDrawStack: "WithdrawStack",
-    WithDrawScreen: "WithdrawScreen"
+    WithDrawScreen: "WithdrawScreen",
+    LuckyKingWithdrawScreen: "LuckyKingWithdrawScreen"
   },
 
   BottomTab: "BottomTab",

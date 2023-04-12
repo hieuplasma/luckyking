@@ -9,7 +9,7 @@ import {
 import { Label, LineSeparator, translate } from '@shared';
 import { Icon } from '@assets'
 import { Color, Dimension, Style } from '@styles';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ScreenName } from './ScreenName';

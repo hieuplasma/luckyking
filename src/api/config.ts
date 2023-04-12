@@ -39,5 +39,7 @@ export const API_URI = {
   DELETE_LOTTERY_CART: "/cart/delete",
   DELETE_LOTTERY_NUMBER: "/cart/delete-number",
   EDIT_LOTTERY_CART: "/cart/update",
-  EMPTY_CART: "/cart/empty"
+  EMPTY_CART: "/cart/empty",
+
+  WITHDRAW_TO_LUCKYKING: "/transaction/withdraw-luckyking"
 }

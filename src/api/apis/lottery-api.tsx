@@ -46,6 +46,11 @@ class LotteryApi {
         let fullUrl = API_URI.EMPTY_CART;
         return await window.connection.POST(fullUrl, body)
     }
+
+    withdrawLuckyKing = async (body: any) => {
+        let fullUrl = API_URI.WITHDRAW_TO_LUCKYKING;
+        return await window.connection.POST(fullUrl, body)
+    }
 }
 
 const lotteryApi = new LotteryApi
