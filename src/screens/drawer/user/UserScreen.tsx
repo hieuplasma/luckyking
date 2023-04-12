@@ -1,5 +1,5 @@
 import { Icon, Images, Image } from '@assets';
-import { ScreenName } from '@navigation';
+import { ScreenName, UserStackParamList } from '@navigation';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { Color, Style } from '@styles';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -15,7 +15,6 @@ import { userApi } from '@api';
 import { updateUser } from '@redux'
 import { doNotExits, NavigationUtils } from '@utils'
 import { StackNavigationProp } from '@react-navigation/stack';
-import { UserStackParamList } from 'src/navigation/UserNavigation';
 import { ImageHeader, IText } from '@components';
 
 type NavigationProp = StackNavigationProp<UserStackParamList, 'UserScreen'>;

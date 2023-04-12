@@ -1,18 +1,17 @@
 import { Icon, Images, Image } from '@assets';
 import { ImageHeader, IText } from '@components';
-import { MainDrawerParamList, ScreenName } from '@navigation';
+import { RechargeStackParamList, ScreenName } from '@navigation';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Color, Style } from '@styles';
 import { NavigationUtils, printMoney, ScreenUtils } from '@utils';
 import { useCallback } from 'react';
 import { StyleSheet, View, Dimensions, StatusBar, TouchableOpacity } from 'react-native';
-import { Item } from 'react-native-paper/lib/typescript/src/components/Drawer/Drawer';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
 
-type NavigationProp = StackNavigationProp<MainDrawerParamList, 'RechargeStack'>;
-type NavigationRoute = RouteProp<MainDrawerParamList, 'RechargeStack'>;
+type NavigationProp = StackNavigationProp<RechargeStackParamList, 'RechargeScreen'>;
+type NavigationRoute = RouteProp<RechargeStackParamList, 'RechargeScreen'>;
 
 export interface RechargeScreenParamsList { }
 

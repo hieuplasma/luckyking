@@ -7,7 +7,7 @@ import { View } from 'react-native';
 import {
   AuthenticationNavigation,
   type AuthenticationStackParamList,
-} from './Authentication';
+} from './auth/Authentication';
 import { MainNavigation } from './MainNavigation';
 import { ScreenName } from './ScreenName';
 
@@ -52,11 +52,18 @@ export function RootNavigation(params?: {}) {
     </View>
   );
 }
+
 export * from './MainNavigation';
-export * from './HomeNavigation';
-export * from './LiveNavigation';
-export * from './ResultNavigation';
-export * from './StatisticalNavigation';
-export * from './ScanNavigation'
+
+export * from './tab/HomeNavigation';
+export * from './tab/LiveNavigation';
+export * from './tab/ResultNavigation';
+export * from './tab/StatisticalNavigation';
+export * from './tab/ScanNavigation'
+
+export * from './drawer/RechargeNavigation'
+export * from './drawer/UserNavigation'
+export * from './drawer/WithDrawNavigation'
+
 export { AuthenticationStackParamList };
 export { ScreenName }

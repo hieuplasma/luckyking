@@ -10,7 +10,7 @@ import {
   VerifyOTPScreenRouteParams,
 } from '@screen';
 import React from 'react';
-import { renderDefaultHeader } from './HeaderConfig';
+import { renderDefaultHeader } from '../HeaderConfig';
 
 export type AuthenticationStackParamList = {
   Login: LoginScreenRouteParams;

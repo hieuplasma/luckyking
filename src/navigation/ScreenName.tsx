@@ -18,7 +18,10 @@ export const ScreenName = {
 
     RechargeStack: "RechargeStack",
     RechargeScreen: "RechargeScreen",
-    BankRechargeScreen: "BankRechargeScreen"
+    BankRechargeScreen: "BankRechargeScreen",
+
+    WithDrawStack: "WithdrawStack",
+    WithDrawScreen: "WithdrawScreen"
   },
 
   BottomTab: "BottomTab",

@@ -8,13 +8,13 @@ import {
     Text, KeyboardAvoidingView, TextInput, TouchableOpacity, ActivityIndicator, Alert
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { UserStackParamList } from 'src/navigation/UserNavigation';
 import { useHeaderHeight } from '@react-navigation/elements'
 import { doNotExits } from '@utils';
 import { ScrollView } from 'react-native';
 import { userApi } from '@api';
 import { useDispatch, useSelector } from 'react-redux';
 import { ImageHeader } from '@components';
+import { UserStackParamList } from '@navigation';
 
 type NavigationProp = StackNavigationProp<UserStackParamList, 'ChangePassScreen'>;
 type NavigationRoute = RouteProp<UserStackParamList, 'ChangePassScreen'>;

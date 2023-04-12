@@ -1,6 +1,6 @@
 import { Image, Images } from '@assets';
 import { BasicHeader, IText } from '@components';
-import { MainDrawerParamList, } from '@navigation';
+import { RechargeStackParamList, } from '@navigation';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Color } from '@styles';
@@ -9,9 +9,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
 import Clipboard from '@react-native-clipboard/clipboard';
 
-
-type NavigationProp = StackNavigationProp<MainDrawerParamList, 'RechargeStack'>;
-type NavigationRoute = RouteProp<MainDrawerParamList, 'RechargeStack'>;
+type NavigationProp = StackNavigationProp<RechargeStackParamList, 'BankRechargeScreen'>;
+type NavigationRoute = RouteProp<RechargeStackParamList, 'BankRechargeScreen'>;
 
 export interface BankRechargeScreenParamsList { }
 
