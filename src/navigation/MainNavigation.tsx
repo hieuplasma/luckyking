@@ -18,6 +18,7 @@ import { UserNavigation } from './UserNavigation';
 import { ScreenName } from './ScreenName';
 import { LiveNavigation } from './LiveNavigation';
 import { HomeNavigation } from './HomeNavigation';
+import { RechargeNavigation } from './RechargeNavigation';
 // import { RootStackParamsList } from './index';
 
 export type MainBottomTabParamList = {
@@ -30,7 +31,8 @@ export type MainBottomTabParamList = {
 
 export type MainDrawerParamList = {
   BottomTab: {}
-  UserStack: {}
+  UserStack: {},
+  RechargeStack: {}
 };
 
 const BottomTab = createBottomTabNavigator<MainBottomTabParamList>();
@@ -255,6 +257,7 @@ export function MainNavigation(props: any) {
     >
       <Drawer.Screen name={'BottomTab'} component={BottomTabNavigator} />
       <Drawer.Screen name={'UserStack'} component={UserNavigation} />
+      <Drawer.Screen name={'RechargeStack'} component={RechargeNavigation} />
     </Drawer.Navigator>
   )
 }

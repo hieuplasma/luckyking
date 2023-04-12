@@ -14,7 +14,11 @@ export const ScreenName = {
   Drawer: {
     UserStack: "UserStack",
     UserScreen: "UserScreen",
-    ChangePassScreen: "ChangePassScreen"
+    ChangePassScreen: "ChangePassScreen",
+
+    RechargeStack: "RechargeStack",
+    RechargeScreen: "RechargeScreen",
+    BankRechargeScreen: "BankRechargeScreen"
   },
 
   BottomTab: "BottomTab",

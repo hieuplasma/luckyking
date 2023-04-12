@@ -24,7 +24,7 @@ export const ViewFooter2 = React.memo(({ totalCost, addToCart, bookLottery, lott
             </View>
 
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 4 }}>
-                <TouchableOpacity style={[styles.buttonFooterDown, { backgroundColor: '#0171F5' }]} activeOpacity={0.6} onPress={addToCart}>
+                <TouchableOpacity style={[styles.buttonFooterDown, { backgroundColor: Color.blue }]} activeOpacity={0.6} onPress={addToCart}>
                     <Image source={Images.add_cart} style={{ width: 26, height: 26 }}></Image>
                 </TouchableOpacity>
                 <TouchableOpacity style={[styles.buttonFooterDown, { backgroundColor: lottColor }]} activeOpacity={0.6} onPress={bookLottery}>

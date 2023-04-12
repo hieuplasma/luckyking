@@ -18,19 +18,20 @@
 		38577CAC29BC701800C8B0FE /* Bebeboo-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 38577CA829BC701800C8B0FE /* Bebeboo-Italic.ttf */; };
 		38577CAD29BC701800C8B0FE /* Bebeboo-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 38577CA929BC701800C8B0FE /* Bebeboo-Regular.ttf */; };
 		38832C2929CED58300026527 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 38832C2829CED58300026527 /* GoogleService-Info.plist */; };
+		394A3D8C4CC84BD8A047A7BD /* consolas.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E3EC9A344B984B13963CCF02 /* consolas.ttf */; };
 		5CEAB24CF7054F76A1288977 /* myriadpro-light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D6EF1C4DD45E48A993FECEA2 /* myriadpro-light.ttf */; };
 		6148AA775D854BDE9BB0F9C4 /* myriadpro-condit.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 980FFB3A04984340A0117D3D /* myriadpro-condit.ttf */; };
 		67C6308A29DD28E900DE5350 /* Pods_luckyking_app_react.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E228926468158D8197D88998 /* Pods_luckyking_app_react.framework */; };
 		6818C8A82C3A643B5B212BA2 /* Pods_luckyking_app_react_luckyking_app_reactTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAB00DE1B4135ED615AEC9F3 /* Pods_luckyking_app_react_luckyking_app_reactTests.framework */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		9B332564D7EB49E790AE137D /* myriadpro-it.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CAF2EEA0E859438388640438 /* myriadpro-it.ttf */; };
+		A4869340266B4977A4324048 /* digital-7.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6BD423B59F75440A936261EF /* digital-7.ttf */; };
 		AA3DF99DBD74482E8ACCC6F7 /* myriadpro-bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 711B5C07D9FE4A5DA11563B7 /* myriadpro-bold.ttf */; };
 		C8E6C8BD8B4C423999E7F835 /* myriadpro-boldcondit.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AD57E0B1D23B4BA88D68D49E /* myriadpro-boldcondit.ttf */; };
 		D9D322430E02484E911A8906 /* myriadpro-regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0D6654B594F34B97A8FB0965 /* myriadpro-regular.ttf */; };
 		E1E9B0FDD9AB426FB9EC2310 /* myriadpro-boldit.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1C36FC6AA1BA49F18E3AEE3C /* myriadpro-boldit.ttf */; };
 		E99D501C0F8B4AB986F9F5BE /* myriadpro-semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D2CFD055C7B74D13808AD036 /* myriadpro-semibold.ttf */; };
 		FDA40337A65548EBAFED15A2 /* myriadpro-semiboldit.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B3D68C2AAD544735A1CC7FA5 /* myriadpro-semiboldit.ttf */; };
-		394A3D8C4CC84BD8A047A7BD /* consolas.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E3EC9A344B984B13963CCF02 /* consolas.ttf */; };
-		A4869340266B4977A4324048 /* digital-7.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6BD423B59F75440A936261EF /* digital-7.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +64,7 @@
 		3B4392A12AC88292D35C810B /* Pods-luckyking_app_react.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-luckyking_app_react.debug.xcconfig"; path = "Target Support Files/Pods-luckyking_app_react/Pods-luckyking_app_react.debug.xcconfig"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-luckyking_app_react.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-luckyking_app_react.release.xcconfig"; path = "Target Support Files/Pods-luckyking_app_react/Pods-luckyking_app_react.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-luckyking_app_react-luckyking_app_reactTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-luckyking_app_react-luckyking_app_reactTests.debug.xcconfig"; path = "Target Support Files/Pods-luckyking_app_react-luckyking_app_reactTests/Pods-luckyking_app_react-luckyking_app_reactTests.debug.xcconfig"; sourceTree = "<group>"; };
+		6BD423B59F75440A936261EF /* digital-7.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "digital-7.ttf"; path = "../src/assets/fonts/digital-7.ttf"; sourceTree = "<group>"; };
 		711B5C07D9FE4A5DA11563B7 /* myriadpro-bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "myriadpro-bold.ttf"; path = "../src/assets/fonts/myriadpro-bold.ttf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = luckyking_app_react/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-luckyking_app_react-luckyking_app_reactTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-luckyking_app_react-luckyking_app_reactTests.release.xcconfig"; path = "Target Support Files/Pods-luckyking_app_react-luckyking_app_reactTests/Pods-luckyking_app_react-luckyking_app_reactTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -72,12 +74,12 @@
 		AD57E0B1D23B4BA88D68D49E /* myriadpro-boldcondit.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "myriadpro-boldcondit.ttf"; path = "../src/assets/fonts/myriadpro-boldcondit.ttf"; sourceTree = "<group>"; };
 		B3D68C2AAD544735A1CC7FA5 /* myriadpro-semiboldit.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "myriadpro-semiboldit.ttf"; path = "../src/assets/fonts/myriadpro-semiboldit.ttf"; sourceTree = "<group>"; };
 		C725447042434C908D70C90C /* myriadpro-boldcond.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "myriadpro-boldcond.ttf"; path = "../src/assets/fonts/myriadpro-boldcond.ttf"; sourceTree = "<group>"; };
+		CAF2EEA0E859438388640438 /* myriadpro-it.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "myriadpro-it.ttf"; path = "../src/assets/fonts/myriadpro-it.ttf"; sourceTree = "<group>"; };
 		D2CFD055C7B74D13808AD036 /* myriadpro-semibold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "myriadpro-semibold.ttf"; path = "../src/assets/fonts/myriadpro-semibold.ttf"; sourceTree = "<group>"; };
 		D6EF1C4DD45E48A993FECEA2 /* myriadpro-light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "myriadpro-light.ttf"; path = "../src/assets/fonts/myriadpro-light.ttf"; sourceTree = "<group>"; };
 		E228926468158D8197D88998 /* Pods_luckyking_app_react.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_luckyking_app_react.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E3EC9A344B984B13963CCF02 /* consolas.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = consolas.ttf; path = ../src/assets/fonts/consolas.ttf; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		E3EC9A344B984B13963CCF02 /* consolas.ttf */ = {isa = PBXFileReference; name = "consolas.ttf"; path = "../src/assets/fonts/consolas.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		6BD423B59F75440A936261EF /* digital-7.ttf */ = {isa = PBXFileReference; name = "digital-7.ttf"; path = "../src/assets/fonts/digital-7.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,6 +159,7 @@
 				B3D68C2AAD544735A1CC7FA5 /* myriadpro-semiboldit.ttf */,
 				E3EC9A344B984B13963CCF02 /* consolas.ttf */,
 				6BD423B59F75440A936261EF /* digital-7.ttf */,
+				CAF2EEA0E859438388640438 /* myriadpro-it.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -336,6 +339,7 @@
 				FDA40337A65548EBAFED15A2 /* myriadpro-semiboldit.ttf in Resources */,
 				394A3D8C4CC84BD8A047A7BD /* consolas.ttf in Resources */,
 				A4869340266B4977A4324048 /* digital-7.ttf in Resources */,
+				9B332564D7EB49E790AE137D /* myriadpro-it.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

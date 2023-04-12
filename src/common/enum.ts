@@ -10,7 +10,6 @@ export enum LotteryType {
 
 export type LotteryEnumType = keyof typeof LotteryType;
 
-
 export enum OrderMethod {
     Keep = "keep",
     Deliver = "deliver"

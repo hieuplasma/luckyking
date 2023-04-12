@@ -47,7 +47,7 @@ export const Max3dBagView = forwardRef(({ changeCost }: BagViewProps, ref) => {
                     fullNumber.map((number: number) => {
                         const check = currentNumbers.includes(number) ? true : false
                         return (
-                            <TouchableOpacity style={[styles.ballCircle, { backgroundColor: check ? lottColor : Color.white }]}
+                            <TouchableOpacity key={number + ""} style={[styles.ballCircle, { backgroundColor: check ? lottColor : Color.white }]}
                                 onPress={() => choose(number)}>
                                 <ConsolasText style={{ fontSize: 16, color: check ? Color.white : lottColor }}>{number}</ConsolasText>
                             </TouchableOpacity>
@@ -55,7 +55,7 @@ export const Max3dBagView = forwardRef(({ changeCost }: BagViewProps, ref) => {
                     })
                 }
             </View>
-            <IText style={{ fontSize: 16, color: '#0171F5', fontWeight: 'bold', marginTop: 5, alignSelf: 'center' }}>
+            <IText style={{ fontSize: 16, color: Color.blue, fontWeight: 'bold', marginTop: 5, alignSelf: 'center' }}>
                 {`Các bộ số được tạo (${generated.length} bộ)`}
             </IText>
             <ScrollView style={[styles.boxGenerated, { marginHorizontal: 16 }]}>

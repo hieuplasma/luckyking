@@ -34,6 +34,10 @@
       "sha1": "b7d5d1088df17f637459e0ed7e8a01c490884d70"
     },
     {
+      "path": "src/assets/fonts/myriadpro-it.ttf",
+      "sha1": "a12fb1e5f84dbd028bf600a768c2b0a8511f0f91"
+    },
+    {
       "path": "src/assets/fonts/myriadpro-light.ttf",
       "sha1": "acd506da33221333d490268cd2c9d32d960d0cd7"
     },

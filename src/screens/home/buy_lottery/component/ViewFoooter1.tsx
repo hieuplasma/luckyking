@@ -41,5 +41,5 @@ const styles = StyleSheet.create({
         borderColor: '#FFC42C', backgroundColor: '#FDF9F9',
         borderWidth: 1, flexDirection: 'row'
     },
-    textFooterUp: { fontSize: 16, color: Color.luckyKing, marginTop: -1 }
+    textFooterUp: { fontSize: 16, color: Color.luckyKing, marginTop: 0, marginLeft: 2 }
 })

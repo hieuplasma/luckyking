@@ -14,6 +14,7 @@ import { doNotExits } from '@utils';
 import { ScrollView } from 'react-native';
 import { userApi } from '@api';
 import { useDispatch, useSelector } from 'react-redux';
+import { ImageHeader } from '@components';
 
 type NavigationProp = StackNavigationProp<UserStackParamList, 'ChangePassScreen'>;
 type NavigationRoute = RouteProp<UserStackParamList, 'ChangePassScreen'>;
@@ -25,10 +26,6 @@ export const ChangePassScreen = React.memo(() => {
     const route = useRoute<NavigationRoute>();
     const safeAreaInsets = useSafeAreaInsets();
     const height = useHeaderHeight()
-
-    const onGoBack = useCallback(() => {
-        navigation.goBack();
-    }, [navigation]);
 
     const user = useSelector((state: any) => state.userReducer)
 
@@ -78,20 +75,7 @@ export const ChangePassScreen = React.memo(() => {
 
     return (
         <View style={styles.container}>
-            <StatusBar translucent={true} barStyle={'light-content'} backgroundColor={"transparent"} />
-            <Image source={Images.bg_header} style={[styles.headerContainer, { paddingTop: safeAreaInsets.top }]}>
-                <View style={{ flex: 1 }}>
-                    <Icon.Button
-                        size={'small'}
-                        color={Color.white}
-                        name="ic_back"
-                        style={[Style.Space.Padding.Zero]}
-                        onPressed={onGoBack}
-                    />
-                </View>
-                <Text style={{ color: Color.white, fontWeight: 'bold', fontSize: 16 }}>{"ĐỔI MẬT KHẨU"}</Text>
-                <View style={{ flex: 1 }} />
-            </Image>
+            <ImageHeader navigation={navigation} title={"ĐỔI MẬT KHẨU"} />
 
             {/* Body View */}
             <View style={{ width: '100%', marginTop: 37, alignItems: 'center' }}>
@@ -145,7 +129,7 @@ const ItemView = ({ label, value, setValue, sercure, setSercure }: any) => {
             <View style={styles.borderItem}>
                 <Image style={{ width: 25, height: 30 }} source={Images.small_lock}></Image>
                 <TextInput
-                    style={{ backgroundColor: Color.white, height: 43, marginLeft: 4, flex: 1 }}
+                    style={{ backgroundColor: Color.white, height: 43, marginLeft: 4, flex: 1, fontFamily: 'myriadpro-regular' }}
                     value={value}
                     onChangeText={(text) => setValue(text)}
                     placeholder={label}

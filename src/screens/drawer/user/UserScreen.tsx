@@ -6,9 +6,8 @@ import React, { useCallback, useEffect, useState } from 'react';
 import {
     StyleSheet, View, Dimensions, StatusBar,
     Text, TextInput, ScrollView, TouchableOpacity,
-    KeyboardAvoidingView, RefreshControl, Alert, ActivityIndicator
+    KeyboardAvoidingView, RefreshControl, Alert, ActivityIndicator, SafeAreaView
 } from 'react-native';
-// import { TextInput } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHeaderHeight } from '@react-navigation/elements'
@@ -17,6 +16,7 @@ import { updateUser } from '@redux'
 import { doNotExits, NavigationUtils } from '@utils'
 import { StackNavigationProp } from '@react-navigation/stack';
 import { UserStackParamList } from 'src/navigation/UserNavigation';
+import { ImageHeader, IText } from '@components';
 
 type NavigationProp = StackNavigationProp<UserStackParamList, 'UserScreen'>;
 type NavigationRoute = RouteProp<UserStackParamList, 'UserScreen'>;
@@ -41,10 +41,6 @@ export const UserScreen = React.memo(() => {
     useEffect(() => {
         () => getUser()
     }, [navigation])
-
-    const onGoBack = useCallback(() => {
-        navigation.goBack();
-    }, [navigation]);
 
     async function getUser() {
         const res = await userApi.getuserInfo()
@@ -98,20 +94,7 @@ export const UserScreen = React.memo(() => {
 
     return (
         <View style={styles.container} >
-            <StatusBar translucent={true} barStyle={'light-content'} backgroundColor={"transparent"} />
-            <Image source={Images.bg_header} style={[styles.headerContainer, { paddingTop: safeAreaInsets.top }]}>
-                <View style={{ flex: 1 }}>
-                    <Icon.Button
-                        size={'small'}
-                        color={Color.white}
-                        name="ic_back"
-                        style={[Style.Space.Padding.Zero]}
-                        onPressed={onGoBack}
-                    />
-                </View>
-                <Text style={styles.textTitle}>{"THÔNG TIN TÀI KHOẢN"}</Text>
-                <View style={{ flex: 1 }} />
-            </Image>
+            <ImageHeader navigation={navigation} title={"THÔNG TIN TÀI KHOẢN"} />
 
             {/* Body */}
             <KeyboardAvoidingView keyboardVerticalOffset={height + 45} behavior="padding" style={{ flex: 1 }}>
@@ -143,9 +126,9 @@ export const UserScreen = React.memo(() => {
                         setValue={(text: string) => setPeronNumber(text)}
                         force={false}
                     />
-                    <Text style={{ fontSize: 12, marginTop: 4, marginLeft: 2, fontStyle: "italic" }}>
+                    <IText style={{ fontSize: 14, marginTop: 4, marginLeft: 16, fontStyle: "italic" }}>
                         {"(Gồm 8 số như 12345678, 66666666, 88888888....)"}
-                    </Text>
+                    </IText>
                     <ItemView
                         label={"CMND/CCCD"}
                         value={identify}
@@ -168,14 +151,14 @@ export const UserScreen = React.memo(() => {
                     <TouchableOpacity style={styles.borderItem}
                         onPress={() => NavigationUtils.navigate(navigation, ScreenName.Drawer.ChangePassScreen)}
                     >
-                        <Text style={styles.textItem}>{"Đổi mật khẩu"}</Text>
+                        <IText style={styles.textItem}>{"Đổi mật khẩu"}</IText>
                         <Image source={Images.right_arrow} tintColor={Color.black} style={{ width: 10, height: 20 }}></Image>
                     </TouchableOpacity>
                 </ScrollView>
             </KeyboardAvoidingView>
 
             <TouchableOpacity style={styles.buttonUpdate} activeOpacity={0.8} disabled={isLoading} onPress={updateUserInfo}>
-                <Text style={styles.textTitle}>{"CẬP NHẬT"}</Text>
+                <IText style={styles.textTitle}>{"CẬP NHẬT"}</IText>
                 {isLoading ?
                     <ActivityIndicator size="small" color={Color.white} style={{ marginLeft: 8 }} />
                     : <></>}
@@ -186,12 +169,12 @@ export const UserScreen = React.memo(() => {
 
 const ItemView = ({ label, value, setValue, force, disable }: any) => {
     return (
-        <View style={styles.borderItem}>
-            <Text style={styles.textItem}>{label}</Text>
+        <View style={[styles.borderItem, { opacity: disable ? 0.6 : 1 }]}>
+            <IText style={styles.textItem}>{label}</IText>
             {force ? <Image source={Images.star} style={{ width: 8, height: 8, marginTop: -9, marginLeft: 2 }}></Image> : <></>}
             <View style={{ flex: 1 }} />
             <TextInput
-                style={{ backgroundColor: Color.white, height: 43 }}
+                style={{ backgroundColor: Color.white, height: 43, fontFamily: 'myriadpro-regular' }}
                 value={value}
                 onChangeText={(text) => setValue(text)}
                 placeholder={"Chưa cập nhật"}
@@ -212,14 +195,6 @@ const styles = StyleSheet.create({
         backgroundColor: Color.white
     },
     textTitle: { color: Color.white, fontWeight: 'bold', fontSize: 16 },
-    headerContainer: {
-        flexDirection: 'row',
-        height: 100,
-        alignItems: 'center',
-        paddingHorizontal: 16,
-        justifyContent: 'space-between',
-    },
-
     body: {
         paddingHorizontal: 16, paddingBottom: 24
     },
@@ -231,7 +206,6 @@ const styles = StyleSheet.create({
         marginTop: 16, justifyContent: 'space-between'
     },
     textItem: {
-        fontSize: 14
     },
     buttonUpdate: {
         width: windowWidth - 32, height: 45,

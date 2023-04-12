@@ -45,5 +45,12 @@ export const Images = {
   ball_keno: require('./ball_keno.png'),
   max3d_logo: require('./max3d_logo.png'),
   max3dpro_logo: require('./max3dpro_logo.png'),
-  max3dplus_logo: require('./max3dplus_logo.png')
+  max3dplus_logo: require('./max3dplus_logo.png'),
+  bank_center: require('./bank_center.png'),
+  momo: require('./momo.png'),
+  vnpay: require('./vnpay.png'),
+  phone: require('./phone.png'),
+  zalo: require('./zalo.png'),
+  vietcom_bank: require('./vietcom_bank.png'),
+  mb_bank: require('./mb_bank.png')
 };

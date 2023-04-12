@@ -76,7 +76,7 @@ export const Max3dScreen = () => {
 
             <>
                 {lotteryType == LotteryType.Max3D ?
-                    <Max3dTab showBottomSheet={showBottomSheet} /> : <Max3dPlusTab />}
+                    <Max3dTab showBottomSheet={showBottomSheet} /> : <Max3dPlusTab showBottomSheet={showBottomSheet}/>}
             </>
         </SafeAreaView>
     )

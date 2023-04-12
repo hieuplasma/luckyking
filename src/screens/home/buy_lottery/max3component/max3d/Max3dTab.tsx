@@ -213,7 +213,6 @@ export const Max3dTab = React.memo((props: Props) => {
     }, [chooseNumberRef, numberSet, pageNumber])
 
     return (
-        console.log(type4Ref.current),
         <View style={{ flex: 1 }}>
             <ViewAbove typePlay={typePlay} drawSelected={drawSelected} openTypeSheet={openTypeSheet} openDrawSheet={openDrawSheet} />
 
@@ -258,7 +257,7 @@ export const Max3dTab = React.memo((props: Props) => {
                                             })}
                                         </TouchableOpacity>
                                         <TouchableOpacity style={styles.buttonBets} onPress={() => openNumberSheet(index)}>
-                                            <IText style={{ fontSize: 16, color: '#0171F5' }}>{printMoneyK(bets[index])}</IText>
+                                            <IText style={{ fontSize: 16, color: Color.blue}}>{printMoneyK(bets[index])}</IText>
                                         </TouchableOpacity>
                                         <View style={{ flexDirection: 'row', alignItems: 'center', width: 60, justifyContent: 'space-between' }}>
                                             <Image source={Images.nofilled_heart} style={{ width: 22, height: 22, }}></Image>
@@ -285,7 +284,7 @@ export const Max3dTab = React.memo((props: Props) => {
                         : <>
                             <ViewFooter1 fastPick={fastPick} selfPick={selfPick} />
 
-                            <IText style={{ fontSize: 16, color: '#0171F5', fontWeight: 'bold', marginTop: 5, alignSelf: 'center' }}>
+                            <IText style={{ fontSize: 16, color: Color.blue, fontWeight: 'bold', marginTop: 5, alignSelf: 'center' }}>
                                 {`Các bộ số được tạo (${generated.length} bộ)`}
                             </IText>
                             <ScrollView style={styles.boxGenerated}>
@@ -335,7 +334,7 @@ const styles = StyleSheet.create({
         width: 40, height: 26,
         justifyContent: 'center', alignItems: 'center',
         borderRadius: 6,
-        borderColor: '#0171F5',
+        borderColor: Color.blue,
         borderWidth: 1, marginRight: 12
     },
     boxGenerated: {

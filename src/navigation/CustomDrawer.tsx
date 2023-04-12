@@ -54,7 +54,7 @@ function DrawerCustom(props: any) {
           <Text style={styles.textMoney}>{`${printMoney(user.luckykingBalance)}đ`}</Text>
           <Image source={Images.eye_open} style={styles.eye}></Image>
           <View style={{ flex: 1 }} />
-          <TouchableOpacity style={styles.button} activeOpacity={0.8}>
+          <TouchableOpacity style={styles.button} activeOpacity={0.8} onPress={() => NavigationUtils.navigate(navigation, ScreenName.Drawer.RechargeStack)}>
             <Text style={styles.textButton}>{"NẠP"}</Text>
           </TouchableOpacity>
         </View>
