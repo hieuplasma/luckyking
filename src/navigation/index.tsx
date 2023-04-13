@@ -19,11 +19,20 @@ export type RootStackParamsList = {
 
 const RootStack = createStackNavigator<RootStackParamsList>();
 
+interface LoadingProps {
+  show: () => void
+  hide: () => void
+}
 declare global {
+
+  interface lmao {
+    text?: string
+  }
+
   interface Window {
     connection: any;
     _store: any;
-    loadingIndicator: any;
+    loadingIndicator: LoadingProps;
   }
 }
 

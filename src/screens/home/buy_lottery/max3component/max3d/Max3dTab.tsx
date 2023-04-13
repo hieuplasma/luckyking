@@ -1,8 +1,8 @@
 import { Image, Images } from "@assets";
-import { LotteryType, MAX3D_NUMBER, MAX_SET } from "@common";
+import { LotteryType, MAX3D_NUMBER, MAX_SET, OrderMethod, OrderStatus } from "@common";
 import { ConsolasText, IText } from "@components";
 import { Color } from "@styles";
-import { generateUniqueStrings, printMoneyK, printNumber } from "@utils";
+import { calSurcharge, generateUniqueStrings, printMoneyK, printNumber } from "@utils";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { StyleSheet, TouchableOpacity, ScrollView, View, Dimensions, Alert } from "react-native";
 import { useSelector } from "react-redux";
@@ -212,6 +212,60 @@ export const Max3dTab = React.memo((props: Props) => {
         )
     }, [chooseNumberRef, numberSet, pageNumber])
 
+    const bookLottery = async () => {
+        if (generated.length == 0) {
+            return Alert.alert("Thông báo", "Bạn chưa chọn bộ số nào")
+        }
+        const total = totalCost
+        const surchagre = calSurcharge(totalCost)
+        let body: any = {
+            lotteryType: LotteryType.Max3D,
+            amount: total,
+            surchagre: surchagre,
+            status: OrderStatus.PENDING,
+            method: OrderMethod.Keep,
+            level: typePlay.value,
+            drawCode: drawSelected.drawCode,
+            numbers: generated,
+            bets: generatedBets
+        }
+        console.log(body)
+        window.loadingIndicator.show()
+        // const res = await lotteryApi.bookLotteryPowerMega(body)
+        // if (res) {
+        //     Alert.alert("Thành công", "Đã thanh toán mua vé thành công!")
+        //     dispatch(updateUser({ luckykingBalance: luckykingBalance - total - surchagre }))
+        //     refreshChoosing()
+        // }
+        window.loadingIndicator.hide()
+    }
+
+    const addToCart = async () => {
+        if (generated.length == 0) {
+            return Alert.alert("Thông báo", "Bạn chưa chọn bộ số nào")
+        }
+        let body: any = {
+            lotteryType: LotteryType.Max3D,
+            amount: totalCost,
+            status: OrderStatus.CART,
+            level: typePlay.value,
+            drawCode: drawSelected.drawCode,
+            drawTime: drawSelected.drawTime,
+            numbers: generated,
+            bets: generatedBets
+        }
+        console.log(body)
+        window.loadingIndicator.show()
+        // const res = await lotteryApi.addPowerMegaToCart(body)
+        // console.log(res)
+        // if (res) {
+        //     Alert.alert("Thành công", "Đã thêm vé vào giỏ hàng!")
+        //     refreshChoosing()
+        //     dispatch(addLottery(res.data))
+        // }
+        window.loadingIndicator.hide()
+    }
+
     return (
         <View style={{ flex: 1 }}>
             <ViewAbove typePlay={typePlay} drawSelected={drawSelected} openTypeSheet={openTypeSheet} openDrawSheet={openDrawSheet} />
@@ -257,7 +311,7 @@ export const Max3dTab = React.memo((props: Props) => {
                                             })}
                                         </TouchableOpacity>
                                         <TouchableOpacity style={styles.buttonBets} onPress={() => openNumberSheet(index)}>
-                                            <IText style={{ fontSize: 16, color: Color.blue}}>{printMoneyK(bets[index])}</IText>
+                                            <IText style={{ fontSize: 16, color: Color.blue }}>{printMoneyK(bets[index])}</IText>
                                         </TouchableOpacity>
                                         <View style={{ flexDirection: 'row', alignItems: 'center', width: 60, justifyContent: 'space-between' }}>
                                             <Image source={Images.nofilled_heart} style={{ width: 22, height: 22, }}></Image>
@@ -300,8 +354,8 @@ export const Max3dTab = React.memo((props: Props) => {
                 }
                 <ViewFooter2
                     totalCost={typePlay.value != 4 ? totalCost : totalCostBag}
-                    addToCart={() => { }}
-                    bookLottery={() => { }}
+                    addToCart={addToCart}
+                    bookLottery={bookLottery}
                     lotteryType={LotteryType.Max3D}
                 />
             </View>

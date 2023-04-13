@@ -12,6 +12,7 @@ import { getCart, removeCart, removeLottery, updateLottery } from '@redux';
 import { getColorLott, printDraw, printDrawCode, printMoney, printNumber, printTypePlay, printWeekDate } from '@utils';
 import { LotteryType, NumberDetail } from '@common';
 import { ConsolasText, IText, LogoIcon, ModalConfirm } from '@components';
+import { LoadingIndicator } from 'src/screens/loading';
 
 type NavigationProp = StackNavigationProp<HomeStackParamList, 'CartScreen'>;
 type NavigationRoute = RouteProp<HomeStackParamList, 'CartScreen'>;

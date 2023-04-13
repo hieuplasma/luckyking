@@ -1,3 +1,4 @@
+import { lotteryApi } from '@api';
 import { Icon, Images, Image } from '@assets';
 import { ImageHeader, IText } from '@components';
 import { ScreenName, WithdrawStackParamList } from '@navigation';
@@ -5,8 +6,8 @@ import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Color, Style } from '@styles';
 import { NavigationUtils, printMoney, ScreenUtils } from '@utils';
-import { useCallback } from 'react';
-import { StyleSheet, View, Dimensions, StatusBar, TouchableOpacity } from 'react-native';
+import { useCallback, useEffect, useState } from 'react';
+import { StyleSheet, View, Dimensions, StatusBar, TouchableOpacity, FlatList, RefreshControl } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
 
@@ -25,6 +26,28 @@ export const WithdrawScreen = () => {
     const navigate = (screen: string) => {
         NavigationUtils.navigate(navigation, screen)
     }
+
+    const [listTransaction, setListTransaction] = useState([])
+    const [isLoading, setLoading] = useState(false)
+
+    const onRefresh = async () => {
+        setLoading(true)
+        window.loadingIndicator.show()
+        const res = await lotteryApi.getTransactionHistory()
+        if (res) {
+            setListTransaction(res.data.filter(check))
+        }
+        setLoading(false)
+        window.loadingIndicator.hide()
+    }
+
+    function check(param: any) {
+        return param.type == "withdraw"
+      }
+
+    useEffect(() => {
+        onRefresh()
+    }, [])
 
     return (
         <View style={styles.container}>
@@ -66,8 +89,37 @@ export const WithdrawScreen = () => {
                 </TouchableOpacity>
 
                 <IText style={{ marginTop: 20, marginLeft: 8 }}>
-                    {"Người thụ hưởng:"}
+                    {"Lịch sử Tài khoản đổi thưởng:"}
                 </IText>
+
+                <FlatList
+                    style={{ marginTop: 16 }}
+                    data={listTransaction.sort()}
+                    renderItem={({ item, index }: any) => {
+                        return (
+                            <View style={{
+                                height: 50, width: '100%',
+                                paddingHorizontal: 8, alignItems: 'center',
+                                backgroundColor: index % 2 == 0 ? Color.white : "#EFEEEC",
+                                flexDirection: 'row',
+                            }}>
+                                <Image style={{ width: 36, height: 36 }} source={Images.transaction} />
+                                <View style={{ marginLeft: 8, justifyContent: 'center' }}>
+                                    <IText style={{ fontWeight: 'bold' }}>{item.description}</IText>
+                                    <IText>{new Date(Date.parse(item.createAt)).toLocaleString()}</IText>
+                                </View>
+                                <View style={{ flex: 1 }} />
+                                <IText style={{ fontWeight: 'bold' }}>{`${printMoney(item.amount)}đ`}</IText>
+                            </View>
+                        )
+                    }}
+                    keyExtractor={(item: any, index) => String(item.id)}
+                    refreshControl={
+                        <RefreshControl refreshing={isLoading} onRefresh={onRefresh} />
+                    }
+                    ListFooterComponent={<View style={{ height: 100 }}></View>}
+                />
+
             </View>
         </View>
     )
@@ -82,7 +134,7 @@ const styles = StyleSheet.create({
         backgroundColor: Color.buyLotteryBackGround
     },
     body: {
-
+        flex: 1
     },
     line: {
         height: 1, backgroundColor: '#A0A0A0', opacity: 0.2,

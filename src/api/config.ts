@@ -41,5 +41,6 @@ export const API_URI = {
   EDIT_LOTTERY_CART: "/cart/update",
   EMPTY_CART: "/cart/empty",
 
+  TRANSACTION_HISTORY:"/transaction/list",
   WITHDRAW_TO_LUCKYKING: "/transaction/withdraw-luckyking"
 }

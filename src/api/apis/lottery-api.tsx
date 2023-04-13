@@ -47,6 +47,11 @@ class LotteryApi {
         return await window.connection.POST(fullUrl, body)
     }
 
+    getTransactionHistory = async () => {
+        let fullUrl = API_URI.TRANSACTION_HISTORY;
+        return await window.connection.GET(fullUrl)
+    }
+
     withdrawLuckyKing = async (body: any) => {
         let fullUrl = API_URI.WITHDRAW_TO_LUCKYKING;
         return await window.connection.POST(fullUrl, body)

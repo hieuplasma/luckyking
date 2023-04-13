@@ -37,7 +37,11 @@ export const Max3dBagView = forwardRef(({ changeCost }: BagViewProps, ref) => {
         const tmp: any = generateStringsFromArray(currentNumbers)
         setGenrated(tmp)
         changeCost(tmp.length * currentBet)
-    }, [currentNumbers, currentBet])
+    }, [currentNumbers])
+
+    useEffect(() => {
+        changeCost(generated.length * currentBet)
+    }, [currentBet])
 
     return (
         <>
