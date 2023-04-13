@@ -1,3 +1,4 @@
+import { CustomisableAlert, CustomisableAlertOptions } from '@components';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { LoadingIndicator, SplashScreen, SplashScreenRouteParams } from '@screen';
@@ -23,16 +24,29 @@ interface LoadingProps {
   show: () => void
   hide: () => void
 }
+
+interface AlertProps {
+  show: ({
+    customIcon,
+    title,
+    message,
+    customAlert,
+    alertType,
+    onPress,
+    dismissable,
+    animationIn,
+    animationOut,
+    btnLabel,
+    leftBtnLabel
+  }: CustomisableAlertOptions) => void,
+  close: () => void
+}
 declare global {
-
-  interface lmao {
-    text?: string
-  }
-
   interface Window {
     connection: any;
     _store: any;
     loadingIndicator: LoadingProps;
+    myalert: AlertProps
   }
 }
 
@@ -58,6 +72,20 @@ export function RootNavigation(params?: {}) {
         </RootStack.Navigator>
       </NavigationContainer>
       <LoadingIndicator />
+      <CustomisableAlert
+        dismissable
+        animationIn='fadeIn'
+        animationOut='fadeOut'
+        titleStyle={{
+          fontSize: 18,
+          fontWeight: 'bold'
+        }}
+        btnLabelStyle={{
+          color: 'white',
+          paddingHorizontal: 10,
+          textAlign: 'center',
+        }}
+      />
     </View>
   );
 }

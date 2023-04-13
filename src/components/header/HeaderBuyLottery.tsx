@@ -5,7 +5,7 @@ import { ScreenUtils } from "@utils";
 import React, { useCallback, useEffect, useState } from "react";
 import { StatusBar, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { CartIcon } from "../iconSpecial";
+import { CartIcon } from "../icon-specials";
 
 interface HeaderBuyLotteryProps {
     navigation: any

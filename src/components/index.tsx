@@ -1,5 +1,6 @@
 export * from './home'
-export * from './iconSpecial'
+export * from './icon-specials'
 export * from './modals'
 export * from './header'
 export * from './texts'
+export * from './custom-alert'

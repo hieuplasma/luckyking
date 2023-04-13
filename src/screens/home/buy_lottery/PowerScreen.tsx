@@ -204,7 +204,8 @@ export const PowerScreen = React.memo((props: PowerScreenProps) => {
             }
         }
         if (numbers.length == 0) {
-            return Alert.alert("Thông báo", "Bạn chưa chọn bộ số nào")
+            // return Alert.alert("Thông báo", "Bạn chưa chọn bộ số nào")
+            return window.myalert.show({title:'Bạn chưa chọn bộ số nào',btnLabel:"Đã hiểu"})
         }
         let body: any = {
             lotteryType: LotteryType.Power,
