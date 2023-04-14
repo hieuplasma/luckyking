@@ -8,11 +8,11 @@ import { calSurcharge, convolutions, NavigationUtils, printDraw, printMoney, pri
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { View, StyleSheet, Text, ScrollView, TouchableOpacity, Dimensions, StatusBar, Alert } from "react-native";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
-import { ChooseTypeSheet } from "./component/ChooseTypeSheet";
+import { ChooseTypeSheet } from "./power-mega-component/ChooseTypeSheet";
 import { useDispatch, useSelector } from "react-redux";
 import { lotteryApi } from "@api";
 import { ChooseDrawSheet } from "./component/ChooseDrawSheet";
-import { ChooseNumberSheet } from "./component/ChooseNumberSheet";
+import { ChooseNumberSheet } from "./power-mega-component/ChooseNumberSheet";
 import { LotteryType, MAX_SET, MEGA_NUMBER, OrderMethod, OrderStatus } from "@common";
 import { addLottery, getCart, getMegaDraw, updateUser } from "@redux";
 import { CartIcon, ConsolasText, HeaderBuyLottery, IText } from "@components";

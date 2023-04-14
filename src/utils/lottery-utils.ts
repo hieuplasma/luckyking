@@ -112,11 +112,11 @@ function onlyUnique(value: any, index: number, array: any[]) {
     return array.indexOf(value) === index;
 }
 
-export function generateStringsFromArray(arr: number[]) {
+export function generateStringsFromArray(arr: number[], before = "", after = "") {
     let result: string[] = [];
     function generateCombinations(prefix: any, remaining: any) {
         if (prefix.length === 3) {
-            result.push(prefix);
+            result.push(before + prefix + after);
         } else {
             for (let i = 0; i < remaining.length; i++) {
                 generateCombinations(prefix + remaining[i], remaining);

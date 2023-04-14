@@ -4,7 +4,8 @@ import {
   HomeScreen, HomeScreenParamsList,
   MegaScreen, MegaScreenParamsList,
   PowerScreen, PowerScreenParamsList,
-  Max3dScreen, Max3dScreenParamsList
+  Max3dScreen, Max3dScreenParamsList,
+  Max3dProScreen, Max3dProScreenParamsList,
 } from '@screen';
 import React from 'react';
 
@@ -12,8 +13,9 @@ export type HomeStackParamList = {
   HomeScreen: HomeScreenParamsList;
   PowerScreen: PowerScreenParamsList;
   MegaScreen: MegaScreenParamsList;
-  Max3dScreen: Max3dScreenParamsList
-  CartScreen: CartScreenParamsList
+  Max3dScreen: Max3dScreenParamsList;
+  Max3dProScreen: Max3dProScreenParamsList
+  CartScreen: CartScreenParamsList,
 };
 
 const HomeStack = createStackNavigator<HomeStackParamList>();
@@ -44,6 +46,11 @@ export function HomeNavigation() {
       <HomeStack.Screen
         name={'Max3dScreen'}
         component={Max3dScreen}
+        options={{ headerShown: false, title: undefined }}
+      />
+      <HomeStack.Screen
+        name={'Max3dProScreen'}
+        component={Max3dProScreen}
         options={{ headerShown: false, title: undefined }}
       />
     </HomeStack.Navigator>

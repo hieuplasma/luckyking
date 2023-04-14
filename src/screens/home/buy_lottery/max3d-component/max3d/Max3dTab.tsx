@@ -2,16 +2,17 @@ import { Image, Images } from "@assets";
 import { LotteryType, MAX3D_NUMBER, MAX_SET, MAX_SET_MAX3D, OrderMethod, OrderStatus } from "@common";
 import { ConsolasText, IText } from "@components";
 import { Color } from "@styles";
-import { calSurcharge, generateUniqueStrings, printMoneyK, printNumber } from "@utils";
+import { calSurcharge, printMoneyK, printNumber } from "@utils";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { StyleSheet, TouchableOpacity, ScrollView, View, Dimensions, Alert } from "react-native";
 import { useSelector } from "react-redux";
-import { ChangeBetButton } from "../../component/ChangeBetButton";
 import { ChooseDrawSheet } from "../../component/ChooseDrawSheet";
+import { GeneratedNumber } from "../../component/GeneratedNumber";
+import { Max3dHuge } from "../../component/Max3dHuge";
 import { ViewAbove } from "../../component/ViewAbove";
 import { ViewFooter1 } from "../../component/ViewFoooter1";
 import { ViewFooter2 } from "../../component/ViewFooter2";
-import { generateMax3d } from "../utils";
+import { generateMax3d, numberMax3d } from "../utils";
 import { Max3dBagView } from "./Max3dBagView";
 import { NumberSheetMax3d } from "./NumberSheetMax3d";
 import { TypeSheetMax3d } from "./TypeSheetMax3d";
@@ -44,7 +45,7 @@ export const Max3dTab = React.memo((props: Props) => {
     const [generated, setGenrated] = useState([])
     const [generatedBets, setGeneratedBets] = useState([])
     const [totalCost, setTotalCost] = useState(0)
-    const [hugePosition, setHugePosition] = useState(-1)
+    const [hugePosition, setHugePosition] = useState([-1])
 
     // ref
     const chooseTypeRef: any = useRef(null);
@@ -52,7 +53,7 @@ export const Max3dTab = React.memo((props: Props) => {
     const chooseNumberRef: any = useRef(null);
     const [pageNumber, setPageNumber] = useState(0)
 
-    const type4Ref: any = useRef(null);
+    const typeBagRef: any = useRef(null);
 
     const [totalCostBag, setTotalCostBag] = useState(0)
 
@@ -64,7 +65,7 @@ export const Max3dTab = React.memo((props: Props) => {
             randomNumbers.push(randomNumber);
         }
         let resultArray = Array.from(randomNumbers).map(Number)
-        if (typePlay.value == 3) resultArray[hugePosition] = 10
+        if (typePlay.value == 3) resultArray[hugePosition[0]] = 10
         currentNumber[index] = resultArray
         setNumbers(currentNumber)
     }
@@ -72,7 +73,7 @@ export const Max3dTab = React.memo((props: Props) => {
     const deleteNumber = (index: number) => {
         const currentNumber = [...numberSet]
         const resultArray = Array(MAX_SET_MAX3D).fill(false);
-        if (typePlay.value == 3) resultArray[hugePosition] = 10
+        if (typePlay.value == 3) resultArray[hugePosition[0]] = 10
         currentNumber[index] = resultArray
         setNumbers(currentNumber)
     }
@@ -86,20 +87,25 @@ export const Max3dTab = React.memo((props: Props) => {
                 randomNumbers.push(randomNumber);
             }
             let resultArray = Array.from(randomNumbers).map(Number)
-            if (typePlay.value == 3) resultArray[hugePosition] = 10
+            if (typePlay.value == 3) resultArray[hugePosition[0]] = 10
             tmp[i] = resultArray
         }
         setNumbers(tmp)
     }, [typePlay, hugePosition])
 
     const selfPick = useCallback(() => {
-        window.myalert.show({ title: 'Vé tự chọn hiện không khả dụng cho loại hình chơi MAX3D!', btnLabel: "OK" })
-    }, [])
+        if (typePlay.value != 1) return window.myalert.show({ title: 'Vé tự chọn hiện không khả dụng cho loại hình chơi này!', btnLabel: "OK" })
+        const currentNumber = [...numberSet]
+        for (let i = 0; i < MAX_SET; i++) {
+            currentNumber[i] = Array(MAX_SET_MAX3D).fill("TC");
+        }
+        setNumbers(currentNumber)
+    }, [typePlay, hugePosition])
 
     useEffect(() => {
         const currentNumber = [...numberSet]
         const level = typePlay.value
-        const tmp = generateMax3d(level, currentNumber, bets, hugePosition)
+        const tmp = generateMax3d(level, currentNumber, bets, hugePosition[0])
         setGenrated(tmp.numberGenerated)
         setGeneratedBets(tmp.betsGenerated)
         setTotalCost(tmp.totalCost)
@@ -111,7 +117,7 @@ export const Max3dTab = React.memo((props: Props) => {
             [false, false, false], [false, false, false], [false, false, false],
         ]
         tmp.map((item: any) => item[position] = 10)
-        setHugePosition(position)
+        setHugePosition([position])
         setNumbers(tmp)
     }, [])
 
@@ -119,14 +125,14 @@ export const Max3dTab = React.memo((props: Props) => {
         setType(type)
         setNumbers(initNumber)
         setBets(initBets)
-        setHugePosition(-1)
+        setHugePosition([-1])
         if (type.value == 3) {
             let tmp = [
                 [10, false, false], [10, false, false], [10, false, false],
                 [10, false, false], [10, false, false], [10, false, false],
             ]
             setNumbers(tmp)
-            setHugePosition(0)
+            setHugePosition([0])
         }
     }, [])
     const openTypeSheet = useCallback(() => { chooseTypeRef.current?.openSheet() }, [chooseTypeRef])
@@ -181,8 +187,8 @@ export const Max3dTab = React.memo((props: Props) => {
         if (generated.length == 0) {
             return Alert.alert("Thông báo", "Bạn chưa chọn bộ số nào")
         }
-        const total = totalCost
-        const surchagre = calSurcharge(totalCost)
+        const total = typePlay.value != 4 ? totalCost : totalCostBag
+        const surchagre = calSurcharge(total)
         let body: any = {
             lotteryType: LotteryType.Max3D,
             amount: total,
@@ -209,9 +215,11 @@ export const Max3dTab = React.memo((props: Props) => {
         if (generated.length == 0) {
             return Alert.alert("Thông báo", "Bạn chưa chọn bộ số nào")
         }
+        const total = typePlay.value != 4 ? totalCost : totalCostBag
+        const surchagre = calSurcharge(total)
         let body: any = {
             lotteryType: LotteryType.Max3D,
-            amount: totalCost,
+            amount: total,
             status: OrderStatus.CART,
             level: typePlay.value,
             drawCode: drawSelected.drawCode,
@@ -237,27 +245,24 @@ export const Max3dTab = React.memo((props: Props) => {
 
             {
                 typePlay.value == 3 ?
-                    <View style={{ alignSelf: 'center', marginTop: 16, flexDirection: 'row', alignItems: 'center' }}>
-                        <IText style={{ fontSize: 16 }}>{"Chọn 1 vị trí ÔM"}</IText>
-                        <View style={styles.hugeContainer}>
-                            {
-                                [0, 1, 2].map((item) => {
-                                    return (
-                                        <TouchableOpacity key={item + ""} activeOpacity={1} style={styles.circleOutside} onPress={() => onChangeHugePositon(item)}>
-                                            <View style={[styles.circleInside, { backgroundColor: hugePosition == item ? lottColor : Color.white }]} />
-                                        </TouchableOpacity>
-                                    )
-                                })
-                            }
-                        </View>
-                    </View >
+                    <Max3dHuge
+                        hugeCount={1}
+                        hugePosition={hugePosition}
+                        onChangeHugePositon={onChangeHugePositon}
+                        lotteryType={LotteryType.Max3D}
+                    />
                     : <></>
             }
 
             {/* //Chon so */}
             {
                 typePlay.value == 4 ?
-                    <Max3dBagView ref={type4Ref} changeCost={(data: number) => setTotalCostBag(data)} />
+                    <Max3dBagView
+                        ref={typeBagRef}
+                        changeCost={(data: number) => setTotalCostBag(data)}
+                        changeBets={(data: any) => setGeneratedBets(data)}
+                        changeGenerated={(data: any) => setGenrated(data)}
+                    />
                     : <ScrollView style={{ flex: 1 }}>
                         <View style={{ paddingHorizontal: 16, paddingVertical: 8 }}>
                             {numberSet.map((item: any, index: number) => {
@@ -269,7 +274,7 @@ export const Max3dTab = React.memo((props: Props) => {
                                                 return (
                                                     <View style={styles.ballContainer} key={index2}>
                                                         <Image source={number !== false ? Images.ball_max3d : Images.ball_grey} style={styles.ballStyle}>
-                                                            <ConsolasText style={{ color: Color.white, fontSize: 16, marginTop: number == 10 ? -2 : 2 }}>{number < 10 ? number : "✽"}</ConsolasText>
+                                                            <ConsolasText style={{ color: Color.white, fontSize: 16, marginTop: number == 10 ? -2 : 2 }}>{numberMax3d(number)}</ConsolasText>
                                                         </Image>
                                                     </View>
                                                 )
@@ -302,19 +307,7 @@ export const Max3dTab = React.memo((props: Props) => {
                         <></>
                         : <>
                             <ViewFooter1 fastPick={fastPick} selfPick={selfPick} />
-
-                            <IText style={{ fontSize: 16, color: Color.blue, fontWeight: 'bold', marginTop: 5, alignSelf: 'center' }}>
-                                {`Các bộ số được tạo (${generated.length} bộ)`}
-                            </IText>
-                            <ScrollView style={styles.boxGenerated}>
-                                <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-                                    {
-                                        generated.map((item: any, index: number) =>
-                                            <ConsolasText key={index + ""} style={{ fontSize: 16, color: lottColor, marginHorizontal: 8, marginVertical: 5 }}>{item}</ConsolasText>
-                                        )
-                                    }
-                                </View>
-                            </ScrollView>
+                            <GeneratedNumber generated={generated} lottColor={lottColor} />
                         </>
                 }
                 <ViewFooter2
@@ -355,29 +348,5 @@ const styles = StyleSheet.create({
         borderRadius: 6,
         borderColor: Color.blue,
         borderWidth: 1, marginRight: 12
-    },
-    boxGenerated: {
-        height: 86, width: windowWidth - 32,
-        borderRadius: 10, backgroundColor: '#F3F2F2',
-        padding: 5
-    },
-    hugeContainer: {
-        width: 73, height: 24,
-        borderRadius: 20, borderColor: lottColor,
-        borderWidth: 1, marginLeft: 4,
-        justifyContent: 'space-around', flexDirection: 'row',
-        alignItems: 'center'
-    },
-    circleOutside: {
-        width: 16, height: 16,
-        borderRadius: 99, borderWidth: 1,
-        borderColor: lottColor,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    circleInside: {
-        width: 11, height: 11,
-        borderRadius: 99, borderWidth: 1,
-        borderColor: lottColor
     }
 })

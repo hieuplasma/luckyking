@@ -15,7 +15,7 @@ interface NumberSheetMax3dProps {
     page?: number,
     type: LotteryType,
     listBets: number[],
-    hugePosition: number
+    hugePosition: number[]
 }
 
 const betMilestones = [
@@ -72,7 +72,7 @@ export const NumberSheetMax3d = forwardRef(({ onChoose, numberSet, page, type, l
     const checkIsOk = useCallback(() => {
         const tmp = [...currentNumbers]
         let len = tmp[0].length
-        if (hugePosition > -1) len--
+        if (hugePosition[0] > -1) len--
         for (let i = 0; i < tmp.length; i++) {
             const element = tmp[i]
             let count = 0;
@@ -88,7 +88,7 @@ export const NumberSheetMax3d = forwardRef(({ onChoose, numberSet, page, type, l
         return (
             <View style={{ marginHorizontal: 32, width: windowWidth - 64, height: 440, flexDirection: 'row', justifyContent: 'space-between' }} key={index}>
                 {column.map((columnId: number) => {
-                    const filled = columnId == hugePosition ? true : false
+                    const filled = hugePosition.includes(columnId) ? true : false
                     return (
                         <View key={columnId + ""}>
                             {

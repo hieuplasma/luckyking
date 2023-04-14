@@ -1,7 +1,7 @@
 import { ConsolasText, IText } from "@components";
 import { Color } from "@styles";
 import { generateStringsFromArray, generateUniqueStrings } from "@utils";
-import React, { forwardRef, useEffect, useImperativeHandle, useState } from "react";
+import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useState } from "react";
 import { Dimensions, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import { ChangeBetButton } from "../../component/ChangeBetButton";
 
@@ -9,21 +9,34 @@ const lottColor = Color.max3d
 const fullNumber = Array.from({ length: 10 }, (_, index) => index);
 
 interface BagViewProps {
-    changeCost: (data: any) => void
+    changeCost: (data: any) => void,
+    changeGenerated: (data: any) => void,
+    changeBets: (data: any) => void,
+    typePlay: any
 }
-
-export const Max3dBagView = forwardRef(({ changeCost }: BagViewProps, ref) => {
+export const Max3dPlusBagView = forwardRef(({ changeCost, changeGenerated, changeBets, typePlay }: BagViewProps, ref) => {
 
     const [generated, setGenrated] = useState([])
     const [currentBet, setCurrentBet] = useState(10000)
     const [total, setTotal] = useState(0)
 
     const [currentNumbers, setNumbers]: any = useState([])
+    const [fixedNumbers, setFixedNumbers]: any = useState([false, false, false])
 
     // useImperativeHandle(ref, () => ({
     //     totalCost: () => { return total },
     //     generated: () => { return generated }
     // }));
+
+    useEffect(() => {
+        setCurrentBet(10000)
+        setNumbers([])
+        setFixedNumbers([false, false, false])
+        setGenrated([])
+        changeCost(0)
+        changeGenerated([])
+        changeBets([])
+    }, [typePlay])
 
     const choose = (number: number) => {
         let tmp = [...currentNumbers]
@@ -33,15 +46,39 @@ export const Max3dBagView = forwardRef(({ changeCost }: BagViewProps, ref) => {
         setNumbers(tmp)
     }
 
+    const chooseFixed = (number: number) => {
+        let tmp = [...fixedNumbers]
+        if (tmp.includes(number)) tmp[tmp.indexOf(number)] = false
+        else tmp[tmp.indexOf(false)] = number
+        setFixedNumbers(tmp)
+    }
+
     useEffect(() => {
-        const tmp: any = generateStringsFromArray(currentNumbers.sort((a: number, b: number) => a - b))
+        if (!(fixedNumbers[0] !== false && fixedNumbers[1] !== false && fixedNumbers[2] !== false)) {
+            changeCost(0)
+            changeGenerated([])
+            changeBets([])
+            return setGenrated([]);
+        }
+        let before = "", after = ""
+        if (typePlay.value == 8) before = "" + fixedNumbers[0] + fixedNumbers[1] + fixedNumbers[2] + " "
+        else after = " " + fixedNumbers[0] + fixedNumbers[1] + fixedNumbers[2]
+        const tmp: any = generateStringsFromArray(currentNumbers.sort((a: number, b: number) => a - b), before, after)
         setGenrated(tmp)
         changeCost(tmp.length * currentBet)
-    }, [currentNumbers])
+        changeGenerated(tmp)
+        changeBets(Array(tmp.length).fill(currentBet))
+    }, [currentNumbers, fixedNumbers])
 
     useEffect(() => {
         changeCost(generated.length * currentBet)
+        changeBets(Array(generated.length).fill(currentBet))
     }, [currentBet])
+
+    const print = useCallback((number: any) => {
+        return number !== false ? number : "-"
+    }, [])
+
 
     return (
         <>
@@ -59,6 +96,26 @@ export const Max3dBagView = forwardRef(({ changeCost }: BagViewProps, ref) => {
                     })
                 }
             </View>
+
+            <IText style={{ fontSize: 16, marginLeft: 16, marginTop: 4 }}>
+                {`Chọn các số cố định `}
+                <IText style={{ color: Color.luckyKing, fontWeight:'bold' }}>
+                    {`( ${print(fixedNumbers[0])} ${print(fixedNumbers[1])} ${print(fixedNumbers[2])} )`}
+                </IText>
+            </IText>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginVertical: 8 }}>
+                {
+                    fullNumber.map((number: number) => {
+                        const check = fixedNumbers.includes(number) ? true : false
+                        return (
+                            <TouchableOpacity key={number + ""} style={[styles.ballCircle, { backgroundColor: check ? lottColor : Color.white }]}
+                                onPress={() => chooseFixed(number)}>
+                                <ConsolasText style={{ fontSize: 16, color: check ? Color.white : lottColor }}>{number}</ConsolasText>
+                            </TouchableOpacity>
+                        )
+                    })
+                }
+            </View>
             <IText style={{ fontSize: 16, color: Color.blue, fontWeight: 'bold', marginTop: 5, alignSelf: 'center' }}>
                 {`Các bộ số được tạo (${generated.length} bộ)`}
             </IText>
@@ -66,7 +123,13 @@ export const Max3dBagView = forwardRef(({ changeCost }: BagViewProps, ref) => {
                 <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
                     {
                         generated.map((item: any, index: number) =>
-                            <ConsolasText key={index + ""} style={{ fontSize: 16, color: lottColor, marginHorizontal: 8, marginVertical: 5 }}>{item}</ConsolasText>
+                            <View key={index + ""} style={{ flexDirection: 'row' }}>
+                                <ConsolasText style={[styles.textGenerated, { color: lottColor }]}>{item}</ConsolasText>
+                                <View style={styles.lineContainer} >
+                                    <View style={styles.line} />
+                                </View>
+
+                            </View>
                         )
                     }
                 </View>
@@ -103,4 +166,18 @@ const styles = StyleSheet.create({
         borderRadius: 10, backgroundColor: '#F3F2F2',
         padding: 5
     },
+    lineContainer: {
+        height: 20, width: 1,
+        alignSelf: 'center',
+        alignItems: 'center', justifyContent: 'center'
+    },
+    line: {
+        height: 11, width: 1,
+        alignSelf: 'center', backgroundColor: '#B2AFAF',
+        borderRadius: 10, marginBottom: 6
+    },
+    textGenerated: {
+        fontSize: 16,
+        marginHorizontal: 8, marginVertical: 5
+    }
 })

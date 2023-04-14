@@ -44,6 +44,7 @@ export const ScreenName = {
     PowerScreen: "PowerScreen",
     MegaScreen: "MegaScreen",
     CartScreen: "CartScreen",
-    Max3dScreen: "Max3dScreen"
+    Max3dScreen: "Max3dScreen",
+    Max3dProScreen: "Max3dProScreen"
   }
 };

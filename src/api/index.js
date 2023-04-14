@@ -5,6 +5,9 @@ import lotteryApi from './apis/lottery-api';
 import { RESPONSE_TIMEOUT, TIMEOUT_MESSAGE, TYPE_API, API_HOST } from './config';
 import jwtDecode from 'jwt-decode';
 import { Alert } from 'react-native';
+import { NavigationUtils } from '@utils';
+import { ScreenName } from '@navigation';
+import { removeUser } from '@redux';
 const axios = require('axios').default;
 
 export { authApi, userApi, lotteryApi };
@@ -17,6 +20,10 @@ export class Connection {
 
     constructor(store) {
         this._store = store
+    }
+
+    _dispatch(action) {
+        this._store.dispatch(action)
     }
 
     /**********************************************************************************************************************************
@@ -107,7 +114,12 @@ export class Connection {
                 };
             })
             .catch(async (error) => {
-                console.log("ERROR IN POST API OF " + uri + " :::::::::::>", error.response?.data)
+                console.log("ERROR IN POST API OF " + uri + " :::::::::::>", error.response?.data.statusCode)
+                if (error.response?.data?.statusCode == 401) {
+                    this._dispatch(removeUser())
+                    NavigationUtils.resetGlobalStackWithScreen(undefined, ScreenName.Authentication)
+                    return
+                }
                 Alert.alert("Lỗi", JSON.stringify(error.response?.data).toString())
                 return 0
             })

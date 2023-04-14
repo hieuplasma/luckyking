@@ -2,6 +2,10 @@ import { generateUniqueStrings } from "@utils"
 
 const fullNumber = Array.from({ length: 10 }, (_, index) => index);
 
+export function numberMax3d(number: any) {
+    return number == "TC" ? "TC" : number < 10 ? number : "*"
+}
+
 export function generateMax3d(level: number, currentNumber: any, bets: number[], hugePosition: number) {
     let tmpGenerated: any = []
     let tmpBets: any = []

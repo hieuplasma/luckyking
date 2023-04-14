@@ -30,6 +30,7 @@ export const HomeScreen = React.memo((props?: HomeScreenProps) => {
   const powerFirstDraw = useSelector((state: any) => state.drawReducer.powerFirstDraw)
   const megaFirstDraw = useSelector((state: any) => state.drawReducer.megaFirstDraw)
   const max3dFirstDraw = useSelector((state: any) => state.drawReducer.max3dFirstDraw)
+  const max3dProFirstDraw = useSelector((state: any) => state.drawReducer.max3dProFirstDraw)
 
   useBackButtonWithNavigation(
     React.useCallback(() => {
@@ -116,7 +117,7 @@ export const HomeScreen = React.memo((props?: HomeScreenProps) => {
         QSMT={'T4, T6, CN'}
       />
     );
-  }, []);
+  }, [megaFirstDraw]);
 
   const renderMaxTicket = useCallback(() => {
     return (
@@ -129,7 +130,7 @@ export const HomeScreen = React.memo((props?: HomeScreenProps) => {
         QSMT={'T2, T4, T6'}
       />
     );
-  }, []);
+  }, [max3dFirstDraw]);
 
   const renderPowerTicket = useCallback(() => {
     return (
@@ -142,16 +143,20 @@ export const HomeScreen = React.memo((props?: HomeScreenProps) => {
         QSMT={'T3, T5, T7'}
       />
     );
-  }, []);
+  }, [powerFirstDraw]);
 
-  const renderMaxPlusTicket = useCallback(() => {
+  const renderMax3dProTicket = useCallback(() => {
     return (
       <HomeTicketLongFormComponent
         image="https://media.vietlott.vn//main/logo/logomax3dpro.png"
         type="max-pro"
+        targetTime={max3dProFirstDraw ? new Date(max3dProFirstDraw.drawTime) : undefined}
+        action={() => NavigationUtils.navigate(navigation, ScreenName.HomeChild.Max3dProScreen)}
+        nextDate={max3dProFirstDraw ? dateConvert(new Date(max3dProFirstDraw.drawTime)) : ""}
+        QSMT={'T3, T5, T7'}
       />
     );
-  }, []);
+  }, [max3dProFirstDraw]);
 
   return (
     <>
@@ -165,7 +170,7 @@ export const HomeScreen = React.memo((props?: HomeScreenProps) => {
           {renderPowerTicket()}
           {renderMegaTicket()}
           {renderMaxTicket()}
-          {renderMaxPlusTicket()}
+          {renderMax3dProTicket()}
         </ScrollView>
       </View>
     </>

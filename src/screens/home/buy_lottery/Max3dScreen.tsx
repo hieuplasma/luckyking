@@ -10,8 +10,8 @@ import { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, View, Dimensions, TouchableOpacity } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
-import { Max3dPlusTab } from './max3component/max3dplus/Max3dPlusTab';
-import { Max3dTab } from './max3component/max3d/Max3dTab';
+import { Max3dPlusTab } from './max3d-component/max3dplus/Max3dPlusTab';
+import { Max3dTab } from './max3d-component/max3d/Max3dTab';
 
 type NavigationProp = StackNavigationProp<HomeStackParamList, 'Max3dScreen'>;
 type NavigationRoute = RouteProp<HomeStackParamList, 'Max3dScreen'>;

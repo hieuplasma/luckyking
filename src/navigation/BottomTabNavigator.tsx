@@ -141,6 +141,7 @@ const hideTabBar = [
   ScreenName.HomeChild.PowerScreen,
   ScreenName.HomeChild.MegaScreen,
   ScreenName.HomeChild.Max3dScreen,
+  ScreenName.HomeChild.Max3dProScreen,
   ScreenName.HomeChild.CartScreen
 ]
 
