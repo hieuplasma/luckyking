@@ -9,13 +9,13 @@ import { getColorLott, printMoney, printMoneyK, printNumber } from '@utils';
 import { ConsolasText, IText } from '@components';
 import { ChangeBetButton } from '../../component/ChangeBetButton';
 
-interface NumberSheetMax3dProps {
+interface NumberSheet3DPlusProps {
     onChoose: (data1: any, data2: any) => void,
     numberSet: any,
     page?: number,
     type: LotteryType,
     listBets: number[],
-    hugePosition: number
+    hugePosition: number[]
 }
 
 const betMilestones = [
@@ -25,7 +25,7 @@ const betMilestones = [
 const column = [0, 1, 2]
 const fullNumber = Array.from({ length: 10 }, (_, index) => index);
 
-export const NumberSheetMax3d = forwardRef(({ onChoose, numberSet, page, type, listBets, hugePosition }: NumberSheetMax3dProps, ref) => {
+export const NumberSheet3DPlus = forwardRef(({ onChoose, numberSet, page, type, listBets, hugePosition }: NumberSheet3DPlusProps, ref) => {
 
     const lottColor = getColorLott(type)
 
@@ -72,7 +72,8 @@ export const NumberSheetMax3d = forwardRef(({ onChoose, numberSet, page, type, l
     const checkIsOk = useCallback(() => {
         const tmp = [...currentNumbers]
         let len = tmp[0].length
-        if (hugePosition > -1) len--
+        if (hugePosition[0] > -1) len--
+        if (hugePosition[1] > -1) len--
         for (let i = 0; i < tmp.length; i++) {
             const element = tmp[i]
             let count = 0;
@@ -86,43 +87,67 @@ export const NumberSheetMax3d = forwardRef(({ onChoose, numberSet, page, type, l
 
     const ItemView = useCallback((item: any, index: number) => {
         return (
-            <View style={{ marginHorizontal: 32, width: windowWidth - 64, height: 440, flexDirection: 'row', justifyContent: 'space-between' }} key={index}>
-                {column.map((columnId: number) => {
-                    const filled = columnId == hugePosition ? true : false
-                    return (
-                        <View key={columnId + ""}>
-                            {
-                                fullNumber.map((number: number, index2: number) => {
-                                    const check = (item[columnId] === number ? true : false) || filled
-                                    return (
-                                        <View style={styles.ballContainer} key={number + ':::' + index2}  >
-                                            <TouchableOpacity disabled={filled} activeOpacity={0.8} style={[styles.ball, { backgroundColor: check ? lottColor : '#E9E6E6' }]} onPress={() => changeNumber(number, columnId)}>
-                                                <ConsolasText style={[styles.textBall, { color: check ? Color.white : Color.black, marginTop: filled ? -2 : 2 }]}>{filled ? "✽" : number}</ConsolasText>
-                                            </TouchableOpacity>
-                                        </View>
-                                    )
-                                })
-                            }
-                        </View>
-                    )
-                })}
-                <View style={{}}>
-                    {
-                        betMilestones.map((bet: number) => {
-                            const check = bet == currentBets[indexPage] ? true : false
-                            return (
-                                <TouchableOpacity key={bet} style={[styles.betBlock, { backgroundColor: check ? Color.max3d : Color.white }]}
-                                    onPress={() => changeBet(bet, index)}>
-                                    <IText style={[styles.textBet, { color: check ? Color.white : Color.max3d }]}>{printMoneyK(bet)}</IText>
-                                </TouchableOpacity>
-                            )
-                        })
-                    }
-                    {/* <View style={[styles.betBlock, { backgroundColor: other ? Color.max3d : Color.white }]}>
+            <View style={{ marginHorizontal: 8, width: windowWidth - 16 }}>
+                <View style={{ height: 440, flexDirection: 'row', justifyContent: 'space-between' }} key={index}>
+                    {[0, 1, 2].map((columnId: number) => {
+                        const filled = hugePosition.includes(columnId) ? true : false
+                        return (
+                            <View key={columnId + ""}>
+                                {
+                                    fullNumber.map((number: number, index2: number) => {
+                                        const check = (item[columnId] === number ? true : false) || filled
+                                        return (
+                                            <View style={styles.ballContainer} key={number + ':::' + index2}  >
+                                                <TouchableOpacity disabled={filled} activeOpacity={0.8} style={[styles.ball, { backgroundColor: check ? lottColor : '#E9E6E6' }]} onPress={() => changeNumber(number, columnId)}>
+                                                    <ConsolasText style={[styles.textBall, { color: check ? Color.white : Color.black, marginTop: filled ? -2 : 2 }]}>{filled ? "✽" : number}</ConsolasText>
+                                                </TouchableOpacity>
+                                            </View>
+                                        )
+                                    })
+                                }
+                            </View>
+                        )
+                    })}
+                    <View style={{ height: '100%', width: 1, backgroundColor: "#DADADA", borderRadius: 10 }} />
+                    {[3, 4, 5].map((columnId: number) => {
+                        const filled = hugePosition.includes(columnId) ? true : false
+                        return (
+                            <View key={columnId + ""}>
+                                {
+                                    fullNumber.map((number: number, index2: number) => {
+                                        const check = (item[columnId] === number ? true : false) || filled
+                                        return (
+                                            <View style={styles.ballContainer} key={number + ':::' + index2}  >
+                                                <TouchableOpacity disabled={filled} activeOpacity={0.8} style={[styles.ball, { backgroundColor: check ? lottColor : '#E9E6E6' }]} onPress={() => changeNumber(number, columnId)}>
+                                                    <ConsolasText style={[styles.textBall, { color: check ? Color.white : Color.black, marginTop: filled ? -2 : 2 }]}>{filled ? "✽" : number}</ConsolasText>
+                                                </TouchableOpacity>
+                                            </View>
+                                        )
+                                    })
+                                }
+                            </View>
+                        )
+                    })}
+                    <View style={{}}>
+                        {
+                            betMilestones.map((bet: number) => {
+                                const check = bet == currentBets[indexPage] ? true : false
+                                return (
+                                    <TouchableOpacity key={bet} style={[styles.betBlock, { backgroundColor: check ? Color.max3d : Color.white }]}
+                                        onPress={() => changeBet(bet, index)}>
+                                        <IText style={[styles.textBet, { color: check ? Color.white : Color.max3d }]}>{printMoneyK(bet)}</IText>
+                                    </TouchableOpacity>
+                                )
+                            })
+                        }
+                        {/* <View style={[styles.betBlock, { backgroundColor: other ? Color.max3d : Color.white }]}>
                         <IText style={[styles.textBet, { color: other ? Color.white : Color.max3d }]}>{"Khác"}
                         </IText>
                     </View> */}
-                    <View style={{ flex: 1 }}></View>
+                    </View>
+
+                </View>
+                <View style={{ alignItems: 'flex-end' }}>
                     <ChangeBetButton
                         currentBet={currentBets[indexPage]}
                         increase={() => changeBet(currentBets[indexPage] + 10000, indexPage)}
@@ -130,8 +155,7 @@ export const NumberSheetMax3d = forwardRef(({ onChoose, numberSet, page, type, l
                         color={lottColor}
                         max={300000}
                         min={10000}
-                    />
-                </View>
+                    /></View>
             </View>
         )
     }, [currentNumbers, currentBets, changeBet, changeNumber]);

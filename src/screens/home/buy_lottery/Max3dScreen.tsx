@@ -6,11 +6,11 @@ import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { getMax3dDraw } from '@redux';
 import { Color } from '@styles';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, View, Dimensions, TouchableOpacity } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
-import { Max3dPlusTab } from './max3component/max3dplus/Max3dPlus';
+import { Max3dPlusTab } from './max3component/max3dplus/Max3dPlusTab';
 import { Max3dTab } from './max3component/max3d/Max3dTab';
 
 type NavigationProp = StackNavigationProp<HomeStackParamList, 'Max3dScreen'>;
@@ -26,16 +26,26 @@ export const Max3dScreen = () => {
 
     const [lotteryType, setLotteryType] = useState(LotteryType.Max3D)
 
-    const getListDraw = async() => {
+    const changeLotteryType = useCallback((type: LotteryType) => {
+        window.loadingIndicator.show()
+        let timer1 = setTimeout(() => {
+            setLotteryType(type)
+            clearTimeout(timer1)
+            window.loadingIndicator.hide()
+        }, 500);
+
+    }, [])
+
+    const getListDraw = async () => {
         const listMax3d = await lotteryApi.getScheduleMax3d({ type: LotteryType.Max3D, take: 6, skip: 0 })
         if (listMax3d) {
-          if (listMax3d.data.length > 0) {
-            dispatch(getMax3dDraw(listMax3d.data))
-          }
+            if (listMax3d.data.length > 0) {
+                dispatch(getMax3dDraw(listMax3d.data))
+            }
         }
     }
 
-    useEffect(()=> {
+    useEffect(() => {
         getListDraw()
     }, [])
 
@@ -55,7 +65,7 @@ export const Max3dScreen = () => {
             <View style={{ height: 32, width: windowWidth - 32, marginHorizontal: 16, flexDirection: 'row' }}>
                 <TouchableOpacity
                     activeOpacity={0.8}
-                    onPress={() => setLotteryType(LotteryType.Max3D)}
+                    onPress={() => changeLotteryType(LotteryType.Max3D)}
                     style={[styles.button, { backgroundColor: lotteryType == LotteryType.Max3D ? Color.max3d : Color.white }]}
                 >
                     <IText style={{ fontSize: 16, color: lotteryType == LotteryType.Max3D ? Color.white : Color.max3d }}>
@@ -65,7 +75,7 @@ export const Max3dScreen = () => {
                 <View style={{ width: 8 }} />
                 <TouchableOpacity
                     activeOpacity={0.8}
-                    onPress={() => setLotteryType(LotteryType.Max3DPlus)}
+                    onPress={() => changeLotteryType(LotteryType.Max3DPlus)}
                     style={[styles.button, { backgroundColor: lotteryType == LotteryType.Max3DPlus ? Color.max3d : Color.white }]}
                 >
                     <IText style={{ fontSize: 16, color: lotteryType == LotteryType.Max3DPlus ? Color.white : Color.max3d }}>
@@ -76,7 +86,7 @@ export const Max3dScreen = () => {
 
             <>
                 {lotteryType == LotteryType.Max3D ?
-                    <Max3dTab showBottomSheet={showBottomSheet} /> : <Max3dPlusTab showBottomSheet={showBottomSheet}/>}
+                    <Max3dTab showBottomSheet={showBottomSheet} /> : <Max3dPlusTab showBottomSheet={showBottomSheet} />}
             </>
         </SafeAreaView>
     )

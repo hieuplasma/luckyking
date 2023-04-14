@@ -173,7 +173,11 @@ const ItemView = ({ label, value, setValue, force, disable }: any) => {
             {force ? <Image source={Images.star} style={{ width: 8, height: 8, marginTop: -9, marginLeft: 2 }}></Image> : <></>}
             <View style={{ flex: 1 }} />
             <TextInput
-                style={{ backgroundColor: Color.white, height: 43, fontFamily: 'myriadpro-regular' }}
+                style={{
+                    backgroundColor: Color.white,
+                    height: 43, fontFamily: 'myriadpro-regular',
+                    color: Color.black
+                }}
                 value={value}
                 onChangeText={(text) => setValue(text)}
                 placeholder={"Chưa cập nhật"}

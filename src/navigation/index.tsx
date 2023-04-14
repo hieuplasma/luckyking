@@ -73,7 +73,7 @@ export function RootNavigation(params?: {}) {
       </NavigationContainer>
       <LoadingIndicator />
       <CustomisableAlert
-        dismissable
+        dismissable={false}
         animationIn='fadeIn'
         animationOut='fadeOut'
         titleStyle={{

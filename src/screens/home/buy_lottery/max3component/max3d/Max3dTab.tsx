@@ -1,5 +1,5 @@
 import { Image, Images } from "@assets";
-import { LotteryType, MAX3D_NUMBER, MAX_SET, OrderMethod, OrderStatus } from "@common";
+import { LotteryType, MAX3D_NUMBER, MAX_SET, MAX_SET_MAX3D, OrderMethod, OrderStatus } from "@common";
 import { ConsolasText, IText } from "@components";
 import { Color } from "@styles";
 import { calSurcharge, generateUniqueStrings, printMoneyK, printNumber } from "@utils";
@@ -11,6 +11,7 @@ import { ChooseDrawSheet } from "../../component/ChooseDrawSheet";
 import { ViewAbove } from "../../component/ViewAbove";
 import { ViewFooter1 } from "../../component/ViewFoooter1";
 import { ViewFooter2 } from "../../component/ViewFooter2";
+import { generateMax3d } from "../utils";
 import { Max3dBagView } from "./Max3dBagView";
 import { NumberSheetMax3d } from "./NumberSheetMax3d";
 import { TypeSheetMax3d } from "./TypeSheetMax3d";
@@ -58,7 +59,7 @@ export const Max3dTab = React.memo((props: Props) => {
     const randomNumber = (index: number) => {
         const currentNumber = [...numberSet]
         const randomNumbers = [];
-        while (randomNumbers.length < 3) {
+        while (randomNumbers.length < MAX_SET_MAX3D) {
             const randomNumber = Math.floor(Math.random() * MAX3D_NUMBER);
             randomNumbers.push(randomNumber);
         }
@@ -70,7 +71,7 @@ export const Max3dTab = React.memo((props: Props) => {
 
     const deleteNumber = (index: number) => {
         const currentNumber = [...numberSet]
-        const resultArray = Array(3).fill(false);
+        const resultArray = Array(MAX_SET_MAX3D).fill(false);
         if (typePlay.value == 3) resultArray[hugePosition] = 10
         currentNumber[index] = resultArray
         setNumbers(currentNumber)
@@ -92,52 +93,16 @@ export const Max3dTab = React.memo((props: Props) => {
     }, [typePlay, hugePosition])
 
     const selfPick = useCallback(() => {
-        Alert.alert("Thông báo", "Vé tự chọn hiện không khả dụng cho loại hình chơi MAX3D")
+        window.myalert.show({ title: 'Vé tự chọn hiện không khả dụng cho loại hình chơi MAX3D!', btnLabel: "OK" })
     }, [])
 
     useEffect(() => {
         const currentNumber = [...numberSet]
         const level = typePlay.value
-        let tmpGenerated: any = []
-        let tmpBets: any = []
-        switch (level) {
-            case 1:
-                currentNumber.map((item, index) => {
-                    if (item[0] !== false) {
-                        tmpGenerated.push('' + item[0] + item[1] + item[2])
-                        tmpBets.push(bets[index])
-                    }
-                })
-                break;
-            case 2:
-                currentNumber.map((item, index) => {
-                    if (item[0] !== false) {
-                        const result = generateUniqueStrings(item)
-                        tmpGenerated = tmpGenerated.concat(result)
-                        tmpBets = tmpBets.concat(Array(result.length).fill(bets[index]))
-                    }
-                })
-                break;
-            case 3:
-                currentNumber.map((item, index) => {
-                    if (item[0] !== false && item[1] !== false) {
-                        fullNumber.map(number => {
-                            let tmp = [...item]
-                            tmp[hugePosition] = number
-                            tmpGenerated.push('' + tmp[0] + tmp[1] + tmp[2])
-                        })
-                        tmpBets = tmpBets.concat(Array(10).fill(bets[index]))
-                    }
-                })
-                break;
-            default:
-                break;
-        }
-        let total = 0
-        tmpBets.map((item: number) => total = total + item)
-        setGenrated(tmpGenerated)
-        setGeneratedBets(tmpBets)
-        setTotalCost(total)
+        const tmp = generateMax3d(level, currentNumber, bets, hugePosition)
+        setGenrated(tmp.numberGenerated)
+        setGeneratedBets(tmp.betsGenerated)
+        setTotalCost(tmp.totalCost)
     }, [numberSet, bets])
 
     const onChangeHugePositon = useCallback((position: number) => {
@@ -304,7 +269,7 @@ export const Max3dTab = React.memo((props: Props) => {
                                                 return (
                                                     <View style={styles.ballContainer} key={index2}>
                                                         <Image source={number !== false ? Images.ball_max3d : Images.ball_grey} style={styles.ballStyle}>
-                                                            <ConsolasText style={{ color: Color.white, fontSize: 16 }}>{number < 10 ? number : "✽"}</ConsolasText>
+                                                            <ConsolasText style={{ color: Color.white, fontSize: 16, marginTop: number == 10 ? -2 : 2 }}>{number < 10 ? number : "✽"}</ConsolasText>
                                                         </Image>
                                                     </View>
                                                 )

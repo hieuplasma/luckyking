@@ -15,9 +15,13 @@ interface Props {
 
 const types = [
     { label: "Cơ bản", value: 1 },
-    { label: "Đảo số", value: 2 },
-    { label: "Ôm một vị trí", value: 3 },
-    { label: "Bao bộ số", value: 4 }
+    { label: "Đảo số thứ nhất", value: 2 },
+    { label: "Đảo số thứ 2", value: 3 },
+    { label: "Đảo cả 2 số", value: 4 },
+    { label: "Ôm một vị trí", value: 5 },
+    { label: "Ôm hai vị trí", value: 6 },
+    { label: "Bao số thứ nhất", value: 7 },
+    { label: "Bao số thứ hai", value: 8 }
 ]
 
 const Wiget = forwardRef(({ currentChoose, onChoose, type }: Props, ref) => {
@@ -111,11 +115,11 @@ const Wiget = forwardRef(({ currentChoose, onChoose, type }: Props, ref) => {
     );
 });
 
-export const TypeSheetMax3d = React.memo(Wiget);
+export const TypeSheetMax3dPlus = React.memo(Wiget);
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
-const SHEET_HEIGHT = 285
+const SHEET_HEIGHT = 435
 const BACKGROUND_OPACITY = 0.85
 
 const styles = StyleSheet.create({

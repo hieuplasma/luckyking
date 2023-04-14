@@ -56,7 +56,7 @@ export const LuckyKingWithdrawScreen = () => {
             return Alert.alert("Thông báo", "Số tiền thưởng không đủ!")
 
         window.loadingIndicator.show()
-        const res = await lotteryApi.withdrawLuckyKing({amount: money})
+        const res = await lotteryApi.withdrawLuckyKing({ amount: money })
         if (res) {
             if (res.data?.payment) {
                 Alert.alert("Đổi thưởng thành công!")
@@ -97,7 +97,10 @@ export const LuckyKingWithdrawScreen = () => {
 
                 <View style={[styles.borderItem, { paddingHorizontal: 16 }]}>
                     <TextInput
-                        style={{ flex: 1, fontFamily: 'myriadpro-regular', fontSize: 18 }}
+                        style={{
+                            flex: 1, fontFamily: 'myriadpro-regular',
+                            fontSize: 18, color: Color.black
+                        }}
                         placeholder={"Nhập số tiền thưởng"}
                         value={amount}
                         onChangeText={onChangeText}

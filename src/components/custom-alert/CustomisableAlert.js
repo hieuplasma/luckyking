@@ -125,6 +125,8 @@ export default class CustomisableAlertComponent extends Component {
                 {...{ ...modalProps, ...this.state.modalProps }}
                 animationIn={___animationIne}
                 animationOut={___animationOut}
+                // backdropTransitionOutTiming={0}
+                hideModalContentWhileAnimating
                 // animationIn={'fadeIn'}
                 // animationOut={'fadeOut'}
                 isVisible={visible}
@@ -219,7 +221,8 @@ const styles = StyleSheet.create({
         minWidth: 120,
         backgroundColor: 'black',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        borderRadius: 10
     },
     btnText: {
         padding: 10,

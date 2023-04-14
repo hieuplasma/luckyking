@@ -35,15 +35,27 @@ export const WithdrawScreen = () => {
         window.loadingIndicator.show()
         const res = await lotteryApi.getTransactionHistory()
         if (res) {
-            setListTransaction(res.data.filter(check))
+            setListTransaction(res.data.filter(check).sort(compare))
         }
         setLoading(false)
         window.loadingIndicator.hide()
     }
 
     function check(param: any) {
+        return true
         return param.type == "withdraw"
       }
+
+      function compare( a: any, b: any ) {
+        if ( a.createAt < b.createAt ){
+          return 1;
+        }
+        if ( a.createAt > b.createAt ){
+          return -1;
+        }
+        return 0;
+      }
+      
 
     useEffect(() => {
         onRefresh()

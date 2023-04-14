@@ -129,7 +129,12 @@ const ItemView = ({ label, value, setValue, sercure, setSercure }: any) => {
             <View style={styles.borderItem}>
                 <Image style={{ width: 25, height: 30 }} source={Images.small_lock}></Image>
                 <TextInput
-                    style={{ backgroundColor: Color.white, height: 43, marginLeft: 4, flex: 1, fontFamily: 'myriadpro-regular' }}
+                    style={{
+                        backgroundColor: Color.white,
+                        height: 43, marginLeft: 4,
+                        flex: 1, fontFamily: 'myriadpro-regular',
+                        color: Color.black
+                    }}
                     value={value}
                     onChangeText={(text) => setValue(text)}
                     placeholder={label}

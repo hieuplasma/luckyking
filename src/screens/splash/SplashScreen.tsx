@@ -3,7 +3,7 @@ import { LotteryType } from '@common';
 import { RootStackParamsList, ScreenName } from '@navigation';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { getCart, getMax3dDraw, getMegaDraw, getPowerDraw, updateUser } from '@redux';
+import { getCart, getMax3dDraw, getMax3dProDraw, getMegaDraw, getPowerDraw, updateUser } from '@redux';
 import { Color } from '@styles';
 import { doNotExits, NavigationUtils } from '@utils';
 import React, { useEffect } from 'react';
@@ -56,6 +56,13 @@ export const SplashScreen = React.memo(() => {
         if (listMax3d.data.length > 0) {
           dispatch(getMax3dDraw(listMax3d.data))
         }
+      }
+
+      const listMax3dPro = await lotteryApi.getScheduleMax3d({ type: LotteryType.Max3DPro, take: 6, skip: 0 })
+      if (listMax3dPro) {
+          if (listMax3dPro.data.length > 0) {
+              dispatch(getMax3dProDraw(listMax3dPro.data))
+          }
       }
 
       NavigationUtils.resetGlobalStackWithScreen(navigation, ScreenName.Main);

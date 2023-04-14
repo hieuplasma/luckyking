@@ -205,7 +205,7 @@ export const PowerScreen = React.memo((props: PowerScreenProps) => {
         }
         if (numbers.length == 0) {
             // return Alert.alert("Thông báo", "Bạn chưa chọn bộ số nào")
-            return window.myalert.show({title:'Bạn chưa chọn bộ số nào',btnLabel:"Đã hiểu"})
+            return window.myalert.show({ title: 'Bạn chưa chọn bộ số nào', btnLabel: "Đã hiểu" })
         }
         let body: any = {
             lotteryType: LotteryType.Power,
@@ -220,7 +220,8 @@ export const PowerScreen = React.memo((props: PowerScreenProps) => {
         const res = await lotteryApi.addPowerMegaToCart(body)
         console.log(res)
         if (res) {
-            Alert.alert("Thành công", "Đã thêm vé vào giỏ hàng!")
+            // Alert.alert("Thành công", "Đã thêm vé vào giỏ hàng!")
+            window.myalert.show({ title: 'Đã thêm vé vào giỏ hàng!', btnLabel: "OK", alertType: 'success' })
             refreshChoosing()
             dispatch(addLottery(res.data))
         }
