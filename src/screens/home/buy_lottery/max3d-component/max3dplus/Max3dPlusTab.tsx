@@ -347,7 +347,7 @@ export const Max3dPlusTab = React.memo((props: Props) => {
 
 
             {/* Footer */}
-            <View style={{ paddingHorizontal: 16, marginBottom: 5 }}>
+            <View style={{ paddingHorizontal: 16, marginBottom: 5, zIndex: -1 }}>
                 {
                     typePlay.value == 7 || typePlay.value == 8 ?
                         <></>

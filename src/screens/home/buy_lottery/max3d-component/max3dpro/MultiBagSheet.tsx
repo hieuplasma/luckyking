@@ -1,5 +1,5 @@
 import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Dimensions, Animated } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Dimensions, Animated, ScrollView } from 'react-native';
 import BottomSheet from '@gorhom/bottom-sheet';
 import { Color } from '@styles';
 import { Image, Images } from '@assets'
@@ -14,16 +14,25 @@ interface Props {
 }
 
 const types = [
-    { label: "Cơ bản", value: 1 },
-    { label: "Bao bộ 3 số", value: 4 },
-    { label: "Bao nhiều bộ 3 số", value: 10 },
-    { label: "Đảo số thứ nhất", value: 2 },
-    { label: "Đảo số thứ 2", value: 3 },
-    // { label: "Đảo cả 2 số", value: 4 },
-    { label: "Ôm một vị trí", value: 5 },
-    { label: "Ôm hai vị trí", value: 6 },
-    { label: "Bao số thứ nhất", value: 7 },
-    { label: "Bao số thứ hai", value: 8 }
+    { label: "Bao 3 bộ 3 số", value: 3 },
+    { label: "Bao 4 bộ 3 số", value: 4 },
+    { label: "Bao 5 bộ 3 số", value: 5 },
+    { label: "Bao 6 bộ 3 số", value: 6 },
+    { label: "Bao 7 bộ 3 số", value: 7 },
+    { label: "Bao 8 bộ 3 số", value: 8 },
+    { label: "Bao 9 bộ 3 số", value: 9 },
+    { label: "Bao 10 bộ 3 số", value: 10 },
+    { label: "Bao 11 bộ 3 số", value: 11 },
+    { label: "Bao 12 bộ 3 số", value: 12 },
+    { label: "Bao 13 bộ 3 số", value: 13 },
+    { label: "Bao 14 bộ 3 số", value: 14 },
+    { label: "Bao 15 bộ 3 số", value: 15 },
+    { label: "Bao 16 bộ 3 số", value: 16 },
+    { label: "Bao 17 bộ 3 số", value: 17 },
+    { label: "Bao 18 bộ 3 số", value: 18 },
+    { label: "Bao 19 bộ 3 số", value: 19 },
+    { label: "Bao 20 bộ 3 số", value: 20 },
+
 ]
 
 const Wiget = forwardRef(({ currentChoose, onChoose, type }: Props, ref) => {
@@ -99,7 +108,7 @@ const Wiget = forwardRef(({ currentChoose, onChoose, type }: Props, ref) => {
         >
             <View style={{ flex: 1 }}>
                 <IText style={{ fontSize: 18, color: Color.black, alignSelf: 'center', fontWeight: 'bold' }}>{"Chọn cách chơi"}</IText>
-                <View style={{ paddingHorizontal: 32, paddingVertical: 6, flex: 1 }}>
+                <View style={{ paddingHorizontal: 32, paddingVertical: 6, flex: 1, flexDirection:'row', flexWrap:'wrap', justifyContent:'space-between' }}>
                     {types.map((item: any, index: number) => {
                         return (
                             <TouchableOpacity activeOpacity={0.4} key={index} style={styles.item} onPress={() => setCurrentType(item)}>
@@ -117,11 +126,11 @@ const Wiget = forwardRef(({ currentChoose, onChoose, type }: Props, ref) => {
     );
 });
 
-export const TypeSheetMax3DPro = React.memo(Wiget);
+export const MultiBagSheet = React.memo(Wiget);
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
-const SHEET_HEIGHT = 470
+const SHEET_HEIGHT = 500
 const BACKGROUND_OPACITY = 0.85
 
 const styles = StyleSheet.create({

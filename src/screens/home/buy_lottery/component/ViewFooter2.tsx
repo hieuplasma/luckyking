@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
         width: (windowWidth - 36) / 2, height: 44,
         borderRadius: 10, padding: 6,
         justifyContent: 'space-around', alignItems: 'center',
-        borderColor: '#FFC42C', backgroundColor: '#FDF9F9',
+        backgroundColor: '#FDF9F9',
         borderWidth: 1
     }
 })

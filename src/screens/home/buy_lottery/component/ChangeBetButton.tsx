@@ -2,7 +2,7 @@ import { IText } from "@components"
 import { Color } from "@styles"
 import { printMoney } from "@utils"
 import React from "react"
-import { StyleSheet, View, ColorValue, TouchableOpacity } from "react-native"
+import { StyleSheet, View, ColorValue, TouchableOpacity, ViewStyle } from "react-native"
 
 interface ChangeBetButtonProps {
     currentBet: number,
@@ -10,12 +10,14 @@ interface ChangeBetButtonProps {
     decrease: () => void,
     color: ColorValue,
     max: number,
-    min: number
+    min: number,
+    style?: ViewStyle
+
 }
 
-export const ChangeBetButton = React.memo(({ currentBet, increase, decrease, color, max, min }: ChangeBetButtonProps) => {
+export const ChangeBetButton = React.memo(({ currentBet, increase, decrease, color, max, min, style }: ChangeBetButtonProps) => {
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, style ? style : {}]}>
             {
                 currentBet == min ? <View style={{ width: 25, height: 25 }} />
                     : <TouchableOpacity style={[styles.button, { backgroundColor: color }]} onPress={decrease}>

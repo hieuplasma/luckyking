@@ -56,10 +56,5 @@ const styles = StyleSheet.create({
         borderRadius: 10, padding: 6, paddingHorizontal: 12,
         justifyContent: 'space-between',
         borderColor: Color.black, borderWidth: 1, flexDirection: 'row', alignItems: 'center'
-    },
-    lineNumber: {
-        flexDirection: 'row', marginVertical: 4,
-        justifyContent: 'space-between',
-        alignItems: 'center',
-    },
+    }
 })

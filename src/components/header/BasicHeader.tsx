@@ -1,5 +1,6 @@
 import { Icon, Image, Images } from "@assets"
 import { Color, Style } from "@styles"
+import { ScreenUtils } from "@utils"
 import React, { useCallback } from "react"
 import { StyleSheet } from "react-native"
 import { StatusBar, View } from "react-native"
@@ -22,7 +23,7 @@ export const BasicHeader = React.memo(({ navigation, title }: ImageHeaderProps) 
     return (
         <>
             <StatusBar translucent={true} barStyle={'dark-content'} backgroundColor={"transparent"} />
-            <View style={[styles.headerContainer, { paddingTop: 0 }]}>
+            <View style={[styles.headerContainer, {  }]}>
                 <View style={{ flex: 1 }}>
                     <Icon.Button
                         size={'small'}
@@ -44,6 +45,7 @@ const styles = StyleSheet.create({
     headerContainer: {
         flexDirection: 'row',
         height: 40,
+// height: ScreenUtils.getHeaderHeight(),
         alignItems: 'center',
         paddingHorizontal: 16,
         justifyContent: 'space-between',
