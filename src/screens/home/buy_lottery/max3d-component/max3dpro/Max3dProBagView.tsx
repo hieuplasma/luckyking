@@ -20,7 +20,6 @@ export const Max3dProBagView = forwardRef(({ changeCost, changeGenerated, change
 
     const [generated, setGenrated] = useState([])
     const [currentBet, setCurrentBet] = useState(10000)
-    const [total, setTotal] = useState(0)
 
     const [currentNumbers, setNumbers]: any = useState([])
     const [fixedNumbers, setFixedNumbers]: any = useState([false, false, false])
@@ -120,8 +119,8 @@ export const Max3dProBagView = forwardRef(({ changeCost, changeGenerated, change
                 }
                 <TouchableOpacity style={styles.boxNumber} onPress={openNumberSheet}>
                     {
-                        fixedNumbers.map((item: any) => {
-                            return (<ConsolasText style={{ fontSize: 16, color: lottColor }}>{item}</ConsolasText>)
+                        fixedNumbers.map((item: any, index: number) => {
+                            return (<ConsolasText key={index} style={{ fontSize: 16, color: lottColor }}>{item}</ConsolasText>)
                         })
                     }
                 </TouchableOpacity>
@@ -135,40 +134,23 @@ export const Max3dProBagView = forwardRef(({ changeCost, changeGenerated, change
                         </> : <></>
                 }
             </View>
-
-            {/* <IText style={{ fontSize: 16, marginLeft: 16, marginTop: 4 }}>
-                {`Chọn các số cố định `}
-                <IText style={{ color: Color.luckyKing, fontWeight:'bold' }}>
-                    {`( ${print(fixedNumbers[0])} ${print(fixedNumbers[1])} ${print(fixedNumbers[2])} )`}
-                </IText>
-            </IText>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginVertical: 8 }}>
-                {
-                    fullNumber.map((number: number) => {
-                        const check = fixedNumbers.includes(number) ? true : false
-                        return (
-                            <TouchableOpacity key={number + ""} style={[styles.ballCircle, { backgroundColor: check ? lottColor : Color.white }]}
-                                onPress={() => chooseFixed(number)}>
-                                <ConsolasText style={{ fontSize: 16, color: check ? Color.white : lottColor }}>{number}</ConsolasText>
-                            </TouchableOpacity>
-                        )
-                    })
-                }
-            </View> */}
             <IText style={{ fontSize: 16, color: Color.blue, fontWeight: 'bold', marginTop: 5, alignSelf: 'center' }}>
                 {`Các bộ số được tạo (${generated.length} bộ)`}
             </IText>
             <ScrollView style={[styles.boxGenerated, { marginHorizontal: 16 }]}>
                 <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
                     {
-                        generated.map((item: any, index: number) =>
-                            <View key={index + ""} style={{ flexDirection: 'row' }}>
-                                <ConsolasText style={[styles.textGenerated, { color: lottColor }]}>{item}</ConsolasText>
-                                <View style={styles.lineContainer} >
-                                    <View style={styles.line} />
-                                </View>
+                        generated.map((item: any, index: number) => {
+                            return (
+                                <View key={index + ""} style={{ flexDirection: 'row' }}>
+                                    <ConsolasText style={[styles.textGenerated, { color: lottColor }]}>{item}</ConsolasText>
+                                    <View style={styles.lineContainer} >
+                                        <View style={styles.line} />
+                                    </View>
 
-                            </View>
+                                </View>
+                            )
+                        }
                         )
                     }
                 </View>

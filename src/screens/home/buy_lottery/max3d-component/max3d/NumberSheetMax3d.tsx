@@ -57,8 +57,7 @@ export const NumberSheetMax3d = forwardRef(({ onChoose, numberSet, page, type, l
     const changeNumber = (number: number, columnId: number,) => {
         let curr = [...currentNumbers]
         let tmp = [...curr[indexPage]]
-        if (tmp[columnId] === number) tmp[columnId] = false
-        else tmp[columnId] = number
+        tmp[columnId] = number
         curr[indexPage] = tmp
         setCurrentNumbers(curr)
     }
@@ -84,6 +83,15 @@ export const NumberSheetMax3d = forwardRef(({ onChoose, numberSet, page, type, l
         return true
     }, [currentNumbers])
 
+    const [toggleObj, setToggleObj] = useState({ number: -1, columnId: -1 })
+    const handleToggle = useCallback((number: number, columnId: number) => {
+        setToggleObj({ number: number, columnId: columnId })
+    }, []);
+
+    useEffect(() => {
+        changeNumber(toggleObj.number, toggleObj.columnId)
+    }, [toggleObj])
+
     const ItemView = useCallback((item: any, index: number) => {
         return (
             <View style={{ marginHorizontal: 32, width: windowWidth - 64, height: 440, flexDirection: 'row', justifyContent: 'space-between' }} key={index}>
@@ -95,11 +103,15 @@ export const NumberSheetMax3d = forwardRef(({ onChoose, numberSet, page, type, l
                                 fullNumber.map((number: number, index2: number) => {
                                     const check = (item[columnId] === number ? true : false) || filled
                                     return (
-                                        <View style={styles.ballContainer} key={number + ':::' + index2}  >
-                                            <TouchableOpacity disabled={filled} activeOpacity={0.8} style={[styles.ball, { backgroundColor: check ? lottColor : '#E9E6E6' }]} onPress={() => changeNumber(number, columnId)}>
-                                                <ConsolasText style={[styles.textBall, { color: check ? Color.white : Color.black, marginTop: filled ? -2 : 2 }]}>{filled ? "✽" : number}</ConsolasText>
-                                            </TouchableOpacity>
-                                        </View>
+                                        <MemoizedBallNumber
+                                            key ={index2}
+                                            number={number}
+                                            lottColor={lottColor}
+                                            onToggle={handleToggle}
+                                            check={check}
+                                            filled={filled}
+                                            columnId={columnId}
+                                        />
                                     )
                                 })
                             }
@@ -228,6 +240,20 @@ const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 const SHEET_HEIGHT = 630
 const BACKGROUND_OPACITY = 0.85
+
+const MemoizedBallNumber = React.memo(({ number, lottColor, onToggle, check, filled, columnId }: any) => {
+    const handlePress = useCallback(() => {
+        onToggle(number, columnId);
+    }, [onToggle, number, check]);
+
+    return (
+        <View style={styles.ballContainer}  >
+            <TouchableOpacity disabled={filled} activeOpacity={0.8} style={[styles.ball, { backgroundColor: check ? lottColor : '#E9E6E6' }]} onPress={handlePress}>
+                <ConsolasText style={[styles.textBall, { color: check ? Color.white : Color.black, marginTop: filled ? -2 : 2 }]}>{filled ? "✽" : number}</ConsolasText>
+            </TouchableOpacity>
+        </View>
+    )
+});
 
 const styles = StyleSheet.create({
     sheetContainer: { backgroundColor: '#F4F4F4', borderTopLeftRadius: 20, borderTopRightRadius: 20 },

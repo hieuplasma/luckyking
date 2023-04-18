@@ -75,6 +75,7 @@ export const Max3dProScreen = () => {
     const [typePlay, setType]: any = useState({ label: "Cơ bản", value: 1 });
     const [drawSelected, setDraw]: any = useState(listDraw[0])
     const [numberSet, setNumbers]: any = useState(initNumber)
+    const [numberFake, setNumberFake]:any = useState(initNumber)
     const [bets, setBets] = useState(initBets)
     const [generated, setGenrated] = useState([])
     const [generatedBets, setGeneratedBets] = useState([])
@@ -185,6 +186,7 @@ export const Max3dProScreen = () => {
         setNumbers(initNumber)
         setBets(initBets)
         setHugePosition([-1, -1])
+        setGenrated([])
         if (type.value == 5) {
             setHugePosition([0, -1])
             setNumbers([
@@ -238,23 +240,24 @@ export const Max3dProScreen = () => {
         setNumbers(set)
         setBets(bets)
     }, [])
-    const openNumberSheet = useCallback((page: number) => {
+    const openNumberSheet = useCallback(async(page: number) => {
+        setNumberFake(numberSet)
         setPageNumber(page)
         chooseNumberRef.current?.openSheet()
-    }, [chooseNumberRef])
+    }, [chooseNumberRef, numberSet])
     const renderNumberSheet = useCallback(() => {
         return (
             <NumberSheet3DPlus
                 ref={chooseNumberRef}
                 onChoose={onChangeNumber}
-                numberSet={numberSet}
+                numberSet={numberFake}
                 page={pageNumber}
                 listBets={bets}
                 type={LotteryType.Max3DPro}
                 hugePosition={hugePosition}
             />
         )
-    }, [chooseNumberRef, numberSet, pageNumber])
+    }, [chooseNumberRef, numberFake, pageNumber])
 
 
     const bookLottery = async () => {

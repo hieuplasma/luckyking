@@ -25,9 +25,13 @@ const betMilestones = [
 const column = [0, 1, 2]
 const fullNumber = Array.from({ length: 10 }, (_, index) => index);
 
-export const NumberSheet3DPlus = forwardRef(({ onChoose, numberSet, page, type, listBets, hugePosition }: NumberSheet3DPlusProps, ref) => {
+const Wiget = forwardRef(({ onChoose, numberSet, page, type, listBets, hugePosition }: NumberSheet3DPlusProps, ref) => {
 
     const lottColor = getColorLott(type)
+
+    useEffect(() => {
+        console.log("Number Sheet max3d rerender")
+    })
 
     // ref
     const bottomSheetRef = useRef<BottomSheet>(null);
@@ -57,8 +61,7 @@ export const NumberSheet3DPlus = forwardRef(({ onChoose, numberSet, page, type, 
     const changeNumber = (number: number, columnId: number,) => {
         let curr = [...currentNumbers]
         let tmp = [...curr[indexPage]]
-        if (tmp[columnId] === number) tmp[columnId] = false
-        else tmp[columnId] = number
+        tmp[columnId] = number
         curr[indexPage] = tmp
         setCurrentNumbers(curr)
     }
@@ -85,6 +88,15 @@ export const NumberSheet3DPlus = forwardRef(({ onChoose, numberSet, page, type, 
         return true
     }, [currentNumbers])
 
+    const [toggleObj, setToggleObj] = useState({ number: -1, columnId: -1 })
+    const handleToggle = useCallback((number: number, columnId: number) => {
+        setToggleObj({ number: number, columnId: columnId })
+    }, []);
+
+    useEffect(() => {
+        changeNumber(toggleObj.number, toggleObj.columnId)
+    }, [toggleObj])
+
     const ItemView = useCallback((item: any, index: number) => {
         return (
             <View style={{ marginHorizontal: 8, width: windowWidth - 16 }}>
@@ -97,11 +109,15 @@ export const NumberSheet3DPlus = forwardRef(({ onChoose, numberSet, page, type, 
                                     fullNumber.map((number: number, index2: number) => {
                                         const check = (item[columnId] === number ? true : false) || filled
                                         return (
-                                            <View style={styles.ballContainer} key={number + ':::' + index2}  >
-                                                <TouchableOpacity disabled={filled} activeOpacity={0.8} style={[styles.ball, { backgroundColor: check ? lottColor : '#E9E6E6' }]} onPress={() => changeNumber(number, columnId)}>
-                                                    <ConsolasText style={[styles.textBall, { color: check ? Color.white : Color.black, marginTop: filled ? -2 : 2 }]}>{filled ? "✽" : number}</ConsolasText>
-                                                </TouchableOpacity>
-                                            </View>
+                                            <MemoizedBallNumber
+                                                key={index2}
+                                                number={number}
+                                                lottColor={lottColor}
+                                                onToggle={handleToggle}
+                                                check={check}
+                                                filled={filled}
+                                                columnId={columnId}
+                                            />
                                         )
                                     })
                                 }
@@ -117,11 +133,15 @@ export const NumberSheet3DPlus = forwardRef(({ onChoose, numberSet, page, type, 
                                     fullNumber.map((number: number, index2: number) => {
                                         const check = (item[columnId] === number ? true : false) || filled
                                         return (
-                                            <View style={styles.ballContainer} key={number + ':::' + index2}  >
-                                                <TouchableOpacity disabled={filled} activeOpacity={0.8} style={[styles.ball, { backgroundColor: check ? lottColor : '#E9E6E6' }]} onPress={() => changeNumber(number, columnId)}>
-                                                    <ConsolasText style={[styles.textBall, { color: check ? Color.white : Color.black, marginTop: filled ? -2 : 2 }]}>{filled ? "✽" : number}</ConsolasText>
-                                                </TouchableOpacity>
-                                            </View>
+                                            <MemoizedBallNumber
+                                                key={index2}
+                                                number={number}
+                                                lottColor={lottColor}
+                                                onToggle={handleToggle}
+                                                check={check}
+                                                filled={filled}
+                                                columnId={columnId}
+                                            />
                                         )
                                     })
                                 }
@@ -246,6 +266,23 @@ export const NumberSheet3DPlus = forwardRef(({ onChoose, numberSet, page, type, 
             </View>
         </BottomSheet >
     );
+});
+
+export const NumberSheet3DPlus = React.memo(Wiget)
+
+
+const MemoizedBallNumber = React.memo(({ number, lottColor, onToggle, check, filled, columnId }: any) => {
+    const handlePress = useCallback(() => {
+        onToggle(number, columnId);
+    }, [onToggle, number, check]);
+
+    return (
+        <View style={styles.ballContainer}  >
+            <TouchableOpacity disabled={filled} activeOpacity={0.8} style={[styles.ball, { backgroundColor: check ? lottColor : '#E9E6E6' }]} onPress={handlePress}>
+                <ConsolasText style={[styles.textBall, { color: check ? Color.white : Color.black, marginTop: filled ? -2 : 2 }]}>{filled ? "✽" : number}</ConsolasText>
+            </TouchableOpacity>
+        </View>
+    )
 });
 
 const windowWidth = Dimensions.get('window').width;

@@ -41,6 +41,7 @@ export const Max3dTab = React.memo((props: Props) => {
     const [typePlay, setType]: any = useState({ label: "Cơ bản", value: 1 });
     const [drawSelected, setDraw]: any = useState(listDraw[0])
     const [numberSet, setNumbers]: any = useState(initNumber)
+    const [numberFake, setNumberFake]: any = useState(initNumber)
     const [bets, setBets] = useState(initBets)
     const [generated, setGenrated] = useState([])
     const [generatedBets, setGeneratedBets] = useState([])
@@ -165,23 +166,24 @@ export const Max3dTab = React.memo((props: Props) => {
         setNumbers(set)
         setBets(bets)
     }, [])
-    const openNumberSheet = useCallback((page: number) => {
+    const openNumberSheet = useCallback(async(page: number) => {
+        await setNumberFake(numberSet)
         setPageNumber(page)
         chooseNumberRef.current?.openSheet()
-    }, [chooseNumberRef])
+    }, [chooseNumberRef, numberSet])
     const renderNumberSheet = useCallback(() => {
         return (
             <NumberSheetMax3d
                 ref={chooseNumberRef}
                 onChoose={onChangeNumber}
-                numberSet={numberSet}
+                numberSet={numberFake}
                 page={pageNumber}
                 listBets={bets}
                 type={LotteryType.Max3D}
                 hugePosition={hugePosition}
             />
         )
-    }, [chooseNumberRef, numberSet, pageNumber])
+    }, [chooseNumberRef, numberFake, pageNumber])
 
     const bookLottery = async () => {
         if (generated.length == 0) {

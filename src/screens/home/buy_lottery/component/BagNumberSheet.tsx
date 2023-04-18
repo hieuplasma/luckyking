@@ -118,6 +118,7 @@ export const BagNumberSheet = forwardRef(({ onChoose, numberSet, type, bagPositi
                                     : [0, 1, 2].map((columnId: number, index: number) => {
                                         return (
                                             <ItemView
+                                                key={index}
                                                 columnId={columnId}
                                                 currentNumbers={currentNumbers}
                                                 lottColor={lottColor}
@@ -137,6 +138,7 @@ export const BagNumberSheet = forwardRef(({ onChoose, numberSet, type, bagPositi
                                     : [3, 4, 5].map((columnId: number, index: number) => {
                                         return (
                                             <ItemView
+                                                key={index}
                                                 columnId={index}
                                                 currentNumbers={currentNumbers}
                                                 lottColor={lottColor}

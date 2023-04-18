@@ -7,7 +7,7 @@ import { SwiperFlatList } from 'react-native-swiper-flatlist';
 import { LotteryType } from '@common';
 import { getColorLott, printNumber } from '@utils';
 import { ConsolasText, IText } from '@components';
-import { PerPagePowerMegaView } from './PerPageView';
+import { PerPagePowerMegaView } from './PerPagePowerMegaView';
 
 interface ChooseTypeSheetProps {
     onChoose: (data: any) => void,
@@ -24,9 +24,9 @@ const Wiget = forwardRef(({ onChoose, numberSet, page, type }: ChooseTypeSheetPr
     const bottomSheetRef = useRef<BottomSheet>(null);
     const swiperRef = useRef<SwiperFlatList>(null);
 
-    // useEffect(() => {
-    //     console.log('ChooseNumberSheet has been re-rendered', numberSet);
-    // });
+    useEffect(() => {
+        console.log('ChooseNumberSheet has been re-rendered');
+    });
 
     useImperativeHandle(ref, () => ({
         openSheet: onOpen,
