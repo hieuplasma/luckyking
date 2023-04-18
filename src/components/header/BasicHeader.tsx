@@ -23,7 +23,7 @@ export const BasicHeader = React.memo(({ navigation, title }: ImageHeaderProps) 
     return (
         <>
             <StatusBar translucent={true} barStyle={'dark-content'} backgroundColor={"transparent"} />
-            <View style={[styles.headerContainer, {  }]}>
+            <View style={[styles.headerContainer, { paddingTop: safeAreaInsets.top }]}>
                 <View style={{ flex: 1 }}>
                     <Icon.Button
                         size={'small'}
@@ -44,12 +44,12 @@ const styles = StyleSheet.create({
     textTitle: { color: Color.black, fontWeight: 'bold', fontSize: 16, lineHeight: 30 },
     headerContainer: {
         flexDirection: 'row',
-        height: 40,
-// height: ScreenUtils.getHeaderHeight(),
+        // height: 40,
+        height: ScreenUtils.getHeaderHeight(),
         alignItems: 'center',
         paddingHorizontal: 16,
         justifyContent: 'space-between',
         borderBottomWidth: 1,
-        borderBottomColor:'rgba(160, 160, 160, 0.2)'
+        borderBottomColor: 'rgba(160, 160, 160, 0.2)'
     }
 })

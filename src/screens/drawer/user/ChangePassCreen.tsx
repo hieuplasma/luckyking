@@ -13,7 +13,7 @@ import { doNotExits } from '@utils';
 import { ScrollView } from 'react-native';
 import { userApi } from '@api';
 import { useDispatch, useSelector } from 'react-redux';
-import { ImageHeader } from '@components';
+import { IText, ImageHeader } from '@components';
 import { UserStackParamList } from '@navigation';
 
 type NavigationProp = StackNavigationProp<UserStackParamList, 'ChangePassScreen'>;
@@ -106,14 +106,14 @@ export const ChangePassScreen = React.memo(() => {
                         sercure={sercure3}
                         setSercure={() => setSercure3(!sercure3)}
                     />
-                    <Text style={{ fontSize: 14, color: Color.luckyKing, marginTop: 24, marginLeft: 8 }}>
+                    <IText style={{ fontSize: 14, color: Color.luckyKing, marginTop: 24, marginLeft: 8 }}>
                         {"Chú ý: Độ dài mật khẩu phải từ 8 - 16 kí tự"}
-                    </Text>
+                    </IText>
                 </ScrollView>
             </KeyboardAvoidingView>
 
             <TouchableOpacity style={styles.buttonUpdate} activeOpacity={0.8} disabled={isLoading} onPress={updatePassWord}>
-                <Text style={styles.textTitle}>{"CẬP NHẬT MẬT KHẨU"}</Text>
+                <IText style={styles.textTitle}>{"CẬP NHẬT MẬT KHẨU"}</IText>
                 {isLoading ?
                     <ActivityIndicator size="small" color={Color.white} style={{ marginLeft: 8 }} />
                     : <></>}
@@ -125,7 +125,7 @@ export const ChangePassScreen = React.memo(() => {
 const ItemView = ({ label, value, setValue, sercure, setSercure }: any) => {
     return (
         <>
-            <Text style={{ marginLeft: 12, fontSize: 12, fontStyle: 'italic', marginTop: 16 }}>{doNotExits(value) ? "" : label}</Text>
+            <IText style={{ marginLeft: 12, fontSize: 12, fontStyle: 'italic', marginTop: 16 }}>{doNotExits(value) ? "" : label}</IText>
             <View style={styles.borderItem}>
                 <Image style={{ width: 25, height: 30 }} source={Images.small_lock}></Image>
                 <TextInput

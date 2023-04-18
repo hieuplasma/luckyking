@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     },
     dropDown: {
         width: (windowWidth - 44) / 2, height: 36,
-        borderRadius: 10, padding: 6, paddingHorizontal: 12,
+        borderRadius: 10, paddingHorizontal: 12,
         justifyContent: 'space-between',
         borderColor: Color.black, borderWidth: 1, flexDirection: 'row', alignItems: 'center'
     }

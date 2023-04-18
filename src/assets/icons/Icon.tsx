@@ -14,6 +14,7 @@ import {
 import {createIconSetFromIcoMoon} from 'react-native-vector-icons';
 import {ContentStyles, Dimension, SpaceStyles} from '@styles';
 import config from './selection.json';
+import { IText } from '@components';
 const VectorIcon = createIconSetFromIcoMoon(
   config,
   'LuckyKingIcon',
@@ -225,9 +226,9 @@ const TextButton = React.memo(
         disabled={disabled}
         {...touchableOpacityProps}>
         <Default style={[SpaceStyles.Padding.Zero]} {...rest} />
-        <Text {...textProps} style={[{marginHorizontal: 4}, textStyle]}>
+        <IText {...textProps} style={[{marginHorizontal: 4}, textStyle]}>
           {text}
-        </Text>
+        </IText>
       </TouchableOpacity>
     );
   },

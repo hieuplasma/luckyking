@@ -1,12 +1,13 @@
 import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Dimensions, Animated } from 'react-native';
-import BottomSheet from '@gorhom/bottom-sheet';
+import { StyleSheet, View, Text, TouchableOpacity, Dimensions, Animated, ColorValue } from 'react-native';
+import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import { Color } from '@styles';
 import { Image, Images } from '@assets'
 import { SwiperFlatList } from 'react-native-swiper-flatlist';
 import { LotteryType } from '@common';
 import { getColorLott, printNumber } from '@utils';
 import { ConsolasText, IText } from '@components';
+import { PerPagePowerMegaView } from './PerPageView';
 
 interface ChooseTypeSheetProps {
     onChoose: (data: any) => void,
@@ -15,9 +16,7 @@ interface ChooseTypeSheetProps {
     type: LotteryType
 }
 
-const fullNumber = Array.from({ length: 55 }, (_, index) => index + 1);
-
-export const ChooseNumberSheet = forwardRef(({ onChoose, numberSet, page, type }: ChooseTypeSheetProps, ref) => {
+const Wiget = forwardRef(({ onChoose, numberSet, page, type }: ChooseTypeSheetProps, ref) => {
 
     const lottColor = getColorLott(type)
 
@@ -25,19 +24,20 @@ export const ChooseNumberSheet = forwardRef(({ onChoose, numberSet, page, type }
     const bottomSheetRef = useRef<BottomSheet>(null);
     const swiperRef = useRef<SwiperFlatList>(null);
 
-    useEffect(() => {
-        console.log('ChooseNumberSheet has been re-rendered');
-    });
+    // useEffect(() => {
+    //     console.log('ChooseNumberSheet has been re-rendered', numberSet);
+    // });
 
     useImperativeHandle(ref, () => ({
         openSheet: onOpen,
         closeSheet: onClose
     }));
 
-    const [indexPage, setIndexPage] = useState(0)
-    const onChangeIndex = (index: any) => {
-        setIndexPage(index.index)
-    }
+    const [indexPage, setIndexPage]: any = useState(0)
+    const onChangeIndex = useCallback((index: any) => {
+        setIndexPage(index)
+    }, [])
+
     useEffect(() => {
         (page || page === 0) ? swiperRef.current?.scrollToIndex({ animated: false, index: page }) : {}
     }, [page])
@@ -59,14 +59,11 @@ export const ChooseNumberSheet = forwardRef(({ onChoose, numberSet, page, type }
         return count
     }
 
-    const changeNumber = (number: number) => {
+    const changeNumber = useCallback((numbers: number) => {
         let curr = [...currentNumbers]
-        let tmp = [...curr[indexPage]]
-        if (tmp.includes(number)) tmp[tmp.indexOf(number)] = false
-        else tmp[tmp.indexOf(false)] = number
-        curr[indexPage] = tmp
+        curr[indexPage] = numbers
         setCurrentNumbers(curr)
-    }
+    }, [currentNumbers, indexPage])
 
     const checkIsOk = useCallback(() => {
         const tmp = [...currentNumbers]
@@ -81,23 +78,6 @@ export const ChooseNumberSheet = forwardRef(({ onChoose, numberSet, page, type }
         }
         return true
     }, [numberSet, currentNumbers])
-
-    const ItemView = useCallback((item: any, index: number) => {
-        return (
-            <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginHorizontal: 24, width: windowWidth - 48 }} key={index}>
-                {fullNumber.map((number: number, index2: number) => {
-                    const check = (item.includes(number) ? true : false)
-                    return (
-                        <View style={styles.ballContainer} key={index + ':::' + index2}  >
-                            <TouchableOpacity style={[styles.ball, { backgroundColor: check ? lottColor : '#E9E6E6' }]} onPress={() => changeNumber(number)}>
-                                <ConsolasText style={[styles.textBall, { color: check ? Color.white : Color.black }]}>{printNumber(number)}</ConsolasText>
-                            </TouchableOpacity>
-                        </View>
-                    )
-                })}
-            </View>
-        )
-    }, [changeNumber]);
 
     const [opacity, setOpacity] = useState(new Animated.Value(0))
     const [isOpen, setIsOpen] = useState(false)
@@ -172,11 +152,24 @@ export const ChooseNumberSheet = forwardRef(({ onChoose, numberSet, page, type }
                 </View>
                 <View style={{ flex: 1, marginTop: 12 }}>
                     <SwiperFlatList
+                        // onViewableItemsChanged={(params) => setIndexPage(params.changed?.[0]?.index)}
+                        useReactNativeGestureHandler
+
                         index={0}
                         ref={swiperRef}
                         data={currentNumbers}
-                        onChangeIndex={index => onChangeIndex(index)}
-                        renderItem={({ item, index }) => ItemView(item, index)}
+                        renderItem={({ item }) => {
+                            return (
+                                <PerPagePowerMegaView
+                                    listNumber={item}
+                                    lottColor={lottColor}
+                                    onNumberChange={(value: any) => changeNumber(value)}
+                                />
+                            )
+                        }}
+                        // keyExtractor={(item, index) => "" + index}
+                        // extraData={currentNumbers}
+                        onChangeIndex={(index) => setIndexPage(index.index)}
                     />
                 </View>
                 <TouchableOpacity disabled={!checkIsOk()} style={[styles.confirmButton, { backgroundColor: lottColor, opacity: checkIsOk() ? 1 : 0.4 }]} onPress={choosing}>
@@ -186,6 +179,8 @@ export const ChooseNumberSheet = forwardRef(({ onChoose, numberSet, page, type }
         </BottomSheet >
     );
 });
+
+export const ChooseNumberSheet = React.memo(Wiget)
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;

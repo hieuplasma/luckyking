@@ -7,12 +7,10 @@ import { SimpleHeaderView, translate } from '@shared';
 import { Icon } from '@assets'
 import { Color, Style } from '@styles';
 import { dateConvert, NavigationUtils, ScreenUtils } from '@utils';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback} from 'react';
 import { ScrollView, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
-import { lotteryApi, userApi } from '@api';
-import { updateUser } from '@redux';
 
 type NavigationProp = StackNavigationProp<HomeStackParamList, 'HomeScreen'>;
 type NavigationRoute = RouteProp<HomeStackParamList, 'HomeScreen'>;

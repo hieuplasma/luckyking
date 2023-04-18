@@ -1,6 +1,7 @@
 import { Color } from '@styles';
 import React, { useEffect, useState } from 'react';
 import { Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { IText } from '../texts';
 
 interface ModalConfirmProps {
     visible: boolean,
@@ -36,13 +37,13 @@ export const ModalConfirm = React.memo(({ visible, message, onConfirm, onCancel,
         >
             <View style={styles.modalContainer}>
                 <View style={styles.container}>
-                    <Text style={{ fontSize: 14, fontWeight: 'bold', lineHeight: 22 }}>{message}</Text>
+                    <IText style={{ fontSize: 14, fontWeight: 'bold', lineHeight: 22 }}>{message}</IText>
                     <View style={styles.buttonContainer}>
                         <TouchableOpacity onPress={handleCancel} style={[styles.button, { backgroundColor: Color.white }]}>
-                            <Text style={[{ color: Color.luckyKing }, styles.textButton]}>{textCancel ?? "Huỷ"}</Text>
+                            <IText style={[{ color: Color.luckyKing }, styles.textButton]}>{textCancel ?? "Huỷ"}</IText>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={handleConfirm} style={[styles.button, {backgroundColor: Color.luckyKing}]}>
-                            <Text style={[{ color: Color.white }, styles.textButton]}>{textConfirm ?? "Đồng ý"}</Text>
+                            <IText style={[{ color: Color.white }, styles.textButton]}>{textConfirm ?? "Đồng ý"}</IText>
                         </TouchableOpacity>
                     </View>
                 </View>

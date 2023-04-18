@@ -27,7 +27,7 @@ export const BankRechargeScreen = () => {
     };
 
     return (
-        <SafeAreaView style={{ flex: 1 }}>
+        <View style={{ flex: 1 }}>
             <BasicHeader navigation={navigation} title={"Nạp tiền qua chuyển khoản ngân hàng"} />
 
             <View style={{ padding: 8 }}>
@@ -104,7 +104,7 @@ export const BankRechargeScreen = () => {
                     {"(*) Lưu ý: Nếu sau 4h tài khoản vẫn chưa được nạp vui lòng liên hệ với bộ phận CSKH của LuckyKing như trên."}
                 </IText>
             </View>
-        </SafeAreaView>
+        </View>
     )
 };
 

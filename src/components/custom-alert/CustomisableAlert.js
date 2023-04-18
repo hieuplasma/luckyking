@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { StyleSheet, TouchableOpacity, Image, Text, View, Dimensions } from "react-native";
 import AlertManager from "./CustomisableAlertManager";
 import Modal from 'react-native-modal';
+import { IText } from "../texts";
 
 // export function showAlert(...args) {
 //     const ref = AlertManager.getDefault();
@@ -139,15 +140,15 @@ export default class CustomisableAlertComponent extends Component {
             >
                 <View style={{ ...styles.container, ...backdropStyle }}>
                     {type === 'custom'
-                        ? (customAlert || <Text onPress={this.closeAlert}>Custom alertTypes needs a customAlert prop! Click here to close</Text>)
+                        ? (customAlert || <IText onPress={this.closeAlert}>Custom alertTypes needs a customAlert prop! Click here to close</IText>)
                         : <View style={{ ...styles.content, ...alertContainerStyle }}>
                             <View style={styles.img_container}>
                                 {getImage()}
                             </View>
 
-                            <Text style={{ ...styles.title, ...titleStyle }}>{___title}</Text>
+                            <IText style={{ ...styles.title, ...titleStyle }}>{___title}</IText>
 
-                            {!!message && <Text style={{ ...styles.text, ...textStyle }}>{message}</Text>}
+                            {!!message && <IText style={{ ...styles.text, ...textStyle }}>{message}</IText>}
 
                             <View style={styles.actions}>
                                 <TouchableOpacity
@@ -157,11 +158,11 @@ export default class CustomisableAlertComponent extends Component {
                                             ? () => { onDismiss && onDismiss(); this.closeAlert() }
                                             : () => { onPress && onPress(); this.closeAlert() }
                                     }>
-                                    <Text style={{ ...styles.btnText, ...btnLabelStyle, ...btnLeftLabelStyle }}>{
+                                    <IText style={{ ...styles.btnText, ...btnLabelStyle, ...btnLeftLabelStyle }}>{
                                         type === 'warning'
                                             ? (leftBtnLabel || defaultLeftBtnLabel || 'Cancel')
                                             : (btnLabel || defaultRightBtnLabel || 'Ok')}
-                                    </Text>
+                                    </IText>
                                 </TouchableOpacity>
 
                                 {
@@ -169,7 +170,7 @@ export default class CustomisableAlertComponent extends Component {
                                     <TouchableOpacity
                                         onPress={onPress}
                                         style={{ ...styles.btn, ...btnStyle, ...btnRightStyle }}>
-                                        <Text style={{ ...styles.btnText, ...btnLabelStyle, ...btnRightLabelStyle }}>{btnLabel || defaultRightBtnLabel}</Text>
+                                        <IText style={{ ...styles.btnText, ...btnLabelStyle, ...btnRightLabelStyle }}>{btnLabel || defaultRightBtnLabel}</IText>
                                     </TouchableOpacity>
                                 }
                             </View>

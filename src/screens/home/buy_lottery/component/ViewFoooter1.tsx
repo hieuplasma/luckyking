@@ -1,7 +1,7 @@
 import { Image, Images } from "@assets";
 import { IText } from "@components";
 import { Color } from "@styles";
-import React from "react";
+import React, { useEffect } from "react";
 import { Dimensions, StyleSheet, TouchableOpacity, View } from "react-native";
 
 interface ViewFooterProps {
@@ -10,6 +10,10 @@ interface ViewFooterProps {
 }
 
 export const ViewFooter1 = React.memo(({ fastPick, selfPick, }: ViewFooterProps) => {
+
+    useEffect(()=> {
+        "View Footer 1 rerender"
+    })
     return (
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             <TouchableOpacity style={styles.buttonFooterUp} activeOpacity={0.6}>

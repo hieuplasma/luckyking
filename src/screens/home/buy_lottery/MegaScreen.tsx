@@ -4,7 +4,11 @@ import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Icon, Image } from "@assets";
 import { Color, Dimension, Style } from "@styles";
-import { calSurcharge, convolutions, NavigationUtils, printDraw, printMoney, printNumber, ScreenUtils } from "@utils";
+import {
+    calSurcharge, convolutions,
+    printDraw, printMoney,
+    printNumber, ScreenUtils
+} from "@utils";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { View, StyleSheet, Text, ScrollView, TouchableOpacity, Dimensions, StatusBar, Alert } from "react-native";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
@@ -71,6 +75,7 @@ export const MegaScreen = React.memo((props: any) => {
     const [typePlay, setType]: any = useState({ label: "Cơ bản", value: 6 });
     const [drawSelected, setDraw]: any = useState(listDraw[0])
     const [numberSet, setNumbers]: any = useState(initNumber)
+    const [numberSetFake, setNumberSetFake]: any = useState(initNumber)
     const [totalCost, setTotalCost] = useState(0)
 
     // ref
@@ -264,18 +269,22 @@ export const MegaScreen = React.memo((props: any) => {
     }, [chooseDrawRef, onChangeDraw, drawSelected, listDraw])
 
     const onChangeNumber = useCallback((set: any) => setNumbers(set), [])
-    const openNumberSheet = useCallback(() => { chooseNumberRef.current?.openSheet() }, [chooseNumberRef])
+    const openNumberSheet = useCallback(async (pageIndex: number) => {
+        await setNumberSetFake([...numberSet])
+        setPageNumber(pageIndex)
+        chooseNumberRef.current?.openSheet()
+    }, [chooseNumberRef, numberSet])
     const renderNumberSheet = useCallback(() => {
         return (
             <ChooseNumberSheet
                 ref={chooseNumberRef}
                 onChoose={onChangeNumber}
-                numberSet={numberSet}
+                numberSet={numberSetFake}
                 page={pageNumber}
                 type={LotteryType.Mega}
             />
         )
-    }, [chooseNumberRef, numberSet, pageNumber])
+    }, [chooseNumberRef, numberSetFake, pageNumber, onChangeNumber])
 
     return (
         <SafeAreaView style={styles.container}>
@@ -286,38 +295,16 @@ export const MegaScreen = React.memo((props: any) => {
             {/* //Chon so */}
             <ScrollView style={{ flex: 1 }}>
                 <View style={{ paddingHorizontal: 16, paddingVertical: 8 }}>
-                    {numberSet.map((item: any, index: number) => {
-                        return (
-                            <View style={styles.lineNumber} key={index}>
-                                <IText style={{ fontSize: 18, fontWeight: 'bold' }}>{String.fromCharCode(65 + index)}</IText>
-                                <TouchableOpacity style={{ flex: 1, flexDirection: 'row', marginHorizontal: 18, flexWrap: 'wrap' }} onPress={() => {
-                                    setPageNumber(index)
-                                    openNumberSheet()
-                                }}>
-                                    {item.sort((a: any, b: any) => a - b).map((number: any, index2: number) => {
-                                        return (
-                                            <View style={styles.ballContainer} key={index2}>
-                                                <Image source={number ? Images.ball_mega : Images.ball_grey} style={styles.ballStyle}>
-                                                    <ConsolasText style={{ color: Color.white, fontSize: 16 }}>{printNumber(number)}</ConsolasText>
-                                                </Image>
-                                            </View>
-                                        )
-                                    })}
-                                </TouchableOpacity>
-                                <View style={{ flexDirection: 'row', alignItems: 'center', width: 60, justifyContent: 'space-between' }}>
-                                    <Image source={Images.nofilled_heart} style={{ width: 22, height: 22, }}></Image>
-                                    {item[0] ?
-                                        <TouchableOpacity onPress={() => deleteNumber(index)}>
-                                            <Image source={Images.trash} style={{ width: 26, height: 26 }}></Image>
-                                        </TouchableOpacity>
-                                        : <TouchableOpacity onPress={() => randomNumber(index)}>
-                                            <Image source={Images.refresh} style={{ width: 26, height: 26 }}></Image>
-                                        </TouchableOpacity>
-                                    }
-                                </View>
-                            </View>
-                        )
-                    })}
+                    {numberSet.map((item: any, index: number) =>
+                        <LineView
+                            key={index}
+                            item={item}
+                            index={index}
+                            openNumberSheet={() => openNumberSheet(index)}
+                            deleteNumber={() => deleteNumber(index)}
+                            randomNumber={() => randomNumber(index)}
+                        />
+                    )}
                 </View>
             </ScrollView>
 
@@ -345,6 +332,46 @@ export const MegaScreen = React.memo((props: any) => {
     )
 })
 
+interface LineViewProps {
+    item: any,
+    index: number,
+    openNumberSheet: (index: number) => void,
+    deleteNumber: (index: number) => void,
+    randomNumber: (index: number) => void
+}
+const LineView = React.memo(({ item, index, openNumberSheet, deleteNumber, randomNumber }: LineViewProps) => {
+    return (
+        <View style={styles.lineNumber}>
+            <IText style={{ fontSize: 18, fontWeight: 'bold' }}>{String.fromCharCode(65 + index)}</IText>
+            <TouchableOpacity style={{ flex: 1, flexDirection: 'row', marginHorizontal: 18, flexWrap: 'wrap' }} onPress={() => openNumberSheet(index)}>
+                {item.sort((a: any, b: any) => a - b).map((number: any, index2: number) => {
+                    return (
+                        <View style={styles.ballContainer} key={index2}>
+                            {/* <Image source={number ? Images.ball_power : Images.ball_grey} style={styles.ballStyle}>
+                                <ConsolasText style={{ color: Color.white, fontSize: 16 }}>{printNumber(number)}</ConsolasText>
+                            </Image> */}
+                            <View style={styles.ballStyle}>
+                                <ConsolasText style={{ color: Color.white, fontSize: 16 }}>{printNumber(number)}</ConsolasText>
+                            </View>
+                        </View>
+                    )
+                })}
+            </TouchableOpacity>
+            <View style={{ flexDirection: 'row', alignItems: 'center', width: 60, justifyContent: 'space-between' }}>
+                <Image source={Images.nofilled_heart} style={{ width: 22, height: 22, }}></Image>
+                {item[0] ?
+                    <TouchableOpacity onPress={() => deleteNumber(index)}>
+                        <Image source={Images.trash} style={{ width: 26, height: 26 }}></Image>
+                    </TouchableOpacity>
+                    : <TouchableOpacity onPress={() => randomNumber(index)}>
+                        <Image source={Images.refresh} style={{ width: 26, height: 26 }}></Image>
+                    </TouchableOpacity>
+                }
+            </View>
+        </View>
+    )
+})
+
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
@@ -360,6 +387,9 @@ const styles = StyleSheet.create({
     },
     ballContainer: { width: (windowWidth - 146) / 6, justifyContent: 'center', alignItems: 'center', marginVertical: 8 },
     ballStyle: {
-        width: 28, height: 28, justifyContent: 'center', alignItems: 'center'
+        width: 28, height: 28,
+        justifyContent: 'center', alignItems: 'center',
+        backgroundColor: Color.mega,
+        borderRadius: 99
     }
 })

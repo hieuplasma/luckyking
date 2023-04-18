@@ -3,8 +3,8 @@ import { HomeStackParamList, ScreenName } from "@navigation";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Icon, Image } from "@assets";
-import { Color, Dimension, Style } from "@styles";
-import { calSurcharge, convolutions, NavigationUtils, printDraw, printMoney, printNumber, ScreenUtils } from "@utils";
+import { Color } from "@styles";
+import { calSurcharge, convolutions, printNumber } from "@utils";
 import React, { createRef, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { View, StyleSheet, Text, ScrollView, TouchableOpacity, Dimensions, StatusBar, Alert, Animated } from "react-native";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
@@ -36,28 +36,10 @@ const initNumber = [
     [false, false, false, false, false, false] // numberF:
 ]
 
-const types = [
-    { label: "Bao 5", value: 5 }, //0
-    { label: "Cơ bản", value: 6 }, //1
-    { label: "Bao 7", value: 7 },//2
-    { label: "Bao 8", value: 8 },//3
-    { label: "Bao 9", value: 9 },//3
-    { label: "Bao 10", value: 10 },//5
-    { label: "Bao 11", value: 11 },//6
-    { label: "Bao 12", value: 12 },//7
-    { label: "Bao 13", value: 13 },//8
-    { label: "Bao 14", value: 14 },//9
-    { label: "Bao 15", value: 15 },//10
-    { label: "Bao 16", value: 16 },//11
-    { label: "Bao 17", value: 17 },//12
-    { label: "Bao 18", value: 18 },//13
-]
-
 export const PowerScreen = React.memo((props: PowerScreenProps) => {
 
     const navigation = useNavigation<NavigationProp>();
     const route = useRoute<NavigationRoute>();
-    const safeAreaInsets = useSafeAreaInsets();
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -71,6 +53,7 @@ export const PowerScreen = React.memo((props: PowerScreenProps) => {
     const [typePlay, setType]: any = useState({ label: "Cơ bản", value: 6 });
     const [drawSelected, setDraw]: any = useState(listDraw[0])
     const [numberSet, setNumbers]: any = useState(initNumber)
+    const [numberSetFake, setNumberSetFake]: any = useState(initNumber)
     const [totalCost, setTotalCost] = useState(0)
 
     // ref
@@ -97,17 +80,17 @@ export const PowerScreen = React.memo((props: PowerScreenProps) => {
         setTotalCost(set * 10000 * convolutions(MAX_SET, level))
     }, [numberSet])
 
-    useEffect(() => {
-        async function getFirstDraw() {
-            const res = await lotteryApi.getSchedulePower({ take: 6 })
-            if (res) {
-                if (res.data.length > 0) dispatch(getPowerDraw(res.data))
-            }
-        }
-        getFirstDraw()
-    }, [])
+    // useEffect(() => {
+    //     async function getFirstDraw() {
+    //         const res = await lotteryApi.getSchedulePower({ take: 6 })
+    //         if (res) {
+    //             if (res.data.length > 0) dispatch(getPowerDraw(res.data))
+    //         }
+    //     }
+    //     getFirstDraw()
+    // }, [])
 
-    const randomNumber = (index: number) => {
+    const randomNumber = useCallback((index: number) => {
         const currentNumber = [...numberSet]
         const currentLevel = typePlay.value
         const randomNumbers = new Set();
@@ -118,7 +101,7 @@ export const PowerScreen = React.memo((props: PowerScreenProps) => {
         const resultArray = Array.from(randomNumbers).map(Number).sort((a, b) => a - b);
         currentNumber[index] = resultArray
         setNumbers(currentNumber)
-    }
+    }, [numberSet, typePlay])
 
     const deleteNumber = (index: number) => {
         const currentNumber = [...numberSet]
@@ -266,18 +249,22 @@ export const PowerScreen = React.memo((props: PowerScreenProps) => {
     }, [chooseDrawRef, onChangeDraw, drawSelected, listDraw])
 
     const onChangeNumber = useCallback((set: any) => setNumbers(set), [])
-    const openNumberSheet = useCallback(() => { chooseNumberRef.current?.openSheet() }, [chooseNumberRef])
+    const openNumberSheet = useCallback(async (pageIndex: number) => {
+        await setNumberSetFake([...numberSet])
+        setPageNumber(pageIndex)
+        chooseNumberRef.current?.openSheet()
+    }, [chooseNumberRef, numberSet])
     const renderNumberSheet = useCallback(() => {
         return (
             <ChooseNumberSheet
                 ref={chooseNumberRef}
                 onChoose={onChangeNumber}
-                numberSet={numberSet}
+                numberSet={numberSetFake}
                 page={pageNumber}
                 type={LotteryType.Power}
             />
         )
-    }, [chooseNumberRef, numberSet, pageNumber])
+    }, [chooseNumberRef, numberSetFake, pageNumber, onChangeNumber])
 
     return (
         <SafeAreaView style={styles.container}>
@@ -287,38 +274,16 @@ export const PowerScreen = React.memo((props: PowerScreenProps) => {
             {/* //Chon so */}
             <ScrollView style={{ flex: 1 }}>
                 <View style={{ paddingHorizontal: 16, paddingVertical: 8 }}>
-                    {numberSet.map((item: any, index: number) => {
-                        return (
-                            <View style={styles.lineNumber} key={index}>
-                                <IText style={{ fontSize: 18, fontWeight: 'bold' }}>{String.fromCharCode(65 + index)}</IText>
-                                <TouchableOpacity style={{ flex: 1, flexDirection: 'row', marginHorizontal: 18, flexWrap: 'wrap' }} onPress={() => {
-                                    setPageNumber(index)
-                                    openNumberSheet()
-                                }}>
-                                    {item.sort((a: any, b: any) => a - b).map((number: any, index2: number) => {
-                                        return (
-                                            <View style={styles.ballContainer} key={index2}>
-                                                <Image source={number ? Images.ball_power : Images.ball_grey} style={styles.ballStyle}>
-                                                    <ConsolasText style={{ color: Color.white, fontSize: 16 }}>{printNumber(number)}</ConsolasText>
-                                                </Image>
-                                            </View>
-                                        )
-                                    })}
-                                </TouchableOpacity>
-                                <View style={{ flexDirection: 'row', alignItems: 'center', width: 60, justifyContent: 'space-between' }}>
-                                    <Image source={Images.nofilled_heart} style={{ width: 22, height: 22, }}></Image>
-                                    {item[0] ?
-                                        <TouchableOpacity onPress={() => deleteNumber(index)}>
-                                            <Image source={Images.trash} style={{ width: 26, height: 26 }}></Image>
-                                        </TouchableOpacity>
-                                        : <TouchableOpacity onPress={() => randomNumber(index)}>
-                                            <Image source={Images.refresh} style={{ width: 26, height: 26 }}></Image>
-                                        </TouchableOpacity>
-                                    }
-                                </View>
-                            </View>
-                        )
-                    })}
+                    {numberSet.map((item: any, index: number) =>
+                        <LineView
+                            key={index}
+                            item={item}
+                            index={index}
+                            openNumberSheet={() => openNumberSheet(index)}
+                            deleteNumber={() => deleteNumber(index)}
+                            randomNumber={() => randomNumber(index)}
+                        />
+                    )}
                 </View>
             </ScrollView>
 
@@ -345,6 +310,46 @@ export const PowerScreen = React.memo((props: PowerScreenProps) => {
     )
 })
 
+interface LineViewProps {
+    item: any,
+    index: number,
+    openNumberSheet: (index: number) => void,
+    deleteNumber: (index: number) => void,
+    randomNumber: (index: number) => void
+}
+const LineView = React.memo(({ item, index, openNumberSheet, deleteNumber, randomNumber }: LineViewProps) => {
+    return (
+        <View style={styles.lineNumber}>
+            <IText style={{ fontSize: 18, fontWeight: 'bold' }}>{String.fromCharCode(65 + index)}</IText>
+            <TouchableOpacity style={{ flex: 1, flexDirection: 'row', marginHorizontal: 18, flexWrap: 'wrap' }} onPress={() => openNumberSheet(index)}>
+                {item.sort((a: any, b: any) => a - b).map((number: any, index2: number) => {
+                    return (
+                        <View style={styles.ballContainer} key={index2}>
+                            {/* <Image source={number ? Images.ball_power : Images.ball_grey} style={styles.ballStyle}>
+                                <ConsolasText style={{ color: Color.white, fontSize: 16 }}>{printNumber(number)}</ConsolasText>
+                            </Image> */}
+                            <View style={styles.ballStyle}>
+                                <ConsolasText style={{ color: Color.white, fontSize: 16 }}>{printNumber(number)}</ConsolasText>
+                            </View>
+                        </View>
+                    )
+                })}
+            </TouchableOpacity>
+            <View style={{ flexDirection: 'row', alignItems: 'center', width: 60, justifyContent: 'space-between' }}>
+                <Image source={Images.nofilled_heart} style={{ width: 22, height: 22, }}></Image>
+                {item[0] ?
+                    <TouchableOpacity onPress={() => deleteNumber(index)}>
+                        <Image source={Images.trash} style={{ width: 26, height: 26 }}></Image>
+                    </TouchableOpacity>
+                    : <TouchableOpacity onPress={() => randomNumber(index)}>
+                        <Image source={Images.refresh} style={{ width: 26, height: 26 }}></Image>
+                    </TouchableOpacity>
+                }
+            </View>
+        </View>
+    )
+})
+
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
@@ -358,8 +363,16 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
     },
-    ballContainer: { width: (windowWidth - 146) / 6, justifyContent: 'center', alignItems: 'center', marginVertical: 8 },
+    ballContainer: {
+        width: (windowWidth - 146) / 6,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginVertical: 8,
+    },
     ballStyle: {
-        width: 28, height: 28, justifyContent: 'center', alignItems: 'center'
+        width: 28, height: 28,
+        justifyContent: 'center', alignItems: 'center',
+        backgroundColor: Color.power,
+        borderRadius: 99
     }
 })

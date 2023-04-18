@@ -1,5 +1,6 @@
 import { LotteryType } from "@common";
 import { dateConvert } from "./time-utils";
+import { Images } from "@assets";
 
 export function convolutions(a: number, b: number) {
     let big = a, small = b
@@ -71,6 +72,30 @@ export function printTypePlay(value: number, type: string) {
 
 function PowerMegaType(value: number) {
     return value === 6 ? "Cơ bản" : "Bao " + value;
+}
+
+export function getLogoHeader(lotteryType: LotteryType) {
+    let logo = { source: Images.power_logo, style: { height: 44.12, width: 60 } }
+    switch (lotteryType) {
+        case LotteryType.Power:
+            logo = ({ source: Images.power_logo, style: { height: 44.12, width: 60 } })
+            break;
+        case LotteryType.Mega:
+            logo = ({ source: Images.mega_logo, style: { height: 44, width: 78.57 } })
+            break;
+        case LotteryType.Max3D:
+            logo = ({ source: Images.max3d_logo, style: { height: 82.79, width: 90 } })
+            break;
+        case LotteryType.Max3DPlus:
+            logo = ({ source: Images.max3dplus_logo, style: { height: 44, width: 80 } })
+            break;
+        case LotteryType.Max3DPro:
+            logo = ({ source: Images.max3dpro_logo, style: { height: 50, width: 75 } })
+            break;
+        default:
+            break;
+    }
+    return logo
 }
 
 export function generateStrings(nums: number[], current = "") {

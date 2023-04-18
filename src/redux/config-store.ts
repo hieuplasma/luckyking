@@ -11,8 +11,8 @@ export default function reduxConfig(onCompletion = () => { }) {
     });
     // Create Redux store:
     const store = configureStore({
-        reducer: rootReducer,
-        middleware: [logger],
+        reducer: rootReducer
+        // middleware: [logger],
     })
     const persistor = persistStore(store, null, onCompletion);
     return { store, persistor };

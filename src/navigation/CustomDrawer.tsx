@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import { NavigationUtils, printMoney } from '@utils';
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { removeToken } from '../redux/reducer/auth';
 import { ScreenName } from './ScreenName';
@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react';
 import { Image, Images } from '@assets';
 import { Color } from '@styles';
 import { userApi } from '@api';
+import { IText } from '@components';
 
 const PADDING_TOP = 60
 
@@ -38,8 +39,8 @@ function DrawerCustom(props: any) {
         <Image source={user.avatar != "" ? { uri: user.avatar } : Images.default_avatar} style={{ width: 76, height: 76 }}></Image>
         <TouchableOpacity style={{ flexDirection: 'row' }} activeOpacity={0.7} onPress={() => NavigationUtils.navigate(navigation, ScreenName.Drawer.UserStack)}>
           <View style={{ marginLeft: 8, justifyContent: 'center' }}>
-            <Text style={{ fontSize: 18, fontWeight: 'bold', color: Color.white }}>{user.fullName}</Text>
-            <Text style={{ fontSize: 15, fontWeight: 'bold', color: Color.white, marginTop: 7 }}>{user.personNumber}</Text>
+            <IText style={{ fontSize: 18, fontWeight: 'bold', color: Color.white }}>{user.fullName}</IText>
+            <IText style={{ fontSize: 15, fontWeight: 'bold', color: Color.white, marginTop: 7 }}>{user.personNumber}</IText>
           </View>
           <View style={{ marginLeft: 16, justifyContent: 'center' }}>
             <Image style={{ width: 12, height: 24 }} source={Images.right_arrow}></Image>
@@ -51,26 +52,26 @@ function DrawerCustom(props: any) {
       <ScrollView style={{ padding: 16, paddingTop: 5 }}>
         <View style={styles.lineItem1}>
           <Image source={Images.wallet} style={{ width: 26, height: 26 }}></Image>
-          <Text style={styles.textMoney}>{`${printMoney(user.luckykingBalance)}đ`}</Text>
+          <IText style={styles.textMoney}>{`${printMoney(user.luckykingBalance)}đ`}</IText>
           <Image source={Images.eye_open} style={styles.eye}></Image>
           <View style={{ flex: 1 }} />
           <TouchableOpacity style={styles.button} activeOpacity={0.8} onPress={() => NavigationUtils.navigate(navigation, ScreenName.Drawer.RechargeStack)}>
-            <Text style={styles.textButton}>{"NẠP"}</Text>
+            <IText style={styles.textButton}>{"NẠP"}</IText>
           </TouchableOpacity>
         </View>
         <View style={styles.lineItem1}>
           <Image source={Images.trophy} style={{ width: 44, height: 35, marginLeft: -8, marginRight: -10 }}></Image>
-          <Text style={styles.textMoney}>{`${printMoney(user.rewardWalletBalance)}đ`}</Text>
+          <IText style={styles.textMoney}>{`${printMoney(user.rewardWalletBalance)}đ`}</IText>
           <Image source={Images.eye_open} style={styles.eye}></Image>
           <View style={{ flex: 1 }} />
           <TouchableOpacity style={styles.button} activeOpacity={0.6} onPress={() => NavigationUtils.navigate(navigation, ScreenName.Drawer.WithDrawStack)}>
-            <Text style={styles.textButton}>{"ĐỔI"}</Text>
+            <IText style={styles.textButton}>{"ĐỔI"}</IText>
           </TouchableOpacity>
         </View>
 
         <TouchableOpacity style={[styles.lineItem2, { borderColor: Color.luckyKing }]} activeOpacity={.6} onPress={() => NavigationUtils.navigate(navigation, ScreenName.BottomTab)}>
           <Image source={Images.home} style={styles.icon_default}></Image>
-          <Text style={styles.aloneText}>{"Trang chủ"}</Text>
+          <IText style={styles.aloneText}>{"Trang chủ"}</IText>
           <View style={{ flex: 1 }} />
           <Image source={Images.right_arrow} style={styles.icon_arrow} tintColor={Color.luckyKing}></Image>
         </TouchableOpacity>
@@ -78,8 +79,8 @@ function DrawerCustom(props: any) {
         <TouchableOpacity style={styles.lineItem2} activeOpacity={.6}>
           <Image source={Images.history_note} style={styles.icon_history}></Image>
           <View style={{ justifyContent: 'center' }}>
-            <Text style={styles.aboveText}>{"Lịch sử đặt vé Keno"}</Text>
-            <Text style={styles.underText}>{"(Keno, bao Keno, nuôi Keno)"}</Text>
+            <IText style={styles.aboveText}>{"Lịch sử đặt vé Keno"}</IText>
+            <IText style={styles.underText}>{"(Keno, bao Keno, nuôi Keno)"}</IText>
           </View>
           <View style={{ flex: 1 }} />
           <Image source={Images.right_arrow} style={styles.icon_arrow} tintColor={Color.black}></Image>
@@ -87,8 +88,8 @@ function DrawerCustom(props: any) {
         <TouchableOpacity style={styles.lineItem2} activeOpacity={.6}>
           <Image source={Images.history_note} style={styles.icon_history}></Image>
           <View style={{ justifyContent: 'center' }}>
-            <Text style={styles.aboveText}>{"Lịch sử đặt vé cơ bản"}</Text>
-            <Text style={styles.underText}>{"(Power, Mega, Max3D/3D+, Max3DPro)"}</Text>
+            <IText style={styles.aboveText}>{"Lịch sử đặt vé cơ bản"}</IText>
+            <IText style={styles.underText}>{"(Power, Mega, Max3D/3D+, Max3DPro)"}</IText>
           </View>
           <View style={{ flex: 1 }} />
           <Image source={Images.right_arrow} style={styles.icon_arrow} tintColor={Color.black}></Image>
@@ -96,8 +97,8 @@ function DrawerCustom(props: any) {
         <TouchableOpacity style={styles.lineItem2} activeOpacity={.6}>
           <Image source={Images.history_note} style={styles.icon_history}></Image>
           <View style={{ justifyContent: 'center' }}>
-            <Text style={styles.aboveText}>{"Lịch sử chơi nhóm"}</Text>
-            <Text style={styles.underText}>{"(Power, Mega, Max3D/3D+nhóm)"}</Text>
+            <IText style={styles.aboveText}>{"Lịch sử chơi nhóm"}</IText>
+            <IText style={styles.underText}>{"(Power, Mega, Max3D/3D+nhóm)"}</IText>
           </View>
           <View style={{ flex: 1 }} />
           <Image source={Images.right_arrow} style={styles.icon_arrow} tintColor={Color.black}></Image>
@@ -105,32 +106,32 @@ function DrawerCustom(props: any) {
 
         <TouchableOpacity style={styles.lineItem2} activeOpacity={.6}>
           <Image source={Images.contact} style={styles.icon_default}></Image>
-          <Text style={styles.aloneText}>{"Liên hệ"}</Text>
+          <IText style={styles.aloneText}>{"Liên hệ"}</IText>
           <View style={{ flex: 1 }} />
           <Image source={Images.right_arrow} style={styles.icon_arrow} tintColor={Color.black}></Image>
         </TouchableOpacity>
         <TouchableOpacity style={styles.lineItem2} activeOpacity={.6}>
           <Image source={Images.dieu_khoan} style={styles.icon_default}></Image>
-          <Text style={styles.aloneText}>{"Điều khoản sử dụng"}</Text>
+          <IText style={styles.aloneText}>{"Điều khoản sử dụng"}</IText>
           <View style={{ flex: 1 }} />
           <Image source={Images.right_arrow} style={styles.icon_arrow} tintColor={Color.black}></Image>
         </TouchableOpacity>
         <TouchableOpacity style={styles.lineItem2} activeOpacity={.6}>
           <Image source={Images.chia_se} style={styles.icon_default}></Image>
-          <Text style={styles.aloneText}>{"Giới thiệu bạn bè"}</Text>
+          <IText style={styles.aloneText}>{"Giới thiệu bạn bè"}</IText>
           <View style={{ flex: 1 }} />
           <Image source={Images.right_arrow} style={styles.icon_arrow} tintColor={Color.black}></Image>
         </TouchableOpacity>
         <TouchableOpacity style={styles.lineItem2} activeOpacity={.6}>
           <Image source={Images.setting} style={styles.icon_default}></Image>
-          <Text style={styles.aloneText}>{"Cài đặt"}</Text>
+          <IText style={styles.aloneText}>{"Cài đặt"}</IText>
           <View style={{ flex: 1 }} />
           <Image source={Images.right_arrow} style={styles.icon_arrow} tintColor={Color.black}></Image>
         </TouchableOpacity>
 
         <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 16, alignItems: 'center' }}
           onPress={() => logOut()}>
-          <Text style={{ fontSize: 14 }}>{"Đăng xuất"}</Text>
+          <IText style={{ fontSize: 14 }}>{"Đăng xuất"}</IText>
           <Image source={Images.logout} style={{ width: 25, height: 25, marginLeft: 4 }}></Image>
         </TouchableOpacity>
 

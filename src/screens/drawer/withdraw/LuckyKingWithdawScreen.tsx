@@ -71,7 +71,7 @@ export const LuckyKingWithdrawScreen = () => {
     }
 
     return (
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
             <BasicHeader navigation={navigation} title={"Đổi thưởng về TK đặt vé"} />
 
             <View style={styles.body}>
@@ -116,7 +116,7 @@ export const LuckyKingWithdrawScreen = () => {
                     {
                         list.map((number: number) => {
                             return (
-                                <TouchableOpacity style={styles.boxChoose} onPress={() => onChangeText(number.toString())}>
+                                <TouchableOpacity key={number} style={styles.boxChoose} onPress={() => onChangeText(number.toString())}>
                                     <IText style={{ fontSize: 16 }}>{printMoney(number)}</IText>
                                 </TouchableOpacity>
                             )
@@ -124,7 +124,7 @@ export const LuckyKingWithdrawScreen = () => {
                     }
                 </View>
             </View>
-        </SafeAreaView>
+        </View>
     )
 };
 

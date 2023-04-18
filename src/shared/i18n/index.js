@@ -4,7 +4,7 @@ import moment from 'moment/min/moment-with-locales';
 import en from './locales/en.json';
 import vi from './locales/vi.json';
 import { storage } from '@utils';
-import LocalizedStrings from 'react-native-localization';
+// import LocalizedStrings from 'react-native-localization';
 
 export const Locale = {
   Vietnamese: 'vi',
@@ -59,14 +59,14 @@ export const translate = (...params) => {
   return i18n.t(...params);
 };
 
-let LANGUAGE = {
-  vi,
-  en,
-};
+// let LANGUAGE = {
+//   vi,
+//   en,
+// };
 
-let langs = new LocalizedStrings({
-  en: LANGUAGE.en,
-  vi: LANGUAGE.vi,
-});
+// let langs = new LocalizedStrings({
+//   en: LANGUAGE.en,
+//   vi: LANGUAGE.vi,
+// });
 
-export default langs;
+// export default langs;
