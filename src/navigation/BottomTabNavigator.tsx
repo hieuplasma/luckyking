@@ -153,7 +153,7 @@ export function BottomTabNavigator() {
       tabBar={props => {
         const index = props.navigation.getState().index
         const routeName = getFocusedRouteNameFromRoute(props.state.routes[index]) ?? ""
-        console.log("current screen::::" + index + ":::::=> " + routeName)
+        // console.log("current screen::::" + index + ":::::=> " + routeName)
         return hideTabBar.includes(routeName) ? null : <TabBar {...props} />
       }}
       screenOptions={{

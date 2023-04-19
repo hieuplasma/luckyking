@@ -16,7 +16,7 @@ interface ItemPageProps {
 const Wiget = forwardRef(({ listNumber, lottColor, onNumberChange }: ItemPageProps, ref) => {
 
     // useEffect(() => {
-    //     console.log("PerPageView rerender:::")
+    //     // console.log("PerPageView rerender:::")
     // })
 
     const [listChoose, setList]: any = useState([...listNumber])
@@ -64,7 +64,7 @@ const windowHeight = Dimensions.get('window').height;
 const MemoizedBallNumber = React.memo(({ number, lottColor, onToggle, check }: any) => {
 
     useEffect(() => {
-        console.log("console ball" + number)
+        // console.log("console ball" + number)
     })
 
     const handlePress = useCallback(() => {

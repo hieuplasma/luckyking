@@ -43,7 +43,7 @@ export const PowerScreen = React.memo((props: PowerScreenProps) => {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        console.log("power screen re-render")
+        // console.log("power screen re-render")
     })
 
     const listDraw = useSelector((state: any) => state.drawReducer.powerListDraw)
@@ -201,7 +201,7 @@ export const PowerScreen = React.memo((props: PowerScreenProps) => {
         }
         window.loadingIndicator.show()
         const res = await lotteryApi.addPowerMegaToCart(body)
-        console.log(res)
+        // console.log(res)
         if (res) {
             // Alert.alert("Thành công", "Đã thêm vé vào giỏ hàng!")
             window.myalert.show({ title: 'Đã thêm vé vào giỏ hàng!', btnLabel: "OK", alertType: 'success' })

@@ -30,11 +30,11 @@ export const useSignup = () => {
     //     deviceId: deviceId,
     //   })
     //   .then(res => {
-    //     console.log('res', res);
+    //     // console.log('res', res);
     //     return Promise.resolve(res);
     //   })
     //   .catch(err => {
-    //     console.log('err', err);
+    //     // console.log('err', err);
     //     return Promise.reject(err);
     //   })
     //   .finally(() => {

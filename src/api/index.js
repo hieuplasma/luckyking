@@ -34,12 +34,12 @@ export class Connection {
 
 
     POST = async (uri, body, isFormData, timeout) => {
-        console.log("API POST ::::::::::::", `${API_HOST}${uri}`)
+        // console.log("API POST ::::::::::::", `${API_HOST}${uri}`)
         return await this.requestApi(TYPE_API.POST, uri, body, isFormData, timeout, undefined)
     };
 
     GET = async (uri, params, timeout) => {
-        console.log("API GET ::::::::::::", `${API_HOST}${uri}`)
+        // console.log("API GET ::::::::::::", `${API_HOST}${uri}`)
         return await this.requestApi(TYPE_API.GET, uri, params, null, timeout, null)
     };
 
@@ -70,7 +70,7 @@ export class Connection {
             let i = 0;
             for (let key in body) {
                 if (body[key] !== undefined && body[key] !== null) {
-                    console.log("body[key]  ::::", body[key])
+                    // console.log("body[key]  ::::", body[key])
                     if (i != 0) {
                         fullUrl += `&${key}=${body[key]}`;
                     } else {
@@ -86,8 +86,8 @@ export class Connection {
 
         const source = axios.CancelToken.source();
 
-        console.log("url:::::", `${API_HOST}${uri}`)
-        console.log("body:::::", JSON.stringify(body))
+        // console.log("url:::::", `${API_HOST}${uri}`)
+        // console.log("body:::::", JSON.stringify(body))
 
         return (typeApi === TYPE_API.POST ? axios.post(`${API_HOST}${uri}`, isFormData && body ? body : body ? JSON.stringify(body) : null, {
             headers: headers,
@@ -103,7 +103,7 @@ export class Connection {
             ts: Date.now()
         }))
             .then((res) => {
-                console.log("RES IN POST API OF " + uri + " :::::::::::>", res)
+                // console.log("RES IN POST API OF " + uri + " :::::::::::>", res)
                 if (res.data.errorCode) {
                     Alert.alert("Lỗi", res.data.errorMessage)
                     return 0
@@ -114,7 +114,7 @@ export class Connection {
                 };
             })
             .catch(async (error) => {
-                console.log("ERROR IN POST API OF " + uri + " :::::::::::>", error.response?.data.statusCode)
+                // console.log("ERROR IN POST API OF " + uri + " :::::::::::>", error.response?.data.statusCode)
                 if (error.response?.data?.statusCode == 401) {
                     this._dispatch(removeUser())
                     NavigationUtils.resetGlobalStackWithScreen(undefined, ScreenName.Authentication)

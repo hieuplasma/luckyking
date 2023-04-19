@@ -30,7 +30,7 @@ const Wiget = forwardRef(({ onChoose, numberSet, page, type, listBets, hugePosit
     const lottColor = getColorLott(type)
 
     useEffect(() => {
-        console.log("Number Sheet max3d rerender")
+        // console.log("Number Sheet max3d rerender")
     })
 
     // ref

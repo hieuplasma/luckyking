@@ -27,7 +27,7 @@ const ChooseDrawSheetComponent = forwardRef(({ currentChoose, onChoose, listDraw
     }));
 
     useEffect(() => {
-        console.log('ChooseDrawSheet has been re-rendered, ');
+        // console.log('ChooseDrawSheet has been re-rendered, ');
     });
 
     const choosing = (type: any) => {

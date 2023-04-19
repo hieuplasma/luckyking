@@ -65,7 +65,7 @@ export const MegaScreen = React.memo((props: any) => {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        console.log("mega screen re-render")
+        // console.log("mega screen re-render")
     })
 
     const listDraw = useSelector((state: any) => state.drawReducer.megaListDraw)
@@ -222,7 +222,7 @@ export const MegaScreen = React.memo((props: any) => {
         }
         window.loadingIndicator.show()
         const res = await lotteryApi.addPowerMegaToCart(body)
-        console.log(res)
+        // console.log(res)
         if (res) {
             Alert.alert("Thành công", "Đã thêm vé vào giỏ hàng!")
             refreshChoosing()

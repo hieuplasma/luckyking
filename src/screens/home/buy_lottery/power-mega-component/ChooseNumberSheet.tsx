@@ -25,7 +25,7 @@ const Wiget = forwardRef(({ onChoose, numberSet, page, type }: ChooseTypeSheetPr
     const swiperRef = useRef<SwiperFlatList>(null);
 
     useEffect(() => {
-        console.log('ChooseNumberSheet has been re-rendered');
+        // console.log('ChooseNumberSheet has been re-rendered');
     });
 
     useImperativeHandle(ref, () => ({

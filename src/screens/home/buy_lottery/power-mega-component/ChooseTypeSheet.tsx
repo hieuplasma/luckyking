@@ -48,7 +48,7 @@ const ChooseTypeSheetComponent = forwardRef(({ currentChoose, onChoose, type }: 
     }));
 
     // useEffect(() => {
-    //     console.log('ChooseTypeSheet has been re-rendered, ');
+    //     // console.log('ChooseTypeSheet has been re-rendered, ');
     // });
 
     const choosing = (type: any) => {

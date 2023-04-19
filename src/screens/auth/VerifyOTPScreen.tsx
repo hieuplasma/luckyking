@@ -48,7 +48,7 @@ export const VerifyOTPScreen = React.memo((props?: any) => {
     try {
       await confirm.confirm(verifyOtpHooks.otp);
     } catch (error) {
-      console.log('Invalid code.', error);
+      // console.log('Invalid code.', error);
     }
   }, [verifyOtpHooks.otp, confirm, navigation]);
 
@@ -66,10 +66,10 @@ export const VerifyOTPScreen = React.memo((props?: any) => {
 
   // Handle login
   async function onAuthStateChanged(user: any) {
-    console.log('user', user);
+    // console.log('user', user);
     if (user) {
-      console.log(user)
-      console.log("firebaseTOken::::", await user.getIdToken())
+      // console.log(user)
+      // console.log("firebaseTOken::::", await user.getIdToken())
       verifyOtpHooks.setLoading(true)
       const uri: string = API_URI.REGISTER
       const body = {
@@ -79,7 +79,7 @@ export const VerifyOTPScreen = React.memo((props?: any) => {
       }
       const res = await window.connection.requestApi("POST", uri, body, null, null, await user.getIdToken())
       if (res) {
-        console.log(res.data)
+        // console.log(res.data)
         dispatch(updateToken(res.data.accessToken))
         NavigationUtils.resetGlobalStackWithScreen(navigation, ScreenName.Main);
         verifyOtpHooks.setLoading(false)

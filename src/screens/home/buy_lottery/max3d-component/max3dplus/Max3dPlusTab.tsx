@@ -241,7 +241,7 @@ export const Max3dPlusTab = React.memo((props: Props) => {
             numbers: generated,
             bets: generatedBets
         }
-        console.log(body)
+        // console.log(body)
         window.loadingIndicator.show()
         // const res = await lotteryApi.bookLotteryPowerMega(body)
         // if (res) {
@@ -268,10 +268,10 @@ export const Max3dPlusTab = React.memo((props: Props) => {
             numbers: generated,
             bets: generatedBets
         }
-        console.log(body)
+        // console.log(body)
         window.loadingIndicator.show()
         // const res = await lotteryApi.addPowerMegaToCart(body)
-        // console.log(res)
+        // // console.log(res)
         // if (res) {
         //     Alert.alert("Thành công", "Đã thêm vé vào giỏ hàng!")
         //     refreshChoosing()

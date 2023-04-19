@@ -20,7 +20,7 @@ const userSlice = createSlice({
     initialState,
     reducers: {
         updateUser: (state, action) => {
-            console.log(action)
+            // console.log(action)
             let newState = { ...state }
             state.id = action.payload.id || newState.id
             state.phoneNumber = action.payload.phoneNumber || newState.phoneNumber

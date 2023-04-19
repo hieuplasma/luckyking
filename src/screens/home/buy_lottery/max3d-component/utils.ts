@@ -78,7 +78,7 @@ export function generateMax3DPlus(level: number, currentNumber: any, bets: numbe
                     const result = generateUniqueStrings(item.slice(3, 6)).map(it => "" + item[0] + item[1] + item[2] + " " + it)
                     tmpGenerated = tmpGenerated.concat(result)
                     tmpBets = tmpBets.concat(Array(result.length).fill(bets[index]))
-                    console.log(tmpGenerated)
+                    // console.log(tmpGenerated)
                 }
             })
             break;

@@ -14,7 +14,7 @@ interface HeaderBuyLotteryProps {
 export const HeaderBuyLottery = React.memo(({ navigation, lotteryType }: HeaderBuyLotteryProps) => {
 
     useEffect(()=>{
-        console.log("Header Buy Lottery rerender")
+        // console.log("Header Buy Lottery rerender")
     })
 
     const safeAreaInsets = useSafeAreaInsets();
