@@ -1,6 +1,12 @@
 import { API_URI } from "../config";
 
 class LotteryApi {
+
+    getScheduleKeno = async (params: any) => {
+        let fullUrl = API_URI.GET_SCHEDULE_KENO;
+        return await window.connection.GET(fullUrl, params)
+    }
+    
     getSchedulePower = async (params: any) => {
         let fullUrl = API_URI.GET_SCHEDULE_POWER;
         return await window.connection.GET(fullUrl, params)

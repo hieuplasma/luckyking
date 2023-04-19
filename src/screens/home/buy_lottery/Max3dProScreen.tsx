@@ -75,7 +75,7 @@ export const Max3dProScreen = () => {
     const [typePlay, setType]: any = useState({ label: "Cơ bản", value: 1 });
     const [drawSelected, setDraw]: any = useState(listDraw[0])
     const [numberSet, setNumbers]: any = useState(initNumber)
-    const [numberFake, setNumberFake]:any = useState(initNumber)
+    const [numberFake, setNumberFake]: any = useState(initNumber)
     const [bets, setBets] = useState(initBets)
     const [generated, setGenrated] = useState([])
     const [generatedBets, setGeneratedBets] = useState([])
@@ -89,7 +89,7 @@ export const Max3dProScreen = () => {
     const randomNumber = (index: number) => {
         const currentNumber = [...numberSet]
         const randomNumbers = [];
-        while (randomNumbers.length < MAX_SET_MAX3D_PRO * 2) {
+        while (randomNumbers.length < MAX_SET_MAX3D_PRO ) {
             const randomNumber = Math.floor(Math.random() * MAX3D_NUMBER);
             randomNumbers.push(randomNumber);
         }
@@ -240,8 +240,8 @@ export const Max3dProScreen = () => {
         setNumbers(set)
         setBets(bets)
     }, [])
-    const openNumberSheet = useCallback(async(page: number) => {
-        setNumberFake(numberSet)
+    const openNumberSheet = useCallback(async (page: number) => {
+        await setNumberFake(numberSet)
         setPageNumber(page)
         chooseNumberRef.current?.openSheet()
     }, [chooseNumberRef, numberSet])

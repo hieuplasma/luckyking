@@ -8,6 +8,7 @@ import { LotteryType } from '@common';
 import { getColorLott, printNumber } from '@utils';
 import { ConsolasText, IText } from '@components';
 import { PerPagePowerMegaView } from './PerPagePowerMegaView';
+import { TitleNumberSheet } from '../component/HeaderNumberSheet';
 
 interface ChooseTypeSheetProps {
     onChoose: (data: any) => void,
@@ -34,10 +35,7 @@ const Wiget = forwardRef(({ onChoose, numberSet, page, type }: ChooseTypeSheetPr
     }));
 
     const [indexPage, setIndexPage]: any = useState(0)
-    const onChangeIndex = useCallback((index: any) => {
-        setIndexPage(index)
-    }, [])
-
+    
     useEffect(() => {
         (page || page === 0) ? swiperRef.current?.scrollToIndex({ animated: false, index: page }) : {}
     }, [page])
@@ -59,7 +57,7 @@ const Wiget = forwardRef(({ onChoose, numberSet, page, type }: ChooseTypeSheetPr
         return count
     }
 
-    const changeNumber = useCallback((numbers: number) => {
+    const changeNumber = useCallback((numbers: any) => {
         let curr = [...currentNumbers]
         curr[indexPage] = numbers
         setCurrentNumbers(curr)
@@ -120,6 +118,14 @@ const Wiget = forwardRef(({ onChoose, numberSet, page, type }: ChooseTypeSheetPr
         if (to == -1) onClose()
     }
 
+    const [numberChangeObj, setNumberChangeObj] = useState([])
+    const handleNumberChange = useCallback((value: any) => {
+        setNumberChangeObj(value)
+    }, [])
+    useEffect(() => {
+        changeNumber(numberChangeObj)
+    }, [numberChangeObj])
+
     return (
         <BottomSheet
             ref={bottomSheetRef}
@@ -135,26 +141,16 @@ const Wiget = forwardRef(({ onChoose, numberSet, page, type }: ChooseTypeSheetPr
             backgroundStyle={styles.sheetContainer}
         >
             <View style={{ flex: 1 }}>
-                <View style={{ flexDirection: 'row', paddingHorizontal: 18 }}>
-                    <TouchableOpacity disabled={indexPage == 0 ? true : false} style={{ flex: 1, alignItems: 'center', flexDirection: 'row' }}
-                        onPress={() => swiperRef.current?.scrollToIndex({ animated: true, index: indexPage - 1 })}
-                    >
-                        {indexPage > 0 ?
-                            <Image source={Images.left_arrow} style={{ width: 12, height: 24 }} tintColor={Color.black} /> : <></>}
-                    </TouchableOpacity>
-                    <IText style={styles.title}>{`Chọn bộ số ${String.fromCharCode(65 + indexPage)} (${totalSelected()}/${currentLevel})`}</IText>
-                    <TouchableOpacity disabled={indexPage == 5 ? true : false} style={{ flex: 1, flexDirection: 'row-reverse', alignItems: 'center' }}
-                        onPress={() => swiperRef.current?.scrollToIndex({ animated: true, index: indexPage + 1 })}
-                    >
-                        {indexPage < 5 ?
-                            <Image source={Images.right_arrow} style={{ width: 12, height: 24 }} tintColor={Color.black} /> : <></>}
-                    </TouchableOpacity>
-                </View>
+                <TitleNumberSheet
+                    indexPage={indexPage}
+                    swiperRef={swiperRef}
+                    totalSelected={totalSelected()}
+                    currentLevel={currentLevel}
+                />
                 <View style={{ flex: 1, marginTop: 12 }}>
                     <SwiperFlatList
                         // onViewableItemsChanged={(params) => setIndexPage(params.changed?.[0]?.index)}
                         useReactNativeGestureHandler
-
                         index={0}
                         ref={swiperRef}
                         data={currentNumbers}
@@ -163,12 +159,12 @@ const Wiget = forwardRef(({ onChoose, numberSet, page, type }: ChooseTypeSheetPr
                                 <PerPagePowerMegaView
                                     listNumber={item}
                                     lottColor={lottColor}
-                                    onNumberChange={(value: any) => changeNumber(value)}
+                                    onNumberChange={handleNumberChange}
                                 />
                             )
                         }}
-                        // keyExtractor={(item, index) => "" + index}
-                        // extraData={currentNumbers}
+                        keyExtractor={(item, index) => "" + index}
+                        extraData={currentNumbers}
                         onChangeIndex={(index) => setIndexPage(index.index)}
                     />
                 </View>

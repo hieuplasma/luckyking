@@ -30,6 +30,7 @@ export const API_URI = {
 
   BOOK_LOTTERY_POWER_MEGA: "/order/add-power-mega",
 
+  GET_SCHEDULE_KENO: "/result/schedule/keno",
   GET_SCHEDULE_POWER: "/result/schedule/power",
   GET_SCHEDULE_MEGA: "/result/schedule/mega",
   GET_SCHEDULE_MAX3D: "/result/schedule/max3d",

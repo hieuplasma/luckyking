@@ -8,6 +8,8 @@ import { LotteryType } from '@common';
 import { getColorLott, printMoney, printMoneyK, printNumber } from '@utils';
 import { ConsolasText, IText } from '@components';
 import { ChangeBetButton } from '../../component/ChangeBetButton';
+import { TitleNumberSheet } from '../../component/HeaderNumberSheet';
+import { PerPageMax3dPlus } from './PerPageMax3dPlus';
 
 interface NumberSheet3DPlusProps {
     onChoose: (data1: any, data2: any) => void,
@@ -17,13 +19,6 @@ interface NumberSheet3DPlusProps {
     listBets: number[],
     hugePosition: number[]
 }
-
-const betMilestones = [
-    10000, 20000, 30000, 50000, 100000, 200000, 300000
-]
-
-const column = [0, 1, 2]
-const fullNumber = Array.from({ length: 10 }, (_, index) => index);
 
 const Wiget = forwardRef(({ onChoose, numberSet, page, type, listBets, hugePosition }: NumberSheet3DPlusProps, ref) => {
 
@@ -58,19 +53,17 @@ const Wiget = forwardRef(({ onChoose, numberSet, page, type, listBets, hugePosit
         onChoose(currentNumbers, currentBets)
     }
 
-    const changeNumber = (number: number, columnId: number,) => {
+    const changeNumber = useCallback((numbers: number[]) => {
         let curr = [...currentNumbers]
-        let tmp = [...curr[indexPage]]
-        tmp[columnId] = number
-        curr[indexPage] = tmp
+        curr[indexPage] = numbers
         setCurrentNumbers(curr)
-    }
+    }, [currentNumbers, indexPage])
 
-    const changeBet = useCallback((bet: number, index: number) => {
+    const changeBet = useCallback((bet: number) => {
         let curr = [...currentBets]
-        curr[index] = bet
+        curr[indexPage] = bet
         setCurrentBets(curr)
-    }, [currentBets])
+    }, [currentBets, indexPage])
 
     const checkIsOk = useCallback(() => {
         const tmp = [...currentNumbers]
@@ -87,98 +80,6 @@ const Wiget = forwardRef(({ onChoose, numberSet, page, type, listBets, hugePosit
         }
         return true
     }, [currentNumbers])
-
-    const [toggleObj, setToggleObj] = useState({ number: -1, columnId: -1 })
-    const handleToggle = useCallback((number: number, columnId: number) => {
-        setToggleObj({ number: number, columnId: columnId })
-    }, []);
-
-    useEffect(() => {
-        changeNumber(toggleObj.number, toggleObj.columnId)
-    }, [toggleObj])
-
-    const ItemView = useCallback((item: any, index: number) => {
-        return (
-            <View style={{ marginHorizontal: 8, width: windowWidth - 16 }}>
-                <View style={{ height: 440, flexDirection: 'row', justifyContent: 'space-between' }} key={index}>
-                    {[0, 1, 2].map((columnId: number) => {
-                        const filled = hugePosition.includes(columnId) ? true : false
-                        return (
-                            <View key={columnId + ""}>
-                                {
-                                    fullNumber.map((number: number, index2: number) => {
-                                        const check = (item[columnId] === number ? true : false) || filled
-                                        return (
-                                            <MemoizedBallNumber
-                                                key={index2}
-                                                number={number}
-                                                lottColor={lottColor}
-                                                onToggle={handleToggle}
-                                                check={check}
-                                                filled={filled}
-                                                columnId={columnId}
-                                            />
-                                        )
-                                    })
-                                }
-                            </View>
-                        )
-                    })}
-                    <View style={{ height: '100%', width: 1, backgroundColor: "#DADADA", borderRadius: 10 }} />
-                    {[3, 4, 5].map((columnId: number) => {
-                        const filled = hugePosition.includes(columnId) ? true : false
-                        return (
-                            <View key={columnId + ""}>
-                                {
-                                    fullNumber.map((number: number, index2: number) => {
-                                        const check = (item[columnId] === number ? true : false) || filled
-                                        return (
-                                            <MemoizedBallNumber
-                                                key={index2}
-                                                number={number}
-                                                lottColor={lottColor}
-                                                onToggle={handleToggle}
-                                                check={check}
-                                                filled={filled}
-                                                columnId={columnId}
-                                            />
-                                        )
-                                    })
-                                }
-                            </View>
-                        )
-                    })}
-                    <View style={{}}>
-                        {
-                            betMilestones.map((bet: number) => {
-                                const check = bet == currentBets[indexPage] ? true : false
-                                return (
-                                    <TouchableOpacity key={bet} style={[styles.betBlock, { backgroundColor: check ? Color.max3d : Color.white }]}
-                                        onPress={() => changeBet(bet, index)}>
-                                        <IText style={[styles.textBet, { color: check ? Color.white : Color.max3d }]}>{printMoneyK(bet)}</IText>
-                                    </TouchableOpacity>
-                                )
-                            })
-                        }
-                        {/* <View style={[styles.betBlock, { backgroundColor: other ? Color.max3d : Color.white }]}>
-                        <IText style={[styles.textBet, { color: other ? Color.white : Color.max3d }]}>{"Khác"}
-                        </IText>
-                    </View> */}
-                    </View>
-
-                </View>
-                <View style={{ alignItems: 'flex-end' }}>
-                    <ChangeBetButton
-                        currentBet={currentBets[indexPage]}
-                        increase={() => changeBet(currentBets[indexPage] + 10000, indexPage)}
-                        decrease={() => changeBet(currentBets[indexPage] - 10000, indexPage)}
-                        color={lottColor}
-                        max={300000}
-                        min={10000}
-                    /></View>
-            </View>
-        )
-    }, [currentNumbers, currentBets, changeBet, changeNumber]);
 
     const [opacity, setOpacity] = useState(new Animated.Value(0))
     const [isOpen, setIsOpen] = useState(false)
@@ -221,6 +122,23 @@ const Wiget = forwardRef(({ onChoose, numberSet, page, type, listBets, hugePosit
         if (to == -1) onClose()
     }
 
+    const [numberChangeObj, setNumberChangeObj] = useState([])
+    const handleNumberChange = useCallback((value: any) => {
+        setNumberChangeObj(value)
+    }, [])
+    useEffect(() => {
+        changeNumber(numberChangeObj)
+    }, [numberChangeObj])
+
+    const [betChangeObj, setBetChangeObj] = useState(0)
+    const handleBetChange = useCallback((value: number) => {
+        setBetChangeObj(value)
+    }, [])
+
+    useEffect(() => {
+        changeBet(betChangeObj)
+    }, [betChangeObj])
+
     return (
         <BottomSheet
             ref={bottomSheetRef}
@@ -236,28 +154,30 @@ const Wiget = forwardRef(({ onChoose, numberSet, page, type, listBets, hugePosit
             backgroundStyle={styles.sheetContainer}
         >
             <View style={{ flex: 1 }}>
-                <View style={{ flexDirection: 'row', paddingHorizontal: 18 }}>
-                    <TouchableOpacity disabled={indexPage == 0 ? true : false} style={{ flex: 1, alignItems: 'center', flexDirection: 'row' }}
-                        onPress={() => swiperRef.current?.scrollToIndex({ animated: true, index: indexPage - 1 })}
-                    >
-                        {indexPage > 0 ?
-                            <Image source={Images.left_arrow} style={{ width: 12, height: 24 }} tintColor={Color.black} /> : <></>}
-                    </TouchableOpacity>
-                    <IText style={styles.title}>{`Chọn bộ số ${String.fromCharCode(65 + indexPage)}`}</IText>
-                    <TouchableOpacity disabled={indexPage == 5 ? true : false} style={{ flex: 1, flexDirection: 'row-reverse', alignItems: 'center' }}
-                        onPress={() => swiperRef.current?.scrollToIndex({ animated: true, index: indexPage + 1 })}
-                    >
-                        {indexPage < 5 ?
-                            <Image source={Images.right_arrow} style={{ width: 12, height: 24 }} tintColor={Color.black} /> : <></>}
-                    </TouchableOpacity>
-                </View>
+                <TitleNumberSheet
+                    indexPage={indexPage}
+                    swiperRef={swiperRef}
+                />
                 <View style={{ flex: 1, marginTop: 12 }}>
                     <SwiperFlatList
                         index={0}
                         ref={swiperRef}
                         data={currentNumbers}
+                        extraData={currentNumbers}
+                        renderItem={({ item, index }) => {
+                            return (
+                                <PerPageMax3dPlus
+                                    listNumber={item}
+                                    lottColor={lottColor}
+                                    hugePosition={hugePosition}
+                                    bet={listBets[index]}
+                                    onChangeNumber={handleNumberChange}
+                                    onChangeBet={handleBetChange}
+                                />
+                            )
+                        }}
+                        keyExtractor={(item, index) => "" + index}
                         onChangeIndex={index => onChangeIndex(index)}
-                        renderItem={({ item, index }) => ItemView(item, index)}
                     />
                 </View>
                 <TouchableOpacity disabled={!checkIsOk()} style={[styles.confirmButton, { backgroundColor: lottColor, opacity: checkIsOk() ? 1 : 0.4 }]} onPress={choosing}>
@@ -269,21 +189,6 @@ const Wiget = forwardRef(({ onChoose, numberSet, page, type, listBets, hugePosit
 });
 
 export const NumberSheet3DPlus = React.memo(Wiget)
-
-
-const MemoizedBallNumber = React.memo(({ number, lottColor, onToggle, check, filled, columnId }: any) => {
-    const handlePress = useCallback(() => {
-        onToggle(number, columnId);
-    }, [onToggle, number, check]);
-
-    return (
-        <View style={styles.ballContainer}  >
-            <TouchableOpacity disabled={filled} activeOpacity={0.8} style={[styles.ball, { backgroundColor: check ? lottColor : '#E9E6E6' }]} onPress={handlePress}>
-                <ConsolasText style={[styles.textBall, { color: check ? Color.white : Color.black, marginTop: filled ? -2 : 2 }]}>{filled ? "✽" : number}</ConsolasText>
-            </TouchableOpacity>
-        </View>
-    )
-});
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -300,19 +205,6 @@ const styles = StyleSheet.create({
         right: 0,
         bottom: 0,
     },
-    title: {
-        fontSize: 18, color: Color.black, alignSelf: 'center', fontWeight: 'bold'
-    },
-    ballContainer: {
-        width: (windowWidth - 48) / 8, height: 44,
-        justifyContent: 'center', alignItems: 'center'
-    },
-    ball: {
-        width: 32, height: 32,
-        justifyContent: 'center', alignItems: 'center',
-        borderRadius: 99, backgroundColor: '#E9E6E6'
-    },
-    textBall: { fontSize: 16 },
     confirmButton: {
         margin: 16, backgroundColor: Color.power, borderRadius: 10,
         justifyContent: 'center', alignItems: 'center',
@@ -322,14 +214,5 @@ const styles = StyleSheet.create({
         color: Color.white,
         fontSize: 16,
         fontWeight: 'bold',
-    },
-
-    betBlock: {
-        width: 63, height: 26, marginVertical: 9,
-        borderRadius: 10, borderWidth: 1, borderColor: Color.max3d,
-        justifyContent: 'center', alignItems: 'center', alignSelf: 'center'
-    },
-    textBet: {
-        fontSize: 16, color: Color.max3d
     }
 })

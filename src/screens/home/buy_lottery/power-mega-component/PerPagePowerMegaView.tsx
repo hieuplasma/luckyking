@@ -15,9 +15,9 @@ interface ItemPageProps {
 
 const Wiget = forwardRef(({ listNumber, lottColor, onNumberChange }: ItemPageProps, ref) => {
 
-    // useEffect(() => {
-    //     // console.log("PerPageView rerender:::")
-    // })
+    useEffect(() => {
+        console.log("PerPageView rerender:::")
+    })
 
     const [listChoose, setList]: any = useState([...listNumber])
     const [toggleObj, setToggleObj] = useState({ number: 0, value: false })

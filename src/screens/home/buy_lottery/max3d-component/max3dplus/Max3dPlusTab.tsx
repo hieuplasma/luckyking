@@ -347,7 +347,6 @@ export const Max3dPlusTab = React.memo((props: Props) => {
                     </ScrollView>
             }
 
-
             {/* Footer */}
             <View style={{ paddingHorizontal: 16, marginBottom: 5, zIndex: -1 }}>
                 {
