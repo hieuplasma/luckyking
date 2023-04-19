@@ -6,6 +6,7 @@ import {
   PowerScreen, PowerScreenParamsList,
   Max3dScreen, Max3dScreenParamsList,
   Max3dProScreen, Max3dProScreenParamsList,
+  KenoScreen, KenoScreenParamsList,
 } from '@screen';
 import React from 'react';
 
@@ -14,7 +15,8 @@ export type HomeStackParamList = {
   PowerScreen: PowerScreenParamsList;
   MegaScreen: MegaScreenParamsList;
   Max3dScreen: Max3dScreenParamsList;
-  Max3dProScreen: Max3dProScreenParamsList
+  Max3dProScreen: Max3dProScreenParamsList;
+  KenoScreen: KenoScreenParamsList;
   CartScreen: CartScreenParamsList,
 };
 
@@ -26,6 +28,11 @@ export function HomeNavigation() {
       <HomeStack.Screen
         name={'HomeScreen'}
         component={HomeScreen}
+        options={{ headerShown: false, title: undefined }}
+      />
+      <HomeStack.Screen
+        name={'KenoScreen'}
+        component={KenoScreen}
         options={{ headerShown: false, title: undefined }}
       />
       <HomeStack.Screen

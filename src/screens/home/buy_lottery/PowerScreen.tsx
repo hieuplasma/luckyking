@@ -80,16 +80,6 @@ export const PowerScreen = React.memo((props: PowerScreenProps) => {
         setTotalCost(set * 10000 * convolutions(MAX_SET, level))
     }, [numberSet])
 
-    // useEffect(() => {
-    //     async function getFirstDraw() {
-    //         const res = await lotteryApi.getSchedulePower({ take: 6 })
-    //         if (res) {
-    //             if (res.data.length > 0) dispatch(getPowerDraw(res.data))
-    //         }
-    //     }
-    //     getFirstDraw()
-    // }, [])
-
     const randomNumber = useCallback((index: number) => {
         const currentNumber = [...numberSet]
         const currentLevel = typePlay.value
@@ -325,12 +315,12 @@ const LineView = React.memo(({ item, index, openNumberSheet, deleteNumber, rando
                 {item.sort((a: any, b: any) => a - b).map((number: any, index2: number) => {
                     return (
                         <View style={styles.ballContainer} key={index2}>
-                            {/* <Image source={number ? Images.ball_power : Images.ball_grey} style={styles.ballStyle}>
+                            <Image source={number ? Images.ball_power : Images.ball_grey} style={styles.ballStyle}>
                                 <ConsolasText style={{ color: Color.white, fontSize: 16 }}>{printNumber(number)}</ConsolasText>
-                            </Image> */}
-                            <View style={styles.ballStyle}>
+                            </Image>
+                            {/* <View style={styles.ballStyle}>
                                 <ConsolasText style={{ color: Color.white, fontSize: 16 }}>{printNumber(number)}</ConsolasText>
-                            </View>
+                            </View> */}
                         </View>
                     )
                 })}

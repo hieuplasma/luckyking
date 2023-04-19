@@ -11,7 +11,10 @@ const initialState = {
     max3dListDraw: [],
 
     max3dProFirstDraw: "",
-    max3dProListDraw: []
+    max3dProListDraw: [],
+
+    kenoFirstDraw: "",
+    kenoListDraw: []
 }
 
 // Create Redux state slice
@@ -35,8 +38,16 @@ const drawSlice = createSlice({
             state.max3dProFirstDraw = action.payload[0]
             state.max3dProListDraw = action.payload
         },
+        getKenoDraw: (state, action) => {
+            state.kenoFirstDraw = action.payload[0]
+            state.kenoListDraw = action.payload
+        },
     },
 })
 
-export const { getPowerDraw, getMegaDraw, getMax3dDraw, getMax3dProDraw } = drawSlice.actions
+export const {
+    getPowerDraw, getMegaDraw,
+    getMax3dDraw, getMax3dProDraw,
+    getKenoDraw
+} = drawSlice.actions
 export default drawReducer = drawSlice.reducer

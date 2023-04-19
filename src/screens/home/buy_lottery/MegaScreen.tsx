@@ -40,23 +40,6 @@ const initNumber = [
     [false, false, false, false, false, false] // numberF:
 ]
 
-const types = [
-    { label: "Bao 5", value: 5 }, //0
-    { label: "Cơ bản", value: 6 }, //1
-    { label: "Bao 7", value: 7 },//2
-    { label: "Bao 8", value: 8 },//3
-    { label: "Bao 9", value: 9 },//3
-    { label: "Bao 10", value: 10 },//5
-    { label: "Bao 11", value: 11 },//6
-    { label: "Bao 12", value: 12 },//7
-    { label: "Bao 13", value: 13 },//8
-    { label: "Bao 14", value: 14 },//9
-    { label: "Bao 15", value: 15 },//10
-    { label: "Bao 16", value: 16 },//11
-    { label: "Bao 17", value: 17 },//12
-    { label: "Bao 18", value: 18 },//13
-]
-
 export const MegaScreen = React.memo((props: any) => {
 
     const navigation = useNavigation<NavigationProp>();
@@ -101,16 +84,6 @@ export const MegaScreen = React.memo((props: any) => {
         }
         setTotalCost(set * 10000 * convolutions(MAX_SET, level))
     }, [numberSet])
-
-    useEffect(() => {
-        async function getFirstDraw() {
-            const res = await lotteryApi.getScheduleMega({ take: 6 })
-            if (res) {
-                if (res.data.length > 0) dispatch(getMegaDraw(res.data))
-            }
-        }
-        getFirstDraw()
-    }, [])
 
     const randomNumber = (index: number) => {
         const currentNumber = [...numberSet]
@@ -347,12 +320,12 @@ const LineView = React.memo(({ item, index, openNumberSheet, deleteNumber, rando
                 {item.sort((a: any, b: any) => a - b).map((number: any, index2: number) => {
                     return (
                         <View style={styles.ballContainer} key={index2}>
-                            {/* <Image source={number ? Images.ball_power : Images.ball_grey} style={styles.ballStyle}>
+                            <Image source={number ? Images.ball_mega : Images.ball_grey} style={styles.ballStyle}>
                                 <ConsolasText style={{ color: Color.white, fontSize: 16 }}>{printNumber(number)}</ConsolasText>
-                            </Image> */}
-                            <View style={styles.ballStyle}>
+                            </Image>
+                            {/* <View style={styles.ballStyle}>
                                 <ConsolasText style={{ color: Color.white, fontSize: 16 }}>{printNumber(number)}</ConsolasText>
-                            </View>
+                            </View> */}
                         </View>
                     )
                 })}

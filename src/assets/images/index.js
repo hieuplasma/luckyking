@@ -54,5 +54,7 @@ export const Images = {
   vietcom_bank: require('./vietcom_bank.png'),
   mb_bank: require('./mb_bank.png'),
   luckyking_baw: require('./luckyking_baw.png'),
-  transaction: require('./transaction.png')
+  transaction: require('./transaction.png'),
+  keno_logo: require('./keno_logo.png'),
+  statistical: require('./statistical.png')
 };

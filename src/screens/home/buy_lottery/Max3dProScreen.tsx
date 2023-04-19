@@ -49,7 +49,6 @@ export const Max3dProScreen = () => {
     const safeAreaInsets = useSafeAreaInsets();
     const dispatch = useDispatch()
     const listDraw = useSelector((state: any) => state.drawReducer.max3dProListDraw)
-    const luckykingBalance = useSelector((state: any) => state.userReducer.luckykingBalance);
 
     const [showBottomSheet, setShowBottomSheet] = useState(false)
     useEffect(() => {
@@ -58,19 +57,6 @@ export const Max3dProScreen = () => {
         }, 500); // change delay as needed
         return () => clearTimeout(timer);
     }, []);
-
-    const getListDraw = async () => {
-        const listMax3dPro = await lotteryApi.getScheduleMax3d({ type: LotteryType.Max3DPro, take: 6, skip: 0 })
-        if (listMax3dPro) {
-            if (listMax3dPro.data.length > 0) {
-                dispatch(getMax3dProDraw(listMax3dPro.data))
-            }
-        }
-    }
-
-    useEffect(() => {
-        getListDraw()
-    }, [])
 
     const [typePlay, setType]: any = useState({ label: "Cơ bản", value: 1 });
     const [drawSelected, setDraw]: any = useState(listDraw[0])

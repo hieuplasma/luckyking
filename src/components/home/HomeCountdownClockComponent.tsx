@@ -1,12 +1,17 @@
+import { lotteryApi } from '@api';
+import { LotteryType } from '@common';
+import { getKenoDraw } from '@redux';
 import { Label } from '@shared';
 import { Style } from '@styles';
 import { printNumber } from '@utils';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { StyleProp, TextStyle, View, ViewProps } from 'react-native';
+import { useDispatch } from 'react-redux';
 
 export interface HomeCountdownClockComponentProps extends ViewProps {
   targetTime: Date;
   timeStyle?: StyleProp<TextStyle>;
+  type?: LotteryType
 }
 
 export const HomeCountdownClockComponent = React.memo(
@@ -14,13 +19,28 @@ export const HomeCountdownClockComponent = React.memo(
     const [timeRemaining, setTimeRemaining] = useState<any | undefined>(
       undefined,
     );
+
+    const dispatch = useDispatch()
+
+    const resetScheduleKeno = useCallback(async () => {
+      const listKeno = await lotteryApi.getScheduleKeno({ type: LotteryType.Keno, take: 20, skip: 0 })
+      if (listKeno) {
+        if (listKeno.data.length > 0) {
+          dispatch(getKenoDraw(listKeno.data))
+        }
+      }
+    }, [])
+
     useEffect(() => {
       const interval = setInterval(() => {
         const now = new Date().getTime();
         const distance = props.targetTime.getTime() - now;
         if (distance < 0) {
-          clearInterval(interval);
-          setTimeRemaining({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+          if (props.type == LotteryType.Keno) resetScheduleKeno()
+          else {
+            clearInterval(interval);
+            setTimeRemaining({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+          }
         } else {
           const days = Math.floor(distance / (1000 * 60 * 60 * 24));
           const hours = Math.floor(

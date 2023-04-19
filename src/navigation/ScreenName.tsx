@@ -41,6 +41,7 @@ export const ScreenName = {
 
   HomeChild: {
     HomeScreen: "HomeScreen",
+    KenoScreen: "KenoScreen",
     PowerScreen: "PowerScreen",
     MegaScreen: "MegaScreen",
     CartScreen: "CartScreen",

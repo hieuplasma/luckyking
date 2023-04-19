@@ -13,7 +13,7 @@ interface HeaderBuyLotteryProps {
 }
 export const HeaderBuyLottery = React.memo(({ navigation, lotteryType }: HeaderBuyLotteryProps) => {
 
-    useEffect(()=>{
+    useEffect(() => {
         // console.log("Header Buy Lottery rerender")
     })
 
@@ -39,6 +39,9 @@ export const HeaderBuyLottery = React.memo(({ navigation, lotteryType }: HeaderB
                 break;
             case LotteryType.Max3DPro:
                 setLogo({ source: Images.max3dpro_logo, style: { height: 50, width: 75 } })
+                break;
+            case LotteryType.Keno:
+                setLogo({ source: Images.keno_logo, style: { height: 50, width: 75 } })
                 break;
             default:
                 break;

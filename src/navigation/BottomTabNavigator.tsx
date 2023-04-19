@@ -138,6 +138,7 @@ const TabBar = (props: BottomTabBarProps) => {
 };
 
 const hideTabBar = [
+  ScreenName.HomeChild.KenoScreen,
   ScreenName.HomeChild.PowerScreen,
   ScreenName.HomeChild.MegaScreen,
   ScreenName.HomeChild.Max3dScreen,

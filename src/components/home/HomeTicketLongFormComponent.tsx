@@ -5,6 +5,7 @@ import { Color, Style } from '@styles';
 import { ScreenUtils } from '@utils';
 import React, { useCallback, useMemo } from 'react';
 import { TouchableOpacity, View, ViewProps } from 'react-native';
+import { LotteryType } from '@common';
 
 export interface HomeTicketLongFormComponent extends ViewProps {
   image?: string;
@@ -19,29 +20,30 @@ export interface HomeTicketLongFormComponent extends ViewProps {
   leftView?: () => JSX.Element;
   rightView?: () => JSX.Element;
   centerView?: () => JSX.Element;
-  type?: 'none' | 'max' | 'mega' | 'power' | 'max-pro' | 'keno' | 'group';
+  type?: LotteryType;
 }
 
 export const HomeTicketLongFormComponent = React.memo((props?: HomeTicketLongFormComponent) => {
   const mainColor = useMemo(() => {
     switch (props?.type) {
-      case 'max': {
-        return Color.purple;
+      case LotteryType.Max3D:
+      case LotteryType.Max3DPlus: {
+        return Color.max3d;
       }
-      case 'mega': {
-        return Color.red;
+      case LotteryType.Mega: {
+        return Color.mega;
       }
-      case 'power': {
-        return Color.yellow;
+      case LotteryType.Power: {
+        return Color.power;
       }
-      case 'max-pro': {
-        return Color.black;
+      case LotteryType.Max3DPro: {
+        return Color.max3dpro;
       }
-      case 'keno': {
-        return Color.orange;
+      case LotteryType.Keno: {
+        return Color.keno;
       }
       default: {
-        return Color.green;
+        return Color.luckyKing;
       }
     }
   }, [props?.type]);
@@ -129,6 +131,7 @@ export const HomeTicketLongFormComponent = React.memo((props?: HomeTicketLongFor
         </Label.Widget>
         <HomeCountdownClockComponent
           targetTime={props?.targetTime ? props.targetTime : new Date('2023-04-15T18:00:00Z')}
+          type={props?.type}
         />
       </View>
     );

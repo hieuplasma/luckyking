@@ -7,10 +7,11 @@ import { SimpleHeaderView, translate } from '@shared';
 import { Icon } from '@assets'
 import { Color, Style } from '@styles';
 import { dateConvert, NavigationUtils, ScreenUtils } from '@utils';
-import React, { useCallback} from 'react';
+import React, { useCallback } from 'react';
 import { ScrollView, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
+import { LotteryType } from '@common';
 
 type NavigationProp = StackNavigationProp<HomeStackParamList, 'HomeScreen'>;
 type NavigationRoute = RouteProp<HomeStackParamList, 'HomeScreen'>;
@@ -29,6 +30,7 @@ export const HomeScreen = React.memo((props?: HomeScreenProps) => {
   const megaFirstDraw = useSelector((state: any) => state.drawReducer.megaFirstDraw)
   const max3dFirstDraw = useSelector((state: any) => state.drawReducer.max3dFirstDraw)
   const max3dProFirstDraw = useSelector((state: any) => state.drawReducer.max3dProFirstDraw)
+  const kenoFirstDraw = useSelector((state: any) => state.drawReducer.kenoFirstDraw)
 
   useBackButtonWithNavigation(
     React.useCallback(() => {
@@ -99,16 +101,18 @@ export const HomeScreen = React.memo((props?: HomeScreenProps) => {
     return (
       <HomeTicketLongFormComponent
         image="https://media.vietlott.vn//main/06.2018/cms/game/keno.png"
-        type="keno"
+        type={LotteryType.Keno}
+        targetTime={kenoFirstDraw ? new Date(kenoFirstDraw.drawTime) : undefined}
+      action={() => NavigationUtils.navigate(navigation, ScreenName.HomeChild.KenoScreen)}
       />
     );
-  }, []);
+  }, [kenoFirstDraw]);
 
   const renderMegaTicket = useCallback(() => {
     return (
       <HomeTicketLongFormComponent
         image="https://media.vietlott.vn//main/06.2018/cms/game/mega-645_full-color_cut-copy.png"
-        type="mega"
+        type={LotteryType.Mega}
         targetTime={megaFirstDraw ? new Date(megaFirstDraw.drawTime) : undefined}
         action={() => NavigationUtils.navigate(navigation, ScreenName.HomeChild.MegaScreen)}
         nextDate={megaFirstDraw ? dateConvert(new Date(megaFirstDraw.drawTime)) : ""}
@@ -121,7 +125,7 @@ export const HomeScreen = React.memo((props?: HomeScreenProps) => {
     return (
       <HomeTicketLongFormComponent
         image="https://media.vietlott.vn//main/04.2019/bcc/game/thumbnail_max3d-01.jpg"
-        type="max"
+        type={LotteryType.Max3D}
         targetTime={max3dFirstDraw ? new Date(max3dFirstDraw.drawTime) : undefined}
         action={() => NavigationUtils.navigate(navigation, ScreenName.HomeChild.Max3dScreen)}
         nextDate={max3dFirstDraw ? dateConvert(new Date(max3dFirstDraw.drawTime)) : ""}
@@ -134,7 +138,7 @@ export const HomeScreen = React.memo((props?: HomeScreenProps) => {
     return (
       <HomeTicketLongFormComponent
         image="https://media.vietlott.vn//main/06.2018/cms/game/Power655.png"
-        type="power"
+        type={LotteryType.Power}
         targetTime={powerFirstDraw ? new Date(powerFirstDraw.drawTime) : undefined}
         action={() => NavigationUtils.navigate(navigation, ScreenName.HomeChild.PowerScreen)}
         nextDate={powerFirstDraw ? dateConvert(new Date(powerFirstDraw.drawTime)) : ""}
@@ -147,7 +151,7 @@ export const HomeScreen = React.memo((props?: HomeScreenProps) => {
     return (
       <HomeTicketLongFormComponent
         image="https://media.vietlott.vn//main/logo/logomax3dpro.png"
-        type="max-pro"
+        type={LotteryType.Max3DPro}
         targetTime={max3dProFirstDraw ? new Date(max3dProFirstDraw.drawTime) : undefined}
         action={() => NavigationUtils.navigate(navigation, ScreenName.HomeChild.Max3dProScreen)}
         nextDate={max3dProFirstDraw ? dateConvert(new Date(max3dProFirstDraw.drawTime)) : ""}
