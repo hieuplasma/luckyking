@@ -71,10 +71,10 @@ export const HomeScreen = React.memo((props?: HomeScreenProps) => {
         disableRenderStatusBarView={true}
         leftView={renderHeaderLeftView()}
         rightView={renderHeaderRightView()}
-        title={translate('tab.home')}
-        titleStyle={[Style.Label.Bold.PrimaryHeadingXL_24, { color: Color.white }]}
+        title={"TRANG CHỦ"}
+        titleStyle={{ color: Color.white, fontSize: 16, fontWeight: 'bold' }}
         style={[
-          Style.Background.Red,
+          Style.Background.Transparent,
           Style.Space.PaddingHorizontal.large_16,
           { marginTop: safeAreaInsets.top, justifyContent: 'space-between' },
         ]}
@@ -86,13 +86,14 @@ export const HomeScreen = React.memo((props?: HomeScreenProps) => {
     return (
       <Image
         source={Images.good_luck}
+        resizeMode='contain'
         style={[
           Style.Background.White,
           Style.Size.WidthMatchParent,
           Style.Space.MarginTop.large_16,
           Style.Border.Standard.dialog,
           Style.Space.PaddingHorizontal.Medium_12,
-          { height: ScreenUtils.getSizeByHorizontal(120) },
+          { height: ScreenUtils.getSizeByHorizontal(120) }
         ]}
       />
     );
@@ -163,7 +164,8 @@ export const HomeScreen = React.memo((props?: HomeScreenProps) => {
 
   return (
     <>
-      <View style={[Style.Size.MatchParent, Style.Background.Red]}>
+      <Image style={[Style.Size.MatchParent, Style.Background.Red]}
+        source={Images.image_background}>
         {renderHeader()}
         <ScrollView
           showsVerticalScrollIndicator={false}
@@ -175,7 +177,7 @@ export const HomeScreen = React.memo((props?: HomeScreenProps) => {
           {renderMaxTicket()}
           {renderMax3dProTicket()}
         </ScrollView>
-      </View>
+      </Image>
     </>
   );
 });

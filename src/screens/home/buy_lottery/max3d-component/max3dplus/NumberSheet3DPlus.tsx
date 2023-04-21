@@ -134,7 +134,6 @@ const Wiget = forwardRef(({ onChoose, numberSet, page, type, listBets, hugePosit
     const handleBetChange = useCallback((value: number) => {
         setBetChangeObj(value)
     }, [])
-
     useEffect(() => {
         changeBet(betChangeObj)
     }, [betChangeObj])

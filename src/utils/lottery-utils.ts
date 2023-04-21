@@ -152,3 +152,22 @@ export function generateStringsFromArray(arr: number[], before = "", after = "")
     generateCombinations("", arr);
     return result;
 }
+
+export async function taoChuoiTuToHopChap(arr: number[], m: number) {
+    let results: string[] = [];
+
+    async function backtrack(temp: any, start: number) {
+        if (temp.length === m) {
+            results.push(temp.join(' '));
+            return;
+        }
+        for (let i = start; i < arr.length; i++) {
+            temp.push(arr[i]);
+            backtrack(temp, i + 1);
+            temp.pop();
+        }
+    }
+
+    await backtrack([], 0);
+    return results;
+}

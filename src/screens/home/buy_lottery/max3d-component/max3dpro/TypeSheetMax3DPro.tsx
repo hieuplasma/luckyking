@@ -18,7 +18,7 @@ const types = [
     { label: "Bao bộ 3 số", value: 4 },
     { label: "Bao nhiều bộ 3 số", value: 10 },
     { label: "Đảo số thứ nhất", value: 2 },
-    { label: "Đảo số thứ 2", value: 3 },
+    { label: "Đảo số thứ hai", value: 3 },
     // { label: "Đảo cả 2 số", value: 4 },
     { label: "Ôm một vị trí", value: 5 },
     { label: "Ôm hai vị trí", value: 6 },

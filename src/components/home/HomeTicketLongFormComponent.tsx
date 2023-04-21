@@ -68,7 +68,7 @@ export const HomeTicketLongFormComponent = React.memo((props?: HomeTicketLongFor
           style={[Style.Size.WidthMatchParent, Style.Size.HeightMatchParent]}
           resizeMode="contain"
         />
-        <BorderComponent
+        {/* <BorderComponent
           width={20}
           height={20}
           borderStyle={[{ backgroundColor: Color.red, borderColor: Color.red }]}
@@ -91,7 +91,7 @@ export const HomeTicketLongFormComponent = React.memo((props?: HomeTicketLongFor
               transform: [{ rotate: '270deg' }],
             },
           ]}
-        />
+        /> */}
       </View>
     );
   }, [props?.image]);
@@ -176,7 +176,7 @@ export const HomeTicketLongFormComponent = React.memo((props?: HomeTicketLongFor
         ]}>
         {props?.centerView ? props?.centerView() : renderDescription()}
         {props?.rightView ? props?.rightView() : renderRightView()}
-        <BorderComponent
+        {/* <BorderComponent
           width={20}
           height={20}
           borderStyle={[{ backgroundColor: Color.red, borderColor: Color.red }]}
@@ -197,7 +197,7 @@ export const HomeTicketLongFormComponent = React.memo((props?: HomeTicketLongFor
               transform: [{ rotate: '180deg' }],
             },
           ]}
-        />
+        /> */}
       </View>
     </TouchableOpacity>
   );

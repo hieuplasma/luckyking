@@ -51,7 +51,7 @@ export const PowerScreen = React.memo((props: PowerScreenProps) => {
 
     const [showBottomSheet, setShowBottomSheet] = useState(false)
     const [typePlay, setType]: any = useState({ label: "Cơ bản", value: 6 });
-    const [drawSelected, setDraw]: any = useState(listDraw[0])
+    const [drawSelected, setDraw]: any = useState([listDraw[0]])
     const [numberSet, setNumbers]: any = useState(initNumber)
     const [numberSetFake, setNumberSetFake]: any = useState(initNumber)
     const [totalCost, setTotalCost] = useState(0)
@@ -204,7 +204,7 @@ export const PowerScreen = React.memo((props: PowerScreenProps) => {
     }
 
     const refreshChoosing = useCallback(() => {
-        setDraw(listDraw[0])
+        setDraw([listDraw[0]])
         setType({ label: "Cơ bản", value: 6 })
         setNumbers(initNumber)
     }, [])

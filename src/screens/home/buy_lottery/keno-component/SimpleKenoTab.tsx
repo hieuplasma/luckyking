@@ -8,20 +8,14 @@ import { ViewFooterKeno } from "./simple-tab/ViewFooterKeno";
 import { IText } from "@components";
 import { NumberSheetSimpleKeno } from "./simple-tab/NumberSheetSimpleKeno";
 import { RenderLineKeno } from "./simple-tab/RenderLineKeno";
+import { KENO_NUMBER } from "@common";
 
 interface Props {
     showBottomSheet: boolean
 }
 
 const initBets = [10000, 10000, 10000, 10000, 10000, 10000]
-const initNumber = [
-    [],
-    [],
-    [],
-    [],
-    [],
-    []
-]
+const initNumber = [[], [], [], [], [], []]
 
 export const SimpleKenoTab = React.memo(({ showBottomSheet }: Props) => {
 
@@ -43,14 +37,38 @@ export const SimpleKenoTab = React.memo(({ showBottomSheet }: Props) => {
     const [numberFake, setNumbersFake] = useState(initNumber)
     const [pageNumber, setPageNumber] = useState(0)
     const [bets, setBets] = useState(initBets)
+    const [total, setTotal] = useState(0)
 
     const randomNumber = useCallback((index: number) => {
+        let newNumbers: any = [...numberSet]
+        const level = numberSet[index].length
+        const randomNumbers = new Set();
+        while (randomNumbers.size < level) {
+            const randomNumber = Math.floor(Math.random() * KENO_NUMBER) + 1;
+            randomNumbers.add(randomNumber);
+        }
+        const resultArray = Array.from(randomNumbers).map(Number).sort((a, b) => a - b);
+        newNumbers[index] = resultArray
+        setNumbers(newNumbers)
+    }, [numberSet])
 
-    }, [numberSet, typePlay])
+    const deleteNumber = useCallback((index: number) => {
+        let newNumbers: any = [...numberSet]
+        const level = numberSet[index].length
+        //@ts-ignore
+        const resultArray = (level == 1 && numberSet[0] >= 80) ? [] : Array(level).fill(false)
+        newNumbers[index] = resultArray
+        setNumbers(newNumbers)
+    }, [numberSet])
 
-    const deleteNumber = (index: number) => {
-
-    }
+    useEffect(() => {
+        let count = 0;
+        for (let i = 0; i < numberSet.length; i++) {
+            if (numberSet[i].length > 0 && numberSet[i][0] !== false)
+                count = count + bets[i]
+        }
+        setTotal(count)
+    }, [numberSet, bets])
 
     // ref
     const chooseTypeRef: any = useRef(null);
@@ -121,7 +139,7 @@ export const SimpleKenoTab = React.memo(({ showBottomSheet }: Props) => {
             </ScrollView>
 
             <View style={{ paddingHorizontal: 16, marginBottom: 5, zIndex: -1 }}>
-                <ViewFooterKeno totalCost={0} bookLottery={bookLottery} />
+                <ViewFooterKeno totalCost={total} bookLottery={bookLottery} />
             </View>
 
             {showBottomSheet ?

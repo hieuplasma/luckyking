@@ -77,7 +77,7 @@ export const Max3dProScreen = () => {
     const randomNumber = (index: number) => {
         const currentNumber = [...numberSet]
         const randomNumbers = [];
-        while (randomNumbers.length < MAX_SET_MAX3D_PRO ) {
+        while (randomNumbers.length < MAX_SET_MAX3D_PRO) {
             const randomNumber = Math.floor(Math.random() * MAX3D_NUMBER);
             randomNumbers.push(randomNumber);
         }

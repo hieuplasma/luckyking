@@ -1,6 +1,6 @@
 export const Images = {
   group: require('./image_group.png'),
-  background: require('./image_background.png'),
+  image_background: require('./image_background.png'),
   lucky: require('./image_lucky.png'),
   power_logo: require('./power_logo.png'),
   ball_grey: require('./ball_grey.png'),

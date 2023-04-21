@@ -2,7 +2,7 @@ import { Image, Images } from "@assets";
 import { IText } from "@components";
 import { Color } from "@styles";
 import { printDraw, printMoney } from "@utils";
-import React from "react";
+import React, { useCallback } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from "react-native";
 import { useSelector } from "react-redux";
 
@@ -16,6 +16,14 @@ interface ViewAboveProps {
 export const ViewAbove = React.memo(({ typePlay, drawSelected, openTypeSheet, openDrawSheet }: ViewAboveProps) => {
 
     const luckykingBalance = useSelector((state: any) => state.userReducer.luckykingBalance);
+
+    const getDrawName = useCallback(() => {
+        if (drawSelected && drawSelected.length > 0) {
+            if (drawSelected.length > 1) return drawSelected.length + " kỳ"
+            else return printDraw(drawSelected[0])
+        }
+        else return "------"
+    }, [drawSelected])
     return (
         <View style={styles.body}>
             <View style={{ flexDirection: 'row' }}>
@@ -33,7 +41,7 @@ export const ViewAbove = React.memo(({ typePlay, drawSelected, openTypeSheet, op
                 </TouchableOpacity>
 
                 <TouchableOpacity activeOpacity={0.6} style={[styles.dropDown]} onPress={openDrawSheet}>
-                    <IText style={{ fontSize: 13}}>{drawSelected ? printDraw(drawSelected) : "------"}</IText>
+                    <IText style={{ fontSize: 13 }}>{getDrawName()}</IText>
                     <Image source={Images.down_arrow} style={{ width: 12, height: 6 }}></Image>
                 </TouchableOpacity>
             </View>
