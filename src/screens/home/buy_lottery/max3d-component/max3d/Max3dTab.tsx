@@ -243,7 +243,7 @@ export const Max3dTab = React.memo((props: Props) => {
 
     return (
         <View style={{ flex: 1 }}>
-            <ViewAbove typePlay={typePlay} drawSelected={drawSelected} openTypeSheet={openTypeSheet} openDrawSheet={openDrawSheet} />
+            <ViewAbove typePlay={typePlay.label} drawSelected={drawSelected} openTypeSheet={openTypeSheet} openDrawSheet={openDrawSheet} />
 
             {
                 typePlay.value == 3 ?

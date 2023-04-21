@@ -1,24 +1,31 @@
 import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Dimensions, Animated } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Dimensions, Animated, ScrollView } from 'react-native';
 import BottomSheet from '@gorhom/bottom-sheet';
 import { Color } from '@styles';
 import { Image, Images } from '@assets'
 import { getColorLott, printDraw } from '@utils';
 import { LotteryType } from '@common';
 import { IText } from '@components';
+import { useSelector } from 'react-redux';
 
 interface ChooseTypeSheetProps {
     currentChoose: any,
     onChoose: (data: any) => void,
-    listDraw: any,
-    type: LotteryType
 }
 
-const ChooseDrawSheetComponent = forwardRef(({ currentChoose, onChoose, listDraw, type }: ChooseTypeSheetProps, ref) => {
+const lottColor = Color.keno
+
+const Wiget = forwardRef(({ currentChoose, onChoose }: ChooseTypeSheetProps, ref) => {
 
     const bottomSheetRef = useRef<BottomSheet>(null);
+    const listDraw = useSelector((state: any) => state.drawReducer.kenoListDraw)
 
-    const lottColor = getColorLott(type)
+    useEffect(() => {
+        if (!listDraw.includes(currentDraw)) {
+            setCurrentDraw(listDraw[0])
+        }
+    }, [listDraw])
+
     const [currentDraw, setCurrentDraw] = useState(currentChoose)
 
     useImperativeHandle(ref, () => ({
@@ -27,12 +34,12 @@ const ChooseDrawSheetComponent = forwardRef(({ currentChoose, onChoose, listDraw
     }));
 
     useEffect(() => {
-        // console.log('ChooseDrawSheet has been re-rendered, ');
+        console.log('ChooseDrawSheet has been re-rendered, ');
     });
 
-    const choosing = (type: any) => {
+    const choosing = (draw: any) => {
         onClose()
-        onChoose(type);
+        onChoose(draw);
     }
 
     const [opacity, setOpacity] = useState(new Animated.Value(0))
@@ -91,22 +98,24 @@ const ChooseDrawSheetComponent = forwardRef(({ currentChoose, onChoose, listDraw
         >
             <View style={{ flex: 1 }}>
                 <IText style={{ fontSize: 18, color: Color.black, alignSelf: 'center', fontWeight: 'bold' }}>{"Chọn kì quay"}</IText>
-                <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', paddingHorizontal: 24, paddingVertical: 6, flex: 1 }}>
-                    {listDraw.map((item: any, index: number) => {
-                        return (
-                            <TouchableOpacity activeOpacity={0.4} key={index} style={styles.item} onPress={() => setCurrentDraw(item)}>
-                                <Image
-                                    source={item.drawCode == currentDraw.drawCode ? Images.checked_box : Images.check_box}
-                                    style={{ width: 24, height: 24 }}
-                                    tintColor={item.drawCode == currentDraw.drawCode ? lottColor : '#130F26'}
-                                />
-                                <IText style={{ fontSize: 14, marginLeft: 18, color: Color.black }}>
-                                    {`${printDraw(item)}`}
-                                </IText>
-                            </TouchableOpacity>
-                        )
-                    })}
-                </View>
+                <ScrollView style={{ flex: 1 }}>
+                    <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', paddingHorizontal: 24, paddingVertical: 6, flex: 1 }}>
+                        {listDraw.map((item: any, index: number) => {
+                            return (
+                                <TouchableOpacity activeOpacity={0.4} key={index} style={styles.item} onPress={() => setCurrentDraw(item)}>
+                                    <Image
+                                        source={item.drawCode == currentDraw.drawCode ? Images.checked_box : Images.check_box}
+                                        style={{ width: 24, height: 24 }}
+                                        tintColor={item.drawCode == currentDraw.drawCode ? lottColor : '#130F26'}
+                                    />
+                                    <IText style={{ fontSize: 14, marginLeft: 18, color: Color.black }}>
+                                        {`${printDraw(item)}`}
+                                    </IText>
+                                </TouchableOpacity>
+                            )
+                        })}
+                    </View>
+                </ScrollView>
                 <TouchableOpacity style={[styles.confirmButton, { backgroundColor: lottColor }]} onPress={() => choosing(currentDraw)}>
                     <IText style={styles.textConfirm}>{`Xác nhận`.toUpperCase()}</IText>
                 </TouchableOpacity>
@@ -115,11 +124,11 @@ const ChooseDrawSheetComponent = forwardRef(({ currentChoose, onChoose, listDraw
     );
 });
 
-export const ChooseDrawSheet = React.memo(ChooseDrawSheetComponent);
+export const ChooseDrawKeno = React.memo(Wiget);
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
-const SHEET_HEIGHT = 415
+const SHEET_HEIGHT = 630
 const BACKGROUND_OPACITY = 0.85
 
 const styles = StyleSheet.create({

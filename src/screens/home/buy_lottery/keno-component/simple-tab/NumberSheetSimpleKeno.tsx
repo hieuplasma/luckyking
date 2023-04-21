@@ -1,60 +1,39 @@
-import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Dimensions, Animated, ColorValue } from 'react-native';
-import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
-import { Color } from '@styles';
-import { Image, Images } from '@assets'
+import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from "react";
+import { Animated, View, TouchableOpacity, Dimensions, StyleSheet } from "react-native";
+import BottomSheet from '@gorhom/bottom-sheet';
 import { SwiperFlatList } from 'react-native-swiper-flatlist';
-import { LotteryType } from '@common';
-import { getColorLott, printNumber } from '@utils';
-import { ConsolasText, IText } from '@components';
-import { PerPagePowerMegaView } from './PerPagePowerMegaView';
-import { TitleNumberSheet } from '../component/TitleNumberSheet';
+import { Color } from "@styles";
+import { TitleSimpleKenoNumberSheet } from "./TitleSimpleKenoNumberSheet";
+import { PerPageSimpleKeno } from "./PerPageSimpleKeno";
+import { IText } from "@components";
 
-interface ChooseTypeSheetProps {
-    onChoose: (data: any) => void,
-    numberSet: any,
-    page?: number,
-    type: LotteryType
-}
+const lottColor = Color.keno
 
-const Wiget = forwardRef(({ onChoose, numberSet, page, type }: ChooseTypeSheetProps, ref) => {
-
-    const lottColor = getColorLott(type)
+const Wiget = forwardRef(({ page, numberSet, listBets, onChoose }: any, ref) => {
 
     // ref
     const bottomSheetRef = useRef<BottomSheet>(null);
     const swiperRef = useRef<SwiperFlatList>(null);
-
-    useEffect(() => {
-        // console.log('ChooseNumberSheet has been re-rendered');
-    });
 
     useImperativeHandle(ref, () => ({
         openSheet: onOpen,
         closeSheet: onClose
     }));
 
-    const [indexPage, setIndexPage]: any = useState(0)
-
+    const [indexPage, setIndexPage] = useState(0)
+    const onChangeIndex = useCallback((index: any) => {
+        setIndexPage(index.index)
+    }, [])
     useEffect(() => {
         (page || page === 0) ? swiperRef.current?.scrollToIndex({ animated: false, index: page }) : {}
     }, [page])
 
     const [currentNumbers, setCurrentNumbers] = useState([...numberSet])
-    const [currentLevel, setCurrentLevel] = useState([...numberSet[0]].length)
+    const [currentBets, setCurrentBets] = useState([...listBets])
 
     const choosing = () => {
         onClose()
-        onChoose(currentNumbers)
-    }
-
-    const totalSelected = () => {
-        const curr = [...currentNumbers]
-        let count = 0;
-        for (let i = 0; i < curr[indexPage].length; i++) {
-            if (curr[indexPage][i] !== false) count++
-        }
-        return count
+        onChoose(currentNumbers, currentBets)
     }
 
     const changeNumber = useCallback((numbers: any) => {
@@ -63,19 +42,11 @@ const Wiget = forwardRef(({ onChoose, numberSet, page, type }: ChooseTypeSheetPr
         setCurrentNumbers(curr)
     }, [currentNumbers, indexPage])
 
-    const checkIsOk = useCallback(() => {
-        const tmp = [...currentNumbers]
-        const len = tmp[0].length
-        for (let i = 0; i < tmp.length; i++) {
-            const element = tmp[i]
-            let count = 0;
-            element.map((item: any) => {
-                if (item === false) count++
-            })
-            if (count != 0 && count != len) return false
-        }
-        return true
-    }, [numberSet, currentNumbers])
+    const changeBet = useCallback((bet: number) => {
+        let curr = [...currentBets]
+        curr[indexPage] = bet
+        setCurrentBets(curr)
+    }, [currentBets, indexPage])
 
     const [opacity, setOpacity] = useState(new Animated.Value(0))
     const [isOpen, setIsOpen] = useState(false)
@@ -94,7 +65,7 @@ const Wiget = forwardRef(({ onChoose, numberSet, page, type }: ChooseTypeSheetPr
     const onOpen = () => {
         setIsOpen(true)
         setCurrentNumbers([...numberSet])
-        setCurrentLevel([...numberSet[0]].length)
+        setCurrentBets([...listBets])
         bottomSheetRef.current?.expand()
         Animated.timing(opacity, {
             toValue: BACKGROUND_OPACITY,
@@ -126,6 +97,14 @@ const Wiget = forwardRef(({ onChoose, numberSet, page, type }: ChooseTypeSheetPr
         changeNumber(numberChangeObj)
     }, [numberChangeObj])
 
+    const [betChangeObj, setBetChangeObj] = useState(0)
+    const handleBetChange = useCallback((value: number) => {
+        setBetChangeObj(value)
+    }, [])
+    useEffect(() => {
+        changeBet(betChangeObj)
+    }, [betChangeObj])
+
     return (
         <BottomSheet
             ref={bottomSheetRef}
@@ -141,46 +120,44 @@ const Wiget = forwardRef(({ onChoose, numberSet, page, type }: ChooseTypeSheetPr
             backgroundStyle={styles.sheetContainer}
         >
             <View style={{ flex: 1 }}>
-                <TitleNumberSheet
+                <TitleSimpleKenoNumberSheet
                     indexPage={indexPage}
+                    selected={currentNumbers[indexPage]}
                     swiperRef={swiperRef}
-                    totalSelected={totalSelected()}
-                    currentLevel={currentLevel}
                 />
-                <View style={{ flex: 1, marginTop: 12 }}>
+                <View style={{ flex: 1 }}>
                     <SwiperFlatList
-                        // onViewableItemsChanged={(params) => setIndexPage(params.changed?.[0]?.index)}
-                        useReactNativeGestureHandler
                         index={0}
                         ref={swiperRef}
                         data={currentNumbers}
-                        renderItem={({ item }) => {
+                        extraData={currentNumbers}
+                        renderItem={({ item, index }) => {
                             return (
-                                <PerPagePowerMegaView
+                                <PerPageSimpleKeno
                                     listNumber={item}
-                                    lottColor={lottColor}
-                                    onNumberChange={handleNumberChange}
+                                    bet={listBets[index]}
+                                    onChangeNumber={handleNumberChange}
+                                    onChangeBet={handleBetChange}
                                 />
                             )
                         }}
                         keyExtractor={(item, index) => "" + index}
-                        extraData={currentNumbers}
-                        onChangeIndex={(index) => setIndexPage(index.index)}
+                        onChangeIndex={onChangeIndex}
                     />
                 </View>
-                <TouchableOpacity disabled={!checkIsOk()} style={[styles.confirmButton, { backgroundColor: lottColor, opacity: checkIsOk() ? 1 : 0.4 }]} onPress={choosing}>
+                <TouchableOpacity style={styles.confirmButton} onPress={choosing}>
                     <IText style={styles.textConfirm}>{`Xác nhận`.toUpperCase()}</IText>
                 </TouchableOpacity>
             </View>
-        </BottomSheet >
-    );
-});
+        </BottomSheet>
+    )
+})
 
-export const ChooseNumberSheet = React.memo(Wiget)
+export const NumberSheetSimpleKeno = React.memo(Wiget)
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
-const SHEET_HEIGHT = 520
+const SHEET_HEIGHT = 700
 const BACKGROUND_OPACITY = 0.85
 
 const styles = StyleSheet.create({
@@ -193,27 +170,15 @@ const styles = StyleSheet.create({
         right: 0,
         bottom: 0,
     },
-    title: {
-        fontSize: 18, color: Color.black, alignSelf: 'center', fontWeight: 'bold'
-    },
-    ballContainer: {
-        width: (windowWidth - 48) / 8, height: 44,
-        justifyContent: 'center', alignItems: 'center'
-    },
-    ball: {
-        width: 32, height: 32,
-        justifyContent: 'center', alignItems: 'center',
-        borderRadius: 99, backgroundColor: '#E9E6E6'
-    },
-    textBall: { fontSize: 16, marginTop: 2 },
     confirmButton: {
-        margin: 16, backgroundColor: Color.power, borderRadius: 10,
+        margin: 16, backgroundColor: Color.keno, borderRadius: 10,
         justifyContent: 'center', alignItems: 'center',
-        height: 44, width: windowWidth - 32
+        height: 44, width: windowWidth - 32, marginBottom: 4, marginTop: 8
     },
     textConfirm: {
         color: Color.white,
         fontSize: 16,
         fontWeight: 'bold',
+        backgroundColor: lottColor
     }
 })

@@ -10,7 +10,7 @@ import {
     printNumber, ScreenUtils
 } from "@utils";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { View, StyleSheet, Text, ScrollView, TouchableOpacity, Dimensions, StatusBar, Alert } from "react-native";
+import { View, StyleSheet, Text, ScrollView, TouchableOpacity, Dimensions, StatusBar, Alert, ImageBackground } from "react-native";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import { ChooseTypeSheet } from "./power-mega-component/ChooseTypeSheet";
 import { useDispatch, useSelector } from "react-redux";
@@ -68,7 +68,9 @@ export const MegaScreen = React.memo((props: any) => {
     const [pageNumber, setPageNumber] = useState(0)
 
     useEffect(() => {
+        window.loadingIndicator.show()
         const timer = setTimeout(() => {
+            window.loadingIndicator.hide()
             setShowBottomSheet(true);
         }, 500); // change delay as needed
         return () => clearTimeout(timer);
@@ -264,22 +266,24 @@ export const MegaScreen = React.memo((props: any) => {
             {/* //Header */}
             <HeaderBuyLottery navigation={navigation} lotteryType={LotteryType.Mega} />
             {/* //Body */}
-            <ViewAbove typePlay={typePlay} drawSelected={drawSelected} openTypeSheet={openTypeSheet} openDrawSheet={openDrawSheet} />
+            <ViewAbove typePlay={typePlay.label} drawSelected={drawSelected} openTypeSheet={openTypeSheet} openDrawSheet={openDrawSheet} />
             {/* //Chon so */}
-            <ScrollView style={{ flex: 1 }}>
-                <View style={{ paddingHorizontal: 16, paddingVertical: 8 }}>
-                    {numberSet.map((item: any, index: number) =>
-                        <LineView
-                            key={index}
-                            item={item}
-                            index={index}
-                            openNumberSheet={() => openNumberSheet(index)}
-                            deleteNumber={() => deleteNumber(index)}
-                            randomNumber={() => randomNumber(index)}
-                        />
-                    )}
-                </View>
-            </ScrollView>
+            <Image source={Images.bg_ticket_1} style={{flex: 1}} resizeMode="contain">
+                <ScrollView style={{ flex: 1 }}>
+                    <View style={{ paddingHorizontal: 16, paddingVertical: 8 }}>
+                        {numberSet.map((item: any, index: number) =>
+                            <LineView
+                                key={index}
+                                item={item}
+                                index={index}
+                                openNumberSheet={() => openNumberSheet(index)}
+                                deleteNumber={() => deleteNumber(index)}
+                                randomNumber={() => randomNumber(index)}
+                            />
+                        )}
+                    </View>
+                </ScrollView>
+            </Image>
 
             {/* //Footer */}
             <View style={{ paddingHorizontal: 16, marginBottom: 5 }}>

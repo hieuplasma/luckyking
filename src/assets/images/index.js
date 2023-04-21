@@ -56,5 +56,7 @@ export const Images = {
   luckyking_baw: require('./luckyking_baw.png'),
   transaction: require('./transaction.png'),
   keno_logo: require('./keno_logo.png'),
-  statistical: require('./statistical.png')
+  statistical: require('./statistical.png'),
+  good_luck: require('./good_luck.png'),
+  bg_ticket_1: require('./bg_ticket_1.png')
 };

@@ -5,6 +5,19 @@ export function dateConvert(param: Date) {
     return (date < 10 ? "0" + date : '' + date) + "/" + (month < 10 ? "0" + month : '' + month) + "/" + year
 }
 
+export function dateTimeConvert(param: Date) {
+    const date = param.getDate()
+    const month = param.getMonth() + 1
+    const year = param.getFullYear()
+    const hour = param.getHours()
+    const min = param.getMinutes()
+    return smallThan10(hour) + ":" + smallThan10(min) + " - " + smallThan10(date) + "/" + smallThan10(month)
+}
+
+function smallThan10(param: number) {
+    return param < 10 ? "0" + param : '' + param
+}
+
 export function printWeekDate(param: Date) {
     const date = param.getDate()
     const month = param.getMonth() + 1

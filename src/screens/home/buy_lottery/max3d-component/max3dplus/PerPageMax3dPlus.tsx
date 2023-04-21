@@ -6,7 +6,7 @@ import { ChangeBetButton } from "../../component/ChangeBetButton";
 import { printMoneyK } from "@utils";
 
 const betMilestones = [
-    10000, 20000, 30000, 50000, 100000, 200000, 300000
+    10000, 20000, 50000, 100000, 200000, 300000
 ]
 
 const fullNumber = Array.from({ length: 10 }, (_, index) => index);
@@ -25,7 +25,7 @@ export const PerPageMax3dPlus = React.memo(({ hugePosition, listNumber, lottColo
     useEffect(() => {
         console.log("PerPageView rerender:::")
     })
-    
+
     const [currentBet, setBet] = useState(bet)
     const [listChoose, setList] = useState([...listNumber])
 

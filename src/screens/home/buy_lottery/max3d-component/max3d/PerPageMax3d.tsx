@@ -6,7 +6,7 @@ import { ChangeBetButton } from "../../component/ChangeBetButton";
 import { printMoneyK } from "@utils";
 
 const betMilestones = [
-    10000, 20000, 30000, 50000, 100000, 200000, 300000
+    10000, 20000, 50000, 100000, 200000, 300000
 ]
 
 const column = [0, 1, 2]

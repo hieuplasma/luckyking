@@ -10,6 +10,9 @@ import { StyleSheet, View, Dimensions, TouchableOpacity } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
 import { getColorLott } from '@utils';
+import { SimpleKenoTab } from './keno-component/SimpleKenoTab';
+import { BagKenoTab } from './keno-component/BagKenoTab';
+import { NurturingKenoTab } from './keno-component/NurturingKenoTab';
 
 type NavigationProp = StackNavigationProp<HomeStackParamList, 'KenoScreen'>;
 type NavigationRoute = RouteProp<HomeStackParamList, 'KenoScreen'>;
@@ -42,8 +45,10 @@ export const KenoScreen = () => {
 
     const [showBottomSheet, setShowBottomSheet] = useState(false)
     useEffect(() => {
+        window.loadingIndicator.show()
         const timer = setTimeout(() => {
             setShowBottomSheet(true);
+            window.loadingIndicator.hide()
         }, 500); // change delay as needed
         return () => clearTimeout(timer);
     }, []);
@@ -85,6 +90,15 @@ export const KenoScreen = () => {
                 </TouchableOpacity>
                 <View style={{ width: 8 }} />
             </View>
+
+            <>
+                {type.value == 0 ?
+                    <SimpleKenoTab showBottomSheet={showBottomSheet} />
+                    : type.value == 1 ?
+                        <BagKenoTab showBottomSheet={showBottomSheet} />
+                        : <NurturingKenoTab showBottomSheet={showBottomSheet} />
+                }
+            </>
 
         </SafeAreaView>
     )

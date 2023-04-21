@@ -38,7 +38,9 @@ export const Max3dScreen = () => {
 
     const [showBottomSheet, setShowBottomSheet] = useState(false)
     useEffect(() => {
+        window.loadingIndicator.show()
         const timer = setTimeout(() => {
+            window.loadingIndicator.hide()
             setShowBottomSheet(true);
         }, 500); // change delay as needed
         return () => clearTimeout(timer);

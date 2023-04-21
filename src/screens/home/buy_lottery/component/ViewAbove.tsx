@@ -28,7 +28,7 @@ export const ViewAbove = React.memo(({ typePlay, drawSelected, openTypeSheet, op
             </View>
             <View style={{ flexDirection: 'row', paddingTop: 5, justifyContent: 'space-between' }}>
                 <TouchableOpacity activeOpacity={0.6} style={styles.dropDown} onPress={openTypeSheet}>
-                    <IText style={{ fontSize: 13 }}>{typePlay.label}</IText>
+                    <IText style={{ fontSize: 13 }}>{typePlay}</IText>
                     <Image source={Images.down_arrow} style={{ width: 12, height: 6 }}></Image>
                 </TouchableOpacity>
 

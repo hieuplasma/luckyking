@@ -8,7 +8,7 @@ import { LotteryType } from '@common';
 import { getColorLott, printMoney, printMoneyK, printNumber } from '@utils';
 import { ConsolasText, IText } from '@components';
 import { ChangeBetButton } from '../../component/ChangeBetButton';
-import { TitleNumberSheet } from '../../component/HeaderNumberSheet';
+import { TitleNumberSheet } from '../../component/TitleNumberSheet';
 import { PerPageMax3dPlus } from './PerPageMax3dPlus';
 
 interface NumberSheet3DPlusProps {

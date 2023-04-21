@@ -52,7 +52,9 @@ export const Max3dProScreen = () => {
 
     const [showBottomSheet, setShowBottomSheet] = useState(false)
     useEffect(() => {
+        window.loadingIndicator.show()
         const timer = setTimeout(() => {
+            window.loadingIndicator.hide()
             setShowBottomSheet(true);
         }, 500); // change delay as needed
         return () => clearTimeout(timer);
@@ -306,7 +308,7 @@ export const Max3dProScreen = () => {
     return (
         <SafeAreaView style={styles.container}>
             <HeaderBuyLottery navigation={navigation} lotteryType={LotteryType.Max3DPro} />
-            <ViewAbove typePlay={typePlay} drawSelected={drawSelected} openTypeSheet={openTypeSheet} openDrawSheet={openDrawSheet} />
+            <ViewAbove typePlay={typePlay.label} drawSelected={drawSelected} openTypeSheet={openTypeSheet} openDrawSheet={openDrawSheet} />
 
             {
                 (typePlay.value == 5 || typePlay.value == 6) ?

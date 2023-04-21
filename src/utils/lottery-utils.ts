@@ -1,5 +1,5 @@
 import { LotteryType } from "@common";
-import { dateConvert } from "./time-utils";
+import { dateConvert, dateTimeConvert } from "./time-utils";
 import { Images } from "@assets";
 
 export function convolutions(a: number, b: number) {
@@ -42,6 +42,7 @@ export function printDraw(param: any) {
     const code = parseInt(param.drawCode.toString())
     const date = new Date(param.drawTime)
     if (code < 1000) return "#00" + code + " - " + dateConvert(date)
+    if (code > 100000) return "#" + code + " - " + dateTimeConvert(date)
     return "#0" + code + " - " + dateConvert(date)
 }
 

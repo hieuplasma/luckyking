@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     headerContainer: {
         flexDirection: 'row',
         // height: 40,
-        height: ScreenUtils.getHeaderHeight(),
+        height: ScreenUtils.getHeaderHeight() + 40,
         alignItems: 'center',
         paddingHorizontal: 16,
         justifyContent: 'space-between',

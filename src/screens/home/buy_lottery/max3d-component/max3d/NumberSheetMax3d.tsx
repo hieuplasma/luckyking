@@ -6,7 +6,7 @@ import { SwiperFlatList } from 'react-native-swiper-flatlist';
 import { LotteryType } from '@common';
 import { getColorLott } from '@utils';
 import { ConsolasText, IText } from '@components';
-import { TitleNumberSheet } from '../../component/HeaderNumberSheet';
+import { TitleNumberSheet } from '../../component/TitleNumberSheet';
 import { PerPageMax3d } from './PerPageMax3d';
 
 interface NumberSheetMax3dProps {

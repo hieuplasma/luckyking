@@ -4,7 +4,7 @@ import { HomeStackParamList, ScreenName } from '@navigation';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { SimpleHeaderView, translate } from '@shared';
-import { Icon } from '@assets'
+import { Icon, Image, Images } from '@assets'
 import { Color, Style } from '@styles';
 import { dateConvert, NavigationUtils, ScreenUtils } from '@utils';
 import React, { useCallback } from 'react';
@@ -84,7 +84,8 @@ export const HomeScreen = React.memo((props?: HomeScreenProps) => {
 
   const renderBanner = useCallback(() => {
     return (
-      <View
+      <Image
+        source={Images.good_luck}
         style={[
           Style.Background.White,
           Style.Size.WidthMatchParent,
@@ -103,7 +104,7 @@ export const HomeScreen = React.memo((props?: HomeScreenProps) => {
         image="https://media.vietlott.vn//main/06.2018/cms/game/keno.png"
         type={LotteryType.Keno}
         targetTime={kenoFirstDraw ? new Date(kenoFirstDraw.drawTime) : undefined}
-      action={() => NavigationUtils.navigate(navigation, ScreenName.HomeChild.KenoScreen)}
+        action={() => NavigationUtils.navigate(navigation, ScreenName.HomeChild.KenoScreen)}
       />
     );
   }, [kenoFirstDraw]);
