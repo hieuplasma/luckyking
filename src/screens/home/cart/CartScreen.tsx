@@ -25,7 +25,7 @@ export const CartScreen = React.memo(() => {
     const safeAreaInsets = useSafeAreaInsets();
     const dispatch = useDispatch()
 
-    useEffect(()=> {
+    useEffect(() => {
         // console.log("cart screen re-render")
     })
 
@@ -136,7 +136,7 @@ export const CartScreen = React.memo(() => {
                     const lottColor = getColorLott(item.type)
                     return (
                         <View style={styles.borderItem}>
-                            <LogoIcon type={item.type}/>
+                            <LogoIcon type={item.type} />
                             <IText style={styles.textType}>{`${printTypePlay(item.NumberLottery.level, item.type)}`}</IText>
                             <View>
                                 {
@@ -152,7 +152,7 @@ export const CartScreen = React.memo(() => {
                                                         {
                                                             numbers.map((number: number, id2: number) => {
                                                                 return (
-                                                                    <View key={number + '' + id2} style={[styles.ball, {backgroundColor: lottColor}]}>
+                                                                    <View key={number + '' + id2} style={[styles.ball, { backgroundColor: lottColor }]}>
                                                                         <ConsolasText style={styles.textBall}>
                                                                             {`${printNumber(number)}`}
                                                                         </ConsolasText>
@@ -179,18 +179,24 @@ export const CartScreen = React.memo(() => {
                                     })
                                 }
                             </View>
-                            <View style={styles.lineBottom}>
-                                <IText style={{ fontSize: 14, fontWeight: '400' }}>
-                                    {`Kỳ ${printDrawCode(item.drawCode)} - ${printWeekDate(new Date(item.drawTime))}`}
-                                </IText>
-                                <Image source={Images.edit_pen} style={styles.iconTrash}></Image>
-                            </View>
+                            {
+                                item.drawCode.map((code: number, indexCode: number) => {
+                                    return (
+                                        <View style={styles.lineBottom} key={code}>
+                                            <IText style={{ fontSize: 14, fontWeight: '400' }}>
+                                                {`Kỳ ${printDrawCode(item.drawCode[indexCode])} - ${printWeekDate(new Date(item.drawTime[indexCode]))}`}
+                                            </IText>
+                                            {/* <Image source={Images.edit_pen} style={styles.iconTrash}></Image> */}
+                                        </View>
+                                    )
+                                })
+                            }
                             <View style={styles.lineBottom}>
                                 <IText style={{ fontSize: 14, fontWeight: 'bold' }}>
                                     {`Vé ${printNumber(index + 1)}:`}
                                 </IText>
                                 <IText style={{ color: lottColor, marginLeft: 12, fontSize: 14, fontWeight: 'bold' }}>
-                                    {`${printMoney(item.bets)}đ`}
+                                    {`${printMoney(item.amount)}đ`}
                                 </IText>
                                 <View style={{ flex: 1 }} />
                                 <TouchableOpacity onPress={() => openModalDeleteLottery(item)}>
@@ -309,6 +315,11 @@ const styles = StyleSheet.create({
     },
     textBall: { fontSize: 13, color: Color.white },
     iconTrash: { width: 28, height: 28 },
-    lineBottom: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 12 },
+    lineBottom: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginTop: 12
+    },
     buttonPay: { borderRadius: 10, height: 44, width: 120, backgroundColor: Color.luckyKing, justifyContent: 'center', alignItems: 'center' }
 })

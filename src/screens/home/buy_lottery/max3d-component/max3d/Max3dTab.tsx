@@ -39,7 +39,7 @@ export const Max3dTab = React.memo((props: Props) => {
     const listDraw = useSelector((state: any) => state.drawReducer.max3dListDraw)
 
     const [typePlay, setType]: any = useState({ label: "Cơ bản", value: 1 });
-    const [drawSelected, setDraw]: any = useState(listDraw[0])
+    const [drawSelected, setDraw]: any = useState([listDraw[0]])
     const [numberSet, setNumbers]: any = useState(initNumber)
     const [numberFake, setNumberFake]: any = useState(initNumber)
     const [bets, setBets] = useState(initBets)
@@ -109,8 +109,8 @@ export const Max3dTab = React.memo((props: Props) => {
         const tmp = generateMax3d(level, currentNumber, bets, hugePosition[0])
         setGenrated(tmp.numberGenerated)
         setGeneratedBets(tmp.betsGenerated)
-        setTotalCost(tmp.totalCost)
-    }, [numberSet, bets])
+        setTotalCost(tmp.totalCost * drawSelected.length)
+    }, [numberSet, bets, drawSelected])
 
     const onChangeHugePositon = useCallback((position: number) => {
         let tmp = [
@@ -313,7 +313,7 @@ export const Max3dTab = React.memo((props: Props) => {
                         </>
                 }
                 <ViewFooter2
-                    totalCost={typePlay.value != 4 ? totalCost : totalCostBag}
+                    totalCost={typePlay.value != 4 ? totalCost : totalCostBag * drawSelected.length}
                     addToCart={addToCart}
                     bookLottery={bookLottery}
                     lotteryType={LotteryType.Max3D}

@@ -53,8 +53,8 @@ export const RenderLineKeno = React.memo(({ item, title, openNumberSheet, delete
                                     </View>
                                 )
                             })
-                            : <View style={[styles.borderButton, { borderColor: lottColor, height: 30, paddingHorizontal: 15  }]}>
-                                <IText style={{ color: lottColor, fontWeight:'bold' }}>{getName(item[0])}</IText>
+                            : <View style={[styles.borderButton, { borderColor: lottColor, height: 30, paddingHorizontal: 15 }]}>
+                                <IText style={{ color: lottColor, fontWeight: 'bold' }}>{getName(item[0])}</IText>
                             </View>}
             </TouchableOpacity>
             <TouchableOpacity style={styles.buttonBets} onPress={openNumberSheet}>

@@ -79,8 +79,8 @@ export const PowerScreen = React.memo((props: PowerScreenProps) => {
             const element = numberSet[i]
             if (element[0] || element[1]) set++
         }
-        setTotalCost(set * 10000 * convolutions(MAX_SET, level))
-    }, [numberSet])
+        setTotalCost(set * 10000 * convolutions(MAX_SET, level) * drawSelected.length)
+    }, [numberSet, drawSelected])
 
     const randomNumber = useCallback((index: number) => {
         const currentNumber = [...numberSet]
@@ -129,6 +129,8 @@ export const PowerScreen = React.memo((props: PowerScreenProps) => {
 
     const bookLottery = async () => {
         const currentNumber = [...numberSet]
+        let drawCodes: any = []
+        let drawTimes: any = []
         let numbers: string[] = []
         for (let i = 0; i < currentNumber.length; i++) {
             let tmp = ""
@@ -141,8 +143,12 @@ export const PowerScreen = React.memo((props: PowerScreenProps) => {
             }
         }
         if (numbers.length == 0) {
-            return Alert.alert("Thông báo", "Bạn chưa chọn bộ số nào")
+            return window.myalert.show({ title: 'Bạn chưa chọn bộ số nào', btnLabel: "Đã hiểu" })
         }
+        drawSelected.map((item: any) => {
+            drawCodes.push(item.drawCode)
+            drawTimes.push(item.drawTime)
+        })
         const total = totalCost
         const surchagre = calSurcharge(totalCost)
         let body: any = {
@@ -152,13 +158,14 @@ export const PowerScreen = React.memo((props: PowerScreenProps) => {
             status: OrderStatus.PENDING,
             method: OrderMethod.Keep,
             level: typePlay.value,
-            drawCode: drawSelected.drawCode,
+            drawCode: drawCodes,
+            drawTime: drawTimes,
             numbers: numbers
         }
         window.loadingIndicator.show()
         const res = await lotteryApi.bookLotteryPowerMega(body)
         if (res) {
-            Alert.alert("Thành công", "Đã thanh toán mua vé thành công!")
+            window.myalert.show({ title: 'Đã thanh toán mua vé thành công!', btnLabel: "OK", alertType: 'success' })
             dispatch(updateUser({ luckykingBalance: luckykingBalance - total - surchagre }))
             refreshChoosing()
         }
@@ -167,6 +174,8 @@ export const PowerScreen = React.memo((props: PowerScreenProps) => {
 
     const addToCart = async () => {
         const currentNumber = [...numberSet]
+        let drawCodes: any = []
+        let drawTimes: any = []
         let numbers: string[] = []
         for (let i = 0; i < currentNumber.length; i++) {
             let tmp = ""
@@ -179,23 +188,25 @@ export const PowerScreen = React.memo((props: PowerScreenProps) => {
             }
         }
         if (numbers.length == 0) {
-            // return Alert.alert("Thông báo", "Bạn chưa chọn bộ số nào")
             return window.myalert.show({ title: 'Bạn chưa chọn bộ số nào', btnLabel: "Đã hiểu" })
         }
+        drawSelected.map((item: any) => {
+            drawCodes.push(item.drawCode)
+            drawTimes.push(item.drawTime)
+        })
         let body: any = {
             lotteryType: LotteryType.Power,
             amount: totalCost,
             status: OrderStatus.CART,
             level: typePlay.value,
-            drawCode: drawSelected.drawCode,
-            drawTime: drawSelected.drawTime,
+            drawCode: drawCodes,
+            drawTime: drawTimes,
             numbers: numbers
         }
         window.loadingIndicator.show()
         const res = await lotteryApi.addPowerMegaToCart(body)
         // console.log(res)
         if (res) {
-            // Alert.alert("Thành công", "Đã thêm vé vào giỏ hàng!")
             window.myalert.show({ title: 'Đã thêm vé vào giỏ hàng!', btnLabel: "OK", alertType: 'success' })
             refreshChoosing()
             dispatch(addLottery(res.data))

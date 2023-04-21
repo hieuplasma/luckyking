@@ -35,6 +35,16 @@ const ChooseDrawSheetComponent = forwardRef(({ currentChoose, onChoose, listDraw
         onChoose(type);
     }
 
+    const changeDraw = (item: any) => {
+        const newList = [...currentDraw]
+        if (newList.includes(item)) {
+            const index = newList.indexOf(item)
+            newList.splice(index, 1)
+        }
+        else newList.push(item)
+        setCurrentDraw(newList)
+    }
+
     const [opacity, setOpacity] = useState(new Animated.Value(0))
     const [isOpen, setIsOpen] = useState(false)
     const onClose = () => {
@@ -94,11 +104,11 @@ const ChooseDrawSheetComponent = forwardRef(({ currentChoose, onChoose, listDraw
                 <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', paddingHorizontal: 24, paddingVertical: 6, flex: 1 }}>
                     {listDraw.map((item: any, index: number) => {
                         return (
-                            <TouchableOpacity activeOpacity={0.4} key={index} style={styles.item} onPress={() => setCurrentDraw(item)}>
+                            <TouchableOpacity activeOpacity={0.4} key={index} style={styles.item} onPress={() => changeDraw(item)}>
                                 <Image
-                                    source={item.drawCode == currentDraw.drawCode ? Images.checked_box : Images.check_box}
+                                    source={currentDraw.includes(item) ? Images.checked_box : Images.check_box}
                                     style={{ width: 24, height: 24 }}
-                                    tintColor={item.drawCode == currentDraw.drawCode ? lottColor : '#130F26'}
+                                    tintColor={currentDraw.includes(item) ? lottColor : '#130F26'}
                                 />
                                 <IText style={{ fontSize: 14, marginLeft: 18, color: Color.black }}>
                                     {`${printDraw(item)}`}

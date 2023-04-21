@@ -56,7 +56,7 @@ export const MegaScreen = React.memo((props: any) => {
 
     const [showBottomSheet, setShowBottomSheet] = useState(false)
     const [typePlay, setType]: any = useState({ label: "Cơ bản", value: 6 });
-    const [drawSelected, setDraw]: any = useState(listDraw[0])
+    const [drawSelected, setDraw]: any = useState([listDraw[0]])
     const [numberSet, setNumbers]: any = useState(initNumber)
     const [numberSetFake, setNumberSetFake]: any = useState(initNumber)
     const [totalCost, setTotalCost] = useState(0)
@@ -84,8 +84,8 @@ export const MegaScreen = React.memo((props: any) => {
             const element = numberSet[i]
             if (element[0] || element[1]) set++
         }
-        setTotalCost(set * 10000 * convolutions(MAX_SET, level))
-    }, [numberSet])
+        setTotalCost(set * 10000 * convolutions(MAX_SET, level) * drawSelected.length)
+    }, [numberSet, drawSelected])
 
     const randomNumber = (index: number) => {
         const currentNumber = [...numberSet]
@@ -134,6 +134,8 @@ export const MegaScreen = React.memo((props: any) => {
 
     const bookLottery = async () => {
         const currentNumber = [...numberSet]
+        let drawCodes: any = []
+        let drawTimes: any = []
         let numbers: string[] = []
         for (let i = 0; i < currentNumber.length; i++) {
             let tmp = ""
@@ -148,6 +150,10 @@ export const MegaScreen = React.memo((props: any) => {
         if (numbers.length == 0) {
             return Alert.alert("Thông báo", "Bạn chưa chọn bộ số nào")
         }
+        drawSelected.map((item: any) => {
+            drawCodes.push(item.drawCode)
+            drawTimes.push(item.drawTime)
+        })
         const total = totalCost
         const surchagre = calSurcharge(totalCost)
         let body: any = {
@@ -157,7 +163,8 @@ export const MegaScreen = React.memo((props: any) => {
             status: OrderStatus.PENDING,
             method: OrderMethod.Keep,
             level: typePlay.value,
-            drawCode: drawSelected.drawCode,
+            drawCode: drawCodes,
+            drawTime: drawTimes,
             numbers: numbers
         }
         window.loadingIndicator.show()
@@ -172,6 +179,8 @@ export const MegaScreen = React.memo((props: any) => {
 
     const addToCart = async () => {
         const currentNumber = [...numberSet]
+        let drawCodes: any = []
+        let drawTimes: any = []
         let numbers: string[] = []
         for (let i = 0; i < currentNumber.length; i++) {
             let tmp = ""
@@ -186,13 +195,17 @@ export const MegaScreen = React.memo((props: any) => {
         if (numbers.length == 0) {
             return Alert.alert("Thông báo", "Bạn chưa chọn bộ số nào")
         }
+        drawSelected.map((item: any) => {
+            drawCodes.push(item.drawCode)
+            drawTimes.push(item.drawTime)
+        })
         let body: any = {
             lotteryType: LotteryType.Mega,
             amount: totalCost,
             status: OrderStatus.CART,
             level: typePlay.value,
-            drawCode: drawSelected.drawCode,
-            drawTime: drawSelected.drawTime,
+            drawCode: drawCodes,
+            drawTime: drawTimes,
             numbers: numbers
         }
         window.loadingIndicator.show()
@@ -207,7 +220,7 @@ export const MegaScreen = React.memo((props: any) => {
     }
 
     const refreshChoosing = useCallback(() => {
-        setDraw(listDraw[0])
+        setDraw([listDraw[0]])
         setType({ label: "Cơ bản", value: 6 })
         setNumbers(initNumber)
     }, [])
@@ -268,7 +281,7 @@ export const MegaScreen = React.memo((props: any) => {
             {/* //Body */}
             <ViewAbove typePlay={typePlay.label} drawSelected={drawSelected} openTypeSheet={openTypeSheet} openDrawSheet={openDrawSheet} />
             {/* //Chon so */}
-            <Image source={Images.bg_ticket_1} style={{flex: 1}} resizeMode="contain">
+            <Image source={Images.bg_ticket_1} style={{ flex: 1 }} resizeMode="contain">
                 <ScrollView style={{ flex: 1 }}>
                     <View style={{ paddingHorizontal: 16, paddingVertical: 8 }}>
                         {numberSet.map((item: any, index: number) =>
