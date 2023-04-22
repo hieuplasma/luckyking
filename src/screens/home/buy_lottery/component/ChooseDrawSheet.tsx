@@ -38,8 +38,10 @@ const ChooseDrawSheetComponent = forwardRef(({ currentChoose, onChoose, listDraw
     const changeDraw = (item: any) => {
         const newList = [...currentDraw]
         if (newList.includes(item)) {
-            const index = newList.indexOf(item)
-            newList.splice(index, 1)
+            if (newList.length > 0) {
+                const index = newList.indexOf(item)
+                newList.splice(index, 1)
+            }
         }
         else newList.push(item)
         setCurrentDraw(newList)

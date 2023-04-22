@@ -14,6 +14,7 @@ export const Images = {
   fast_pick: require('./fast_pick.png'),
   down_arrow: require('./down_arrow.png'),
   check_box: require('./check_box.png'),
+  // check_box: require('./check_box.svg'),
   checked_box: require('./checked_box.png'),
   chia_se: require('./chia_se.png'),
   contact: require('./contact.png'),
@@ -58,5 +59,5 @@ export const Images = {
   keno_logo: require('./keno_logo.png'),
   statistical: require('./statistical.png'),
   good_luck: require('./good_luck.png'),
-  bg_ticket_1: require('./bg_ticket_1.png')
+  bg_ticket_1: require('./bg_ticket_1.png'),
 };

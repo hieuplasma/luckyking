@@ -20,13 +20,36 @@ const Wiget = forwardRef(({ currentChoose, onChoose }: ChooseTypeSheetProps, ref
     const bottomSheetRef = useRef<BottomSheet>(null);
     const listDraw = useSelector((state: any) => state.drawReducer.kenoListDraw)
 
-    useEffect(() => {
-        if (!listDraw.includes(currentDraw)) {
-            setCurrentDraw(listDraw[0])
+    const specificInclude = useCallback((array: any, element: any) => {
+        for (let i = 0; i < array.length; i++) {
+            if (array[i].drawCode == element.drawCode) return true
         }
+        return false
+    }, [])
+
+    useEffect(() => {
+        let tmp = [...currentDraw]
+        for (let i = 0; i < currentDraw.length; i++) {
+            if (!specificInclude(listDraw, currentDraw[i]))
+                tmp.splice(i, 1)
+        }
+        if (tmp.length == 0) tmp = [listDraw[0]]
+        setCurrentDraw(tmp)
     }, [listDraw])
 
     const [currentDraw, setCurrentDraw] = useState(currentChoose)
+
+    const changeDraw = (item: any) => {
+        const newList = [...currentDraw]
+        if (specificInclude(newList, item)) {
+            if (newList.length > 1) {
+                const index = newList.indexOf(item)
+                newList.splice(index, 1)
+            }
+        }
+        else newList.push(item)
+        setCurrentDraw(newList)
+    }
 
     useImperativeHandle(ref, () => ({
         openSheet: onOpen,
@@ -34,7 +57,7 @@ const Wiget = forwardRef(({ currentChoose, onChoose }: ChooseTypeSheetProps, ref
     }));
 
     useEffect(() => {
-        console.log('ChooseDrawSheet has been re-rendered, ');
+        console.log('ChooseDrawSheet has been re-rendered, ', currentDraw);
     });
 
     const choosing = (draw: any) => {
@@ -102,11 +125,11 @@ const Wiget = forwardRef(({ currentChoose, onChoose }: ChooseTypeSheetProps, ref
                     <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', paddingHorizontal: 24, paddingVertical: 6, flex: 1 }}>
                         {listDraw.map((item: any, index: number) => {
                             return (
-                                <TouchableOpacity activeOpacity={0.4} key={index} style={styles.item} onPress={() => setCurrentDraw(item)}>
+                                <TouchableOpacity activeOpacity={0.4} key={index} style={styles.item} onPress={() => changeDraw(item)}>
                                     <Image
-                                        source={item.drawCode == currentDraw.drawCode ? Images.checked_box : Images.check_box}
+                                        source={specificInclude(currentDraw, item) ? Images.checked_box : Images.check_box}
                                         style={{ width: 24, height: 24 }}
-                                        tintColor={item.drawCode == currentDraw.drawCode ? lottColor : '#130F26'}
+                                        tintColor={specificInclude(currentDraw, item) ? lottColor : '#130F26'}
                                     />
                                     <IText style={{ fontSize: 14, marginLeft: 18, color: Color.black }}>
                                         {`${printDraw(item)}`}

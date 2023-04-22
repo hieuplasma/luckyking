@@ -35,12 +35,13 @@ export const KenoScreen = () => {
     const [type, setType] = useState(types[0])
 
     const changeType = useCallback((type: any) => {
+        // setType(type)
         window.loadingIndicator.show()
         let timer1 = setTimeout(() => {
             setType(type)
             clearTimeout(timer1)
             window.loadingIndicator.hide()
-        }, 500);
+        }, 100);
     }, [])
 
     const [showBottomSheet, setShowBottomSheet] = useState(false)

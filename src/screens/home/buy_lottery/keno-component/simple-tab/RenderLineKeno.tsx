@@ -36,7 +36,7 @@ export const RenderLineKeno = React.memo(({ item, title, openNumberSheet, delete
 
     return (
         <View style={styles.lineNumber} >
-            <IText style={{ fontSize: 18, fontWeight: 'bold', width: 10 }}>{title}</IText>
+            <IText style={{ fontSize: 18, fontWeight: 'bold', width: 15 }}>{title}</IText>
             <TouchableOpacity style={{ flex: 1, flexDirection: 'row', marginHorizontal: 18, flexWrap: 'wrap' }} onPress={openNumberSheet}>
                 {
                     item.length == 0 ?

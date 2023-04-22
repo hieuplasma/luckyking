@@ -25,3 +25,5 @@ export enum OrderStatus {
     NO_PRIZE = "NO_PRIZE",// khong trung thuong
     CART = "CART", // trong gio hang
 }
+
+export type PickingType = 'default' | 'fastpick' | 'selfpick'

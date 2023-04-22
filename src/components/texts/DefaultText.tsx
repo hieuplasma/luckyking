@@ -1,6 +1,6 @@
 import { Color } from "@styles";
 import React from "react";
-import { StyleSheet, Text, TextProps } from 'react-native'
+import { Platform, StyleSheet, Text, TextProps } from 'react-native'
 
 export interface DefaultTextProps extends TextProps {
     uppercase?: boolean,
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     default: {
         fontSize: 14,
         lineHeight: 20,
-        marginTop: 2,
+        marginTop: Platform.OS == 'ios' ? 2 : 0,
         color: Color.black
     }
 })

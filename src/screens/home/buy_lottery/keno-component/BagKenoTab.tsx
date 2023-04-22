@@ -23,12 +23,16 @@ export const BagKenoTab = React.memo(({ showBottomSheet }: Props) => {
 
     const [typePlay, setType]: any = useState({ bag: 3, level: 2 });
     const listDraw = useSelector((state: any) => state.drawReducer.kenoListDraw)
-    const [drawSelected, setDraw]: any = useState(listDraw[0])
+    const [drawSelected, setDraw]: any = useState([listDraw[0]])
 
     useEffect(() => {
-        if (!listDraw.includes(drawSelected)) {
-            setDraw(listDraw[0])
+        let tmp = [...drawSelected]
+        for (let i = 0; i < drawSelected.length; i++) {
+            if (!listDraw.includes(drawSelected[i]))
+                tmp.splice(i, 1)
         }
+        if (tmp.length == 0) tmp = [listDraw[0]]
+        setDraw(tmp)
     }, [listDraw])
 
     const [numberSet, setNumbers]: any = useState(initNumber)
@@ -56,7 +60,6 @@ export const BagKenoTab = React.memo(({ showBottomSheet }: Props) => {
         const tmp = await taoChuoiTuToHopChap(arr, m)
         window.loadingIndicator.hide()
         setGenerated(tmp)
-        setTotalCost(tmp.length * bet)
     }, [])
 
     useEffect(() => {
@@ -65,13 +68,12 @@ export const BagKenoTab = React.memo(({ showBottomSheet }: Props) => {
         }
         else {
             setGenerated([])
-            setTotalCost(0)
         }
     }, [numberSet, typePlay])
 
     useEffect(() => {
-        setTotalCost(generated.length * bet)
-    }, [bet])
+        setTotalCost(generated.length * bet * drawSelected.length)
+    }, [bet, drawSelected, generated])
 
     // ref
     const chooseTypeRef: any = useRef(null);

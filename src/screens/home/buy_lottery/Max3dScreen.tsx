@@ -32,7 +32,7 @@ export const Max3dScreen = () => {
             setLotteryType(type)
             clearTimeout(timer1)
             window.loadingIndicator.hide()
-        }, 500);
+        }, 100);
 
     }, [])
 

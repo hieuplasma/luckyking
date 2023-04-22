@@ -8,7 +8,9 @@ import { ViewFooterKeno } from "./simple-tab/ViewFooterKeno";
 import { IText } from "@components";
 import { NumberSheetSimpleKeno } from "./simple-tab/NumberSheetSimpleKeno";
 import { RenderLineKeno } from "./simple-tab/RenderLineKeno";
-import { KENO_NUMBER } from "@common";
+import { KENO_NUMBER, PickingType } from "@common";
+import { ViewFooter1 } from "../component/ViewFoooter1";
+import { ChooseLevelKeno } from "./simple-tab/ChooseLevelKeno";
 
 interface Props {
     showBottomSheet: boolean
@@ -21,19 +23,26 @@ export const SimpleKenoTab = React.memo(({ showBottomSheet }: Props) => {
 
     const [typePlay, setType]: any = useState({ label: "Cơ bản", value: 1 });
     const listDraw = useSelector((state: any) => state.drawReducer.kenoListDraw)
-    const [drawSelected, setDraw]: any = useState(listDraw[0])
+    const [drawSelected, setDraw]: any = useState([listDraw[0]])
+    const [pickingType, setPickingType] = useState<PickingType>('default')
 
     useEffect(() => {
-        if (!listDraw.includes(drawSelected)) {
-            setDraw(listDraw[0])
+        let tmp = [...drawSelected]
+        for (let i = 0; i < drawSelected.length; i++) {
+            if (!listDraw.includes(drawSelected[i])) {
+                tmp.splice(i, 1);
+                break;
+            }
         }
+        if (tmp.length == 0) tmp = [listDraw[0]]
+        setDraw(tmp)
     }, [listDraw])
 
     useEffect(() => {
         console.log("rerender")
     })
 
-    const [numberSet, setNumbers] = useState(initNumber)
+    const [numberSet, setNumbers] = useState<any>(initNumber)
     const [numberFake, setNumbersFake] = useState(initNumber)
     const [pageNumber, setPageNumber] = useState(0)
     const [bets, setBets] = useState(initBets)
@@ -41,7 +50,7 @@ export const SimpleKenoTab = React.memo(({ showBottomSheet }: Props) => {
 
     const randomNumber = useCallback((index: number) => {
         let newNumbers: any = [...numberSet]
-        const level = numberSet[index].length
+        const level = numberSet[index].length == 0 ? 2 : numberSet[index].length
         const randomNumbers = new Set();
         while (randomNumbers.size < level) {
             const randomNumber = Math.floor(Math.random() * KENO_NUMBER) + 1;
@@ -55,11 +64,15 @@ export const SimpleKenoTab = React.memo(({ showBottomSheet }: Props) => {
     const deleteNumber = useCallback((index: number) => {
         let newNumbers: any = [...numberSet]
         const level = numberSet[index].length
-        //@ts-ignore
-        const resultArray = (level == 1 && numberSet[0] >= 80) ? [] : Array(level).fill(false)
+        let resultArray = (level == 1 && numberSet[index][0] > 80) ? [] : Array(level).fill(false)
+        console.log(resultArray)
         newNumbers[index] = resultArray
         setNumbers(newNumbers)
     }, [numberSet])
+
+    const randomFastPick = useCallback((value: number[]) => {
+        setNumbers(value)
+    }, [])
 
     useEffect(() => {
         let count = 0;
@@ -67,8 +80,17 @@ export const SimpleKenoTab = React.memo(({ showBottomSheet }: Props) => {
             if (numberSet[i].length > 0 && numberSet[i][0] !== false)
                 count = count + bets[i]
         }
-        setTotal(count)
-    }, [numberSet, bets])
+        setTotal(count * drawSelected.length)
+    }, [numberSet, bets, drawSelected])
+
+    const fastPick = useCallback(() => {
+        if (pickingType == 'fastpick') setPickingType('default')
+        else setPickingType('fastpick')
+    }, [pickingType])
+
+    const selfPick = useCallback(() => {
+
+    }, [])
 
     // ref
     const chooseTypeRef: any = useRef(null);
@@ -139,6 +161,15 @@ export const SimpleKenoTab = React.memo(({ showBottomSheet }: Props) => {
             </ScrollView>
 
             <View style={{ paddingHorizontal: 16, marginBottom: 5, zIndex: -1 }}>
+                <ViewFooter1
+                    fastPick={fastPick}
+                    selfPick={selfPick}
+                    pickingType={pickingType}
+                />
+                {
+                    pickingType == 'default' ? <View style={{ height: 66 }} />
+                        : <ChooseLevelKeno onChooseForAll={randomFastPick} />
+                }
                 <ViewFooterKeno totalCost={total} bookLottery={bookLottery} />
             </View>
 

@@ -5,8 +5,8 @@ import { getColorLott, printMoneyK, printNumber } from "@utils"
 import React, { useCallback, useEffect, useState } from "react"
 import { Dimensions, StyleSheet, TouchableOpacity, View, ViewStyle } from "react-native"
 import { ChooseLevelKeno } from "./ChooseLevelKeno"
+import { PickingType } from "@common"
 
-type PickingType = 'default' | 'fastpick' | 'selfpick'
 const betMilestones = [
     10000, 20000, 50000, 100000, 200000, 500000
 ]
@@ -291,10 +291,10 @@ const styles = StyleSheet.create({
     textButton: { fontSize: 15 },
     buttonFooterUp: {
         width: (windowWidth - 48) / 2, height: 28,
-        borderRadius: 10, padding: 6,
+        borderRadius: 10,
         justifyContent: 'center', alignItems: 'center',
         borderColor: '#FFC42C', backgroundColor: '#FDF9F9',
         borderWidth: 1, flexDirection: 'row'
     },
-    textFooterUp: { fontSize: 16, color: Color.luckyKing, marginTop: -2, marginLeft: 4 }
+    textFooterUp: { fontSize: 16, color: Color.luckyKing, marginLeft: 4 }
 })
