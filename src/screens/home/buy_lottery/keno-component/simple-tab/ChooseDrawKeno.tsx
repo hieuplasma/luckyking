@@ -1,5 +1,5 @@
 import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Dimensions, Animated, ScrollView } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Dimensions, Animated } from 'react-native';
 import BottomSheet from '@gorhom/bottom-sheet';
 import { Color } from '@styles';
 import { Image, Images } from '@assets'
@@ -7,6 +7,7 @@ import { getColorLott, printDraw } from '@utils';
 import { LotteryType } from '@common';
 import { IText } from '@components';
 import { useSelector } from 'react-redux';
+import { ScrollView } from 'react-native-gesture-handler';
 
 interface ChooseTypeSheetProps {
     currentChoose: any,
