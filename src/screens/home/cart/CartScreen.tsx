@@ -1,7 +1,7 @@
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { HomeStackParamList } from '@navigation';
+import { HomeStackParamList, ScreenName } from '@navigation';
 import { StatusBar, View, Text, Dimensions, StyleSheet, ScrollView, FlatList, RefreshControl, TouchableOpacity, Alert } from 'react-native'
 import React, { useCallback, useEffect, useState } from 'react';
 import { Icon, Image, Images } from '@assets';
@@ -9,10 +9,11 @@ import { Color } from '@styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { lotteryApi } from '@api';
 import { getCart, removeCart, removeLottery, updateLottery } from '@redux';
-import { getColorLott, printDraw, printDrawCode, printMoney, printNumber, printTypePlay, printWeekDate } from '@utils';
-import { LotteryType, NumberDetail } from '@common';
+import { NavigationUtils, printMoney } from '@utils';
 import { ConsolasText, IText, LogoIcon, ModalConfirm } from '@components';
-import { LoadingIndicator } from 'src/screens/loading';
+import { RenderPowerMegaItem } from './RenderPowerMegaItem';
+import { LotteryType, OrderMethod } from '@common';
+import { RenderMax3dItem } from './RenderMax3dItem';
 
 type NavigationProp = StackNavigationProp<HomeStackParamList, 'CartScreen'>;
 type NavigationRoute = RouteProp<HomeStackParamList, 'CartScreen'>;
@@ -53,7 +54,7 @@ export const CartScreen = React.memo(() => {
         const list = [...cart]
         let total = 0
         list.map((item) => {
-            total = total + item.bets
+            total = total + item.amount
         })
         return total
     }
@@ -87,6 +88,7 @@ export const CartScreen = React.memo(() => {
     }
 
     const deleteAll = async () => {
+        if (cart.length == 0) return window.myalert.show({ title: "Giỏ hàng hiện đang trống rỗng!" })
         window.loadingIndicator.show()
         const res = await lotteryApi.emptyCart({})
         if (res) {
@@ -97,6 +99,10 @@ export const CartScreen = React.memo(() => {
         window.loadingIndicator.hide()
     }
 
+    const openModalEmptyCart = useCallback(() => {
+        if (cart.length == 0) return window.myalert.show({ title: "Giỏ hàng hiện đang trống rỗng!" })
+        setModal3(true)
+    }, [cart])
 
     const openModalDeleteLottery = (lottery: any) => {
         setCurrItem(lottery)
@@ -107,6 +113,18 @@ export const CartScreen = React.memo(() => {
         setCurrItem(param)
         setModal2(true)
     }
+
+    const orderCart = useCallback(() => {
+        let lotteryIds: string[] = []
+        cart.map((item: any) => lotteryIds.push(item.id))
+        const body = {
+            method: OrderMethod.Keep,
+            amount: calculateAll(),
+            lotteryType: LotteryType.Cart,
+            lotteryIds: lotteryIds
+        }
+        NavigationUtils.navigate(navigation, ScreenName.HomeChild.OrderScreen, { body: body })
+    }, [cart])
 
     return (
         <View style={styles.container}>
@@ -122,7 +140,7 @@ export const CartScreen = React.memo(() => {
                     />
                 </View>
                 <IText style={styles.textTitle}>{"GIỎ HÀNG"}</IText>
-                <TouchableOpacity style={{ flex: 1, alignItems: 'flex-end' }} onPress={() => setModal3(true)} >
+                <TouchableOpacity style={{ flex: 1, alignItems: 'flex-end' }} onPress={openModalEmptyCart} >
                     <Image source={Images.trash} style={{ width: 26, height: 26 }}></Image>
                 </TouchableOpacity>
             </Image>
@@ -132,78 +150,16 @@ export const CartScreen = React.memo(() => {
                 style={{ flex: 1, paddingHorizontal: 16 }}
                 data={cart}
                 renderItem={({ item, index }: any) => {
-                    const numberDetail: NumberDetail[] = JSON.parse(item.NumberLottery.numberDetail.toString())
-                    const lottColor = getColorLott(item.type)
                     return (
-                        <View style={styles.borderItem}>
-                            <LogoIcon type={item.type} />
-                            <IText style={styles.textType}>{`${printTypePlay(item.NumberLottery.level, item.type)}`}</IText>
-                            <View>
-                                {
-                                    numberDetail.map((it: any, id: number) => {
-                                        const numbers: number[] = it.boSo.split("-").map(Number);
-                                        return (
-                                            <View key={'' + it.boSo + id}>
-                                                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 8 }}>
-                                                    <IText style={{ fontSize: 18, fontWeight: '600', color: Color.black }}>
-                                                        {String.fromCharCode(65 + id)}
-                                                    </IText>
-                                                    <View style={{ marginLeft: 5, flexDirection: 'row', flexWrap: 'wrap', flex: 1 }}>
-                                                        {
-                                                            numbers.map((number: number, id2: number) => {
-                                                                return (
-                                                                    <View key={number + '' + id2} style={[styles.ball, { backgroundColor: lottColor }]}>
-                                                                        <ConsolasText style={styles.textBall}>
-                                                                            {`${printNumber(number)}`}
-                                                                        </ConsolasText>
-                                                                    </View>
-                                                                )
-                                                            })
-                                                        }
-                                                    </View>
-                                                    {/* <TouchableOpacity onPress={() => {
-                                                        openModalDeleteNumber({
-                                                            lotteryId: item.id,
-                                                            id: item.NumberLottery.id,
-                                                            indexLott: index,
-                                                            indexNum: id,
-                                                            type: item.type
-                                                        })
-                                                    }}>
-                                                        <Image source={Images.trash} style={styles.iconTrash}></Image>
-                                                    </TouchableOpacity> */}
-                                                </View>
-                                                <View style={styles.underLine} />
-                                            </View>
-                                        )
-                                    })
-                                }
-                            </View>
-                            {
-                                item.drawCode.map((code: number, indexCode: number) => {
-                                    return (
-                                        <View style={styles.lineBottom} key={code}>
-                                            <IText style={{ fontSize: 14, fontWeight: '400' }}>
-                                                {`Kỳ ${printDrawCode(item.drawCode[indexCode])} - ${printWeekDate(new Date(item.drawTime[indexCode]))}`}
-                                            </IText>
-                                            {/* <Image source={Images.edit_pen} style={styles.iconTrash}></Image> */}
-                                        </View>
-                                    )
-                                })
-                            }
-                            <View style={styles.lineBottom}>
-                                <IText style={{ fontSize: 14, fontWeight: 'bold' }}>
-                                    {`Vé ${printNumber(index + 1)}:`}
-                                </IText>
-                                <IText style={{ color: lottColor, marginLeft: 12, fontSize: 14, fontWeight: 'bold' }}>
-                                    {`${printMoney(item.amount)}đ`}
-                                </IText>
-                                <View style={{ flex: 1 }} />
-                                <TouchableOpacity onPress={() => openModalDeleteLottery(item)}>
-                                    <Image source={Images.trash} style={styles.iconTrash}></Image>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
+                        item.type == LotteryType.Power || item.type == LotteryType.Mega ?
+                            <RenderPowerMegaItem
+                                item={item}
+                                openModalDeleteLottery={() => openModalDeleteLottery(item)}
+                            />
+                            : <RenderMax3dItem
+                                item={item}
+                                openModalDeleteLottery={() => openModalDeleteLottery(item)}
+                            />
                     )
                 }}
                 keyExtractor={(item, index) => String(item.id)}
@@ -211,6 +167,10 @@ export const CartScreen = React.memo(() => {
                     <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
                 }
                 ListFooterComponent={<View style={{ height: 100 }}></View>}
+                ListEmptyComponent={
+                    <View style={{ marginTop: 50, justifyContent: 'center', alignItems: 'center' }}>
+                        <IText style={{ fontSize: 20, color: Color.luckyKing, fontWeight: 'bold' }}>{"Giỏ hàng hiện tại đang trống!"}</IText>
+                    </View>}
             >
             </FlatList>
             {
@@ -219,7 +179,7 @@ export const CartScreen = React.memo(() => {
                         <IText style={{ fontSize: 14, fontWeight: '400' }}>{'Tổng cộng'}</IText>
                         <View style={{ flex: 1 }} />
                         <IText style={{ fontSize: 16, fontWeight: 'bold', marginRight: 16 }}>{`${printMoney(calculateAll())}đ`}</IText>
-                        <TouchableOpacity style={styles.buttonPay}>
+                        <TouchableOpacity style={styles.buttonPay} onPress={orderCart}>
                             <IText style={{ fontWeight: 'bold', fontSize: 14, color: Color.white }}>{'THANH TOÁN'}</IText>
                         </TouchableOpacity>
                     </View>
@@ -279,47 +239,10 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
         justifyContent: 'space-between',
     },
-    borderItem: {
-        width: windowWidth - 32,
-        // shadow
-        shadowOffset: { width: 6, height: 5 },
-        shadowRadius: 15,
-        shadowColor: '#EC6C3C',
-        shadowOpacity: 0.2,
-        elevation: 3,
-        // borderWidth: 1,
-        borderColor: '#A0A0A0',
-        marginTop: 16,
+    buttonPay: {
         borderRadius: 10,
-        backgroundColor: 'white',
-        paddingTop: 6,
-        padding: 16,
-    },
-    textType: {
-        color: '#1E2022',
-        fontSize: 16,
-        fontWeight: '600',
-        textAlign: 'center',
-        marginTop: 7
-    },
-    underLine: {
-        width: windowWidth - 32, height: 1,
-        backgroundColor: '#A0A0A0', marginHorizontal: -16,
-        marginTop: 12, opacity: 0.2
-    },
-    ball: {
-        width: 24, height: 24, borderRadius: 99,
-        backgroundColor: Color.power,
-        justifyContent: 'center', alignItems: 'center',
-        margin: 5
-    },
-    textBall: { fontSize: 13, color: Color.white },
-    iconTrash: { width: 28, height: 28 },
-    lineBottom: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginTop: 12
-    },
-    buttonPay: { borderRadius: 10, height: 44, width: 120, backgroundColor: Color.luckyKing, justifyContent: 'center', alignItems: 'center' }
+        height: 44, width: 120,
+        backgroundColor: Color.luckyKing,
+        justifyContent: 'center', alignItems: 'center'
+    }
 })

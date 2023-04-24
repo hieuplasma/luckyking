@@ -10,7 +10,7 @@ import { RenderLineKenobag } from "./bag-tab/RenderLineKenoBag";
 import { KENO_NUMBER, LotteryType, OrderMethod, OrderStatus } from "@common";
 import { NumberSheetKenoBag } from "./bag-tab/NumberSheetKenoBag";
 import { ConsolasText, IText } from "@components";
-import { NavigationUtils, generateUniqueStrings, taoChuoiTuToHopChap } from "@utils";
+import { NavigationUtils, generateUniqueStrings, printNumber, taoChuoiTuToHopChap } from "@utils";
 import { TableKenoBag } from "./bag-tab/TableKenoBag";
 import { ScreenName } from "@navigation";
 
@@ -59,7 +59,9 @@ export const BagKenoTab = React.memo(({ showBottomSheet, navigation }: Props) =>
 
     const genNumber = useCallback(async (arr: number[], m: number) => {
         window.loadingIndicator.show()
-        const tmp = await taoChuoiTuToHopChap(arr, m)
+        const strArr: string[] = []
+        arr.map((item: number) => strArr.push(printNumber(item)))
+        const tmp = await taoChuoiTuToHopChap(strArr, m)
         window.loadingIndicator.hide()
         setGenerated(tmp)
     }, [])
@@ -146,7 +148,6 @@ export const BagKenoTab = React.memo(({ showBottomSheet, navigation }: Props) =>
             lotteryType: LotteryType.Keno,
             amount: total,
             status: OrderStatus.PENDING,
-            method: OrderMethod.Keep,
             level: typePlay.bag,
             drawCode: drawCodes,
             drawTime: drawTimes,

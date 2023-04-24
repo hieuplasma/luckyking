@@ -160,7 +160,6 @@ export const MegaScreen = React.memo((props: any) => {
             lotteryType: LotteryType.Mega,
             amount: total,
             status: OrderStatus.PENDING,
-            method: OrderMethod.Keep,
             level: typePlay.value,
             drawCode: drawCodes,
             drawTime: drawTimes,

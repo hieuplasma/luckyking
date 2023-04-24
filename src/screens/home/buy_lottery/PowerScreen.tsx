@@ -154,7 +154,6 @@ export const PowerScreen = React.memo((props: PowerScreenProps) => {
             lotteryType: LotteryType.Power,
             amount: total,
             status: OrderStatus.PENDING,
-            method: OrderMethod.Keep,
             level: typePlay.value,
             drawCode: drawCodes,
             drawTime: drawTimes,

@@ -263,7 +263,6 @@ export const Max3dProScreen = () => {
             lotteryType: LotteryType.Max3DPro,
             amount: total,
             status: OrderStatus.PENDING,
-            method: OrderMethod.Keep,
             level: typePlay.value,
             drawCode: drawCodes,
             drawTime: drawTimes,

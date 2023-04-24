@@ -1,11 +1,11 @@
 import { lotteryApi } from '@api';
 import { Icon, Images, Image } from '@assets';
-import { LotteryType } from '@common';
+import { LotteryType, OrderMethod } from '@common';
 import { BasicHeader, ImageHeader, IText } from '@components';
 import { HomeStackParamList, ScreenName, WithdrawStackParamList } from '@navigation';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { updateUser } from '@redux';
+import { removeCart, updateUser } from '@redux';
 import { Color, Style } from '@styles';
 import { calSurcharge, doNotExits, NavigationUtils, printMoney, ScreenUtils } from '@utils';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -47,6 +47,7 @@ export const OrderScreen = React.memo(() => {
     const handlePay = useCallback(async () => {
         let tmp = { ...bodyPay }
         tmp.surcharge = calSurcharge(bodyPay.amount)
+        tmp.method = OrderMethod.Keep
         window.loadingIndicator.show()
         let res = null
         switch (bodyPay.lotteryType) {
@@ -61,11 +62,14 @@ export const OrderScreen = React.memo(() => {
             case LotteryType.Max3DPlus:
             case LotteryType.Max3DPro:
                 res = await lotteryApi.bookLotteryMax3d(tmp)
+            case LotteryType.Cart:
+                res = await lotteryApi.bookLotteryCart(tmp)
             default:
                 break;
         }
         if (res) {
             dispatch(updateUser({ luckykingBalance: luckykingBalance - tmp.surcharge - tmp.amount }))
+            if (bodyPay.lotteryType == LotteryType.Cart) dispatch(removeCart())
             window.myalert.show({
                 title: 'Đã thanh toán mua vé thành công!',
                 btnLabel: "OK",

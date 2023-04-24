@@ -57,22 +57,31 @@ export function calSurcharge(cost: number) {
 }
 
 export function printTypePlay(value: number, type: string) {
-    let result;
     switch (type) {
         case LotteryType.Power:
         case LotteryType.Mega:
-            result = PowerMegaType(value);
-            break;
+            return PowerMegaType(value);
+        case LotteryType.Max3D:
+            return "Max 3D"
+        case LotteryType.Max3DPlus:
+            return "Max 3D+"
+        case LotteryType.Max3DPro:
+            return Max3dProType(value)
         default:
-            result = "Invalid type";
-            break;
+            return "Invalid type";
     }
-
-    return result;
 }
 
 function PowerMegaType(value: number) {
     return value === 6 ? "Cơ bản" : "Bao " + value;
+}
+
+function Max3dProType(value: number) {
+    switch (value) {
+        case 4: return "Bao bộ 3 số";
+        case 10: return "Bao nhiều bộ 3 số";
+        default: return "Max 3D Pro";
+    }
 }
 
 export function getLogoHeader(lotteryType: LotteryType) {
@@ -153,7 +162,7 @@ export function generateStringsFromArray(arr: number[], before = "", after = "")
     return result;
 }
 
-export async function taoChuoiTuToHopChap(arr: number[], m: number) {
+export async function taoChuoiTuToHopChap(arr: string[], m: number) {
     let results: string[] = [];
 
     async function backtrack(temp: any, start: number) {

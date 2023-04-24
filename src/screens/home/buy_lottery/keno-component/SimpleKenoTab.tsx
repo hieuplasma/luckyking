@@ -165,7 +165,6 @@ export const SimpleKenoTab = React.memo(({ showBottomSheet, navigation }: Props)
             lotteryType: LotteryType.Keno,
             amount: total,
             status: OrderStatus.PENDING,
-            method: OrderMethod.Keep,
             level: typePlay.value,
             drawCode: drawCodes,
             drawTime: drawTimes,

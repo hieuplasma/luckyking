@@ -37,6 +37,11 @@ class LotteryApi {
         let fullUrl = API_URI.BOOK_LOTTERY_POWER_MEGA;
         return await window.connection.POST(fullUrl, body)
     }
+
+    bookLotteryCart = async (body: any) => {
+        let fullUrl = API_URI.BOOK_LOTTERY_CART;
+        return await window.connection.POST(fullUrl, body)
+    }
     // ---- End -----
 
     // Add Lottery to Cart

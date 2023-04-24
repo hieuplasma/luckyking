@@ -243,7 +243,6 @@ export const Max3dPlusTab = React.memo((props: Props) => {
             lotteryType: LotteryType.Max3DPlus,
             amount: total,
             status: OrderStatus.PENDING,
-            method: OrderMethod.Keep,
             level: typePlay.value,
             drawCode: drawCodes,
             drawTime: drawTimes,

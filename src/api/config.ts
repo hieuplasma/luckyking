@@ -31,7 +31,10 @@ export const API_URI = {
   BOOK_LOTTERY_KENO: "/order/add-keno",
   BOOK_LOTTERY_POWER_MEGA: "/order/add-power-mega",
   BOOK_LOTTERY_MAX3D: "/order/add-max3d",
-  GET_ALL_ORDER:"/order/get-all",
+  BOOK_LOTTERY_CART: "/order/add-multi",
+  GET_ALL_ORDER: "/order/get-all",
+
+
 
   GET_SCHEDULE_KENO: "/result/schedule/keno",
   GET_SCHEDULE_POWER: "/result/schedule/power",
@@ -46,6 +49,6 @@ export const API_URI = {
   EDIT_LOTTERY_CART: "/cart/update",
   EMPTY_CART: "/cart/empty",
 
-  TRANSACTION_HISTORY:"/transaction/list",
+  TRANSACTION_HISTORY: "/transaction/list",
   WITHDRAW_TO_LUCKYKING: "/transaction/withdraw-luckyking",
 }

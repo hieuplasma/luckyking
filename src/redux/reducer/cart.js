@@ -16,7 +16,7 @@ const cartSlice = createSlice({
             }
         },
         addLottery: (state, action) => {
-            state.cart = [...state.cart, action.payload]
+            state.cart = [...state.cart].concat(action.payload)
         },
         updateLottery: (state, action) => {
             let tmp = [...state.cart]
