@@ -28,7 +28,10 @@ export const API_URI = {
 
   UPDATE_PASSWORD: "/auth/update-password",
 
+  BOOK_LOTTERY_KENO: "/order/add-keno",
   BOOK_LOTTERY_POWER_MEGA: "/order/add-power-mega",
+  BOOK_LOTTERY_MAX3D: "/order/add-max3d",
+  GET_ALL_ORDER:"/order/get-all",
 
   GET_SCHEDULE_KENO: "/result/schedule/keno",
   GET_SCHEDULE_POWER: "/result/schedule/power",
@@ -37,11 +40,12 @@ export const API_URI = {
 
   GET_LIST_ITEM_CART: "/cart/list",
   ADD_POWER_MEGA_CART: "/cart/add-power-mega",
+  ADD_MAX3D_CART: "/cart/add-max3d",
   DELETE_LOTTERY_CART: "/cart/delete",
   DELETE_LOTTERY_NUMBER: "/cart/delete-number",
   EDIT_LOTTERY_CART: "/cart/update",
   EMPTY_CART: "/cart/empty",
 
   TRANSACTION_HISTORY:"/transaction/list",
-  WITHDRAW_TO_LUCKYKING: "/transaction/withdraw-luckyking"
+  WITHDRAW_TO_LUCKYKING: "/transaction/withdraw-luckyking",
 }

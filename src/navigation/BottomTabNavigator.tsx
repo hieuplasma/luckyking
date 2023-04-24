@@ -143,7 +143,9 @@ const hideTabBar = [
   ScreenName.HomeChild.MegaScreen,
   ScreenName.HomeChild.Max3dScreen,
   ScreenName.HomeChild.Max3dProScreen,
-  ScreenName.HomeChild.CartScreen
+  ScreenName.HomeChild.CartScreen,
+  ScreenName.HomeChild.OrderScreen,
+  ScreenName.Drawer.RechargeStack
 ]
 
 export function BottomTabNavigator() {
@@ -154,7 +156,7 @@ export function BottomTabNavigator() {
       tabBar={props => {
         const index = props.navigation.getState().index
         const routeName = getFocusedRouteNameFromRoute(props.state.routes[index]) ?? ""
-        // console.log("current screen::::" + index + ":::::=> " + routeName)
+        console.log("current screen::::" + index + ":::::=> " + routeName)
         return hideTabBar.includes(routeName) ? null : <TabBar {...props} />
       }}
       screenOptions={{

@@ -60,4 +60,5 @@ export const Images = {
   statistical: require('./statistical.png'),
   good_luck: require('./good_luck.png'),
   bg_ticket_1: require('./bg_ticket_1.png'),
+  luckyking_logo: require('./luckyking_logo.png'),
 };

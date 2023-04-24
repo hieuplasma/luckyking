@@ -1,10 +1,8 @@
-import { lotteryApi } from '@api';
 import { LotteryType } from '@common';
 import { HeaderBuyLottery, IText } from '@components';
 import { HomeStackParamList } from '@navigation';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { getMax3dDraw } from '@redux';
 import { Color } from '@styles';
 import { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, View, Dimensions, TouchableOpacity } from 'react-native';
@@ -75,7 +73,14 @@ export const Max3dScreen = () => {
 
             <>
                 {lotteryType == LotteryType.Max3D ?
-                    <Max3dTab showBottomSheet={showBottomSheet} /> : <Max3dPlusTab showBottomSheet={showBottomSheet} />}
+                    <Max3dTab
+                        showBottomSheet={showBottomSheet}
+                        navigation={navigation}
+                    /> :
+                    <Max3dPlusTab
+                        showBottomSheet={showBottomSheet}
+                        navigation={navigation}
+                    />}
             </>
         </SafeAreaView>
     )

@@ -4,12 +4,14 @@ import DrawerCustom from "./CustomDrawer";
 import { RechargeNavigation } from "./drawer/RechargeNavigation";
 import { UserNavigation } from "./drawer/UserNavigation";
 import { WithDrawNavigation } from "./drawer/WithDrawNavigation";
+import { HistoryKenoNavigation } from "./drawer/HistoryKenoNavigation";
 
 export type MainDrawerParamList = {
     BottomTab: {}
     UserStack: {},
     RechargeStack: {},
-    WithdrawStack: {}
+    WithdrawStack: {},
+    HistoryKenoStack: {}
 };
 
 const Drawer = createDrawerNavigator<MainDrawerParamList>();
@@ -24,6 +26,7 @@ export function MainNavigation(props: any) {
             <Drawer.Screen name={'UserStack'} component={UserNavigation} />
             <Drawer.Screen name={'RechargeStack'} component={RechargeNavigation} />
             <Drawer.Screen name={'WithdrawStack'} component={WithDrawNavigation} />
+            <Drawer.Screen name={'HistoryKenoStack'} component={HistoryKenoNavigation} />
         </Drawer.Navigator>
     )
 }

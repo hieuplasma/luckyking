@@ -6,3 +6,5 @@ export * from './recharge/BankRechargeScreen'
 
 export * from './withdraw/WithdrawScreen'
 export * from './withdraw/LuckyKingWithdawScreen'
+
+export * from './history-keno/ListKenoScreen'

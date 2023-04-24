@@ -6,7 +6,7 @@ class LotteryApi {
         let fullUrl = API_URI.GET_SCHEDULE_KENO;
         return await window.connection.GET(fullUrl, params)
     }
-    
+
     getSchedulePower = async (params: any) => {
         let fullUrl = API_URI.GET_SCHEDULE_POWER;
         return await window.connection.GET(fullUrl, params)
@@ -22,16 +22,34 @@ class LotteryApi {
         return await window.connection.GET(fullUrl, params)
     }
 
+    // Order Lottery
+    bookLotteryMax3d = async (body: any) => {
+        let fullUrl = API_URI.BOOK_LOTTERY_MAX3D;
+        return await window.connection.POST(fullUrl, body)
+    }
+
+    bookLotteryKeno = async (body: any) => {
+        let fullUrl = API_URI.BOOK_LOTTERY_KENO;
+        return await window.connection.POST(fullUrl, body)
+    }
 
     bookLotteryPowerMega = async (body: any) => {
         let fullUrl = API_URI.BOOK_LOTTERY_POWER_MEGA;
         return await window.connection.POST(fullUrl, body)
     }
+    // ---- End -----
 
+    // Add Lottery to Cart
     addPowerMegaToCart = async (body: any) => {
         let fullUrl = API_URI.ADD_POWER_MEGA_CART;
         return await window.connection.POST(fullUrl, body)
     }
+
+    addMax3dToCart = async (body: any) => {
+        let fullUrl = API_URI.ADD_MAX3D_CART;
+        return await window.connection.POST(fullUrl, body)
+    }
+     // ---- End -----
 
     getListItemCart = async () => {
         let fullUrl = API_URI.GET_LIST_ITEM_CART;
@@ -61,6 +79,11 @@ class LotteryApi {
     withdrawLuckyKing = async (body: any) => {
         let fullUrl = API_URI.WITHDRAW_TO_LUCKYKING;
         return await window.connection.POST(fullUrl, body)
+    }
+
+    getAllOrder = async (params: any) => {
+        let fullUrl = API_URI.GET_ALL_ORDER;
+        return await window.connection.GET(fullUrl, params)
     }
 }
 

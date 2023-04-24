@@ -94,9 +94,9 @@ export const KenoScreen = () => {
 
             <>
                 {type.value == 0 ?
-                    <SimpleKenoTab showBottomSheet={showBottomSheet} />
+                    <SimpleKenoTab showBottomSheet={showBottomSheet} navigation={navigation} />
                     : type.value == 1 ?
-                        <BagKenoTab showBottomSheet={showBottomSheet} />
+                        <BagKenoTab showBottomSheet={showBottomSheet} navigation={navigation}/>
                         : <NurturingKenoTab showBottomSheet={showBottomSheet} />
                 }
             </>

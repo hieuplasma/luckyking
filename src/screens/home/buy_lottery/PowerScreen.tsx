@@ -4,7 +4,7 @@ import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Icon, Image } from "@assets";
 import { Color } from "@styles";
-import { calSurcharge, convolutions, printNumber } from "@utils";
+import { NavigationUtils, calSurcharge, convolutions, printNumber } from "@utils";
 import React, { createRef, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { View, StyleSheet, Text, ScrollView, TouchableOpacity, Dimensions, StatusBar, Alert, Animated } from "react-native";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
@@ -150,11 +150,9 @@ export const PowerScreen = React.memo((props: PowerScreenProps) => {
             drawTimes.push(item.drawTime)
         })
         const total = totalCost
-        const surchagre = calSurcharge(totalCost)
         let body: any = {
             lotteryType: LotteryType.Power,
             amount: total,
-            surchagre: surchagre,
             status: OrderStatus.PENDING,
             method: OrderMethod.Keep,
             level: typePlay.value,
@@ -162,14 +160,7 @@ export const PowerScreen = React.memo((props: PowerScreenProps) => {
             drawTime: drawTimes,
             numbers: numbers
         }
-        window.loadingIndicator.show()
-        const res = await lotteryApi.bookLotteryPowerMega(body)
-        if (res) {
-            window.myalert.show({ title: 'Đã thanh toán mua vé thành công!', btnLabel: "OK", alertType: 'success' })
-            dispatch(updateUser({ luckykingBalance: luckykingBalance - total - surchagre }))
-            refreshChoosing()
-        }
-        window.loadingIndicator.hide()
+        NavigationUtils.navigate(navigation, ScreenName.HomeChild.OrderScreen, {body: body})
     }
 
     const addToCart = async () => {
@@ -205,7 +196,6 @@ export const PowerScreen = React.memo((props: PowerScreenProps) => {
         }
         window.loadingIndicator.show()
         const res = await lotteryApi.addPowerMegaToCart(body)
-        // console.log(res)
         if (res) {
             window.myalert.show({ title: 'Đã thêm vé vào giỏ hàng!', btnLabel: "OK", alertType: 'success' })
             refreshChoosing()

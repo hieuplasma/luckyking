@@ -6,6 +6,7 @@ import { Icon, Image } from "@assets";
 import { Color, Dimension, Style } from "@styles";
 import {
     calSurcharge, convolutions,
+    NavigationUtils,
     printDraw, printMoney,
     printNumber, ScreenUtils
 } from "@utils";
@@ -155,11 +156,9 @@ export const MegaScreen = React.memo((props: any) => {
             drawTimes.push(item.drawTime)
         })
         const total = totalCost
-        const surchagre = calSurcharge(totalCost)
         let body: any = {
             lotteryType: LotteryType.Mega,
             amount: total,
-            surchagre: surchagre,
             status: OrderStatus.PENDING,
             method: OrderMethod.Keep,
             level: typePlay.value,
@@ -167,14 +166,7 @@ export const MegaScreen = React.memo((props: any) => {
             drawTime: drawTimes,
             numbers: numbers
         }
-        window.loadingIndicator.show()
-        const res = await lotteryApi.bookLotteryPowerMega(body)
-        if (res) {
-            Alert.alert("Thành công", "Đã thanh toán mua vé thành công!")
-            dispatch(updateUser({ luckykingBalance: luckykingBalance - total - surchagre }))
-            refreshChoosing()
-        }
-        window.loadingIndicator.hide()
+        NavigationUtils.navigate(navigation, ScreenName.HomeChild.OrderScreen, { body: body })
     }
 
     const addToCart = async () => {

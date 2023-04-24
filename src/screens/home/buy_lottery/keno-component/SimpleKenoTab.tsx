@@ -8,18 +8,21 @@ import { ViewFooterKeno } from "./simple-tab/ViewFooterKeno";
 import { IText } from "@components";
 import { NumberSheetSimpleKeno } from "./simple-tab/NumberSheetSimpleKeno";
 import { RenderLineKeno } from "./simple-tab/RenderLineKeno";
-import { KENO_NUMBER, PickingType } from "@common";
+import { KENO_NUMBER, LotteryType, OrderMethod, OrderStatus, PickingType } from "@common";
 import { ViewFooter1 } from "../component/ViewFoooter1";
 import { ChooseLevelKeno } from "./simple-tab/ChooseLevelKeno";
+import { NavigationUtils, calSurcharge } from "@utils";
+import { ScreenName } from "@navigation";
 
 interface Props {
-    showBottomSheet: boolean
+    showBottomSheet: boolean,
+    navigation: any
 }
 
 const initBets = [10000, 10000, 10000, 10000, 10000, 10000]
 const initNumber = [[], [], [], [], [], []]
 
-export const SimpleKenoTab = React.memo(({ showBottomSheet }: Props) => {
+export const SimpleKenoTab = React.memo(({ showBottomSheet, navigation }: Props) => {
 
     const [typePlay, setType]: any = useState({ label: "Cơ bản", value: 1 });
     const listDraw = useSelector((state: any) => state.drawReducer.kenoListDraw)
@@ -46,27 +49,32 @@ export const SimpleKenoTab = React.memo(({ showBottomSheet }: Props) => {
     const [numberFake, setNumbersFake] = useState(initNumber)
     const [pageNumber, setPageNumber] = useState(0)
     const [bets, setBets] = useState(initBets)
-    const [total, setTotal] = useState(0)
+    const [totalCost, setTotalCost] = useState(0)
 
-    const randomNumber = useCallback((index: number) => {
+    const [randomLine, setRandomLine] = useState(-1)
+
+    const randomNumber = useCallback((value: number[]) => {
         let newNumbers: any = [...numberSet]
-        const level = numberSet[index].length == 0 ? 2 : numberSet[index].length
-        const randomNumbers = new Set();
-        while (randomNumbers.size < level) {
-            const randomNumber = Math.floor(Math.random() * KENO_NUMBER) + 1;
-            randomNumbers.add(randomNumber);
-        }
-        const resultArray = Array.from(randomNumbers).map(Number).sort((a, b) => a - b);
-        newNumbers[index] = resultArray
+        // const level = numberSet[index].length == 0 ? 2 : numberSet[index].length
+        // const randomNumbers = new Set();
+        // while (randomNumbers.size < level) {
+        //     const randomNumber = Math.floor(Math.random() * KENO_NUMBER) + 1;
+        //     randomNumbers.add(randomNumber);
+        // }
+        // const resultArray = Array.from(randomNumbers).map(Number).sort((a, b) => a - b);
+        // newNumbers[index] = resultArray
+        newNumbers[randomLine] = value
         setNumbers(newNumbers)
-    }, [numberSet])
+        setRandomLine(-1)
+    }, [numberSet, randomLine])
 
     const deleteNumber = useCallback((index: number) => {
         let newNumbers: any = [...numberSet]
-        const level = numberSet[index].length
-        let resultArray = (level == 1 && numberSet[index][0] > 80) ? [] : Array(level).fill(false)
-        console.log(resultArray)
-        newNumbers[index] = resultArray
+        // const level = numberSet[index].length
+        // let resultArray = (level == 1 && numberSet[index][0] > 80) ? [] : Array(level).fill(false)
+        // console.log(resultArray)
+        // newNumbers[index] = resultArray
+        newNumbers[index] = []
         setNumbers(newNumbers)
     }, [numberSet])
 
@@ -80,7 +88,7 @@ export const SimpleKenoTab = React.memo(({ showBottomSheet }: Props) => {
             if (numberSet[i].length > 0 && numberSet[i][0] !== false)
                 count = count + bets[i]
         }
-        setTotal(count * drawSelected.length)
+        setTotalCost(count * drawSelected.length)
     }, [numberSet, bets, drawSelected])
 
     const fastPick = useCallback(() => {
@@ -88,9 +96,7 @@ export const SimpleKenoTab = React.memo(({ showBottomSheet }: Props) => {
         else setPickingType('fastpick')
     }, [pickingType])
 
-    const selfPick = useCallback(() => {
-
-    }, [])
+    const selfPick = useCallback(() => { }, [])
 
     // ref
     const chooseTypeRef: any = useRef(null);
@@ -112,8 +118,6 @@ export const SimpleKenoTab = React.memo(({ showBottomSheet }: Props) => {
     }, [chooseDrawRef, onChangeDraw, drawSelected])
 
     const onChangeNumber = useCallback((set: any, bets: any) => {
-        console.log("numbers::::", set),
-            console.log("bets::::", bets)
         setNumbers(set)
         setBets(bets)
     }, [])
@@ -135,8 +139,41 @@ export const SimpleKenoTab = React.memo(({ showBottomSheet }: Props) => {
     }, [chooseNumberRef, numberFake, pageNumber])
 
     const bookLottery = useCallback(() => {
-
-    }, [numberSet, bets, drawSelected])
+        const currentNumber = [...numberSet]
+        let drawCodes: any = []
+        let drawTimes: any = []
+        let numbers: string[] = []
+        for (let i = 0; i < currentNumber.length; i++) {
+            let tmp = ""
+            if (currentNumber[i][0] !== false && currentNumber[i].length > 0) {
+                currentNumber[i].map((item: number, index: number) => {
+                    if (index == 0) tmp = tmp + item
+                    else tmp = tmp + "-" + item
+                })
+                numbers.push(tmp)
+            }
+        }
+        if (numbers.length == 0) {
+            return window.myalert.show({ title: 'Bạn chưa chọn bộ số nào', btnLabel: "Đã hiểu" })
+        }
+        drawSelected.map((item: any) => {
+            drawCodes.push(item.drawCode)
+            drawTimes.push(item.drawTime)
+        })
+        const total = totalCost
+        let body: any = {
+            lotteryType: LotteryType.Keno,
+            amount: total,
+            status: OrderStatus.PENDING,
+            method: OrderMethod.Keep,
+            level: typePlay.value,
+            drawCode: drawCodes,
+            drawTime: drawTimes,
+            numbers: numbers,
+            bets: bets
+        }
+        NavigationUtils.navigate(navigation, ScreenName.HomeChild.OrderScreen, { body: body })
+    }, [numberSet, bets, drawSelected, totalCost])
 
     return (
         <View style={{ flex: 1 }}>
@@ -152,7 +189,8 @@ export const SimpleKenoTab = React.memo(({ showBottomSheet }: Props) => {
                                 item={item}
                                 openNumberSheet={() => openNumberSheet(index)}
                                 deleteNumber={() => deleteNumber(index)}
-                                randomNumber={() => randomNumber(index)}
+                                randomNumber={() => setRandomLine(index)}
+                                randoming={randomLine == index ? true : false}
                                 bet={bets[index]}
                             />
                         )
@@ -167,10 +205,12 @@ export const SimpleKenoTab = React.memo(({ showBottomSheet }: Props) => {
                     pickingType={pickingType}
                 />
                 {
-                    pickingType == 'default' ? <View style={{ height: 66 }} />
-                        : <ChooseLevelKeno onChooseForAll={randomFastPick} />
+                    pickingType == 'fastpick' ? <ChooseLevelKeno onChooseForAll={randomFastPick} />
+                        : randomLine != -1 ?
+                            <ChooseLevelKeno onChoose={randomNumber} />
+                            : <View style={{ height: 66 }} />
                 }
-                <ViewFooterKeno totalCost={total} bookLottery={bookLottery} />
+                <ViewFooterKeno totalCost={totalCost} bookLottery={bookLottery} />
             </View>
 
             {showBottomSheet ?

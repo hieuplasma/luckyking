@@ -7,3 +7,4 @@ export * from './buy_lottery/Max3dProScreen'
 export * from './buy_lottery/KenoScreen'
 
 export * from './cart/CartScreen'
+export * from './order/OrderScreen'

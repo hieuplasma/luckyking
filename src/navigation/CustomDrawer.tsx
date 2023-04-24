@@ -76,7 +76,7 @@ function DrawerCustom(props: any) {
           <Image source={Images.right_arrow} style={styles.icon_arrow} tintColor={Color.luckyKing}></Image>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.lineItem2} activeOpacity={.6}>
+        <TouchableOpacity style={styles.lineItem2} activeOpacity={.6} onPress={() => NavigationUtils.navigate(navigation, ScreenName.Drawer.HistoryKenoStack)}>
           <Image source={Images.history_note} style={styles.icon_history}></Image>
           <View style={{ justifyContent: 'center' }}>
             <IText style={styles.aboveText}>{"Lịch sử đặt vé Keno"}</IText>

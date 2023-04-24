@@ -11,7 +11,8 @@ interface RenderLineKenoProps {
     openNumberSheet: () => void,
     deleteNumber: () => void,
     randomNumber: () => void,
-    bet: number
+    bet: number,
+    randoming?: boolean
 }
 
 const getData = {
@@ -27,7 +28,7 @@ const getData = {
 
 const lottColor = Color.keno
 
-export const RenderLineKeno = React.memo(({ item, title, openNumberSheet, deleteNumber, randomNumber, bet }: RenderLineKenoProps) => {
+export const RenderLineKeno = React.memo(({ item, title, openNumberSheet, deleteNumber, randomNumber, bet, randoming }: RenderLineKenoProps) => {
 
     const getName = useCallback((number: number) => {
         //@ts-ignore
@@ -35,7 +36,7 @@ export const RenderLineKeno = React.memo(({ item, title, openNumberSheet, delete
     }, [])
 
     return (
-        <View style={styles.lineNumber} >
+        <View style={[styles.lineNumber, { borderColor: randoming ? lottColor : Color.white }]} >
             <IText style={{ fontSize: 18, fontWeight: 'bold', width: 15 }}>{title}</IText>
             <TouchableOpacity style={{ flex: 1, flexDirection: 'row', marginHorizontal: 18, flexWrap: 'wrap' }} onPress={openNumberSheet}>
                 {
@@ -83,6 +84,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row', marginVertical: 4,
         justifyContent: 'space-between',
         alignItems: 'center',
+        borderWidth: 1,
+        marginHorizontal: -10, paddingHorizontal: 10,
+        borderRadius: 10
     },
     ballContainer: {
         width: (windowWidth - 196) / 5,

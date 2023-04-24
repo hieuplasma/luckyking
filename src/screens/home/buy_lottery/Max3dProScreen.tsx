@@ -2,12 +2,12 @@ import { lotteryApi } from '@api';
 import { Image, Images } from '@assets';
 import { LotteryType, MAX3D_NUMBER, MAX_SET, MAX_SET_MAX3D, OrderMethod, OrderStatus } from '@common';
 import { ConsolasText, HeaderBuyLottery, IText } from '@components';
-import { HomeStackParamList } from '@navigation';
+import { HomeStackParamList, ScreenName } from '@navigation';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { getMax3dProDraw } from '@redux';
+import { addLottery, getMax3dProDraw } from '@redux';
 import { Color } from '@styles';
-import { calSurcharge, printMoneyK } from '@utils';
+import { NavigationUtils, calSurcharge, printMoneyK } from '@utils';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { StyleSheet, View, Dimensions, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -252,58 +252,65 @@ export const Max3dProScreen = () => {
         if (generated.length == 0) {
             return Alert.alert("Thông báo", "Bạn chưa chọn bộ số nào")
         }
+        let drawCodes: any = []
+        let drawTimes: any = []
+        drawSelected.map((item: any) => {
+            drawCodes.push(item.drawCode)
+            drawTimes.push(item.drawTime)
+        })
         const total = (typePlay.value != 7 && typePlay.value != 8) ? totalCost : totalCostBag
-        const surchagre = calSurcharge(total)
         let body: any = {
             lotteryType: LotteryType.Max3DPro,
             amount: total,
-            surchagre: surchagre,
             status: OrderStatus.PENDING,
             method: OrderMethod.Keep,
             level: typePlay.value,
-            drawCode: drawSelected.drawCode,
+            drawCode: drawCodes,
+            drawTime: drawTimes,
             numbers: generated,
             bets: generatedBets
         }
-        // console.log(body)
-        window.loadingIndicator.show()
-        // const res = await lotteryApi.bookLotteryPowerMega(body)
-        // if (res) {
-        //     Alert.alert("Thành công", "Đã thanh toán mua vé thành công!")
-        //     dispatch(updateUser({ luckykingBalance: luckykingBalance - total - surchagre }))
-        //     refreshChoosing()
-        // }
-        window.loadingIndicator.hide()
+        NavigationUtils.navigate(navigation, ScreenName.HomeChild.OrderScreen, { body: body })
     }
 
     const addToCart = async () => {
         if (generated.length == 0) {
             return Alert.alert("Thông báo", "Bạn chưa chọn bộ số nào")
         }
+        let drawCodes: any = []
+        let drawTimes: any = []
+        drawSelected.map((item: any) => {
+            drawCodes.push(item.drawCode)
+            drawTimes.push(item.drawTime)
+        })
         const total = (typePlay.value != 7 && typePlay.value != 8) ? totalCost : totalCostBag
-        const surchagre = calSurcharge(total)
         let body: any = {
             lotteryType: LotteryType.Max3DPro,
             amount: total,
             status: OrderStatus.CART,
             level: typePlay.value,
-            drawCode: drawSelected.drawCode,
-            drawTime: drawSelected.drawTime,
+            drawCode: drawCodes,
+            drawTime: drawTimes,
             numbers: generated,
             bets: generatedBets
         }
-        // console.log(body)
         window.loadingIndicator.show()
-        // const res = await lotteryApi.addPowerMegaToCart(body)
-        // // console.log(res)
-        // if (res) {
-        //     Alert.alert("Thành công", "Đã thêm vé vào giỏ hàng!")
-        //     refreshChoosing()
-        //     dispatch(addLottery(res.data))
-        // }
+        const res = await lotteryApi.addMax3dToCart(body)
+        if (res) {
+            window.myalert.show({ title: "Đã thêm vé vào giỏ hàng!", alertType: 'success' })
+            refreshChoosing()
+            dispatch(addLottery(res.data))
+        }
         window.loadingIndicator.hide()
     }
 
+    const refreshChoosing = useCallback(() => {
+        setType({ label: "Cơ bản", value: 1 })
+        setNumbers(initNumber)
+        setBets(initBets)
+        setHugePosition([-1, -1])
+        setDraw([listDraw[0]])
+    }, [listDraw])
 
     return (
         <SafeAreaView style={styles.container}>

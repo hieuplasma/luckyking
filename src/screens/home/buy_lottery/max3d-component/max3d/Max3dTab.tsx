@@ -2,10 +2,10 @@ import { Image, Images } from "@assets";
 import { LotteryType, MAX3D_NUMBER, MAX_SET, MAX_SET_MAX3D, OrderMethod, OrderStatus } from "@common";
 import { ConsolasText, IText } from "@components";
 import { Color } from "@styles";
-import { calSurcharge, printMoneyK, printNumber } from "@utils";
+import { NavigationUtils, calSurcharge, printMoneyK, printNumber } from "@utils";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { StyleSheet, TouchableOpacity, ScrollView, View, Dimensions, Alert } from "react-native";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ChooseDrawSheet } from "../../component/ChooseDrawSheet";
 import { GeneratedNumber } from "../../component/GeneratedNumber";
 import { Max3dHuge } from "../../component/Max3dHuge";
@@ -16,9 +16,13 @@ import { generateMax3d, numberMax3d } from "../utils";
 import { Max3dBagView } from "./Max3dBagView";
 import { NumberSheetMax3d } from "./NumberSheetMax3d";
 import { TypeSheetMax3d } from "./TypeSheetMax3d";
+import { ScreenName } from "@navigation";
+import { lotteryApi } from "@api";
+import { addLottery } from "@redux";
 
 interface Props {
-    showBottomSheet: boolean
+    showBottomSheet: boolean,
+    navigation: any
 }
 
 const initNumber = [
@@ -32,9 +36,10 @@ const initNumber = [
 
 const initBets = [10000, 10000, 10000, 10000, 10000, 10000]
 const lottColor = Color.max3d
-const fullNumber = Array.from({ length: 10 }, (_, index) => index);
 
 export const Max3dTab = React.memo((props: Props) => {
+
+    const dispatch = useDispatch()
 
     const listDraw = useSelector((state: any) => state.drawReducer.max3dListDraw)
 
@@ -166,7 +171,7 @@ export const Max3dTab = React.memo((props: Props) => {
         setNumbers(set)
         setBets(bets)
     }, [])
-    const openNumberSheet = useCallback(async(page: number) => {
+    const openNumberSheet = useCallback(async (page: number) => {
         await setNumberFake(numberSet)
         setPageNumber(page)
         chooseNumberRef.current?.openSheet()
@@ -189,57 +194,65 @@ export const Max3dTab = React.memo((props: Props) => {
         if (generated.length == 0) {
             return Alert.alert("Thông báo", "Bạn chưa chọn bộ số nào")
         }
+        let drawCodes: any = []
+        let drawTimes: any = []
+        drawSelected.map((item: any) => {
+            drawCodes.push(item.drawCode)
+            drawTimes.push(item.drawTime)
+        })
         const total = typePlay.value != 4 ? totalCost : totalCostBag
-        const surchagre = calSurcharge(total)
         let body: any = {
             lotteryType: LotteryType.Max3D,
             amount: total,
-            surchagre: surchagre,
             status: OrderStatus.PENDING,
             method: OrderMethod.Keep,
             level: typePlay.value,
-            drawCode: drawSelected.drawCode,
+            drawCode: drawCodes,
+            drawTime: drawTimes,
             numbers: generated,
             bets: generatedBets
         }
-        // console.log(body)
-        window.loadingIndicator.show()
-        // const res = await lotteryApi.bookLotteryPowerMega(body)
-        // if (res) {
-        //     Alert.alert("Thành công", "Đã thanh toán mua vé thành công!")
-        //     dispatch(updateUser({ luckykingBalance: luckykingBalance - total - surchagre }))
-        //     refreshChoosing()
-        // }
-        window.loadingIndicator.hide()
+        NavigationUtils.navigate(props.navigation, ScreenName.HomeChild.OrderScreen, { body: body })
     }
 
     const addToCart = async () => {
         if (generated.length == 0) {
             return Alert.alert("Thông báo", "Bạn chưa chọn bộ số nào")
         }
+        let drawCodes: any = []
+        let drawTimes: any = []
+        drawSelected.map((item: any) => {
+            drawCodes.push(item.drawCode)
+            drawTimes.push(item.drawTime)
+        })
         const total = typePlay.value != 4 ? totalCost : totalCostBag
-        const surchagre = calSurcharge(total)
         let body: any = {
             lotteryType: LotteryType.Max3D,
             amount: total,
             status: OrderStatus.CART,
             level: typePlay.value,
-            drawCode: drawSelected.drawCode,
-            drawTime: drawSelected.drawTime,
+            drawCode: drawCodes,
+            drawTime: drawTimes,
             numbers: generated,
             bets: generatedBets
         }
-        // console.log(body)
         window.loadingIndicator.show()
-        // const res = await lotteryApi.addPowerMegaToCart(body)
-        // // console.log(res)
-        // if (res) {
-        //     Alert.alert("Thành công", "Đã thêm vé vào giỏ hàng!")
-        //     refreshChoosing()
-        //     dispatch(addLottery(res.data))
-        // }
+        const res = await lotteryApi.addMax3dToCart(body)
+        if (res) {
+            Alert.alert("Thành công", "Đã thêm vé vào giỏ hàng!")
+            refreshChoosing()
+            dispatch(addLottery(res.data))
+        }
         window.loadingIndicator.hide()
     }
+
+    const refreshChoosing = useCallback(() => {
+        setType({ label: "Cơ bản", value: 1 })
+        setNumbers(initNumber)
+        setBets(initBets)
+        setHugePosition([-1])
+        setDraw([listDraw[0]])
+    }, [listDraw])
 
     return (
         <View style={{ flex: 1 }}>

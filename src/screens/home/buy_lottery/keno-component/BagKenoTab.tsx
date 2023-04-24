@@ -7,19 +7,21 @@ import { ChooseDrawKeno } from "./simple-tab/ChooseDrawKeno";
 import { TypeBagKenoSheet } from "./bag-tab/TypeBagKenoSheet";
 import { ViewFooterKeno } from "./simple-tab/ViewFooterKeno";
 import { RenderLineKenobag } from "./bag-tab/RenderLineKenoBag";
-import { KENO_NUMBER } from "@common";
+import { KENO_NUMBER, LotteryType, OrderMethod, OrderStatus } from "@common";
 import { NumberSheetKenoBag } from "./bag-tab/NumberSheetKenoBag";
 import { ConsolasText, IText } from "@components";
-import { generateUniqueStrings, taoChuoiTuToHopChap } from "@utils";
+import { NavigationUtils, generateUniqueStrings, taoChuoiTuToHopChap } from "@utils";
 import { TableKenoBag } from "./bag-tab/TableKenoBag";
+import { ScreenName } from "@navigation";
 
 interface Props {
-    showBottomSheet: boolean
+    showBottomSheet: boolean,
+    navigation: any
 }
 
 const initNumber = [false, false, false]
 
-export const BagKenoTab = React.memo(({ showBottomSheet }: Props) => {
+export const BagKenoTab = React.memo(({ showBottomSheet, navigation }: Props) => {
 
     const [typePlay, setType]: any = useState({ bag: 3, level: 2 });
     const listDraw = useSelector((state: any) => state.drawReducer.kenoListDraw)
@@ -126,7 +128,33 @@ export const BagKenoTab = React.memo(({ showBottomSheet }: Props) => {
         )
     }, [chooseNumberRef, numberFake])
 
-    const bookLottery = useCallback(() => { }, [numberSet, bet, drawSelected])
+    const bookLottery = useCallback(() => {
+        const currentNumber = [...generated]
+        let tmp: any = []
+        let drawCodes: any = []
+        let drawTimes: any = []
+        if (currentNumber.length == 0) {
+            return window.myalert.show({ title: 'Bạn chưa chọn bộ số nào', btnLabel: "Đã hiểu" })
+        }
+        currentNumber.map((item: any) => tmp.push(item.trim().replaceAll(" ", "-")))
+        drawSelected.map((item: any) => {
+            drawCodes.push(item.drawCode)
+            drawTimes.push(item.drawTime)
+        })
+        const total = totalCost
+        let body: any = {
+            lotteryType: LotteryType.Keno,
+            amount: total,
+            status: OrderStatus.PENDING,
+            method: OrderMethod.Keep,
+            level: typePlay.bag,
+            drawCode: drawCodes,
+            drawTime: drawTimes,
+            numbers: tmp,
+            bets: Array(generated.length).fill(bet)
+        }
+        NavigationUtils.navigate(navigation, ScreenName.HomeChild.OrderScreen, { body: body })
+    }, [generated, bet, drawSelected, totalCost])
 
     return (
         <View style={{ flex: 1 }}>

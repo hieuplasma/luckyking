@@ -22,7 +22,11 @@ export const ScreenName = {
 
     WithDrawStack: "WithdrawStack",
     WithDrawScreen: "WithdrawScreen",
-    LuckyKingWithdrawScreen: "LuckyKingWithdrawScreen"
+    LuckyKingWithdrawScreen: "LuckyKingWithdrawScreen",
+
+    HistoryKenoStack:"HistoryKenoStack",
+    HistoryKenoScreen:"HistoryKenoScreen"
+
   },
 
   BottomTab: "BottomTab",
@@ -46,6 +50,7 @@ export const ScreenName = {
     MegaScreen: "MegaScreen",
     CartScreen: "CartScreen",
     Max3dScreen: "Max3dScreen",
-    Max3dProScreen: "Max3dProScreen"
+    Max3dProScreen: "Max3dProScreen",
+    OrderScreen: "OrderScreen"
   }
 };
