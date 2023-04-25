@@ -26,10 +26,11 @@ export const SimpleKenoTab = React.memo(({ showBottomSheet, navigation }: Props)
 
     const [typePlay, setType]: any = useState({ label: "Cơ bản", value: 1 });
     const listDraw = useSelector((state: any) => state.drawReducer.kenoListDraw)
-    const [drawSelected, setDraw]: any = useState([listDraw[0]])
+    const [drawSelected, setDraw]: any = useState(listDraw.length > 0 ? [listDraw[0]] : [])
     const [pickingType, setPickingType] = useState<PickingType>('default')
 
     useEffect(() => {
+        if (listDraw.length == 0) return setDraw([])
         let tmp = [...drawSelected]
         for (let i = 0; i < drawSelected.length; i++) {
             if (!listDraw.includes(drawSelected[i])) {
@@ -143,6 +144,7 @@ export const SimpleKenoTab = React.memo(({ showBottomSheet, navigation }: Props)
         let drawCodes: any = []
         let drawTimes: any = []
         let numbers: string[] = []
+        let betsGenerated: number[] = []
         for (let i = 0; i < currentNumber.length; i++) {
             let tmp = ""
             if (currentNumber[i][0] !== false && currentNumber[i].length > 0) {
@@ -151,10 +153,14 @@ export const SimpleKenoTab = React.memo(({ showBottomSheet, navigation }: Props)
                     else tmp = tmp + "-" + item
                 })
                 numbers.push(tmp)
+                betsGenerated.push(bets[i])
             }
         }
         if (numbers.length == 0) {
             return window.myalert.show({ title: 'Bạn chưa chọn bộ số nào', btnLabel: "Đã hiểu" })
+        }
+        if (drawSelected.length <= 0) {
+            return window.myalert.show({ title: 'Kỳ quay không hợp lệ', btnLabel: "Đã hiểu" })
         }
         drawSelected.map((item: any) => {
             drawCodes.push(item.drawCode)
@@ -169,7 +175,7 @@ export const SimpleKenoTab = React.memo(({ showBottomSheet, navigation }: Props)
             drawCode: drawCodes,
             drawTime: drawTimes,
             numbers: numbers,
-            bets: bets
+            bets: betsGenerated
         }
         NavigationUtils.navigate(navigation, ScreenName.HomeChild.OrderScreen, { body: body })
     }, [numberSet, bets, drawSelected, totalCost])

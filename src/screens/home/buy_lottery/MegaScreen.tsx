@@ -57,7 +57,7 @@ export const MegaScreen = React.memo((props: any) => {
 
     const [showBottomSheet, setShowBottomSheet] = useState(false)
     const [typePlay, setType]: any = useState({ label: "Cơ bản", value: 6 });
-    const [drawSelected, setDraw]: any = useState([listDraw[0]])
+    const [drawSelected, setDraw]: any = useState(listDraw.length > 0 ? [listDraw[0]] : [])
     const [numberSet, setNumbers]: any = useState(initNumber)
     const [numberSetFake, setNumberSetFake]: any = useState(initNumber)
     const [totalCost, setTotalCost] = useState(0)
@@ -151,6 +151,9 @@ export const MegaScreen = React.memo((props: any) => {
         if (numbers.length == 0) {
             return Alert.alert("Thông báo", "Bạn chưa chọn bộ số nào")
         }
+        if (drawSelected.length <= 0) {
+            return window.myalert.show({ title: 'Kỳ quay không hợp lệ', btnLabel: "Đã hiểu" })
+        }
         drawSelected.map((item: any) => {
             drawCodes.push(item.drawCode)
             drawTimes.push(item.drawTime)
@@ -185,6 +188,9 @@ export const MegaScreen = React.memo((props: any) => {
         }
         if (numbers.length == 0) {
             return Alert.alert("Thông báo", "Bạn chưa chọn bộ số nào")
+        }
+        if (drawSelected.length <= 0) {
+            return window.myalert.show({ title: 'Kỳ quay không hợp lệ', btnLabel: "Đã hiểu" })
         }
         drawSelected.map((item: any) => {
             drawCodes.push(item.drawCode)

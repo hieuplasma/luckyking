@@ -44,7 +44,7 @@ export const Max3dPlusTab = React.memo((props: Props) => {
     const listDraw = useSelector((state: any) => state.drawReducer.max3dListDraw)
 
     const [typePlay, setType]: any = useState({ label: "Cơ bản", value: 1 });
-    const [drawSelected, setDraw]: any = useState([listDraw[0]])
+    const [drawSelected, setDraw]: any = useState(listDraw.length > 0 ? [listDraw[0]] : [])
     const [numberSet, setNumbers]: any = useState(initNumber)
     const [numberFake, setNumberFake]: any = useState(initNumber)
     const [bets, setBets] = useState(initBets)
@@ -232,6 +232,9 @@ export const Max3dPlusTab = React.memo((props: Props) => {
         if (generated.length == 0) {
             return Alert.alert("Thông báo", "Bạn chưa chọn bộ số nào")
         }
+        if (drawSelected.length <= 0) {
+            return window.myalert.show({ title: 'Kỳ quay không hợp lệ', btnLabel: "Đã hiểu" })
+        }
         let drawCodes: any = []
         let drawTimes: any = []
         drawSelected.map((item: any) => {
@@ -255,6 +258,9 @@ export const Max3dPlusTab = React.memo((props: Props) => {
     const addToCart = async () => {
         if (generated.length == 0) {
             return Alert.alert("Thông báo", "Bạn chưa chọn bộ số nào")
+        }
+        if (drawSelected.length <= 0) {
+            return window.myalert.show({ title: 'Kỳ quay không hợp lệ', btnLabel: "Đã hiểu" })
         }
         let drawCodes: any = []
         let drawTimes: any = []

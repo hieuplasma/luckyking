@@ -36,7 +36,7 @@ export const RenderLineKeno = React.memo(({ item, title, openNumberSheet, delete
     }, [])
 
     return (
-        <View style={[styles.lineNumber, { borderColor: randoming ? lottColor : Color.white }]} >
+        <View style={[styles.lineNumber, { borderColor: randoming ? lottColor : Color.buyLotteryBackGround }]} >
             <IText style={{ fontSize: 18, fontWeight: 'bold', width: 15 }}>{title}</IText>
             <TouchableOpacity style={{ flex: 1, flexDirection: 'row', marginHorizontal: 18, flexWrap: 'wrap' }} onPress={openNumberSheet}>
                 {
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderWidth: 1,
         marginHorizontal: -10, paddingHorizontal: 10,
-        borderRadius: 10
+        borderRadius: 10,
     },
     ballContainer: {
         width: (windowWidth - 196) / 5,

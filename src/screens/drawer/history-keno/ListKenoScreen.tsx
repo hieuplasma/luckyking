@@ -1,12 +1,12 @@
 import { lotteryApi } from '@api';
 import { Icon, Images, Image } from '@assets';
-import { NumberDetail } from '@common';
+import { NumberDetail, OrderStatus } from '@common';
 import { ConsolasText, ImageHeader, IText } from '@components';
-import { ScreenName, } from '@navigation';
+import { ScreenName } from '@navigation';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Color, Style } from '@styles';
-import { dateTimeConvert, NavigationUtils, printDrawCode, printMoney, printNumber, printWeekDate, ScreenUtils } from '@utils';
+import { dateTimeConvert, NavigationUtils, printDisplayId, printDrawCode, printMoney, printNumber, printWeekDate, ScreenUtils } from '@utils';
 import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, View, Dimensions, StatusBar, TouchableOpacity, FlatList, RefreshControl } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -46,7 +46,7 @@ export const HistoryKenoScreen = React.memo(() => {
     const onRefresh = useCallback(async () => {
         setLoading(true)
         window.loadingIndicator.show()
-        const res = await lotteryApi.getAllOrder({})
+        const res = await lotteryApi.getAllOrder({ ticketType: 'keno' })
         if (res) {
             setListOrderKeno(res.data.filter(check).sort(compare))
         }
@@ -60,10 +60,10 @@ export const HistoryKenoScreen = React.memo(() => {
     }
 
     function compare(a: any, b: any) {
-        if (a.creataAt < b.creataAt) {
+        if (a.createdAt < b.createdAt) {
             return 1;
         }
-        if (a.creataAt > b.creataAt) {
+        if (a.createdAt > b.createdAt) {
             return -1;
         }
         return 0;
@@ -94,9 +94,9 @@ export const HistoryKenoScreen = React.memo(() => {
                                 paddingHorizontal: 8,
                                 backgroundColor: index % 2 == 0 ? Color.white : "#EFEEEC",
                             }}>
-                                <IText>{"#000000" + item.displayId}</IText>
+                                <IText>{printDisplayId(item.displayId)}</IText>
                                 <IText>{printMoney(item.amount) + "đ"}</IText>
-                                <IText>{"Thời gian mua: " + new Date(item.creataAt).toLocaleString()}</IText>
+                                <IText>{"Thời gian mua: " + new Date(item.createdAt).toLocaleString()}</IText>
                                 {
                                     item.Lottery[0].drawCode.map((code: number, indexCode: number) => {
                                         return (

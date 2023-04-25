@@ -13,18 +13,22 @@ interface RenderFooterItemProps {
 export const RenderFooterItem = React.memo(({ item, lottColor, openModalDeleteLottery }: RenderFooterItemProps) => {
     return (
         <>
-            {
+            {/* {
                 item.drawCode.map((code: number, indexCode: number) => {
                     return (
                         <View style={styles.lineBottom} key={code}>
                             <IText style={{ fontSize: 14, fontWeight: '400' }}>
                                 {`Kỳ ${printDrawCode(item.drawCode[indexCode])} - ${printWeekDate(new Date(item.drawTime[indexCode]))}`}
                             </IText>
-                            {/* <Image source={Images.edit_pen} style={styles.iconTrash}></Image> */}
                         </View>
                     )
                 })
-            }
+            } */}
+            <View style={styles.lineBottom}>
+                <IText style={{ fontSize: 14, fontWeight: '400' }}>
+                    {`Kỳ ${printDrawCode(item.drawCode)} - ${printWeekDate(new Date(item.drawTime))}`}
+                </IText>
+            </View>
             <View style={styles.lineBottom}>
                 <IText style={{ fontSize: 14, fontWeight: 'bold' }}>
                     {`Vé #${printNumber(item.displayId)}:`}

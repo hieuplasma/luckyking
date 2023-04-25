@@ -28,3 +28,5 @@ export enum OrderStatus {
 }
 
 export type PickingType = 'default' | 'fastpick' | 'selfpick'
+
+export type TicketType = 'keno' | 'basic'

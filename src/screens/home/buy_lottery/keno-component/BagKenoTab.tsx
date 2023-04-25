@@ -25,9 +25,10 @@ export const BagKenoTab = React.memo(({ showBottomSheet, navigation }: Props) =>
 
     const [typePlay, setType]: any = useState({ bag: 3, level: 2 });
     const listDraw = useSelector((state: any) => state.drawReducer.kenoListDraw)
-    const [drawSelected, setDraw]: any = useState([listDraw[0]])
+    const [drawSelected, setDraw]: any = useState(listDraw.length > 0 ? [listDraw[0]] : [])
 
     useEffect(() => {
+        if (listDraw.length == 0) return setDraw([])
         let tmp = [...drawSelected]
         for (let i = 0; i < drawSelected.length; i++) {
             if (!listDraw.includes(drawSelected[i]))
@@ -137,6 +138,9 @@ export const BagKenoTab = React.memo(({ showBottomSheet, navigation }: Props) =>
         let drawTimes: any = []
         if (currentNumber.length == 0) {
             return window.myalert.show({ title: 'Bạn chưa chọn bộ số nào', btnLabel: "Đã hiểu" })
+        }
+        if (drawSelected.length <= 0) {
+            return window.myalert.show({ title: 'Kỳ quay không hợp lệ', btnLabel: "Đã hiểu" })
         }
         currentNumber.map((item: any) => tmp.push(item.trim().replaceAll(" ", "-")))
         drawSelected.map((item: any) => {

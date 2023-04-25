@@ -40,6 +40,10 @@ export const RenderMax3dItem = React.memo(({ item, openModalDeleteLottery }: Pro
                                                 <IText style={styles.numberText}>{numbers[1]}</IText>
                                             </View>
                                     }
+                                    <View style={{ flex: 1 }} />
+                                    <IText style={{ fontSize: 16, fontWeight: '600', color: Color.black }}>
+                                        {`${printMoney(it.tienCuoc)}đ`}
+                                    </IText>
                                 </View>
                                 <View style={styles.underLine} />
                             </View>

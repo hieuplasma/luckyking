@@ -52,6 +52,10 @@ export function printNumber(number: any) {
     return number
 }
 
+export function printDisplayId(number: any) {
+    return "#" + number.toString().padStart(9, "0");
+}
+
 export function calSurcharge(cost: number) {
     return Math.floor(cost * 2 / 100)
 }

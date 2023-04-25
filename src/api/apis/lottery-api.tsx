@@ -1,3 +1,4 @@
+import { OrderStatus, TicketType } from "@common";
 import { API_URI } from "../config";
 
 class LotteryApi {
@@ -54,7 +55,7 @@ class LotteryApi {
         let fullUrl = API_URI.ADD_MAX3D_CART;
         return await window.connection.POST(fullUrl, body)
     }
-     // ---- End -----
+    // ---- End -----
 
     getListItemCart = async () => {
         let fullUrl = API_URI.GET_LIST_ITEM_CART;
@@ -86,7 +87,7 @@ class LotteryApi {
         return await window.connection.POST(fullUrl, body)
     }
 
-    getAllOrder = async (params: any) => {
+    getAllOrder = async (params: { ticketType?: TicketType, status?: OrderStatus }) => {
         let fullUrl = API_URI.GET_ALL_ORDER;
         return await window.connection.GET(fullUrl, params)
     }

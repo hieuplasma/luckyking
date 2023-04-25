@@ -29,6 +29,7 @@ const Wiget = forwardRef(({ currentChoose, onChoose }: ChooseTypeSheetProps, ref
     }, [])
 
     useEffect(() => {
+        if (listDraw.length == 0) return setCurrentDraw([])
         let tmp = [...currentDraw]
         for (let i = 0; i < currentDraw.length; i++) {
             if (!specificInclude(listDraw, currentDraw[i]))

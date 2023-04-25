@@ -26,11 +26,11 @@ export const SplashScreen = React.memo(() => {
     if (doNotExits(token))
       NavigationUtils.resetGlobalStackWithScreen(navigation, ScreenName.Authentication);
     else {
-
       const user = await userApi.getuserInfo()
       if (user?.data) {
         dispatch(updateUser(user.data))
       }
+      else return NavigationUtils.resetGlobalStackWithScreen(navigation, ScreenName.Authentication);
 
       const cart = await lotteryApi.getListItemCart()
       if (cart) {
@@ -60,16 +60,16 @@ export const SplashScreen = React.memo(() => {
 
       const listMax3dPro = await lotteryApi.getScheduleMax3d({ type: LotteryType.Max3DPro, take: 6, skip: 0 })
       if (listMax3dPro) {
-          if (listMax3dPro.data.length > 0) {
-              dispatch(getMax3dProDraw(listMax3dPro.data))
-          }
+        if (listMax3dPro.data.length > 0) {
+          dispatch(getMax3dProDraw(listMax3dPro.data))
+        }
       }
 
       const listKeno = await lotteryApi.getScheduleKeno({ type: LotteryType.Keno, take: 20, skip: 0 })
       if (listKeno) {
-          if (listKeno.data.length > 0) {
-              dispatch(getKenoDraw(listKeno.data))
-          }
+        if (listKeno.data.length > 0) {
+          dispatch(getKenoDraw(listKeno.data))
+        }
       }
 
       NavigationUtils.resetGlobalStackWithScreen(navigation, ScreenName.Main);

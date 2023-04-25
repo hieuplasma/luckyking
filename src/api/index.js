@@ -120,8 +120,8 @@ export class Connection {
                     NavigationUtils.resetGlobalStackWithScreen(undefined, ScreenName.Authentication)
                     return
                 }
-                Alert.alert("Lỗi", JSON.stringify(error.response?.data).toString())
-                return 0
+                // Alert.alert("Lỗi", JSON.stringify(error.response?.data).toString())
+                return error
             })
     }
 }
