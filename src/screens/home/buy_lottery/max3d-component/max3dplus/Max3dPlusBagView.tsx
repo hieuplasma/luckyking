@@ -120,8 +120,8 @@ export const Max3dPlusBagView = forwardRef(({ changeCost, changeGenerated, chang
                 }
                 <TouchableOpacity style={styles.boxNumber} onPress={openNumberSheet}>
                     {
-                        fixedNumbers.map((item: any) => {
-                            return (<ConsolasText style={{ fontSize: 16, color: lottColor }}>{item}</ConsolasText>)
+                        fixedNumbers.map((item: any, idx: number) => {
+                            return (<ConsolasText key={"" + idx} style={{ fontSize: 16, color: lottColor }}>{item}</ConsolasText>)
                         })
                     }
                 </TouchableOpacity>

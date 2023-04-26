@@ -9,10 +9,11 @@ import { IText } from "../texts"
 
 interface ImageHeaderProps {
     navigation: any,
-    title: string
+    title: string,
+    rightAction?: any
 }
 
-export const BasicHeader = React.memo(({ navigation, title }: ImageHeaderProps) => {
+export const BasicHeader = React.memo(({ navigation, title, rightAction }: ImageHeaderProps) => {
 
     const safeAreaInsets = useSafeAreaInsets();
 
@@ -34,7 +35,9 @@ export const BasicHeader = React.memo(({ navigation, title }: ImageHeaderProps) 
                     />
                 </View>
                 <IText style={styles.textTitle}>{title}</IText>
-                <View style={{ flex: 1 }} />
+                <View style={{ flex: 1 }}>
+                    {rightAction ? rightAction : <></>}
+                </View>
             </View>
         </>
     )

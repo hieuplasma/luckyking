@@ -10,7 +10,7 @@ import { ScreenName } from '@navigation';
 import { removeUser } from '@redux';
 const axios = require('axios').default;
 
-export { authApi, userApi, lotteryApi };
+export { authApi, userApi, lotteryApi, API_HOST };
 
 export class Connection {
     static init(store) {

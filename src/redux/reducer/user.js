@@ -31,8 +31,10 @@ const userSlice = createSlice({
             state.role = action.payload.role || newState.role
             state.avatar = action.payload.avatar || newState.avatar
             state.personNumber = action.payload.personNumber || newState.personNumber
-            state.luckykingBalance = action.payload.luckykingBalance || newState.luckykingBalance
-            state.rewardWalletBalance = action.payload.rewardWalletBalance || newState.rewardWalletBalance
+            state.luckykingBalance = action.payload.luckykingBalance !== 0 ?
+                (action.payload.luckykingBalance || newState.luckykingBalance) : 0
+            state.rewardWalletBalance = action.payload.rewardWalletBalance !== 0 ?
+                (action.payload.rewardWalletBalance || newState.rewardWalletBalance) : 0
         },
         removeUser: (state) => {
             state = initialState

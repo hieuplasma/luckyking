@@ -24,9 +24,9 @@ export const ScreenName = {
     WithDrawScreen: "WithdrawScreen",
     LuckyKingWithdrawScreen: "LuckyKingWithdrawScreen",
 
-    HistoryKenoStack:"HistoryKenoStack",
-    HistoryKenoScreen:"HistoryKenoScreen"
-
+    HistoryKenoStack: "HistoryKenoStack",
+    HistoryKenoScreen: "HistoryKenoScreen",
+    OrderKenoScreen: "OrderKenoScreen"
   },
 
   BottomTab: "BottomTab",

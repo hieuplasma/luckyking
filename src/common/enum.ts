@@ -17,14 +17,32 @@ export enum OrderMethod {
 }
 
 export enum OrderStatus {
-    PENDING = "PENDING", // chưa xử lý
-    CONFIRMED = "CONFIRMED",//đã nhận tiền
+    PENDING = "PENDING", // đã trả tiền, chờ khoá đơn
+    LOCK = "LOCK", // đã khoá đơn, chờ in
+    CONFIRMED = "CONFIRMED",//đã nhận tiền, in xong
     ERROR = "ERROR",//Lỗi hết bộ số hay 1 lý do nào đó
-    RETURNED = "RETURNED",//đã trả lại
+    RETURNED = "RETURNED",//đã hoàn lại
     WON = "WON",// ve thang
     PAID = "PAID",// da tra thuong
     NO_PRIZE = "NO_PRIZE",// khong trung thuong
-    CART = "CART", // trong gio hang
+
+    CART = "CART", // trong giỏ hàng, dành cho vé
+}
+
+export function getNameStatus(param: OrderStatus) {
+    switch (param) {
+        case OrderStatus.PENDING:
+        case OrderStatus.LOCK:
+            return "Đợi in vé"
+        case OrderStatus.CONFIRMED: return "Đã in vé"
+        case OrderStatus.ERROR: return "Bị lỗi"
+        case OrderStatus.RETURNED: return "Đã huỷ"
+        case OrderStatus.WON: return "Trúng thưởng"
+        case OrderStatus.PAID: return "Đã trả thưởng"
+        case OrderStatus.NO_PRIZE: return "Không trúng thưởng :("
+        case OrderStatus.CART: return "Trong giỏ hàng"
+        default: return "Không hợp lệ"
+    }
 }
 
 export type PickingType = 'default' | 'fastpick' | 'selfpick'

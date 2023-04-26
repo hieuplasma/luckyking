@@ -19,7 +19,11 @@ const Drawer = createDrawerNavigator<MainDrawerParamList>();
 export function MainNavigation(props: any) {
     return (
         <Drawer.Navigator
-            drawerContent={(props) => <DrawerCustom {...props} />}
+            drawerContent={(props) => {
+                return (
+                    <DrawerCustom {...props} />
+                )
+            }}
             screenOptions={{ headerShown: false, drawerType: 'front' }}
         >
             <Drawer.Screen name={'BottomTab'} component={BottomTabNavigator} />

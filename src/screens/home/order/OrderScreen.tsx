@@ -126,7 +126,7 @@ export const OrderScreen = React.memo(() => {
                     </View>
                     <View style={{ flex: 1 }} />
                     {
-                        bodyPay.amount < luckykingBalance ?
+                        bodyPay.amount > luckykingBalance ?
                             <TouchableOpacity style={styles.btnCharge} onPress={handleChargePress}>
                                 <IText style={{ fontWeight: 'bold', color: Color.white }}>{"Nạp"}</IText>
                             </TouchableOpacity>
@@ -161,7 +161,12 @@ export const OrderScreen = React.memo(() => {
                     <IText style={{ color: Color.luckyKing, fontSize: 18, fontWeight: 'bold' }}>{printMoney(bodyPay.amount + surcharge) + "đ"}</IText>
                 </View>
 
-                <TouchableOpacity style={styles.confirmButton} onPress={handlePay} activeOpacity={0.7}>
+                <TouchableOpacity
+                    style={[styles.confirmButton, { opacity: bodyPay.amount > luckykingBalance ? 0.4 : 1 }]}
+                    onPress={handlePay}
+                    activeOpacity={0.7}
+                    disabled={bodyPay.amount > luckykingBalance}
+                >
                     <IText uppercase style={styles.textConfirm}>{"THANH TOÁN"}</IText>
                 </TouchableOpacity>
             </View>

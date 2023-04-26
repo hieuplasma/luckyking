@@ -80,7 +80,8 @@ export const UserScreen = React.memo(() => {
             fullName: fullName,
             identify: identify,
             email: email,
-            address: address
+            address: address,
+            personNumber: personNumber
         }
         if (doNotExits(email)) delete body.email
         let res = await userApi.updateUserInfo(body)

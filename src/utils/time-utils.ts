@@ -14,7 +14,28 @@ export function dateTimeConvert(param: Date) {
     return smallThan10(hour) + ":" + smallThan10(min) + " - " + smallThan10(date) + "/" + smallThan10(month)
 }
 
-function smallThan10(param: number) {
+export function fullDateTimeConvert(param: Date) {
+    const date = param.getDate()
+    const month = param.getMonth() + 1
+    const year = param.getFullYear()
+    const hour = param.getHours()
+    const min = param.getMinutes()
+    return smallThan10(hour) + ":" + smallThan10(min) + " - " + smallThan10(date) + "/" + smallThan10(month) + "/" + year
+}
+
+export function fullDateTimeConvert2(param: Date) {
+    const date = param.getDate()
+    const month = param.getMonth() + 1
+    const year = param.getFullYear()
+    const hour = param.getHours()
+    const min = param.getMinutes()
+    const second = param.getSeconds()
+    return smallThan10(hour) + ":" + smallThan10(min) + ":" + smallThan10(second) + " - " + smallThan10(date) + "/" + smallThan10(month) + "/" + year
+}
+
+export
+
+    function smallThan10(param: number) {
     return param < 10 ? "0" + param : '' + param
 }
 

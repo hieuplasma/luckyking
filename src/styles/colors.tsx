@@ -94,13 +94,15 @@ export default {
 
 
   //new color
-  power:'#C38E32',
-  mega:'#BD2D24',
-  max3d:'#B93186',
-  max3dpro:"#890657",
-  keno:'#F97701',
-  vietlott:'#FC000C',
-  blue:'#0171F5',
+  power: '#C38E32',
+  mega: '#BD2D24',
+  max3d: '#B93186',
+  max3dpro: "#890657",
+  keno: '#F97701',
+  vietlott: '#FC000C',
+  blue: '#0171F5',
   buyLotteryBackGround: '#FAFAFA',
-  luckyKing: '#FC000C'
+  luckyKing: '#FC000C',
+  luckyPayment: "#1B07FF",
+  momoPayment: "#B93186"
 };

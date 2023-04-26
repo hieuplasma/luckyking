@@ -23,9 +23,7 @@ export const HomeCountdownClockComponent = React.memo(
     const dispatch = useDispatch()
 
     const resetScheduleKeno = useCallback(async (interval: any) => {
-      console.log("dkm")
       const listKeno = await lotteryApi.getScheduleKeno({ type: LotteryType.Keno, take: 20, skip: 0 })
-      console.log("listKeno", listKeno)
       if (listKeno) {
         if (listKeno.data.length > 0) {
           dispatch(getKenoDraw(listKeno.data))

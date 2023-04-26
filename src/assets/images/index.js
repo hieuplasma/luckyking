@@ -61,4 +61,7 @@ export const Images = {
   good_luck: require('./good_luck.png'),
   bg_ticket_1: require('./bg_ticket_1.png'),
   luckyking_logo: require('./luckyking_logo.png'),
+  print: require('./print.png'),
+  printed: require('./printed.png'),
+  no_picture: require('./no_picture.png'),
 };

@@ -6,7 +6,7 @@ import { removeToken } from '../redux/reducer/auth';
 import { ScreenName } from './ScreenName';
 import auth from '@react-native-firebase/auth';
 import { removeCart, removeUser, updateUser } from '@redux';
-import { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Image, Images } from '@assets';
 import { Color } from '@styles';
 import { userApi } from '@api';
@@ -14,30 +14,39 @@ import { IText } from '@components';
 
 const PADDING_TOP = 60
 
-function DrawerCustom(props: any) {
+const DrawerCustom = React.memo((props: any) => {
   const navigation = props.navigation
   const dispatch = useDispatch();
   const user = useSelector((state: any) => state.userReducer)
 
+  console.log("customdrawer rerender")
+
   const [loading, setLoading] = useState(false)
 
-  const logOut = () => {
+  const [currentScreen, setCurrentScreen] = useState(ScreenName.BottomTab)
+
+  useEffect(() => {
+    NavigationUtils.navigate(navigation, currentScreen)
+  }, [currentScreen])
+
+  const logOut = useCallback(() => {
     dispatch(removeToken())
     dispatch(removeUser())
     dispatch(removeCart())
-    props.navigation?.closeDrawer();
-    NavigationUtils.resetGlobalStackWithScreen(navigation, ScreenName.Authentication);
+    // props.navigation?.closeDrawer();
+    NavigationUtils.resetGlobalStackWithScreen(undefined, ScreenName.Authentication);
     auth()
       .signOut()
       .then(() => console.log('User signed out!'));
-  }
+  }, [])
+
   return (
     <View style={{ flex: 1 }}>
 
       {/* Drawer Heaer */}
       <Image source={Images.draw_top} style={{ paddingTop: PADDING_TOP, padding: 8, width: '100%', height: PADDING_TOP + 76 + 8, flexDirection: 'row' }}>
         <Image source={user.avatar != "" ? { uri: user.avatar } : Images.default_avatar} style={{ width: 76, height: 76 }}></Image>
-        <TouchableOpacity style={{ flexDirection: 'row' }} activeOpacity={0.7} onPress={() => NavigationUtils.navigate(navigation, ScreenName.Drawer.UserStack)}>
+        <TouchableOpacity style={{ flexDirection: 'row' }} activeOpacity={0.7} onPress={() => setCurrentScreen(ScreenName.Drawer.UserStack)}>
           <View style={{ marginLeft: 8, justifyContent: 'center' }}>
             <IText style={{ fontSize: 18, fontWeight: 'bold', color: Color.white }}>{user.fullName}</IText>
             <IText style={{ fontSize: 15, fontWeight: 'bold', color: Color.white, marginTop: 7 }}>{user.personNumber}</IText>
@@ -135,13 +144,13 @@ function DrawerCustom(props: any) {
           <Image source={Images.logout} style={{ width: 25, height: 25, marginLeft: 4 }}></Image>
         </TouchableOpacity>
 
-
         <View style={{ height: 40 }} />
       </ScrollView>
 
     </View>
   )
-}
+})
+
 export default DrawerCustom
 
 const styles = StyleSheet.create({

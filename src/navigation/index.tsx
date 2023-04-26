@@ -1,7 +1,7 @@
 import { CustomisableAlert, CustomisableAlertOptions } from '@components';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { LoadingIndicator, SplashScreen, SplashScreenRouteParams } from '@screen';
+import { LoadingIndicator, SplashScreen, SplashScreenRouteParams, ImageFullScreen } from '@screen';
 import { RootNavigationUtils } from '@utils';
 import React from 'react';
 import { View } from 'react-native';
@@ -22,6 +22,11 @@ const RootStack = createStackNavigator<RootStackParamsList>();
 
 interface LoadingProps {
   show: () => void
+  hide: () => void
+}
+
+interface ImageProps {
+  show: (uri: string) => void
   hide: () => void
 }
 
@@ -46,7 +51,8 @@ declare global {
     connection: any;
     _store: any;
     loadingIndicator: LoadingProps;
-    myalert: AlertProps
+    myalert: AlertProps;
+    image: ImageProps
   }
 }
 
@@ -71,6 +77,7 @@ export function RootNavigation(params?: {}) {
           </RootStack.Screen>
         </RootStack.Navigator>
       </NavigationContainer>
+      <ImageFullScreen />
       <LoadingIndicator />
       <CustomisableAlert
         dismissable={false}
