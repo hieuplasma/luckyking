@@ -1,7 +1,7 @@
 import { NumberDetail } from "@common"
 import { ConsolasText, IText } from "@components"
 import { Color } from "@styles"
-import { printDraw2, printMoney, printNumber } from "@utils"
+import { getColorLott, printDraw2, printMoney, printNumber } from "@utils"
 import React, { useCallback, useState } from "react"
 import { Dimensions, StyleSheet, View } from "react-native"
 import { PrintDrawItem } from "../../component/PrintDrawItem"
@@ -10,11 +10,10 @@ interface LotteryItem {
     section: any
 }
 
-const lottColor = Color.keno
-
-export const LotteryKenoItem = React.memo(({ section }: LotteryItem) => {
+export const LotteryBasicItem = React.memo(({ section }: LotteryItem) => {
 
     const numberDetail: NumberDetail[] = JSON.parse(section.boSo.toString())
+    const lottColor = getColorLott(section.lotteries[0].type)
 
     const [expandNumber, setExpandNumber] = useState(-1)
 
@@ -26,7 +25,10 @@ export const LotteryKenoItem = React.memo(({ section }: LotteryItem) => {
     return (
         <View>
             {numberDetail.map((it: NumberDetail, id: number) => {
-                const numbers: number[] = it.boSo.split("-").map(Number);
+                let numbers: any[] = []
+                if (lottColor == Color.power || lottColor == Color.mega)
+                    numbers = it.boSo.split("-").map(Number);
+                else numbers = it.boSo.split(" ")
                 return (
                     <View style={styles.lineNumber} key={'' + it.boSo + id}>
                         <IText style={{ fontSize: 14, color: Color.blue }}>
@@ -34,15 +36,30 @@ export const LotteryKenoItem = React.memo(({ section }: LotteryItem) => {
                         </IText>
                         <View style={{ marginLeft: 5, flexDirection: 'row', flexWrap: 'wrap', flex: 1 }}>
                             {
-                                numbers.map((number: number, id2: number) => {
-                                    return (
-                                        <View key={number + '' + id2} style={[styles.ball, { backgroundColor: Color.white }]}>
-                                            <ConsolasText style={styles.textBall}>
-                                                {`${printNumber(number)}`}
-                                            </ConsolasText>
+                                (lottColor == Color.power || lottColor == Color.mega) ?
+                                    numbers.map((number: number, id2: number) => {
+                                        return (
+                                            <View key={number + '' + id2}
+                                                style={[styles.ball,
+                                                { backgroundColor: Color.white },
+                                                { borderColor: lottColor }]}>
+                                                <ConsolasText style={[styles.textBall, { color: lottColor }]}>
+                                                    {`${printNumber(number)}`}
+                                                </ConsolasText>
+                                            </View>
+                                        )
+                                    })
+                                    : <>
+                                        <View style={[styles.boxNumber, { borderColor: lottColor }]}>
+                                            <IText style={[styles.textBall, { color: lottColor }]}>{numbers[0]}</IText>
                                         </View>
-                                    )
-                                })
+                                        {
+                                            lottColor == Color.max3d ? <></>
+                                                : <View style={[styles.boxNumber, { borderColor: lottColor }]}>
+                                                    <IText style={styles.textBall}>{numbers[1]}</IText>
+                                                </View>
+                                        }
+                                    </>
                             }
                         </View>
                         <IText style={{ marginRight: 30, marginLeft: 5 }}>{numbers.length}</IText>
@@ -58,7 +75,7 @@ export const LotteryKenoItem = React.memo(({ section }: LotteryItem) => {
                         lottery={lottery}
                         expand={expandNumber == index ? true : false}
                         toggle={() => handleExpandNumber(index)}
-                        lottColor={Color.keno}
+                        lottColor={getColorLott(lottery.type)}
                     />
                 )
             })}
@@ -86,7 +103,13 @@ const styles = StyleSheet.create({
     ball: {
         width: 24, height: 24, borderRadius: 99,
         justifyContent: 'center', alignItems: 'center',
-        margin: 5, borderWidth: 1, borderColor: lottColor
+        margin: 5, borderWidth: 1,
     },
-    textBall: { fontSize: 13, color: lottColor },
+    textBall: { fontSize: 13 },
+    boxNumber: {
+        width: 42, height: 24,
+        margin: 5, borderRadius: 15, marginLeft: 20,
+        justifyContent: 'center', alignItems: 'center',
+        borderWidth: 1
+    },
 })

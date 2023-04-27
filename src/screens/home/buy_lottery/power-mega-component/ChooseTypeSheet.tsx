@@ -30,8 +30,8 @@ const types = [
     { label: "Bao 13", value: 13 },//8
     { label: "Bao 14", value: 14 },//9
     { label: "Bao 15", value: 15 },//10
-    { label: "Bao 16", value: 16 },//11
-    { label: "Bao 17", value: 17 },//12
+    // { label: "Bao 16", value: 16 },//11
+    // { label: "Bao 17", value: 17 },//12
     { label: "Bao 18", value: 18 },//13
 ]
 

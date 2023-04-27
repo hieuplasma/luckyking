@@ -2,11 +2,12 @@ import { LotteryType } from "@common";
 import { dateConvert, dateTimeConvert, fullDateTimeConvert } from "./time-utils";
 import { Images } from "@assets";
 
-export function convolutions(a: number, b: number) {
+export function convolutions(a: number, b: number, lotteryType?: LotteryType) {
     let big = a, small = b
     if (b > a) { big = b; small = a }
     if (big == small) return 1
-    if (big == 6 && small == 5) return 6
+    if (big == 6 && small == 5  && lotteryType == LotteryType.Mega) return 40
+    if (big == 6 && small == 5  && lotteryType == LotteryType.Power) return 50
     if (big == 7 && small == 6) return 7
     if (big == 8 && small == 6) return 28
     if (big == 9 && small == 6) return 84

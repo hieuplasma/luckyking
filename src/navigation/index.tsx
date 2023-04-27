@@ -108,6 +108,9 @@ export * from './tab/ScanNavigation'
 export * from './drawer/RechargeNavigation'
 export * from './drawer/UserNavigation'
 export * from './drawer/WithDrawNavigation'
+export * from './drawer/HistoryKenoNavigation'
+export * from './drawer/HistoryBasicNavigation'
+
 
 export { AuthenticationStackParamList };
 export { ScreenName }

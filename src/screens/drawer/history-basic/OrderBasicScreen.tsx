@@ -9,16 +9,16 @@ import { printDisplayId, printMoney } from "@utils";
 import React, { useCallback, useEffect, useRef, useState } from "react"
 import { FlatList, RefreshControl, StyleSheet, TouchableOpacity, View } from "react-native";
 import { useSelector } from "react-redux";
-import { HistoryKenoStackParamList } from "src/navigation/drawer/HistoryKenoNavigation";
+import { HistoryBasicStackParamList } from "@navigation";
 import { DetailOrderSheet } from "../component/DetailOrderSheet";
-import { LotteryKenoItem } from "./component/LotteryKenoItem";
+import { LotteryBasicItem } from "./component/LotteryBasicItem";
 
-type NavigationProp = StackNavigationProp<HistoryKenoStackParamList, 'OrderKenoScreen'>;
-type NavigationRoute = RouteProp<HistoryKenoStackParamList, 'OrderKenoScreen'>;
+type NavigationProp = StackNavigationProp<HistoryBasicStackParamList, 'OrderBasicScreen'>;
+type NavigationRoute = RouteProp<HistoryBasicStackParamList, 'OrderBasicScreen'>;
 
-export interface OrderKenoScreenParamsList { order: any }
+export interface OrderBasicScreenParamsList { order: any }
 
-export const OrderKenoScreen = React.memo(({ }: any) => {
+export const OrderBasicScreen = React.memo(({ }: any) => {
 
     const navigation = useNavigation<NavigationProp>();
     const route = useRoute<NavigationRoute>();
@@ -113,7 +113,7 @@ export const OrderKenoScreen = React.memo(({ }: any) => {
                     data={sectionData}
                     extraData={sectionData}
                     renderItem={({ item, index }: any) => {
-                        return <LotteryKenoItem section={item} />
+                        return <LotteryBasicItem section={item} />
                     }}
                     keyExtractor={(item: any, index) => String(item.boSo)}
                     ListFooterComponent={<View style={{ height: 100 }}></View>}

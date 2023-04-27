@@ -2,7 +2,7 @@ import { lotteryApi } from '@api';
 import { Icon, Images, Image } from '@assets';
 import { NumberDetail, OrderMethod, OrderStatus } from '@common';
 import { ConsolasText, ImageHeader, IText } from '@components';
-import { ScreenName } from '@navigation';
+import { HistoryBasicStackParamList, ScreenName } from '@navigation';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Color, Style } from '@styles';
@@ -11,13 +11,12 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, View, Dimensions, StatusBar, TouchableOpacity, FlatList, RefreshControl } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
-import { HistoryKenoStackParamList } from 'src/navigation/drawer/HistoryKenoNavigation';
-import { OrderItem } from './component/OrderKenoItem';
+import { OrderBasicItem } from './component/OrderBasicItem';
 
-type NavigationProp = StackNavigationProp<HistoryKenoStackParamList, 'HistoryKenoScreen'>;
-type NavigationRoute = RouteProp<HistoryKenoStackParamList, 'HistoryKenoScreen'>;
+type NavigationProp = StackNavigationProp<HistoryBasicStackParamList, 'HistoryBasicScreen'>;
+type NavigationRoute = RouteProp<HistoryBasicStackParamList, 'HistoryBasicScreen'>;
 
-export interface HistoryKenocreenParamsList { }
+export interface HistoryBasicScreenParamsList { }
 
 type Status = 'booked' | 'returned'
 
@@ -26,7 +25,7 @@ OrderStatus.WON, OrderStatus.PAID, OrderStatus.NO_PRIZE]
 
 const ErrorList = [OrderStatus.ERROR, OrderStatus.RETURNED]
 
-export const HistoryKenoScreen = React.memo(() => {
+export const HistoryBasicScreen = React.memo(() => {
     const navigation = useNavigation<NavigationProp>();
     const route = useRoute<NavigationRoute>();
     const safeAreaInsets = useSafeAreaInsets();
@@ -38,15 +37,15 @@ export const HistoryKenoScreen = React.memo(() => {
         NavigationUtils.navigate(navigation, screen)
     }
 
-    const [listOrderKeno, setListOrderKeno] = useState([])
+    const [listOrder, setListOrder] = useState([])
     const [isLoading, setLoading] = useState(false)
 
     const onRefresh = useCallback(async () => {
         setLoading(true)
         window.loadingIndicator.show()
-        const res = await lotteryApi.getAllOrder({ ticketType: 'keno' })
+        const res = await lotteryApi.getAllOrder({ ticketType: 'basic' })
         if (res) {
-            setListOrderKeno(res.data.sort(compare))
+            setListOrder(res.data.sort(compare))
         }
         setLoading(false)
         window.loadingIndicator.hide()
@@ -75,7 +74,7 @@ export const HistoryKenoScreen = React.memo(() => {
 
     return (
         <View style={styles.container}>
-            <ImageHeader navigation={navigation} title={"LỊCH SỬ ĐẶT VÉ KENO"} />
+            <ImageHeader navigation={navigation} title={"LỊCH SỬ ĐẶT VÉ CƠ BẢN"} />
 
             <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', marginTop: 11 }}>
                 <TouchableOpacity onPress={() => setStatus('booked')}>
@@ -100,10 +99,10 @@ export const HistoryKenoScreen = React.memo(() => {
             <View style={styles.body}>
                 <FlatList
                     style={{ marginTop: 16 }}
-                    data={listOrderKeno.filter(check)}
-                    extraData={listOrderKeno.filter(check)}
+                    data={listOrder.filter(check)}
+                    extraData={listOrder.filter(check)}
                     renderItem={({ item, index }: any) => {
-                        return <OrderItem order={item} onPress={() => NavigationUtils.navigate(navigation, ScreenName.Drawer.OrderKenoScreen, { order: item })} />
+                        return <OrderBasicItem order={item} onPress={() => NavigationUtils.navigate(navigation, ScreenName.Drawer.OrderBasicScreen, { order: item })} />
                     }}
                     keyExtractor={(item: any, index) => String(item.id)}
                     refreshControl={

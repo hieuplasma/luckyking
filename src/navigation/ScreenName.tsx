@@ -26,7 +26,11 @@ export const ScreenName = {
 
     HistoryKenoStack: "HistoryKenoStack",
     HistoryKenoScreen: "HistoryKenoScreen",
-    OrderKenoScreen: "OrderKenoScreen"
+    OrderKenoScreen: "OrderKenoScreen",
+
+    HistoryBasicStack: "HistoryBasicStack",
+    HistoryBasicScreen: "HistoryBasicScreen",
+    OrderBasicScreen: "OrderBasicScreen"
   },
 
   BottomTab: "BottomTab",

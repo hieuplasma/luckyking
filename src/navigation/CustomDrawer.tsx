@@ -1,6 +1,5 @@
-import { useNavigation } from '@react-navigation/native';
 import { NavigationUtils, printMoney } from '@utils';
-import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { RefreshControl, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { removeToken } from '../redux/reducer/auth';
 import { ScreenName } from './ScreenName';
@@ -12,29 +11,36 @@ import { Color } from '@styles';
 import { userApi } from '@api';
 import { IText } from '@components';
 
-const PADDING_TOP = 60
-
 const DrawerCustom = React.memo((props: any) => {
+
   const navigation = props.navigation
   const dispatch = useDispatch();
-  const user = useSelector((state: any) => state.userReducer)
 
-  console.log("customdrawer rerender")
+  const [currentIdScreen, setCurrentId] = useState(0)
+  useEffect(() => {
+    setCurrentId(props.state.index)
+  }, [props?.state?.index])
+
+  const navigateTo = useCallback((screen: any) => {
+    NavigationUtils.navigate(navigation, screen)
+  }, [props?.state?.index])
 
   const [loading, setLoading] = useState(false)
-
-  const [currentScreen, setCurrentScreen] = useState(ScreenName.BottomTab)
-
-  useEffect(() => {
-    NavigationUtils.navigate(navigation, currentScreen)
-  }, [currentScreen])
+  const onRefresh = useCallback(async () => {
+    setLoading(true)
+    const res = await userApi.getuserInfo()
+    if (res?.data) {
+      dispatch(updateUser(res.data))
+    }
+    setLoading(false)
+  }, [])
 
   const logOut = useCallback(() => {
     dispatch(removeToken())
     dispatch(removeUser())
     dispatch(removeCart())
-    // props.navigation?.closeDrawer();
-    NavigationUtils.resetGlobalStackWithScreen(undefined, ScreenName.Authentication);
+    navigation?.closeDrawer();
+    NavigationUtils.resetGlobalStackWithScreen(navigation, ScreenName.Authentication);
     auth()
       .signOut()
       .then(() => console.log('User signed out!'));
@@ -42,118 +48,132 @@ const DrawerCustom = React.memo((props: any) => {
 
   return (
     <View style={{ flex: 1 }}>
-
-      {/* Drawer Heaer */}
-      <Image source={Images.draw_top} style={{ paddingTop: PADDING_TOP, padding: 8, width: '100%', height: PADDING_TOP + 76 + 8, flexDirection: 'row' }}>
-        <Image source={user.avatar != "" ? { uri: user.avatar } : Images.default_avatar} style={{ width: 76, height: 76 }}></Image>
-        <TouchableOpacity style={{ flexDirection: 'row' }} activeOpacity={0.7} onPress={() => setCurrentScreen(ScreenName.Drawer.UserStack)}>
-          <View style={{ marginLeft: 8, justifyContent: 'center' }}>
-            <IText style={{ fontSize: 18, fontWeight: 'bold', color: Color.white }}>{user.fullName}</IText>
-            <IText style={{ fontSize: 15, fontWeight: 'bold', color: Color.white, marginTop: 7 }}>{user.personNumber}</IText>
-          </View>
-          <View style={{ marginLeft: 16, justifyContent: 'center' }}>
-            <Image style={{ width: 12, height: 24 }} source={Images.right_arrow}></Image>
-          </View>
-        </TouchableOpacity>
-      </Image>
-
-      {/* Drawer Body */}
-      <ScrollView style={{ padding: 16, paddingTop: 5 }}>
-        <View style={styles.lineItem1}>
-          <Image source={Images.wallet} style={{ width: 26, height: 26 }}></Image>
-          <IText style={styles.textMoney}>{`${printMoney(user.luckykingBalance)}đ`}</IText>
-          <Image source={Images.eye_open} style={styles.eye}></Image>
-          <View style={{ flex: 1 }} />
-          <TouchableOpacity style={styles.button} activeOpacity={0.8} onPress={() => NavigationUtils.navigate(navigation, ScreenName.Drawer.RechargeStack)}>
-            <IText style={styles.textButton}>{"NẠP"}</IText>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.lineItem1}>
-          <Image source={Images.trophy} style={{ width: 44, height: 35, marginLeft: -8, marginRight: -10 }}></Image>
-          <IText style={styles.textMoney}>{`${printMoney(user.rewardWalletBalance)}đ`}</IText>
-          <Image source={Images.eye_open} style={styles.eye}></Image>
-          <View style={{ flex: 1 }} />
-          <TouchableOpacity style={styles.button} activeOpacity={0.6} onPress={() => NavigationUtils.navigate(navigation, ScreenName.Drawer.WithDrawStack)}>
-            <IText style={styles.textButton}>{"ĐỔI"}</IText>
-          </TouchableOpacity>
-        </View>
-
-        <TouchableOpacity style={[styles.lineItem2, { borderColor: Color.luckyKing }]} activeOpacity={.6} onPress={() => NavigationUtils.navigate(navigation, ScreenName.BottomTab)}>
-          <Image source={Images.home} style={styles.icon_default}></Image>
-          <IText style={styles.aloneText}>{"Trang chủ"}</IText>
-          <View style={{ flex: 1 }} />
-          <Image source={Images.right_arrow} style={styles.icon_arrow} tintColor={Color.luckyKing}></Image>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.lineItem2} activeOpacity={.6} onPress={() => NavigationUtils.navigate(navigation, ScreenName.Drawer.HistoryKenoStack)}>
-          <Image source={Images.history_note} style={styles.icon_history}></Image>
-          <View style={{ justifyContent: 'center' }}>
-            <IText style={styles.aboveText}>{"Lịch sử đặt vé Keno"}</IText>
-            <IText style={styles.underText}>{"(Keno, bao Keno, nuôi Keno)"}</IText>
-          </View>
-          <View style={{ flex: 1 }} />
-          <Image source={Images.right_arrow} style={styles.icon_arrow} tintColor={Color.black}></Image>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.lineItem2} activeOpacity={.6}>
-          <Image source={Images.history_note} style={styles.icon_history}></Image>
-          <View style={{ justifyContent: 'center' }}>
-            <IText style={styles.aboveText}>{"Lịch sử đặt vé cơ bản"}</IText>
-            <IText style={styles.underText}>{"(Power, Mega, Max3D/3D+, Max3DPro)"}</IText>
-          </View>
-          <View style={{ flex: 1 }} />
-          <Image source={Images.right_arrow} style={styles.icon_arrow} tintColor={Color.black}></Image>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.lineItem2} activeOpacity={.6}>
-          <Image source={Images.history_note} style={styles.icon_history}></Image>
-          <View style={{ justifyContent: 'center' }}>
-            <IText style={styles.aboveText}>{"Lịch sử chơi nhóm"}</IText>
-            <IText style={styles.underText}>{"(Power, Mega, Max3D/3D+nhóm)"}</IText>
-          </View>
-          <View style={{ flex: 1 }} />
-          <Image source={Images.right_arrow} style={styles.icon_arrow} tintColor={Color.black}></Image>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.lineItem2} activeOpacity={.6}>
-          <Image source={Images.contact} style={styles.icon_default}></Image>
-          <IText style={styles.aloneText}>{"Liên hệ"}</IText>
-          <View style={{ flex: 1 }} />
-          <Image source={Images.right_arrow} style={styles.icon_arrow} tintColor={Color.black}></Image>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.lineItem2} activeOpacity={.6}>
-          <Image source={Images.dieu_khoan} style={styles.icon_default}></Image>
-          <IText style={styles.aloneText}>{"Điều khoản sử dụng"}</IText>
-          <View style={{ flex: 1 }} />
-          <Image source={Images.right_arrow} style={styles.icon_arrow} tintColor={Color.black}></Image>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.lineItem2} activeOpacity={.6}>
-          <Image source={Images.chia_se} style={styles.icon_default}></Image>
-          <IText style={styles.aloneText}>{"Giới thiệu bạn bè"}</IText>
-          <View style={{ flex: 1 }} />
-          <Image source={Images.right_arrow} style={styles.icon_arrow} tintColor={Color.black}></Image>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.lineItem2} activeOpacity={.6}>
-          <Image source={Images.setting} style={styles.icon_default}></Image>
-          <IText style={styles.aloneText}>{"Cài đặt"}</IText>
-          <View style={{ flex: 1 }} />
-          <Image source={Images.right_arrow} style={styles.icon_arrow} tintColor={Color.black}></Image>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 16, alignItems: 'center' }}
-          onPress={() => logOut()}>
-          <IText style={{ fontSize: 14 }}>{"Đăng xuất"}</IText>
-          <Image source={Images.logout} style={{ width: 25, height: 25, marginLeft: 4 }}></Image>
-        </TouchableOpacity>
-
+      <HeaderDrawer navigateTo={navigateTo} />
+      <ScrollView style={{ padding: 8, paddingTop: 5 }}
+        refreshControl={
+          <RefreshControl refreshing={loading} onRefresh={onRefresh} />
+        }
+      >
+        {
+          listItem1.map((item: any) => {
+            return (
+              <LineItem1
+                key={item.screen}
+                icon={item.icon}
+                icStyle={item.icStyle}
+                money={item.money}
+                navigateTo={navigateTo}
+                screen={item.screen}
+                btn={item.btn}
+              />
+            )
+          })
+        }
+        {
+          listItem2.map((item: any) => {
+            return (
+              <LineItem2
+                key={item.title}
+                icon={item.icon}
+                icStyle={item.icStyle}
+                title={item.title}
+                subTitle={item.subTitle}
+                navigateTo={navigateTo}
+                screen={item.screen}
+                focusing={currentIdScreen == item.screenId ? true : false}
+              />
+            )
+          })
+        }
+        <LogOut logOut={logOut} />
         <View style={{ height: 40 }} />
       </ScrollView>
-
     </View>
   )
 })
 
 export default DrawerCustom
 
+const HeaderDrawer = React.memo(({ navigateTo }: any) => {
+  const user = useSelector((state: any) => state.userReducer)
+  return (
+    <Image source={Images.draw_top} style={styles.imgAvatar}>
+      <Image source={user.avatar != "" ? { uri: user.avatar } : Images.default_avatar} style={{ width: 76, height: 76 }}></Image>
+      <TouchableOpacity style={{ flexDirection: 'row' }} activeOpacity={0.7} onPress={() => navigateTo(ScreenName.Drawer.UserStack)}>
+        <View style={{ marginLeft: 8, justifyContent: 'center' }}>
+          <IText style={{ fontSize: 18, fontWeight: 'bold', color: Color.white }}>{user.fullName}</IText>
+          <IText style={{ fontSize: 15, fontWeight: 'bold', color: Color.white, marginTop: 7 }}>{user.personNumber}</IText>
+        </View>
+        <View style={{ marginLeft: 16, justifyContent: 'center' }}>
+          <Image style={{ width: 12, height: 24 }} source={Images.right_arrow}></Image>
+        </View>
+      </TouchableOpacity>
+    </Image>
+  )
+})
+
+const LineItem1 = React.memo(({ navigateTo, icon, icStyle, money, screen, btn }: any) => {
+  const user = useSelector((state: any) => state.userReducer)
+  const handlePress = useCallback(() => {
+    navigateTo(screen)
+  }, [])
+  return (
+    <View style={styles.lineItem1}>
+      <Image source={icon} style={icStyle}></Image>
+      <IText style={styles.textMoney}>{`${printMoney(user[money])}đ`}</IText>
+      <Image source={Images.eye_open} style={styles.eye}></Image>
+      <View style={{ flex: 1 }} />
+      <TouchableOpacity style={styles.button} activeOpacity={0.8} onPress={handlePress}>
+        <IText style={styles.textButton}>{btn}</IText>
+      </TouchableOpacity>
+    </View>
+  )
+})
+
+const LineItem2 = React.memo(({ navigateTo, icon, icStyle, title, subTitle, screen, focusing }: any) => {
+  const handlePress = useCallback(() => {
+    navigateTo(screen)
+  }, [])
+  return (
+    <TouchableOpacity
+      style={[styles.lineItem2, { borderColor: focusing ? Color.luckyKing : '#E7E3E3' }]}
+      activeOpacity={.6}
+      onPress={handlePress}
+    >
+      <Image source={icon} style={icStyle}></Image>
+      {
+        subTitle ?
+          <View style={{ justifyContent: 'center' }}>
+            <IText style={styles.aboveText}>{title}</IText>
+            <IText style={styles.underText}>{subTitle}</IText>
+          </View>
+          : <IText style={styles.aloneText}>{title}</IText>
+      }
+      <View style={{ flex: 1 }} />
+      <Image source={Images.right_arrow} style={styles.icon_arrow} tintColor={Color.black}></Image>
+    </TouchableOpacity>
+  )
+})
+
+const LogOut = React.memo(({ logOut }: any) => {
+
+  return (
+    <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: 16, }}
+      onPress={logOut}>
+      <IText style={{ fontSize: 14 }}>{"Đăng xuất"}</IText>
+      <Image source={Images.logout} style={{ width: 25, height: 25, marginLeft: 4 }}></Image>
+    </TouchableOpacity>
+  )
+})
+
+const PADDING_TOP = 60
+
 const styles = StyleSheet.create({
+  imgAvatar: {
+    paddingTop: PADDING_TOP, padding: 8,
+    width: '100%', height: PADDING_TOP + 76 + 8,
+    flexDirection: 'row',
+  },
   lineItem1: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -185,3 +205,90 @@ const styles = StyleSheet.create({
   icon_history: { width: 41, height: 33, margin: -9 },
   icon_arrow: { width: 6, height: 12 }
 })
+
+
+const listItem1 = [
+  {
+    screenId: 2,
+    icon: Images.wallet,
+    icStyle: { width: 26, height: 26 },
+    money: 'luckykingBalance',
+    screen: ScreenName.Drawer.RechargeStack,
+    btn: "NẠP"
+  },
+  {
+    screenId: 3,
+    icon: Images.trophy,
+    icStyle: { width: 44, height: 35, marginLeft: -8, marginRight: -10 },
+    money: 'rewardWalletBalance',
+    screen: ScreenName.Drawer.WithDrawStack,
+    btn: "ĐỔI"
+  }
+]
+
+const listItem2 = [
+  {
+    screenId: 0,
+    icon: Images.home,
+    icStyle: styles.icon_default,
+    title: "Trang chủ",
+    subTitle: undefined,
+    screen: ScreenName.BottomTab
+  },
+  {
+    screenId: 4,
+    icon: Images.history_note,
+    icStyle: styles.icon_history,
+    title: "Lịch sử đặt vé Keno",
+    subTitle: "(Keno, bao Keno, nuôi Keno)",
+    screen: ScreenName.Drawer.HistoryKenoStack
+  },
+  {
+    screenId: 5,
+    icon: Images.history_note,
+    icStyle: styles.icon_history,
+    title: "Lịch sử đặt vé cơ bản",
+    subTitle: "(Power, Mega, Max3D/3D+, Max3DPro)",
+    screen: ScreenName.Drawer.HistoryBasicStack
+  },
+  {
+    screenId: undefined,
+    icon: Images.history_note,
+    icStyle: styles.icon_history,
+    title: "Lịch sử chơi nhóm",
+    subTitle: "(Power, Mega, Max3D/3D+nhóm)",
+    screen: undefined
+  },
+  {
+    screenId: undefined,
+    icon: Images.contact,
+    icStyle: styles.icon_default,
+    title: "Liên hệ",
+    subTitle: undefined,
+    screen: undefined
+  },
+  {
+    screenId: undefined,
+    icon: Images.dieu_khoan,
+    icStyle: styles.icon_default,
+    title: "Điều khoản sử dụng",
+    subTitle: undefined,
+    screen: undefined
+  },
+  {
+    screenId: undefined,
+    icon: Images.chia_se,
+    icStyle: styles.icon_default,
+    title: "Giới thiệu bạn bè",
+    subTitle: undefined,
+    screen: undefined
+  },
+  {
+    screenId: undefined,
+    icon: Images.setting,
+    icStyle: styles.icon_default,
+    title: "Cài đặt",
+    subTitle: undefined,
+    screen: undefined
+  }
+]

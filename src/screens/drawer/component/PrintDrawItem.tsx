@@ -5,16 +5,17 @@ import { IText } from "@components";
 import { Color } from "@styles";
 import { doNotExits, printDraw2 } from "@utils";
 import React, { useCallback, useEffect, useState } from "react";
-import { StyleSheet, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
+import { ColorValue, StyleSheet, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
 import { View } from "react-native";
 
-interface DrawKenoItem {
+interface DrawItemProps {
     lottery: any,
     expand: boolean,
-    toggle: () => void
+    toggle: () => void,
+    lottColor: ColorValue
 }
 
-function getColorStatus(param: OrderStatus) {
+function getColorStatus(param: OrderStatus, lottColor: ColorValue) {
     switch (param) {
         case OrderStatus.PENDING:
         case OrderStatus.LOCK:
@@ -22,15 +23,15 @@ function getColorStatus(param: OrderStatus) {
             return Color.blue
         // case OrderStatus.ERROR: return "Bị lỗi"
         // case OrderStatus.RETURNED: return "Đã huỷ"
-        case OrderStatus.WON: return Color.keno
-        case OrderStatus.PAID: return Color.keno
+        case OrderStatus.WON: return lottColor
+        case OrderStatus.PAID: return lottColor
         case OrderStatus.NO_PRIZE: return '#057A9F'
         // case OrderStatus.CART: return "Trong giỏ hàng"
         default: return Color.luckyKing
     }
 }
 
-export const PrintKenoItem = React.memo(({ lottery, expand, toggle }: DrawKenoItem) => {
+export const PrintDrawItem = React.memo(({ lottery, expand, toggle, lottColor }: DrawItemProps) => {
 
     const showImg = useCallback((uri: string) => {
         if (doNotExits(uri)) { }
@@ -38,15 +39,15 @@ export const PrintKenoItem = React.memo(({ lottery, expand, toggle }: DrawKenoIt
     }, [])
 
     return (
-        <TouchableOpacity style={[styles.container, { borderColor: expand ? Color.keno : '#A0A0A0' }]}
+        <TouchableOpacity style={[styles.container, { borderColor: expand ? lottColor : '#A0A0A0' }]}
             activeOpacity={1} onPress={toggle}>
             <View style={styles.topContainer}>
                 <IText>
                     <IText style={{ fontWeight: 'bold' }}>{"Kỳ: "}</IText>
                     {printDraw2({ drawCode: lottery.drawCode, drawTime: lottery.drawTime })}
                 </IText>
-                <TouchableOpacity style={[styles.btn, { borderColor: getColorStatus(lottery.status) }]} onPress={toggle}>
-                    <IText style={{ color: getColorStatus(lottery.status) }}>
+                <TouchableOpacity style={[styles.btn, { borderColor: getColorStatus(lottery.status, lottColor) }]} onPress={toggle}>
+                    <IText style={{ color: getColorStatus(lottery.status, lottColor) }}>
                         {getNameStatus(lottery.status)}
                     </IText>
                 </TouchableOpacity>

@@ -85,7 +85,7 @@ export const MegaScreen = React.memo((props: any) => {
             const element = numberSet[i]
             if (element[0] || element[1]) set++
         }
-        setTotalCost(set * 10000 * convolutions(MAX_SET, level) * drawSelected.length)
+        setTotalCost(set * 10000 * convolutions(MAX_SET, level, LotteryType.Mega) * drawSelected.length)
     }, [numberSet, drawSelected])
 
     const randomNumber = (index: number) => {
@@ -138,6 +138,7 @@ export const MegaScreen = React.memo((props: any) => {
         let drawCodes: any = []
         let drawTimes: any = []
         let numbers: string[] = []
+        let bets: number[] = []
         for (let i = 0; i < currentNumber.length; i++) {
             let tmp = ""
             if (currentNumber[i][0] !== false) {
@@ -146,6 +147,7 @@ export const MegaScreen = React.memo((props: any) => {
                     else tmp = tmp + "-" + item
                 })
                 numbers.push(tmp)
+                bets.push(10000 * convolutions(MAX_SET, currentNumber[i].length, LotteryType.Mega))
             }
         }
         if (numbers.length == 0) {
@@ -166,7 +168,8 @@ export const MegaScreen = React.memo((props: any) => {
             level: typePlay.value,
             drawCode: drawCodes,
             drawTime: drawTimes,
-            numbers: numbers
+            numbers: numbers,
+            bets: bets
         }
         NavigationUtils.navigate(navigation, ScreenName.HomeChild.OrderScreen, { body: body })
     }
@@ -176,6 +179,7 @@ export const MegaScreen = React.memo((props: any) => {
         let drawCodes: any = []
         let drawTimes: any = []
         let numbers: string[] = []
+        let bets: number[] = []
         for (let i = 0; i < currentNumber.length; i++) {
             let tmp = ""
             if (currentNumber[i][0] !== false) {
@@ -184,6 +188,7 @@ export const MegaScreen = React.memo((props: any) => {
                     else tmp = tmp + "-" + item
                 })
                 numbers.push(tmp)
+                bets.push(10000 * convolutions(MAX_SET, currentNumber[i].length, LotteryType.Mega))
             }
         }
         if (numbers.length == 0) {
@@ -203,7 +208,8 @@ export const MegaScreen = React.memo((props: any) => {
             level: typePlay.value,
             drawCode: drawCodes,
             drawTime: drawTimes,
-            numbers: numbers
+            numbers: numbers,
+            bets: bets
         }
         window.loadingIndicator.show()
         const res = await lotteryApi.addPowerMegaToCart(body)
