@@ -1,6 +1,6 @@
 import { lotteryApi } from '@api';
 import { Image, Images } from '@assets';
-import { LotteryType, MAX3D_NUMBER, MAX_SET, MAX_SET_MAX3D, OrderMethod, OrderStatus } from '@common';
+import { DELAY_SCREEN, LotteryType, MAX3D_NUMBER, MAX_SET, MAX_SET_MAX3D, OrderMethod, OrderStatus } from '@common';
 import { ConsolasText, HeaderBuyLottery, IText } from '@components';
 import { HomeStackParamList, ScreenName } from '@navigation';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
@@ -56,7 +56,7 @@ export const Max3dProScreen = () => {
         const timer = setTimeout(() => {
             window.loadingIndicator.hide()
             setShowBottomSheet(true);
-        }, 500); // change delay as needed
+        }, DELAY_SCREEN); // change delay as needed
         return () => clearTimeout(timer);
     }, []);
 

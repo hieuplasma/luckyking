@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { lotteryApi } from "@api";
 import { ChooseDrawSheet } from "./component/ChooseDrawSheet";
 import { ChooseNumberSheet } from "./power-mega-component/ChooseNumberSheet";
-import { LotteryType, MAX_SET, OrderMethod, OrderStatus, POWER_NUMBER } from "@common";
+import { DELAY_SCREEN, LotteryType, MAX_SET, OrderMethod, OrderStatus, POWER_NUMBER } from "@common";
 import { addLottery, getCart, getPowerDraw, updateUser } from "@redux";
 import { CartIcon, ConsolasText, DigitalText, HeaderBuyLottery, IText } from "@components";
 import { ViewAbove } from "./component/ViewAbove";
@@ -67,7 +67,7 @@ export const PowerScreen = React.memo((props: PowerScreenProps) => {
         const timer = setTimeout(() => {
             window.loadingIndicator.hide()
             setShowBottomSheet(true);
-        }, 500); // change delay as needed
+        }, DELAY_SCREEN); // change delay as needed
         return () => clearTimeout(timer);
     }, []);
 

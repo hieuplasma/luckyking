@@ -1,4 +1,4 @@
-import { LotteryType } from '@common';
+import { DELAY_SCREEN, DELAY_TAB, LotteryType } from '@common';
 import { HeaderBuyLottery, IText } from '@components';
 import { HomeStackParamList } from '@navigation';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
@@ -30,7 +30,7 @@ export const Max3dScreen = () => {
             setLotteryType(type)
             clearTimeout(timer1)
             window.loadingIndicator.hide()
-        }, 100);
+        }, DELAY_TAB);
 
     }, [])
 
@@ -40,7 +40,7 @@ export const Max3dScreen = () => {
         const timer = setTimeout(() => {
             window.loadingIndicator.hide()
             setShowBottomSheet(true);
-        }, 500); // change delay as needed
+        }, DELAY_SCREEN); // change delay as needed
         return () => clearTimeout(timer);
     }, []);
 

@@ -12,6 +12,7 @@ import { useSelector } from "react-redux";
 import { HistoryKenoStackParamList } from "src/navigation/drawer/HistoryKenoNavigation";
 import { DetailOrderSheet } from "../component/DetailOrderSheet";
 import { LotteryKenoItem } from "./component/LotteryKenoItem";
+import { DELAY_SCREEN } from "@common";
 
 type NavigationProp = StackNavigationProp<HistoryKenoStackParamList, 'OrderKenoScreen'>;
 type NavigationRoute = RouteProp<HistoryKenoStackParamList, 'OrderKenoScreen'>;
@@ -29,7 +30,7 @@ export const OrderKenoScreen = React.memo(({ }: any) => {
         const timer = setTimeout(() => {
             window.loadingIndicator.hide()
             setShowBottomSheet(true);
-        }, 100);
+        }, DELAY_SCREEN);
         return () => clearTimeout(timer);
     }, []);
 

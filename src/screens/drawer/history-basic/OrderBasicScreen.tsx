@@ -11,7 +11,7 @@ import { HistoryBasicStackParamList } from "@navigation";
 import { DetailOrderSheet } from "../component/DetailOrderSheet";
 import { LotteryBasicItem } from "./component/LotteryBasicItem";
 import DropDownPicker from "react-native-dropdown-picker";
-import { OrderStatus } from "@common";
+import { DELAY_SCREEN, OrderStatus } from "@common";
 
 type NavigationProp = StackNavigationProp<HistoryBasicStackParamList, 'OrderBasicScreen'>;
 type NavigationRoute = RouteProp<HistoryBasicStackParamList, 'OrderBasicScreen'>;
@@ -31,7 +31,7 @@ export const OrderBasicScreen = React.memo(({ }: any) => {
         const timer = setTimeout(() => {
             window.loadingIndicator.hide()
             setShowBottomSheet(true);
-        }, 100);
+        }, DELAY_SCREEN);
         return () => clearTimeout(timer);
     }, []);
 

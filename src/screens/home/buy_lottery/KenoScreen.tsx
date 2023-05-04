@@ -1,5 +1,5 @@
 import { lotteryApi } from '@api';
-import { LotteryType } from '@common';
+import { DELAY_SCREEN, DELAY_TAB, LotteryType } from '@common';
 import { HeaderBuyLottery, IText } from '@components';
 import { HomeStackParamList } from '@navigation';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
@@ -41,7 +41,7 @@ export const KenoScreen = () => {
             setType(type)
             clearTimeout(timer1)
             window.loadingIndicator.hide()
-        }, 100);
+        }, DELAY_TAB);
     }, [])
 
     const [showBottomSheet, setShowBottomSheet] = useState(false)
@@ -50,7 +50,7 @@ export const KenoScreen = () => {
         const timer = setTimeout(() => {
             setShowBottomSheet(true);
             window.loadingIndicator.hide()
-        }, 500); // change delay as needed
+        }, DELAY_SCREEN); // change delay as needed
         return () => clearTimeout(timer);
     }, []);
 

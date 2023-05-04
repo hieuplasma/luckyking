@@ -18,7 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { lotteryApi } from "@api";
 import { ChooseDrawSheet } from "./component/ChooseDrawSheet";
 import { ChooseNumberSheet } from "./power-mega-component/ChooseNumberSheet";
-import { LotteryType, MAX_SET, MEGA_NUMBER, OrderMethod, OrderStatus } from "@common";
+import { DELAY_SCREEN, LotteryType, MAX_SET, MEGA_NUMBER, OrderMethod, OrderStatus } from "@common";
 import { addLottery, getCart, getMegaDraw, updateUser } from "@redux";
 import { CartIcon, ConsolasText, HeaderBuyLottery, IText } from "@components";
 import { ViewAbove } from "./component/ViewAbove";
@@ -73,7 +73,7 @@ export const MegaScreen = React.memo((props: any) => {
         const timer = setTimeout(() => {
             window.loadingIndicator.hide()
             setShowBottomSheet(true);
-        }, 500); // change delay as needed
+        }, DELAY_SCREEN); // change delay as needed
         return () => clearTimeout(timer);
     }, []);
 
