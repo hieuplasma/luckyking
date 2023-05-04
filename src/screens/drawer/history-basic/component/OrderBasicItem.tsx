@@ -12,15 +12,12 @@ interface OrderItemProps {
     onPress: () => void
 }
 
-const getData = {
-    81: 'Lớn',
-    82: 'Nhỏ',
-    83: 'Hoà LN',
-    84: 'Chẵn 13+',
-    85: 'Hòa CL',
-    86: 'Lẻ 13+',
-    87: 'Chẵn 11-12',
-    88: 'Lẻ 11-12'
+const list: any = {
+    power655: '6/55',
+    mega645: '6/45',
+    max3d: '3D',
+    max3dpro: '3DPro',
+    max3dplus: '3D+'
 }
 
 export const OrderBasicItem = React.memo(({ order, onPress }: OrderItemProps) => {
@@ -29,22 +26,22 @@ export const OrderBasicItem = React.memo(({ order, onPress }: OrderItemProps) =>
 
     const createdAt = new Date(order.createdAt)
 
-    const [listDraw, setListDraw] = useState<any>([])
+    const [listType, setType] = useState<any>([])
     const [benefit, setBenefit] = useState(0)
 
     useEffect(() => {
         let tmp = new Set()
-        let tmpDraw: any = []
+        let tmpType: any = new Set()
         let money = 0
         order.Lottery.map((it: any) => {
             if (tmp.has(it.drawCode)) { }
             else {
                 tmp.add(it.drawCode)
-                tmpDraw.push({ drawCode: it.drawCode, drawTime: it.drawTime })
+                tmpType.add(list[it.type])
             }
             money = money + it.benefits
         })
-        setListDraw(tmpDraw)
+        setType(Array.from(tmpType))
         setBenefit(money)
     }, [order])
 
@@ -59,13 +56,14 @@ export const OrderBasicItem = React.memo(({ order, onPress }: OrderItemProps) =>
             </View>
 
             <View style={styles.lineItem}>
-                <View>
-                    {listDraw.map((item: any, index: number) => {
-                        return (
-                            <IText style={styles.txItem} key={'' + index}>{printDraw2(item)}</IText>
-                        )
-                    })}
-                </View>
+                <IText>
+                    {"Giữ hộ: "}
+                    {
+                        listType.map((type: string, index: number) => {
+                            return (<IText key={type}>{type + (index == listType.length - 1 ? "" : ",")}</IText>)
+                        })
+                    }
+                </IText>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Image source={Images.luckyking_logo} style={styles.iconPayment} />
                     <IText style={{ marginLeft: 8, color: Color.luckyPayment, fontWeight: 'bold' }}>

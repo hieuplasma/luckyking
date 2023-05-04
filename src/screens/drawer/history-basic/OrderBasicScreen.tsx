@@ -1,5 +1,3 @@
-import { lotteryApi } from "@api";
-import { Image, Images } from "@assets";
 import { BasicHeader, IText } from "@components";
 import { WINDOW_WIDTH } from "@gorhom/bottom-sheet";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
@@ -12,11 +10,15 @@ import { useSelector } from "react-redux";
 import { HistoryBasicStackParamList } from "@navigation";
 import { DetailOrderSheet } from "../component/DetailOrderSheet";
 import { LotteryBasicItem } from "./component/LotteryBasicItem";
+import DropDownPicker from "react-native-dropdown-picker";
+import { OrderStatus } from "@common";
 
 type NavigationProp = StackNavigationProp<HistoryBasicStackParamList, 'OrderBasicScreen'>;
 type NavigationRoute = RouteProp<HistoryBasicStackParamList, 'OrderBasicScreen'>;
 
-export interface OrderBasicScreenParamsList { order: any }
+type Status = 'pending' | 'complete' | 'returned'
+
+export interface OrderBasicScreenParamsList { order: any, status: Status }
 
 export const OrderBasicScreen = React.memo(({ }: any) => {
 
@@ -34,30 +36,12 @@ export const OrderBasicScreen = React.memo(({ }: any) => {
     }, []);
 
     const order = route.params.order
+    const status = route.params.status
     const createdAt = new Date(order.createdAt)
 
     const sheetRef: any = useRef(null)
 
-    const [sectionData, setSectionData] = useState([])
-    const [benefit, setBenefit] = useState(0)
-
-    useEffect(() => {
-        let tmpBoSo = new Set()
-        let tmpSection: any = []
-        let money = 0
-        order.Lottery.map((it: any) => {
-            if (tmpBoSo.has(it.NumberLottery.numberDetail)) {
-                tmpSection[tmpSection.findIndex((item: any) => item.boSo == it.NumberLottery.numberDetail)].lotteries.push(it)
-            }
-            else {
-                tmpBoSo.add(it.NumberLottery.numberDetail)
-                tmpSection.push({ boSo: it.NumberLottery.numberDetail, lotteries: [it] })
-            }
-            money = money + it.benefits
-        })
-        setSectionData(tmpSection)
-        setBenefit(money)
-    }, [order])
+    const [sectionData, setSectionData] = useState(order.Lottery)
 
     const openSheet = useCallback(() => { sheetRef.current?.openSheet() }, [sheetRef])
     const renderSheet = useCallback(() => {
@@ -68,6 +52,36 @@ export const OrderBasicScreen = React.memo(({ }: any) => {
             />
         )
     }, [sheetRef, order])
+
+    const [open, setOpen] = useState(false);
+    const [value, setValue] = useState('all');
+    const [items, setItems] = useState([
+        { label: 'Tất cả', value: 'all', key: '1' },
+        { label: 'Power', value: 'power655', key: '2' },
+        { label: 'Mega', value: 'mega645', key: '3' },
+        { label: 'Max3D', value: 'max3d', key: '4' },
+        { label: 'Max3D+', value: 'max3dplus', key: '5' },
+        { label: 'Max3DPro', value: 'max3dpro', key: '6' },
+    ]);
+
+    const [openStatus, setOpenStatus] = useState(false)
+    const [valueStatus, setValueStatus] = useState('all');
+    const [itemsStatus, setItemsStatus] = useState([
+        { label: 'Tất cả', value: 'all', key: '1' },
+        { label: 'Chưa xổ', value: OrderStatus.CONFIRMED, key: '2' },
+        { label: 'Không trúng', value: OrderStatus.NO_PRIZE, key: '3' },
+        { label: 'Trúng thưởng', value: OrderStatus.WON, key: '4' },
+        { label: 'Đã trả thưởng', value: OrderStatus.PAID, key: '5' },
+    ]);
+
+    useEffect(() => {
+        let tmp = [...order.Lottery]
+        if (value != 'all')
+            tmp = tmp.filter((param: any) => { return param.type == value })
+        if (valueStatus != 'all')
+            tmp = tmp.filter((param: any) => { return param.status == valueStatus })
+        setSectionData(tmp)
+    }, [value, valueStatus])
 
     return (
         <View style={{ flex: 1 }}>
@@ -81,31 +95,59 @@ export const OrderBasicScreen = React.memo(({ }: any) => {
                 }
             />
 
-            <View style={styles.top}>
-                <View>
-                    <IText style={{ textAlign: 'center' }}>{"Thanh toán"}</IText>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Image source={Images.luckyking_logo} style={styles.iconPayment} />
-                        <IText style={{ marginLeft: 8, color: Color.luckyPayment, fontWeight: 'bold' }}>
-                            {`${printMoney(order.amount + order.surcharge)}đ`}
-                        </IText>
+            {
+                (status == 'pending' || status == 'returned') ?
+                    <View style={styles.top}>
+                        <IText style={{ fontWeight: 'bold' }}>{"Chọn loại vé cần xem trong đơn:"}</IText>
+                        <View style={{ flex: 1 }} />
+                        {/* Vao lib sua activeOpacity={1}*/}
+                        <DropDownPicker
+                            open={open}
+                            value={value}
+                            items={items}
+                            setOpen={setOpen}
+                            setValue={setValue}
+                            setItems={setItems}
+                            itemKey={'value'}
+                            textStyle={{ fontSize: 13 }}
+                            containerStyle={{ width: 120, minHeight: 30 }}
+                            style={{ minHeight: 30 }}
+                        />
                     </View>
-                </View>
-
-                <View>
-                    <IText style={{ textAlign: 'center' }}>{"Hoàn huỷ"}</IText>
-                    <IText style={{ textAlign: 'center', color: Color.mega, fontWeight: 'bold' }}>
-                        {`${printMoney(0)}đ`}
-                    </IText>
-                </View>
-
-                <View>
-                    <IText style={{ textAlign: 'center' }}>{"Trúng thưởng"}</IText>
-                    <IText style={{ textAlign: 'center', color: Color.luckyKing, fontWeight: 'bold' }}>
-                        {`${printMoney(benefit)}đ`}
-                    </IText>
-                </View>
-            </View>
+                    :
+                    <View style={[styles.top, { justifyContent: 'space-around' }]}>
+                        <View>
+                            <IText style={{ fontWeight: 'bold' }}>{"Chọn loại vé:"}</IText>
+                            <DropDownPicker
+                                open={open}
+                                value={value}
+                                items={items}
+                                setItems={setItems}
+                                setOpen={setOpen}
+                                setValue={setValue}
+                                itemKey={'value'}
+                                textStyle={{ fontSize: 13 }}
+                                containerStyle={{ width: 120, minHeight: 30, marginTop: 8 }}
+                                style={{ minHeight: 30 }}
+                            />
+                        </View>
+                        <View>
+                            <IText style={{ fontWeight: 'bold' }}>{"Trạng thái:"}</IText>
+                            <DropDownPicker
+                                open={openStatus}
+                                value={valueStatus}
+                                items={itemsStatus}
+                                setItems={setItemsStatus}
+                                setOpen={setOpenStatus}
+                                setValue={setValueStatus}
+                                itemKey={'value'}
+                                textStyle={{ fontSize: 13 }}
+                                containerStyle={{ width: 150, minHeight: 30, marginTop: 8 }}
+                                style={{ minHeight: 30 }}
+                            />
+                        </View>
+                    </View>
+            }
 
             <View style={styles.body}>
                 <FlatList
@@ -113,9 +155,10 @@ export const OrderBasicScreen = React.memo(({ }: any) => {
                     data={sectionData}
                     extraData={sectionData}
                     renderItem={({ item, index }: any) => {
-                        return <LotteryBasicItem section={item} />
-                    }}
-                    keyExtractor={(item: any, index) => String(item.boSo)}
+                        return (<LotteryBasicItem lottery={item} tab={status}/>)
+                    }
+                    }
+                    keyExtractor={(item: any, index) => item.id}
                     ListFooterComponent={<View style={{ height: 100 }}></View>}
                 />
             </View>
@@ -134,12 +177,13 @@ const styles = StyleSheet.create({
     },
     top: {
         width: WINDOW_WIDTH - 32, marginHorizontal: 16,
-        paddingVertical: 8,
-        borderBottomWidth: 1, borderBottomColor: 'rgba(51, 51, 51, 0.2)',
-        flexDirection: 'row', justifyContent: 'space-between'
+        paddingVertical: 12,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
     },
     iconPayment: { width: 18, height: 18 },
     body: {
-        flex: 1, padding: 16, paddingTop: 4
+        flex: 1, padding: 16, paddingTop: 4, zIndex: -100
     }
 })

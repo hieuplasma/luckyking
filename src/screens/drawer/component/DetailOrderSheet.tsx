@@ -155,7 +155,7 @@ const SHEET_HEIGHT = 560
 const BACKGROUND_OPACITY = 0.85
 
 const styles = StyleSheet.create({
-    sheetContainer: { backgroundColor: '#F4F4F4', borderTopLeftRadius: 20, borderTopRightRadius: 20 },
+    sheetContainer: { backgroundColor: '#F4F4F4', borderTopLeftRadius: 20, borderTopRightRadius: 20, },
     background: {
         backgroundColor: '#000',
         position: 'absolute',

@@ -1,13 +1,14 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import {
-    HistoryBasicScreen, HistoryKenocreenParamsList,
-    OrderBasicScreen, OrderKenoScreenParamsList
+    HistoryBasicScreen, HistoryBasicScreenParamsList,
+    OrderBasicScreen,
+    OrderBasicScreenParamsList, 
 } from '@screen';
 import React from 'react';
 
 export type HistoryBasicStackParamList = {
-    HistoryBasicScreen: HistoryKenocreenParamsList,
-    OrderBasicScreen: OrderKenoScreenParamsList
+    HistoryBasicScreen: HistoryBasicScreenParamsList,
+    OrderBasicScreen: OrderBasicScreenParamsList
 };
 
 const Stack = createStackNavigator<HistoryBasicStackParamList>();

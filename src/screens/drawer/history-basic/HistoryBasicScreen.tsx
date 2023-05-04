@@ -18,9 +18,11 @@ type NavigationRoute = RouteProp<HistoryBasicStackParamList, 'HistoryBasicScreen
 
 export interface HistoryBasicScreenParamsList { }
 
-type Status = 'booked' | 'returned'
+type Status = 'pending' | 'complete' | 'returned'
 
-const BookedList = [OrderStatus.PENDING, OrderStatus.LOCK, OrderStatus.CONFIRMED,
+const PendingList = [OrderStatus.PENDING, OrderStatus.LOCK]
+
+const CompleteList = [OrderStatus.CONFIRMED,
 OrderStatus.WON, OrderStatus.PAID, OrderStatus.NO_PRIZE]
 
 const ErrorList = [OrderStatus.ERROR, OrderStatus.RETURNED]
@@ -51,10 +53,11 @@ export const HistoryBasicScreen = React.memo(() => {
         window.loadingIndicator.hide()
     }, [])
 
-    const [status, setStatus] = useState<Status>('booked')
+    const [status, setStatus] = useState<Status>('complete')
 
     const check = useCallback((param: any) => {
-        if (status == 'booked') return BookedList.includes(param.status)
+        if (status == 'complete') return CompleteList.includes(param.status)
+        if (status == 'pending') return PendingList.includes(param.status)
         if (status == 'returned') return ErrorList.includes(param.status)
     }, [status])
 
@@ -77,14 +80,22 @@ export const HistoryBasicScreen = React.memo(() => {
             <ImageHeader navigation={navigation} title={"LỊCH SỬ ĐẶT VÉ CƠ BẢN"} />
 
             <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', marginTop: 11 }}>
-                <TouchableOpacity onPress={() => setStatus('booked')}>
+                <TouchableOpacity onPress={() => setStatus('pending')}>
                     <IText style={{
                         fontSize: 18,
-                        color: status == 'booked' ? Color.luckyKing : Color.black,
-                        textDecorationLine: status == 'booked' ? 'underline' : 'none'
+                        color: status == 'pending' ? Color.luckyKing : Color.black,
+                        textDecorationLine: status == 'pending' ? 'underline' : 'none'
                     }}>
-                        {"Đã đặt"}
+                        {"Đợi in"}
                     </IText>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => setStatus('complete')}>
+                    <IText style={{
+                        fontSize: 18,
+                        color: status == 'complete' ? Color.luckyKing : Color.black,
+                        textDecorationLine: status == 'complete' ? 'underline' : 'none'
+                    }}>
+                        {"Hoàn thành"}</IText>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => setStatus('returned')}>
                     <IText style={{
@@ -102,7 +113,8 @@ export const HistoryBasicScreen = React.memo(() => {
                     data={listOrder.filter(check)}
                     extraData={listOrder.filter(check)}
                     renderItem={({ item, index }: any) => {
-                        return <OrderBasicItem order={item} onPress={() => NavigationUtils.navigate(navigation, ScreenName.Drawer.OrderBasicScreen, { order: item })} />
+                        return <OrderBasicItem order={item}
+                            onPress={() => NavigationUtils.navigate(navigation, ScreenName.Drawer.OrderBasicScreen, { order: item, status: status })} />
                     }}
                     keyExtractor={(item: any, index) => String(item.id)}
                     refreshControl={

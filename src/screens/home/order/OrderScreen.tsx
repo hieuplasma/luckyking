@@ -62,6 +62,7 @@ export const OrderScreen = React.memo(() => {
             case LotteryType.Max3DPlus:
             case LotteryType.Max3DPro:
                 res = await lotteryApi.bookLotteryMax3d(tmp)
+                break;
             case LotteryType.Cart:
                 res = await lotteryApi.bookLotteryCart(tmp)
             default:

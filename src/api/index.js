@@ -8,6 +8,8 @@ import { Alert } from 'react-native';
 import { NavigationUtils } from '@utils';
 import { ScreenName } from '@navigation';
 import { removeUser } from '@redux';
+import NetInfo from "@react-native-community/netinfo";
+
 const axios = require('axios').default;
 
 export { authApi, userApi, lotteryApi, API_HOST };
@@ -44,6 +46,15 @@ export class Connection {
     };
 
     requestApi = async (typeApi, uri, body, isFormData, timeout, firebaseToken) => {
+
+        // await NetInfo.fetch().then(state => {
+        //     console.log(state)
+        //     if (!state.isConnected) {
+        //         window.myalert.show({ title: "Thiết bị không có kết nối Internnet" })
+        //         return undefined
+        //     }
+        // });
+
         let token = this._store.getState().authReducer.accessToken;
         let tokenDecode = token === '' ? null : jwtDecode(token);
         let timeExpired = tokenDecode ? tokenDecode.exp : null;
@@ -114,14 +125,14 @@ export class Connection {
                 };
             })
             .catch(async (error) => {
-                console.log("ERROR IN API OF " + uri + " :::::::::::>", error.response?.data.statusCode)
+                console.log("ERROR IN API OF " + uri + " :::::::::::>", error.response?.data?.statusCode)
                 if (error.response?.data?.statusCode == 401) {
                     this._dispatch(removeUser())
                     NavigationUtils.resetGlobalStackWithScreen(undefined, ScreenName.Authentication)
-                    return
+                    return undefined
                 }
                 // Alert.alert("Lỗi", JSON.stringify(error.response?.data).toString())
-                return error
+                return undefined
             })
     }
 }
