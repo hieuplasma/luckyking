@@ -19,6 +19,8 @@
 		38577CAD29BC701800C8B0FE /* Bebeboo-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 38577CA929BC701800C8B0FE /* Bebeboo-Regular.ttf */; };
 		38832C2929CED58300026527 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 38832C2829CED58300026527 /* GoogleService-Info.plist */; };
 		394A3D8C4CC84BD8A047A7BD /* consolas.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E3EC9A344B984B13963CCF02 /* consolas.ttf */; };
+		4A74442ADB1DD14030520198 /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D8D4C25E318E42BC676EE3 /* ExpoModulesProvider.swift */; };
+		5293D40AABEFAC47341C8128 /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F27A3F207C79DF66758BDC /* ExpoModulesProvider.swift */; };
 		5CEAB24CF7054F76A1288977 /* myriadpro-light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D6EF1C4DD45E48A993FECEA2 /* myriadpro-light.ttf */; };
 		6148AA775D854BDE9BB0F9C4 /* myriadpro-condit.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 980FFB3A04984340A0117D3D /* myriadpro-condit.ttf */; };
 		67C6308A29DD28E900DE5350 /* Pods_luckyking_app_react.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E228926468158D8197D88998 /* Pods_luckyking_app_react.framework */; };
@@ -62,6 +64,7 @@
 		38577CA929BC701800C8B0FE /* Bebeboo-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Bebeboo-Regular.ttf"; path = "luckyking_app_react/Bebeboo-Regular.ttf"; sourceTree = "<group>"; };
 		38832C2829CED58300026527 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-luckyking_app_react.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-luckyking_app_react.debug.xcconfig"; path = "Target Support Files/Pods-luckyking_app_react/Pods-luckyking_app_react.debug.xcconfig"; sourceTree = "<group>"; };
+		45F27A3F207C79DF66758BDC /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-luckyking_app_react/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-luckyking_app_react.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-luckyking_app_react.release.xcconfig"; path = "Target Support Files/Pods-luckyking_app_react/Pods-luckyking_app_react.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-luckyking_app_react-luckyking_app_reactTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-luckyking_app_react-luckyking_app_reactTests.debug.xcconfig"; path = "Target Support Files/Pods-luckyking_app_react-luckyking_app_reactTests/Pods-luckyking_app_react-luckyking_app_reactTests.debug.xcconfig"; sourceTree = "<group>"; };
 		6BD423B59F75440A936261EF /* digital-7.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "digital-7.ttf"; path = "../src/assets/fonts/digital-7.ttf"; sourceTree = "<group>"; };
@@ -73,6 +76,7 @@
 		AAB00DE1B4135ED615AEC9F3 /* Pods_luckyking_app_react_luckyking_app_reactTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_luckyking_app_react_luckyking_app_reactTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AD57E0B1D23B4BA88D68D49E /* myriadpro-boldcondit.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "myriadpro-boldcondit.ttf"; path = "../src/assets/fonts/myriadpro-boldcondit.ttf"; sourceTree = "<group>"; };
 		B3D68C2AAD544735A1CC7FA5 /* myriadpro-semiboldit.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "myriadpro-semiboldit.ttf"; path = "../src/assets/fonts/myriadpro-semiboldit.ttf"; sourceTree = "<group>"; };
+		B5D8D4C25E318E42BC676EE3 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-luckyking_app_react-luckyking_app_reactTests/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 		C725447042434C908D70C90C /* myriadpro-boldcond.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "myriadpro-boldcond.ttf"; path = "../src/assets/fonts/myriadpro-boldcond.ttf"; sourceTree = "<group>"; };
 		CAF2EEA0E859438388640438 /* myriadpro-it.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "myriadpro-it.ttf"; path = "../src/assets/fonts/myriadpro-it.ttf"; sourceTree = "<group>"; };
 		D2CFD055C7B74D13808AD036 /* myriadpro-semibold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "myriadpro-semibold.ttf"; path = "../src/assets/fonts/myriadpro-semibold.ttf"; sourceTree = "<group>"; };
@@ -183,6 +187,23 @@
 			path = "";
 			sourceTree = "<group>";
 		};
+		58FAF64BA3ADF818CDD7B535 /* ExpoModulesProviders */ = {
+			isa = PBXGroup;
+			children = (
+				8295A7D04AA626A192214E60 /* luckyking_app_react */,
+				A6FA8D44BF4BD3A4729357A7 /* luckyking_app_reactTests */,
+			);
+			name = ExpoModulesProviders;
+			sourceTree = "<group>";
+		};
+		8295A7D04AA626A192214E60 /* luckyking_app_react */ = {
+			isa = PBXGroup;
+			children = (
+				45F27A3F207C79DF66758BDC /* ExpoModulesProvider.swift */,
+			);
+			name = luckyking_app_react;
+			sourceTree = "<group>";
+		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
@@ -201,6 +222,7 @@
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
 				44925D44874E4EF1A6395B94 /* Resources */,
+				58FAF64BA3ADF818CDD7B535 /* ExpoModulesProviders */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -214,6 +236,14 @@
 				00E356EE1AD99517003FC87E /* luckyking_app_reactTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		A6FA8D44BF4BD3A4729357A7 /* luckyking_app_reactTests */ = {
+			isa = PBXGroup;
+			children = (
+				B5D8D4C25E318E42BC676EE3 /* ExpoModulesProvider.swift */,
+			);
+			name = luckyking_app_reactTests;
 			sourceTree = "<group>";
 		};
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
@@ -480,6 +510,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				00E356F31AD99517003FC87E /* luckyking_app_reactTests.m in Sources */,
+				4A74442ADB1DD14030520198 /* ExpoModulesProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -489,6 +520,7 @@
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				5293D40AABEFAC47341C8128 /* ExpoModulesProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -513,7 +545,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = luckyking_app_reactTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -524,6 +556,7 @@
 					"-lc++",
 					"$(inherited)",
 				);
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/luckyking_app_react.app/luckyking_app_react";
@@ -537,7 +570,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = luckyking_app_reactTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -548,6 +581,7 @@
 					"-lc++",
 					"$(inherited)",
 				);
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/luckyking_app_react.app/luckyking_app_react";
@@ -568,7 +602,7 @@
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = H3YBBZG9T6;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = luckyking_app_react/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -579,6 +613,7 @@
 					"-ObjC",
 					"-lc++",
 				);
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = vn.vietpointer.luckyking;
 				PRODUCT_NAME = luckyking_app_react;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -602,7 +637,7 @@
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = H3YBBZG9T6;
 				INFOPLIST_FILE = luckyking_app_react/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -613,6 +648,7 @@
 					"-ObjC",
 					"-lc++",
 				);
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = vn.vietpointer.luckyking;
 				PRODUCT_NAME = luckyking_app_react;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -671,7 +707,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
 					"$(inherited)",
@@ -736,7 +772,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
 					"$(inherited)",
