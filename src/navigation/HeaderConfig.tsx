@@ -177,7 +177,7 @@ export const renderHeaderManual = (
   backgroundColor?: string,
   navigation?: StackNavigationProp<any, any>,
 ) => {
-  var lefIconConfig;
+  let lefIconConfig;
   if (navigation) {
     lefIconConfig = renderLeftIcon(navigation, {
       iconColor: tintColor,

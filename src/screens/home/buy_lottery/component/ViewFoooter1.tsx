@@ -3,7 +3,7 @@ import { PickingType } from "@common";
 import { IText } from "@components";
 import { Color } from "@styles";
 import React, { useCallback, useEffect } from "react";
-import { ColorValue, Dimensions, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Dimensions, StyleSheet, TouchableOpacity, View } from "react-native";
 
 interface ViewFooterProps {
     fastPick: () => void,

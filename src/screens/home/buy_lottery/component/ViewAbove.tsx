@@ -3,7 +3,7 @@ import { IText } from "@components";
 import { Color } from "@styles";
 import { printDraw, printMoney } from "@utils";
 import React, { useCallback } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from "react-native";
+import { View, TouchableOpacity, StyleSheet, Dimensions } from "react-native";
 import { useSelector } from "react-redux";
 
 interface ViewAboveProps {

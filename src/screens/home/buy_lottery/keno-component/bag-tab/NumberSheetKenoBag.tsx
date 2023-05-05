@@ -1,4 +1,4 @@
-import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from "react";
+import React, { forwardRef, useCallback, useImperativeHandle, useRef, useState } from "react";
 import { Animated, View, TouchableOpacity, Dimensions, StyleSheet } from "react-native";
 import BottomSheet from '@gorhom/bottom-sheet';
 import { Color } from "@styles";
@@ -35,8 +35,8 @@ const Wiget = forwardRef(({ numberSet, onChoose }: any, ref) => {
     }, [])
 
     const checkIsOk = useCallback(() => {
-        for (let i = 0; i < currentNumbers.length; i++)
-            if (currentNumbers[i] === false) return false
+        for (const element of currentNumbers)
+            if (element === false) return false
         return true
     }, [currentNumbers])
 

@@ -18,8 +18,7 @@ export const SplashScreen = React.memo(() => {
 
   const token = useSelector((state: any) => state.authReducer.accessToken);
   const navigation = useNavigation<NavigationProp>();
-  const route = useRoute<NavigationRoute>();
-
+  
   const dispatch = useDispatch()
 
   async function intiApp() {

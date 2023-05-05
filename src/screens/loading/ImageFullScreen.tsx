@@ -5,9 +5,8 @@
 
 import { API_HOST } from '@api';
 import { Image, Images } from '@assets';
-import { head } from 'lodash';
 import React, { PureComponent } from 'react';
-import { TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 
 export class ImageFullScreen extends PureComponent {
     state = {

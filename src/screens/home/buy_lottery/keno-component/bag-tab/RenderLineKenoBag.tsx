@@ -2,7 +2,7 @@ import { Image, Images } from "@assets";
 import { ConsolasText, IText } from "@components";
 import { Color } from "@styles";
 import { printMoneyK, printNumber } from "@utils";
-import React, { useEffect } from "react";
+import React from "react";
 import { Dimensions, StyleSheet, TouchableOpacity, View } from "react-native";
 
 interface RenderLineKenoBagProps {

@@ -32,10 +32,6 @@ export class LoadingIndicator extends PureComponent {
 
     render() {
         const { loading } = this.state;
-        // if (!loading) {
-        //     return null
-        // }
-
         return (
             <>
                 {!loading ? (

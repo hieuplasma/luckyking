@@ -43,8 +43,7 @@ export const BagNumberSheet = forwardRef(({ onChoose, numberSet, type, bagPositi
     const checkIsOk = useCallback(() => {
         const tmp = [...currentNumbers]
         let len = tmp.length
-        for (let i = 0; i < tmp.length; i++) {
-            const element = tmp[i]
+        for (const element of tmp) {
             let count = 0;
             if (element === false) count++
             if (count != 0 && count != len) return false

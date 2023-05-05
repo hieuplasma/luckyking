@@ -1,9 +1,8 @@
-import { Image, Images } from "@assets"
 import { IText } from "@components"
 import { Color } from "@styles"
 import { printNumber } from "@utils"
-import React, { useCallback, useEffect, useState } from "react"
-import { StyleSheet, TouchableOpacity, View } from "react-native"
+import React, { useEffect, useState } from "react"
+import { StyleSheet, View } from "react-native"
 
 interface TitleBagKenoNumberSheetProps {
     selected: any[],
@@ -15,8 +14,8 @@ export const TitleBagKenoNumberSheet = React.memo(({ selected }: TitleBagKenoNum
 
     useEffect(() => {
         let count = 0
-        for (let i = 0; i < selected.length; i++) {
-            if (selected[i] !== false) count++
+        for (const element of selected) {
+            if (element !== false) count++
         }
         setCount(count)
     }, [selected])

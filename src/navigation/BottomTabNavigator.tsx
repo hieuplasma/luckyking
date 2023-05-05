@@ -9,7 +9,7 @@ import {
 import { Label, LineSeparator, translate } from '@shared';
 import { Icon } from '@assets'
 import { Color, Dimension, Style } from '@styles';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ScreenName } from './ScreenName';
@@ -150,15 +150,18 @@ const hideTabBar = [
 
 export function BottomTabNavigator() {
   const insets = useSafeAreaInsets();
+
+  const renderTabbar = useCallback((props: any) => {
+    const index = props.navigation.getState().index
+    const routeName = getFocusedRouteNameFromRoute(props.state.routes[index]) ?? ""
+    console.log("current screen::::" + index + ":::::=> " + routeName)
+    return hideTabBar.includes(routeName) ? null : <TabBar {...props} />
+  }, [])
+  
   return (
     <BottomTab.Navigator
       initialRouteName={'HomeStack'}
-      tabBar={props => {
-        const index = props.navigation.getState().index
-        const routeName = getFocusedRouteNameFromRoute(props.state.routes[index]) ?? ""
-        console.log("current screen::::" + index + ":::::=> " + routeName)
-        return hideTabBar.includes(routeName) ? null : <TabBar {...props} />
-      }}
+      tabBar={renderTabbar}
       screenOptions={{
         headerShown: false,
         tabBarHideOnKeyboard: true,

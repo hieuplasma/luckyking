@@ -1,26 +1,24 @@
-import { Images } from "@assets";
 import { HomeStackParamList, ScreenName } from "@navigation";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { Icon, Image } from "@assets";
-import { Color, Dimension, Style } from "@styles";
+import { Image, Images } from "@assets";
+import { Color } from "@styles";
 import {
-    calSurcharge, convolutions,
+    convolutions,
     NavigationUtils,
-    printDraw, printMoney,
-    printNumber, ScreenUtils
+    printNumber
 } from "@utils";
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { View, StyleSheet, Text, ScrollView, TouchableOpacity, Dimensions, StatusBar, Alert, ImageBackground } from "react-native";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { View, StyleSheet, ScrollView, TouchableOpacity, Dimensions, Alert } from "react-native";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import { ChooseTypeSheet } from "./power-mega-component/ChooseTypeSheet";
 import { useDispatch, useSelector } from "react-redux";
 import { lotteryApi } from "@api";
 import { ChooseDrawSheet } from "./component/ChooseDrawSheet";
 import { ChooseNumberSheet } from "./power-mega-component/ChooseNumberSheet";
-import { DELAY_SCREEN, LotteryType, MAX_SET, MEGA_NUMBER, OrderMethod, OrderStatus } from "@common";
-import { addLottery, getCart, getMegaDraw, updateUser } from "@redux";
-import { CartIcon, ConsolasText, HeaderBuyLottery, IText } from "@components";
+import { DELAY_SCREEN, LotteryType, MAX_SET, MEGA_NUMBER, OrderStatus } from "@common";
+import { addLottery } from "@redux";
+import { ConsolasText, HeaderBuyLottery, IText } from "@components";
 import { ViewAbove } from "./component/ViewAbove";
 import { ViewFooter1 } from "./component/ViewFoooter1";
 import { ViewFooter2 } from "./component/ViewFooter2";
@@ -53,7 +51,6 @@ export const MegaScreen = React.memo((props: any) => {
     })
 
     const listDraw = useSelector((state: any) => state.drawReducer.megaListDraw)
-    const luckykingBalance = useSelector((state: any) => state.userReducer.luckykingBalance);
 
     const [showBottomSheet, setShowBottomSheet] = useState(false)
     const [typePlay, setType]: any = useState({ label: "Cơ bản", value: 6 });

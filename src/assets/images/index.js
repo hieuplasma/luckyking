@@ -8,7 +8,6 @@ export const Images = {
   cart: require('./cart.png'),
   filled_heart: require('./filled_heart.png'),
   nofilled_heart: require('./nofilled_heart.png'),
-  power_logo: require('./power_logo.png'),
   refresh: require('./refresh.png'),
   trash: require('./trash.png'),
   fast_pick: require('./fast_pick.png'),

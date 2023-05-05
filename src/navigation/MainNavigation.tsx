@@ -6,6 +6,7 @@ import { UserNavigation } from "./drawer/UserNavigation";
 import { WithDrawNavigation } from "./drawer/WithDrawNavigation";
 import { HistoryKenoNavigation } from "./drawer/HistoryKenoNavigation";
 import { HistoryBasicNavigation } from "./drawer/HistoryBasicNavigation";
+import { useCallback } from "react";
 
 export type MainDrawerParamList = {
     BottomTab: {}
@@ -19,13 +20,13 @@ export type MainDrawerParamList = {
 const Drawer = createDrawerNavigator<MainDrawerParamList>();
 
 export function MainNavigation(props: any) {
+
+    const renderCustom = useCallback((props: any) => {
+        return (<DrawerCustom {...props} />)
+    }, [])
     return (
         <Drawer.Navigator
-            drawerContent={(props) => {
-                return (
-                    <DrawerCustom {...props} />
-                )
-            }}
+            drawerContent={renderCustom}
             screenOptions={{ headerShown: false, drawerType: 'front' }}
         >
             <Drawer.Screen name={'BottomTab'} component={BottomTabNavigator} />

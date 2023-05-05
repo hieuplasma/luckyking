@@ -18,11 +18,9 @@ const tableData = [
     ['60K', '4 số', '540K'],
 ]
 
-
-
 const lottColor = Color.keno
 
-export const TableKenoBag = React.memo(({ }: any) => {
+export const TableKenoBag = React.memo(() => {
     return (
         <View style={{ paddingHorizontal: 16 }}>
             <Table borderStyle={{ borderWidth: 1, borderColor: '#BEBCBA' }}>
