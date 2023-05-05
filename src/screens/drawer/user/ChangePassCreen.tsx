@@ -1,18 +1,16 @@
-import { Icon, Images, Image } from '@assets';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { Images, Image } from '@assets';
+import { RouteProp, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { Color, Style } from '@styles';
-import React, { useCallback, useState } from 'react';
+import { Color } from '@styles';
+import React, { useState } from 'react';
 import {
-    StyleSheet, View, Dimensions, StatusBar,
-    Text, KeyboardAvoidingView, TextInput, TouchableOpacity, ActivityIndicator, Alert
+    StyleSheet, View, Dimensions, ScrollView,
+    KeyboardAvoidingView, TextInput, TouchableOpacity, ActivityIndicator, Alert, Platform
 } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useHeaderHeight } from '@react-navigation/elements'
 import { doNotExits } from '@utils';
-import { ScrollView } from 'react-native';
 import { userApi } from '@api';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { IText, ImageHeader } from '@components';
 import { UserStackParamList } from '@navigation';
 
@@ -23,8 +21,6 @@ export interface ChangePassScreenParamsList { }
 
 export const ChangePassScreen = React.memo(() => {
     const navigation = useNavigation<NavigationProp>();
-    const route = useRoute<NavigationRoute>();
-    const safeAreaInsets = useSafeAreaInsets();
     const height = useHeaderHeight()
 
     const user = useSelector((state: any) => state.userReducer)
@@ -82,7 +78,7 @@ export const ChangePassScreen = React.memo(() => {
                 <Image source={Images.big_lock} style={{ width: 65, height: 65 }}></Image>
             </View>
 
-            <KeyboardAvoidingView keyboardVerticalOffset={height + 45} behavior="padding"
+            <KeyboardAvoidingView keyboardVerticalOffset={height + 45} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
                 style={{ flex: 1 }}>
                 <ScrollView style={{ flex: 1, marginTop: 40, paddingHorizontal: 16 }}>
                     <ItemView

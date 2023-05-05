@@ -23,14 +23,13 @@ const MAX3D_BYTE = 12
 let LOTTERY_BYTE
 let LOTTERY_TYPE = ''
 
-export function scanBarCode(param) {
+function scan(param) {
 	let data = '';
 
 	if (param) data = param
 	else return "Không có dữ liệu"
 
 	let buff = Buffer.from(data, 'base64');
-	let text = buff.toString('ascii');
 	let hex = buff.toString('hex')
 	hex = hex.slice(2) // bo byte dau
 	let lottery_id = hex.slice(0, 16)
@@ -98,7 +97,7 @@ export function scanBarCode(param) {
 		}
 		// Truong hop bo so KENO, POWER, MEGA
 		else {
-			for (var i = 0; i < data_so.length; i++) {
+			for (let i = 0; i < data_so.length; i++) {
 				if (i % 2 == 0) {
 					let so_hex = data_so[i] + data_so[i + 1] // lay so hex 
 					so_hex = '0x' + so_hex
@@ -106,14 +105,14 @@ export function scanBarCode(param) {
 					// let so_bin = converter(so_dec).toBinary() // Convert sang binary
 					let so_bin = parseInt(so_hex, 16).toString(2);
 					let len = so_bin.length
-					for (var j = 0; j < 8 - len; j++) {
+					for (let j = 0; j < 8 - len; j++) {
 						so_bin = '0' + so_bin
 					}
 					so_bin = reverseString(so_bin)
 					so_array += so_bin
 				}
 			}
-			for (var i = 0; i < so_array.length; i++) {
+			for (let i = 0; i < so_array.length; i++) {
 				if (so_array[i] == 1) {
 					res[index].boSo.push(i)
 				}
@@ -134,6 +133,7 @@ export function scanBarCode(param) {
 			delete res[index].bac
 			delete res[index].tien
 		}
+
 		index++
 	}
 
@@ -152,4 +152,14 @@ export function scanBarCode(param) {
 		str = str + key + ": " + JSON.stringify(obj[key]) + "\n"
 	}
 	return str
+}
+
+export function scanBarCode(param) {
+	let tmp
+	try {
+		tmp = scan(param)
+	} catch (error) {
+		return 'Mã vạch không hợp lệ'
+	}
+	return tmp
 }

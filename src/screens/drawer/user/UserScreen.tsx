@@ -1,14 +1,13 @@
-import { Icon, Images, Image } from '@assets';
+import { Images, Image } from '@assets';
 import { ScreenName, UserStackParamList } from '@navigation';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { Color, Style } from '@styles';
-import React, { useCallback, useEffect, useState } from 'react';
+import { RouteProp, useNavigation } from '@react-navigation/native';
+import { Color } from '@styles';
+import React, { useEffect, useState } from 'react';
 import {
-    StyleSheet, View, Dimensions, StatusBar,
-    Text, TextInput, ScrollView, TouchableOpacity,
-    KeyboardAvoidingView, RefreshControl, Alert, ActivityIndicator, SafeAreaView
+    StyleSheet, View, Dimensions,
+    TextInput, ScrollView, TouchableOpacity,
+    KeyboardAvoidingView, RefreshControl, Alert, ActivityIndicator, Platform
 } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHeaderHeight } from '@react-navigation/elements'
 import { userApi } from '@api';
@@ -24,8 +23,6 @@ export interface UserScreenParamsList { }
 
 export const UserScreen = React.memo(() => {
     const navigation = useNavigation<NavigationProp>();
-    const route = useRoute<NavigationRoute>();
-    const safeAreaInsets = useSafeAreaInsets();
     const height = useHeaderHeight()
 
     const dispatch = useDispatch()
@@ -38,7 +35,7 @@ export const UserScreen = React.memo(() => {
     }
 
     useEffect(() => {
-        () => getUser()
+        getUser()
     }, [navigation])
 
     async function getUser() {
@@ -58,7 +55,6 @@ export const UserScreen = React.memo(() => {
     const user = useSelector((state: any) => state.userReducer)
 
     const [fullName, setFullName] = useState(user.fullName)
-    const [nickName, setNickName] = useState("")
     const [phoneNumber, setPhoneNumber] = useState(user.phoneNumber)
     const [personNumber, setPeronNumber] = useState(user.personNumber)
     const [identify, setIdentify] = useState(user.identify)
@@ -97,7 +93,7 @@ export const UserScreen = React.memo(() => {
             <ImageHeader navigation={navigation} title={"THÔNG TIN TÀI KHOẢN"} />
 
             {/* Body */}
-            <KeyboardAvoidingView keyboardVerticalOffset={height + 45} behavior="padding" style={{ flex: 1 }}>
+            <KeyboardAvoidingView keyboardVerticalOffset={height + 45} behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
                 <ScrollView style={styles.body}
                     refreshControl={
                         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
