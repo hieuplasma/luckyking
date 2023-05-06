@@ -49,8 +49,8 @@ export const LotteryBasicItem = React.memo(({ lottery, tab }: LotteryItem) => {
 
     return (
         <View style={styles.container}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <View >
+            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                <View style={{flex: 1, paddingRight: 16}}>
                     {
                         numberDetail.map((it: any, id: number) => {
                             let numbers: number[] = []
@@ -83,15 +83,16 @@ export const LotteryBasicItem = React.memo(({ lottery, tab }: LotteryItem) => {
                             )
                         })
                     }
-                    <IText style={{ fontSize: 14, fontWeight: '400' }}>
-                        <IText style={{ fontWeight: 'bold' }}>{"Kỳ: "}</IText>
-                        {printDrawCode(lottery.drawCode) + "   "}
-                        <IText style={{ fontWeight: 'bold' }}>{"Ngày: "}</IText>
-                        {printWeekDate(new Date(lottery.drawTime))}
-                    </IText>
                 </View>
-                <Image style={{ height: 44, flex: 1 }} source={getLogoHeader(lottery.type).source} resizeMode='contain' />
+                <Image style={getLogoHeader(lottery.type).style} source={getLogoHeader(lottery.type).source} resizeMode='contain' />
             </View>
+
+            <IText style={{ fontSize: 14, fontWeight: '400' }}>
+                <IText style={{ fontWeight: 'bold' }}>{"Kỳ: "}</IText>
+                {printDrawCode(lottery.drawCode) + "   "}
+                <IText style={{ fontWeight: 'bold' }}>{"Ngày: "}</IText>
+                {printWeekDate(new Date(lottery.drawTime))}
+            </IText>
 
             {
                 tab == 'complete' ?

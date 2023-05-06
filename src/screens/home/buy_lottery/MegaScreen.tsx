@@ -306,6 +306,7 @@ export const MegaScreen = React.memo((props: any) => {
                     addToCart={addToCart}
                     bookLottery={bookLottery}
                     lotteryType={LotteryType.Mega}
+                    navigation={navigation}
                 />
             </View>
 

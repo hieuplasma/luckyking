@@ -300,6 +300,7 @@ export const PowerScreen = React.memo((props: PowerScreenProps) => {
                     addToCart={addToCart}
                     bookLottery={bookLottery}
                     lotteryType={LotteryType.Power}
+                    navigation={navigation}
                 />
             </View>
             {/* BottomSheet */}

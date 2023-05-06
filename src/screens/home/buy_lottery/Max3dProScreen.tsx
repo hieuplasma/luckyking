@@ -401,6 +401,7 @@ export const Max3dProScreen = () => {
                     addToCart={addToCart}
                     bookLottery={bookLottery}
                     lotteryType={LotteryType.Max3DPro}
+                    navigation={navigation}
                 />
             </View>
             {/* BottomSheet */}

@@ -335,6 +335,7 @@ export const Max3dTab = React.memo((props: Props) => {
                     addToCart={addToCart}
                     bookLottery={bookLottery}
                     lotteryType={LotteryType.Max3D}
+                    navigation={props.navigation}
                 />
             </View>
 
