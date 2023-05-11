@@ -63,4 +63,8 @@ export const Images = {
   print: require('./print.png'),
   printed: require('./printed.png'),
   no_picture: require('./no_picture.png'),
+  keno_banner: require('./keno_banner.png'),
+  power_banner: require('./power_banner.png'),
+  mega_banner: require('./mega_banner.png'),
+  max3d_banner: require('./max3d_banner.png'),
 };

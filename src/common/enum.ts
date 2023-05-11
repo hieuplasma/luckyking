@@ -48,3 +48,6 @@ export function getNameStatus(param: OrderStatus) {
 export type PickingType = 'default' | 'fastpick' | 'selfpick'
 
 export type TicketType = 'keno' | 'basic'
+
+export type SMALL_BIG = 'small' | 'big' | 'draw'
+export type EVEN_ODD = 'even' | 'odd' | 'even_11_12' | 'odd_11_12' | 'draw'

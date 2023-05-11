@@ -2,6 +2,10 @@
   "migIndex": 1,
   "data": [
     {
+      "path": "src/assets/fonts/consolab.ttf",
+      "sha1": "10c98b8de38e5380d4ed41a531c77c1405a597de"
+    },
+    {
       "path": "src/assets/fonts/consolas.ttf",
       "sha1": "0673725185269095be019eda0446c05d1c3bbbae"
     },
