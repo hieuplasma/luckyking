@@ -72,3 +72,33 @@ export function printWeekDate(param: Date) {
     }
     return tmp + ", " + (date < 10 ? "0" + date : '' + date) + "/" + (month < 10 ? "0" + month : '' + month) + "/" + year
 }
+
+export function getWeekDate(day: number) {
+    let tmp = "Thứ 2"
+    switch (day) {
+        case 1:
+            tmp = "Thứ 2"
+            break;
+        case 2:
+            tmp = "Thứ 3"
+            break;
+        case 3:
+            tmp = "Thứ 4"
+            break;
+        case 4:
+            tmp = "Thứ 5"
+            break;
+        case 5:
+            tmp = "Thứ 6"
+            break;
+        case 6:
+            tmp = "Thứ bảy"
+            break;
+        case 0:
+            tmp = "Chủ Nhật"
+            break;
+        default:
+            break;
+    }
+    return tmp
+}

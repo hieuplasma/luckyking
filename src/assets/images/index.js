@@ -67,4 +67,7 @@ export const Images = {
   power_banner: require('./power_banner.png'),
   mega_banner: require('./mega_banner.png'),
   max3d_banner: require('./max3d_banner.png'),
+  mega_logo_stroke1: require('./mega_logo_stroke1.png'),
+  power_logo_stroke1: require('./power_logo_stroke1.png'),
+  max3d_logo_stroke1: require('./max3d_logo_stroke1.png'),
 };

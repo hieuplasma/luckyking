@@ -1,5 +1,5 @@
 import { EVEN_ODD, LotteryType, SMALL_BIG } from "@common";
-import { dateConvert, dateTimeConvert, fullDateTimeConvert } from "./time-utils";
+import { dateConvert, dateTimeConvert, fullDateTimeConvert, getWeekDate } from "./time-utils";
 import { Images } from "@assets";
 
 export function convolutions(a: number, b: number, lotteryType?: LotteryType) {
@@ -52,6 +52,16 @@ export function printDraw2(param: any) {
     const date = new Date(param.drawTime)
     return "#" + code.toString().padStart(7, "0") + " - " + fullDateTimeConvert(date)
 }
+
+export function printDrawWeekDate(param: any) {
+    const code = parseInt(param.drawCode.toString())
+    const date = new Date(param.drawTime)
+    const weekDate = date.getDay()
+    if (code < 1000) return "#00" + code + " - " + dateConvert(date)
+    if (code > 100000) return "#" + code + " - " + dateTimeConvert(date)
+    return "#0" + code + " - " + getWeekDate(weekDate) + " - " + dateConvert(date)
+}
+
 
 export function printNumber(number: any) {
     if (number === false) return ""
