@@ -30,7 +30,11 @@ const list_type = [
   },
   {
     type: [LotteryType.Max3D, LotteryType.Max3DPlus, LotteryType.Max3DPro],
-    title: "Max3D/3D+/3DPro"
+    title: "Max3D/3D+"
+  },
+  {
+    type: [LotteryType.Max3DPro],
+    title: "Max3DPro"
   }
 ]
 
@@ -38,6 +42,8 @@ const ResultKenoTab = React.lazy(() => import('./result_tabs/ResultKenoTab'));
 const ResultMegaTab = React.lazy(() => import('./result_tabs/ResultMegaTab'));
 const ResultPowerTab = React.lazy(() => import('./result_tabs/ResultPowerTab'));
 const ResultMax3dTab = React.lazy(() => import('./result_tabs/ResultMax3dTab'));
+const ResultMax3dProTab = React.lazy(() => import('./result_tabs/ResultMax3dProTab'));
+
 
 const AnimatedPager = Animated.createAnimatedComponent(PagerView);
 
@@ -99,6 +105,7 @@ export const ResultScreen = () => {
           {renderedPages.includes(1) ? <ResultMegaTab key={LotteryType.Mega} /> : <View key={LotteryType.Mega}></View>}
           {renderedPages.includes(2) ? <ResultPowerTab key={LotteryType.Power} /> : <View key={LotteryType.Power}></View>}
           {renderedPages.includes(3) ? <ResultMax3dTab key={LotteryType.Max3D} /> : <View key={LotteryType.Max3D}></View>}
+          {renderedPages.includes(3) ? <ResultMax3dProTab key={LotteryType.Max3D} /> : <View key={LotteryType.Max3D}></View>}
         </AnimatedPager>
       </View>
     </View >
@@ -107,7 +114,7 @@ export const ResultScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1, backgroundColor: Color.white
   },
   body: {
     flex: 1, padding: 10

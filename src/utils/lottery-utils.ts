@@ -57,9 +57,7 @@ export function printDrawWeekDate(param: any) {
     const code = parseInt(param.drawCode.toString())
     const date = new Date(param.drawTime)
     const weekDate = date.getDay()
-    if (code < 1000) return "#00" + code + " - " + dateConvert(date)
-    if (code > 100000) return "#" + code + " - " + dateTimeConvert(date)
-    return "#0" + code + " - " + getWeekDate(weekDate) + " - " + dateConvert(date)
+    return "#" + code.toString().padStart(5, "0") + " - " + getWeekDate(weekDate) + " - " + dateConvert(date)
 }
 
 

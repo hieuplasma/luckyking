@@ -7,19 +7,19 @@ import { printDraw, printDrawCode, printDrawWeekDate, printMoney, printNumber, p
 import React, { useCallback, useEffect, useState } from "react";
 import { ActivityIndicator, Dimensions, FlatList, RefreshControl, StyleSheet, TouchableOpacity, View } from "react-native";
 
-const lottColor = Color.max3d
+const lottColor = Color.max3dpro
 
-const ResultMax3dTab = React.memo(() => {
+const ResultMax3dProTab = React.memo(() => {
     return (
         <ExpensiveRerender />
     )
 })
-export default ResultMax3dTab
+export default ResultMax3dProTab
 
 const ExpensiveRerender = React.memo(() => {
 
     useEffect(() => {
-        console.log("expensive rerender max3d")
+        console.log("expensive rerender max3dpro")
     })
 
     const [list, setList] = useState<any>([])
@@ -29,7 +29,7 @@ const ExpensiveRerender = React.memo(() => {
     const onRefresh = useCallback(async () => {
         window.loadingIndicator.show()
         setIsLoading(true)
-        const res = await lotteryApi.getResultMax3d({ skip: 0, take: 10, type: LotteryType.Max3D })
+        const res = await lotteryApi.getResultMax3d({ skip: 0, take: 10, type: LotteryType.Max3DPro })
         if (res) {
             setList(res.data)
         }
@@ -42,7 +42,7 @@ const ExpensiveRerender = React.memo(() => {
     }, [])
 
     const loadMore = useCallback(async () => {
-        const res = await lotteryApi.getResultMax3d({ skip: list.length, take: 10, type: LotteryType.Max3D })
+        const res = await lotteryApi.getResultMax3d({ skip: list.length, take: 10, type: LotteryType.Max3DPro })
         setList([...list, ...res.data])
     }, [list])
 
@@ -90,7 +90,7 @@ const FirstItem = React.memo(({ data }: any) => {
                         {`Kỳ quay ${printDrawWeekDate(data)}`}
                     </IText>
                 </View>
-                <Image source={Images.max3d_logo_stroke1} style={{ height: 75.80, marginTop: 48 }} resizeMode="contain" />
+                <Image source={Images.max3dpro_logo} style={{ height: 75.80, marginTop: 48 }} resizeMode="contain" />
                 <TouchableOpacity style={{ flexDirection: 'row', marginTop: 8 }} onPress={() => { }} activeOpacity={1}>
                     <View style={{ flex: 1 }} />
                     <IText style={{ fontSize: 16, fontWeight: 'bold', color: Color.white, marginHorizontal: 8 }}>{"Xem chi tiết"}</IText>
@@ -285,38 +285,3 @@ const styles = StyleSheet.create({
         marginHorizontal: 2
     }
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-{/* <View style={styles.choosingBar}>
-                <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => setCurrentType(LotteryType.Max3D)}>
-                    <View style={styles.circleOut}>
-                        <View style={[styles.circleIn, { backgroundColor: currentType == LotteryType.Max3D ? lottColor : Color.transparent }]}></View>
-                    </View>
-                    <IText style={{ marginLeft: 4 }}>{"Max3D"}</IText>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => setCurrentType(LotteryType.Max3DPlus)}>
-                    <View style={styles.circleOut}>
-                        <View style={[styles.circleIn, { backgroundColor: currentType == LotteryType.Max3DPlus ? lottColor : Color.transparent }]}></View>
-                    </View>
-                    <IText style={{ marginLeft: 4 }}>{"Max3D+"}</IText>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => setCurrentType(LotteryType.Max3DPro)}>
-                    <View style={styles.circleOut}>
-                        <View style={[styles.circleIn, { backgroundColor: currentType == LotteryType.Max3DPro ? lottColor : Color.transparent }]}></View>
-                    </View>
-                    <IText style={{ marginLeft: 4 }}>{"Max3DPro"}</IText>
-                </TouchableOpacity>
-            </View> */}
