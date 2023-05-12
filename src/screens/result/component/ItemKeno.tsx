@@ -1,8 +1,9 @@
 import { Image, Images } from "@assets"
 import { ConsolasText, IText } from "@components"
+import { ScreenName } from "@navigation"
 import { Color } from "@styles"
-import { kenoAnalysis, printDraw2, printNumber } from "@utils"
-import React from "react"
+import { NavigationUtils, kenoAnalysis, printDraw2, printNumber } from "@utils"
+import React, { useCallback } from "react"
 import { Dimensions, StyleSheet, TouchableOpacity, View } from "react-native"
 
 const lottColor = Color.keno
@@ -21,14 +22,25 @@ const list_eo = [
     { title: 'LẺ ', value: 'odd' },
 ]
 
-export const FirstItemKeno = React.memo(({ data }: any) => {
+interface FirstItemProps {
+    data: any,
+    navigation?: any,
+    hideBtm?: boolean
+}
+
+export const FirstItemKeno = React.memo(({ data, navigation, hideBtm }: FirstItemProps) => {
 
     const result = data.result.split("-").map(Number)
     const analysis = kenoAnalysis(result)
 
+    const navigate = useCallback(() => {
+        if (navigation)
+            NavigationUtils.navigate(navigation, ScreenName.ResultChild.DetailKeno, { data })
+    }, [navigation, data])
+
     return (
-        <View>
-            <Image style={{ width: windowWidth - 20, height: 305, marginVertical: 8 }} resizeMode="stretch" source={Images.keno_banner}>
+        <TouchableOpacity onPress={navigate} activeOpacity={1}>
+            <Image style={{ width: windowWidth - 20, height: hideBtm ? 280 : 305, marginVertical: 8 }} resizeMode="stretch" source={Images.keno_banner}>
                 <View style={styles.above}>
                     <IText style={styles.titleFirstItem}>
                         {`Kỳ quay ${printDraw2(data)}`}
@@ -76,26 +88,35 @@ export const FirstItemKeno = React.memo(({ data }: any) => {
                     })}
                 </View>
 
-                <TouchableOpacity style={{ flexDirection: 'row', marginTop: 16 }} onPress={() => { }} activeOpacity={1}>
-                    <View style={{ flex: 1 }} />
-                    <IText style={{ fontSize: 16, fontWeight: 'bold', color: Color.white, marginHorizontal: 8 }}>{"Xem chi tiết"}</IText>
-                    <View style={{ flex: 1, justifyContent: 'center' }} >
-                        <Image style={{ width: 20, height: 10 }} source={Images.right_arrow} />
-                    </View>
-                </TouchableOpacity>
+                {hideBtm ? <></>
+                    :
+                    <TouchableOpacity style={{ flexDirection: 'row', marginTop: 16 }} onPress={() => { }} activeOpacity={1}>
+                        <View style={{ flex: 1 }} />
+                        <IText style={{ fontSize: 16, fontWeight: 'bold', color: Color.white, marginHorizontal: 8 }}>{"Xem chi tiết"}</IText>
+                        <View style={{ flex: 1, justifyContent: 'center' }} >
+                            <Image style={{ width: 20, height: 10 }} source={Images.right_arrow} />
+                        </View>
+                    </TouchableOpacity>}
             </Image>
 
-            <IText style={{ marginTop: 8, fontWeight: '600', fontSize: 15 }}>{"Kết quả các kì quay trước:"}</IText>
-        </View>
+            {
+                hideBtm ? <></> :
+                    <IText style={{ marginTop: 8, fontWeight: '600', fontSize: 15 }}>{"Kết quả các kì quay trước:"}</IText>
+            }
+        </TouchableOpacity>
     )
 })
 
-export const PerItemKeno = React.memo(({ data }: any) => {
+export const PerItemKeno = React.memo(({ data, navigation }: any) => {
 
     const result = data.result.split("-").map(Number)
     const analysis = kenoAnalysis(result)
+
+    const navigate = useCallback(() => {
+        NavigationUtils.navigate(navigation, ScreenName.ResultChild.DetailKeno, { data })
+    }, [navigation, data])
     return (
-        <TouchableOpacity style={styles.per_item_container}>
+        <TouchableOpacity style={styles.per_item_container} onPress={navigate} activeOpacity={1}>
             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                 <IText style={styles.txt_draw}>
                     <IText style={{ fontWeight: 'bold' }}>{"Kỳ: "}</IText>

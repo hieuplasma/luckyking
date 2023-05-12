@@ -1,29 +1,44 @@
 import React from "react";
-import { FirstItemKeno } from "../component/ItemKeno";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { ResultStackParamList } from "@navigation";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Dimensions, StyleSheet, View } from "react-native";
-import { BasicHeader, IText, ImageHeader } from "@components";
+import { BasicHeader, IText } from "@components";
 import { Color } from "@styles";
+import { FirstItemMega } from "../component/ItemMega";
+import { BallLine } from "../component/BallLine";
+import { LotteryType } from "@common";
+import { printMoney } from "@utils";
+import { PeriodStructure } from "../component/PeriodStructure";
 
-type NavigationProp = StackNavigationProp<ResultStackParamList, 'DetailKeno'>;
-type NavigationRoute = RouteProp<ResultStackParamList, 'DetailKeno'>;
+type NavigationProp = StackNavigationProp<ResultStackParamList, 'DetailMega'>;
+type NavigationRoute = RouteProp<ResultStackParamList, 'DetailMega'>;
 
-export interface ResultKenoParamsList { data: any }
+export interface ResultMegaParamsList { data: any }
 
-export const DetailResultKeno = React.memo(() => {
+export const DetailResultMega = React.memo(() => {
 
     const navigation = useNavigation<NavigationProp>();
     const route = useRoute<NavigationRoute>();
     const safeAreaInsets = useSafeAreaInsets();
 
+    const data = route.params.data
+
     return (
         <View style={styles.container}>
             <BasicHeader navigation={navigation} title={"Chi tiết kết quả"} />
             <View style={styles.body}>
-                <FirstItemKeno data={route.params.data} hideBtm={true} />
+                <FirstItemMega data={data} hideBtm={true} />
+
+                <PeriodStructure
+                    type={LotteryType.Mega}
+                    jackpot1={data.jackpot1}
+                    first={10000000}
+                    second={300000}
+                    third={30000}
+                />
+
                 <IText style={{ marginTop: 8, fontWeight: '600', fontSize: 15 }}>
                     {"Quý khách đã không mua vé nào cho kỳ này"}
                 </IText>
@@ -43,5 +58,5 @@ const styles = StyleSheet.create({
     body: {
         flex: 1,
         padding: 10
-    },
+    }
 })

@@ -1,29 +1,43 @@
 import React from "react";
-import { FirstItemKeno } from "../component/ItemKeno";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { ResultStackParamList } from "@navigation";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Dimensions, StyleSheet, View } from "react-native";
-import { BasicHeader, IText, ImageHeader } from "@components";
+import { BasicHeader, IText } from "@components";
 import { Color } from "@styles";
+import { FirstItemPower } from "../component/ItemPower";
+import { PeriodStructure } from "../component/PeriodStructure";
+import { LotteryType } from "@common";
 
-type NavigationProp = StackNavigationProp<ResultStackParamList, 'DetailKeno'>;
-type NavigationRoute = RouteProp<ResultStackParamList, 'DetailKeno'>;
+type NavigationProp = StackNavigationProp<ResultStackParamList, 'DetailPower'>;
+type NavigationRoute = RouteProp<ResultStackParamList, 'DetailPower'>;
 
-export interface ResultKenoParamsList { data: any }
+export interface ResultPowerParamsList { data: any }
 
-export const DetailResultKeno = React.memo(() => {
+export const DetailResultPower = React.memo(() => {
 
     const navigation = useNavigation<NavigationProp>();
     const route = useRoute<NavigationRoute>();
     const safeAreaInsets = useSafeAreaInsets();
 
+    const data = route.params.data
+
     return (
         <View style={styles.container}>
             <BasicHeader navigation={navigation} title={"Chi tiết kết quả"} />
             <View style={styles.body}>
-                <FirstItemKeno data={route.params.data} hideBtm={true} />
+                <FirstItemPower data={data} hideBtm={true} />
+
+                <PeriodStructure
+                    type={LotteryType.Power}
+                    jackpot1={data.jackpot1}
+                    jackpot2={data.jackpot2}
+                    first={40000000}
+                    second={500000}
+                    third={50000}
+                />
+
                 <IText style={{ marginTop: 8, fontWeight: '600', fontSize: 15 }}>
                     {"Quý khách đã không mua vé nào cho kỳ này"}
                 </IText>

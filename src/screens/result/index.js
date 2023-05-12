@@ -1,1 +1,5 @@
 export * from './ResultScreen'
+export * from './result_detail/DetailResultKeno'
+export * from './result_detail/DetailResultMega'
+export * from './result_detail/DetailResultPower'
+export * from './result_detail/DetailResultMax3d'

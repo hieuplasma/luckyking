@@ -7,14 +7,14 @@ import { FirstItemPower, PerItemPower } from "../component/ItemPower";
 
 const lottColor = Color.power
 
-const ResultPowerTab = React.memo(() => {
+const ResultPowerTab = React.memo(({ navigation }: any) => {
     return (
-        <ExpensiveRerender />
+        <ExpensiveRerender navigation={navigation} />
     )
 })
 export default ResultPowerTab
 
-const ExpensiveRerender = React.memo(() => {
+const ExpensiveRerender = React.memo(({ navigation }: any) => {
 
     useEffect(() => {
         console.log("expensive rerender power")
@@ -45,8 +45,8 @@ const ExpensiveRerender = React.memo(() => {
     }, [list])
 
     const renderItem = useCallback(({ item, index }: any) => {
-        if (index == 0) return <FirstItemPower data={item} />
-        return <PerItemPower data={item} />
+        if (index == 0) return <FirstItemPower data={item} navigation={navigation} />
+        return <PerItemPower data={item} navigation={navigation} />
     }, [])
 
 

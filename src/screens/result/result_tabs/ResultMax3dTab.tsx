@@ -8,14 +8,14 @@ import { FirstItemMax3d, PerItemMax3d } from "../component/ItemMax3d";
 
 const lottColor = Color.max3d
 
-const ResultMax3dTab = React.memo(() => {
+const ResultMax3dTab = React.memo(({ navigation }: any) => {
     return (
-        <ExpensiveRerender />
+        <ExpensiveRerender navigation={navigation} />
     )
 })
 export default ResultMax3dTab
 
-const ExpensiveRerender = React.memo(() => {
+const ExpensiveRerender = React.memo(({ navigation }: any) => {
 
     useEffect(() => {
         console.log("expensive rerender max3d")
@@ -46,8 +46,8 @@ const ExpensiveRerender = React.memo(() => {
     }, [list])
 
     const renderItem = useCallback(({ item, index }: any) => {
-        if (index == 0) return <FirstItemMax3d data={item} type={LotteryType.Max3D} />
-        return <PerItemMax3d data={item} type={LotteryType.Max3D} />
+        if (index == 0) return <FirstItemMax3d data={item} type={LotteryType.Max3D} navigation={navigation} />
+        return <PerItemMax3d data={item} type={LotteryType.Max3D} navigation={navigation} />
     }, [])
 
     return (
@@ -97,25 +97,25 @@ const styles = StyleSheet.create({
     }
 })
 
-{/* <View style={styles.choosingBar}>
-                <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => setCurrentType(LotteryType.Max3D)}>
-                    <View style={styles.circleOut}>
-                        <View style={[styles.circleIn, { backgroundColor: currentType == LotteryType.Max3D ? lottColor : Color.transparent }]}></View>
-                    </View>
-                    <IText style={{ marginLeft: 4 }}>{"Max3D"}</IText>
-                </TouchableOpacity>
+// {/* <View style={styles.choosingBar}>
+//                 <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => setCurrentType(LotteryType.Max3D)}>
+//                     <View style={styles.circleOut}>
+//                         <View style={[styles.circleIn, { backgroundColor: currentType == LotteryType.Max3D ? lottColor : Color.transparent }]}></View>
+//                     </View>
+//                     <IText style={{ marginLeft: 4 }}>{"Max3D"}</IText>
+//                 </TouchableOpacity>
 
-                <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => setCurrentType(LotteryType.Max3DPlus)}>
-                    <View style={styles.circleOut}>
-                        <View style={[styles.circleIn, { backgroundColor: currentType == LotteryType.Max3DPlus ? lottColor : Color.transparent }]}></View>
-                    </View>
-                    <IText style={{ marginLeft: 4 }}>{"Max3D+"}</IText>
-                </TouchableOpacity>
+//                 <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => setCurrentType(LotteryType.Max3DPlus)}>
+//                     <View style={styles.circleOut}>
+//                         <View style={[styles.circleIn, { backgroundColor: currentType == LotteryType.Max3DPlus ? lottColor : Color.transparent }]}></View>
+//                     </View>
+//                     <IText style={{ marginLeft: 4 }}>{"Max3D+"}</IText>
+//                 </TouchableOpacity>
 
-                <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => setCurrentType(LotteryType.Max3DPro)}>
-                    <View style={styles.circleOut}>
-                        <View style={[styles.circleIn, { backgroundColor: currentType == LotteryType.Max3DPro ? lottColor : Color.transparent }]}></View>
-                    </View>
-                    <IText style={{ marginLeft: 4 }}>{"Max3DPro"}</IText>
-                </TouchableOpacity>
-            </View> */}
+//                 <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => setCurrentType(LotteryType.Max3DPro)}>
+//                     <View style={styles.circleOut}>
+//                         <View style={[styles.circleIn, { backgroundColor: currentType == LotteryType.Max3DPro ? lottColor : Color.transparent }]}></View>
+//                     </View>
+//                     <IText style={{ marginLeft: 4 }}>{"Max3DPro"}</IText>
+//                 </TouchableOpacity>
+//             </View> */}

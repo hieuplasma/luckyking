@@ -7,14 +7,14 @@ import { FirstItemKeno, PerItemKeno } from "../component/ItemKeno";
 
 const lottColor = Color.keno
 
-const ResultKenoTab = React.memo(() => {
+const ResultKenoTab = React.memo(({ navigation }: any) => {
     return (
-        <ExpensiveRerender />
+        <ExpensiveRerender navigation={navigation} />
     )
 })
 export default ResultKenoTab
 
-const ExpensiveRerender = React.memo(() => {
+const ExpensiveRerender = React.memo(({ navigation }: any) => {
 
     useEffect(() => {
         console.log("expensive rerender keno")
@@ -45,8 +45,8 @@ const ExpensiveRerender = React.memo(() => {
     }, [list])
 
     const renderItem = useCallback(({ item, index }: any) => {
-        if (index == 0) return <FirstItemKeno data={item} />
-        return <PerItemKeno data={item} />
+        if (index == 0) return <FirstItemKeno data={item} navigation={navigation} />
+        return <PerItemKeno data={item} navigation={navigation} />
     }, [])
 
     return (

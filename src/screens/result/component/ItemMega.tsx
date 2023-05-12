@@ -1,17 +1,31 @@
 import { Image, Images } from "@assets"
 import { ConsolasText, IText } from "@components"
+import { ScreenName } from "@navigation"
 import { Color } from "@styles"
-import { printDrawWeekDate, printMoney, printNumber } from "@utils"
-import React from "react"
+import { NavigationUtils, printDrawWeekDate, printMoney, printNumber } from "@utils"
+import React, { useCallback } from "react"
 import { Dimensions, StyleSheet, TouchableOpacity, View } from "react-native"
 
 const lottColor = Color.mega
 
-export const FirstItemMega = React.memo(({ data }: any) => {
+interface FirstItemProps {
+    data: any,
+    navigation?: any,
+    hideBtm?: boolean
+}
+
+export const FirstItemMega = React.memo(({ data, navigation, hideBtm }: FirstItemProps) => {
+
     const result = data.result.split("-").map(Number)
+
+    const navigate = useCallback(() => {
+        if (navigation)
+            NavigationUtils.navigate(navigation, ScreenName.ResultChild.DetailMega, { data })
+    }, [navigation, data])
+
     return (
-        <View>
-            <Image style={{ width: windowWidth - 20, height: 300, marginVertical: 8 }} resizeMode="stretch" source={Images.mega_banner}>
+        <TouchableOpacity onPress={navigate} activeOpacity={1}>
+            <Image style={{ width: windowWidth - 20, height: hideBtm ? 270 : 305, marginVertical: 8 }} resizeMode="stretch" source={Images.mega_banner}>
                 <View style={styles.above}>
                     <IText style={styles.titleFirstItem}>
                         {`Kỳ quay ${printDrawWeekDate(data)}`}
@@ -37,7 +51,7 @@ export const FirstItemMega = React.memo(({ data }: any) => {
                     {"Giá trị Jackpot"}
                 </IText>
                 <IText style={[styles.txt_bold, { lineHeight: 40, fontSize: 32 }]}>
-                    {result.jackpot1 ? `${printMoney(result.jackpot1)}đ` : "Không có thông tin"}
+                    {parseInt(data.jackpot1) > 0 ? `${printMoney(data.jackpot1)}đ` : "Không có thông tin"}
                 </IText>
 
                 <TouchableOpacity style={{ flexDirection: 'row', marginTop: 8 }} onPress={() => { }} activeOpacity={1}>
@@ -49,15 +63,23 @@ export const FirstItemMega = React.memo(({ data }: any) => {
                 </TouchableOpacity>
             </Image>
 
-            <IText style={{ marginTop: 8, fontWeight: '600', fontSize: 15 }}>{"Kết quả các kì quay trước:"}</IText>
-        </View>
+            {
+                hideBtm ? <></> :
+                    <IText style={{ marginTop: 8, fontWeight: '600', fontSize: 15 }}>{"Kết quả các kì quay trước:"}</IText>
+
+            }
+        </TouchableOpacity>
     )
 })
 
-export const PerItemMega = React.memo(({ data }: any) => {
+export const PerItemMega = React.memo(({ data, navigation }: any) => {
     const result = data.result.split("-").map(Number)
+    const navigate = useCallback(() => {
+        if (navigation)
+            NavigationUtils.navigate(navigation, ScreenName.ResultChild.DetailMega, { data })
+    }, [navigation, data])
     return (
-        <TouchableOpacity style={styles.per_item_container}>
+        <TouchableOpacity style={styles.per_item_container} onPress={navigate} activeOpacity={1}>
             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                 <IText style={styles.txt_draw}>
                     <IText style={{ fontWeight: 'bold' }}>{"Kỳ: "}</IText>

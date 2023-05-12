@@ -1,18 +1,31 @@
 import { Image, Images } from "@assets"
 import { LotteryType } from "@common"
 import { ConsolasText, IText } from "@components"
+import { ScreenName } from "@navigation"
 import { Color } from "@styles"
-import { getColorLott, getLogoHeader, printDrawCode, printDrawWeekDate, printMoney, printWeekDate } from "@utils"
-import React from "react"
+import { NavigationUtils, getColorLott, getLogoHeader, printDrawCode, printDrawWeekDate, printMoney, printWeekDate } from "@utils"
+import React, { useCallback } from "react"
 import { Dimensions, StyleSheet, TouchableOpacity, View } from "react-native"
 
-export const FirstItemMax3d = React.memo(({ data, type }: any) => {
+interface FirstItemProps {
+    data: any,
+    navigation?: any,
+    hideBtm?: boolean,
+    type: LotteryType
+}
+
+export const FirstItemMax3d = React.memo(({ data, type, navigation, hideBtm }: FirstItemProps) => {
+
+    const navigate = useCallback(() => {
+        if (navigation)
+            NavigationUtils.navigate(navigation, ScreenName.ResultChild.DetailMax3d, { data, type })
+    }, [navigation, data])
 
     const lottColor = getColorLott(type)
     const logo = type == LotteryType.Max3D ? Images.max3d_logo_stroke1 : Images.max3dpro_logo
     return (
-        <View >
-            <Image style={styles.img_cont} resizeMode="stretch" source={Images.max3d_banner}>
+        <TouchableOpacity onPress={navigate} activeOpacity={1}>
+            <Image style={[styles.img_cont, { height: hideBtm ? 130 : 160 }]} resizeMode="stretch" source={Images.max3d_banner}>
                 <View style={styles.above}>
                     <IText style={styles.titleFirstItem}>
                         {`Kỳ quay ${printDrawWeekDate(data)}`}
@@ -129,17 +142,26 @@ export const FirstItemMax3d = React.memo(({ data, type }: any) => {
                 </View>
             </View>
 
-            <IText style={{ marginTop: 8, fontWeight: '600', fontSize: 15 }}>{"Kết quả các kì quay trước:"}</IText>
-        </View>
+
+            {
+                hideBtm ? <></> :
+                    <IText style={{ marginTop: 8, fontWeight: '600', fontSize: 15 }}>{"Kết quả các kì quay trước:"}</IText>
+            }
+        </TouchableOpacity>
     )
 })
 
-export const PerItemMax3d = React.memo(({ data, type }: any) => {
+export const PerItemMax3d = React.memo(({ data, type, navigation }: any) => {
 
     const lottColor = getColorLott(type)
 
+    const navigate = useCallback(() => {
+        if (navigation)
+            NavigationUtils.navigate(navigation, ScreenName.ResultChild.DetailMax3d, { data, type })
+    }, [navigation, data])
+
     return (
-        <TouchableOpacity style={styles.per_item_container}>
+        <TouchableOpacity style={styles.per_item_container} onPress={navigate} activeOpacity={1}>
             <View style={{ flexDirection: 'row', flex: 1 }}>
                 <View>
                     <IText style={{ fontWeight: 'bold' }}>{"Kỳ quay"}</IText>

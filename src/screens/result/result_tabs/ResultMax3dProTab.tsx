@@ -10,14 +10,14 @@ import { FirstItemMax3d, PerItemMax3d } from "../component/ItemMax3d";
 
 const lottColor = Color.max3dpro
 
-const ResultMax3dProTab = React.memo(() => {
+const ResultMax3dProTab = React.memo(({ navigation }: any) => {
     return (
-        <ExpensiveRerender />
+        <ExpensiveRerender navigation={navigation} />
     )
 })
 export default ResultMax3dProTab
 
-const ExpensiveRerender = React.memo(() => {
+const ExpensiveRerender = React.memo(({ navigation }: any) => {
 
     useEffect(() => {
         console.log("expensive rerender max3dpro")
@@ -48,8 +48,8 @@ const ExpensiveRerender = React.memo(() => {
     }, [list])
 
     const renderItem = useCallback(({ item, index }: any) => {
-        if (index == 0) return <FirstItemMax3d data={item} type={LotteryType.Max3DPro} />
-        return <PerItemMax3d data={item} type={LotteryType.Max3DPro} />
+        if (index == 0) return <FirstItemMax3d data={item} type={LotteryType.Max3DPro} navigation={navigation} />
+        return <PerItemMax3d data={item} type={LotteryType.Max3DPro} navigation={navigation} />
     }, [])
 
 

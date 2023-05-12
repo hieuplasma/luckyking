@@ -44,7 +44,6 @@ const ResultPowerTab = React.lazy(() => import('./result_tabs/ResultPowerTab'));
 const ResultMax3dTab = React.lazy(() => import('./result_tabs/ResultMax3dTab'));
 const ResultMax3dProTab = React.lazy(() => import('./result_tabs/ResultMax3dProTab'));
 
-
 const AnimatedPager = Animated.createAnimatedComponent(PagerView);
 
 export const ResultScreen = () => {
@@ -97,15 +96,11 @@ export const ResultScreen = () => {
           initialPage={0}
           onPageSelected={onPageSelected}
         >
-          {/* <ResultKenoTab key={LotteryType.Keno} />
-          <ResultMegaTab key={LotteryType.Mega} />
-          <ResultPowerTab key={LotteryType.Power} />
-          <ResultMax3dTab key={LotteryType.Max3D} /> */}
-          {renderedPages.includes(0) ? <ResultKenoTab key={LotteryType.Keno} /> : <View key={LotteryType.Keno}></View>}
-          {renderedPages.includes(1) ? <ResultMegaTab key={LotteryType.Mega} /> : <View key={LotteryType.Mega}></View>}
-          {renderedPages.includes(2) ? <ResultPowerTab key={LotteryType.Power} /> : <View key={LotteryType.Power}></View>}
-          {renderedPages.includes(3) ? <ResultMax3dTab key={LotteryType.Max3D} /> : <View key={LotteryType.Max3D}></View>}
-          {renderedPages.includes(3) ? <ResultMax3dProTab key={LotteryType.Max3D} /> : <View key={LotteryType.Max3D}></View>}
+          {renderedPages.includes(0) ? <ResultKenoTab key={LotteryType.Keno} navigation={navigation} /> : <View key={LotteryType.Keno}></View>}
+          {renderedPages.includes(1) ? <ResultMegaTab key={LotteryType.Mega} navigation={navigation} /> : <View key={LotteryType.Mega}></View>}
+          {renderedPages.includes(2) ? <ResultPowerTab key={LotteryType.Power} navigation={navigation} /> : <View key={LotteryType.Power}></View>}
+          {renderedPages.includes(3) ? <ResultMax3dTab key={LotteryType.Max3D} navigation={navigation} /> : <View key={LotteryType.Max3D}></View>}
+          {renderedPages.includes(4) ? <ResultMax3dProTab key={LotteryType.Max3DPro} navigation={navigation} /> : <View key={LotteryType.Max3DPro}></View>}
         </AnimatedPager>
       </View>
     </View >

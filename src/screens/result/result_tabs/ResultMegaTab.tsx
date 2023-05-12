@@ -7,14 +7,14 @@ import { FirstItemMega, PerItemMega } from "../component/ItemMega";
 
 const lottColor = Color.mega
 
-const ResultMegaTab = React.memo(() => {
+const ResultMegaTab = React.memo(({ navigation }: any) => {
     return (
-        <ExpensiveRerender />
+        <ExpensiveRerender navigation={navigation} />
     )
 })
 export default ResultMegaTab
 
-const ExpensiveRerender = React.memo(() => {
+const ExpensiveRerender = React.memo(({ navigation }: any) => {
 
     useEffect(() => {
         console.log("expensive rerender mega")
@@ -45,8 +45,8 @@ const ExpensiveRerender = React.memo(() => {
     }, [list])
 
     const renderItem = useCallback(({ item, index }: any) => {
-        if (index == 0) return <FirstItemMega data={item} />
-        return <PerItemMega data={item} />
+        if (index == 0) return <FirstItemMega data={item} navigation={navigation} />
+        return <PerItemMega data={item} navigation={navigation} />
     }, [])
 
     return (
