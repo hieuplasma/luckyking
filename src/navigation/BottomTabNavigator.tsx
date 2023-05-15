@@ -16,6 +16,7 @@ import { ScreenName } from './ScreenName';
 import { LiveNavigation } from './tab/LiveNavigation';
 import { HomeNavigation } from './tab/HomeNavigation';
 import { ResultNavigation } from './tab/ResultNavigation';
+import { ScanNavigation } from './tab/ScanNavigation';
 
 type MainBottomTabParamList = {
   HomeStack: {};
@@ -221,7 +222,7 @@ export function BottomTabNavigator() {
       />
       <BottomTab.Screen
         name='ScanStack'
-        component={ScanScreen}
+        component={ScanNavigation}
         options={{
           tabBarIcon: ({ focused }) =>
             getTabBarIcon({

@@ -65,5 +65,10 @@ export const ScreenName = {
     DetailPower: "DetailPower",
     DetailMax3d: "DetailMax3d",
     DetailMax3dPro: "DetailMax3dPro",
+  },
+
+  ScanChild: {
+    ScanScreen: "ScanScreen",
+    ScanResult: "ScanResultScreen"
   }
 };

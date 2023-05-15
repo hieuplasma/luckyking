@@ -24,7 +24,7 @@ export const FirstItemPower = React.memo(({ data, navigation, hideBtm }: FirstIt
 
     return (
         <TouchableOpacity onPress={navigate} activeOpacity={1}>
-            <Image style={{ width: windowWidth - 20, height: hideBtm ? 324 : 356, marginVertical: 8 }} resizeMode="stretch" source={Images.power_banner}>
+            <Image style={{ width: windowWidth - 20, height: hideBtm ? 320 : 356, marginVertical: 8 }} resizeMode="stretch" source={Images.power_banner}>
                 <View style={styles.above}>
                     <IText style={styles.titleFirstItem}>
                         {`Kỳ quay ${printDrawWeekDate(data)}`}
@@ -77,7 +77,6 @@ export const FirstItemPower = React.memo(({ data, navigation, hideBtm }: FirstIt
             {
                 hideBtm ? <></> :
                     <IText style={{ marginTop: 8, fontWeight: '600', fontSize: 15 }}>{"Kết quả các kì quay trước:"}</IText>
-
             }
         </TouchableOpacity>
     )
