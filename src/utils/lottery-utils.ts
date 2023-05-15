@@ -1,13 +1,13 @@
-import { LotteryType } from "@common";
-import { dateConvert, dateTimeConvert, fullDateTimeConvert } from "./time-utils";
+import { EVEN_ODD, LotteryType, SMALL_BIG } from "@common";
+import { dateConvert, dateTimeConvert, fullDateTimeConvert, getWeekDate } from "./time-utils";
 import { Images } from "@assets";
 
 export function convolutions(a: number, b: number, lotteryType?: LotteryType) {
     let big = a, small = b
     if (b > a) { big = b; small = a }
     if (big == small) return 1
-    if (big == 6 && small == 5  && lotteryType == LotteryType.Mega) return 40
-    if (big == 6 && small == 5  && lotteryType == LotteryType.Power) return 50
+    if (big == 6 && small == 5 && lotteryType == LotteryType.Mega) return 40
+    if (big == 6 && small == 5 && lotteryType == LotteryType.Power) return 50
     if (big == 7 && small == 6) return 7
     if (big == 8 && small == 6) return 28
     if (big == 9 && small == 6) return 84
@@ -52,6 +52,14 @@ export function printDraw2(param: any) {
     const date = new Date(param.drawTime)
     return "#" + code.toString().padStart(7, "0") + " - " + fullDateTimeConvert(date)
 }
+
+export function printDrawWeekDate(param: any) {
+    const code = parseInt(param.drawCode.toString())
+    const date = new Date(param.drawTime)
+    const weekDate = date.getDay()
+    return "#" + code.toString().padStart(5, "0") + " - " + getWeekDate(weekDate) + " - " + dateConvert(date)
+}
+
 
 export function printNumber(number: any) {
     if (number === false) return ""
@@ -190,4 +198,25 @@ export async function taoChuoiTuToHopChap(arr: string[], m: number) {
 
     await backtrack([], 0);
     return results;
+}
+
+
+export function kenoAnalysis(param: number[]) {
+    let small = 0, big = 0, even = 0, odd = 0, small_big: SMALL_BIG = 'small', even_odd: EVEN_ODD = 'even'
+    for (const element of param) {
+        if (element <= 40) small++; else big++;
+        if (element % 2 == 0) even++; else odd++;
+    }
+
+    if (big > 10) small_big = 'big'
+    if (big == 10) small_big = 'draw'
+    if (big < 10) small_big = 'small'
+
+    if (odd > 12) even_odd = 'odd'
+    if (odd == 11 || odd == 12) even_odd = 'odd_11_12'
+    if (odd == 10) even_odd = 'draw'
+    if (odd == 9 || odd == 8) even_odd = 'even_11_12'
+    if (odd < 8) even_odd = 'even'
+
+    return { small, big, even, odd, small_big, even_odd }
 }

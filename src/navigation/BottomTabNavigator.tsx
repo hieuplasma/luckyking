@@ -4,7 +4,7 @@ import {
 } from '@react-navigation/bottom-tabs';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import {
-  ResultScreen, ScanScreen, StatisticalScreen,
+  ScanScreen, StatisticalScreen,
 } from '@screen';
 import { Label, LineSeparator, translate } from '@shared';
 import { Icon } from '@assets'
@@ -15,6 +15,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ScreenName } from './ScreenName';
 import { LiveNavigation } from './tab/LiveNavigation';
 import { HomeNavigation } from './tab/HomeNavigation';
+import { ResultNavigation } from './tab/ResultNavigation';
+import { ScanNavigation } from './tab/ScanNavigation';
 
 type MainBottomTabParamList = {
   HomeStack: {};
@@ -145,7 +147,13 @@ const hideTabBar = [
   ScreenName.HomeChild.Max3dProScreen,
   ScreenName.HomeChild.CartScreen,
   ScreenName.HomeChild.OrderScreen,
-  ScreenName.Drawer.RechargeStack
+
+  ScreenName.Drawer.RechargeStack,
+
+  ScreenName.ResultChild.DetailKeno,
+  ScreenName.ResultChild.DetailMega,
+  ScreenName.ResultChild.DetailPower,
+  ScreenName.ResultChild.DetailMax3d
 ]
 
 export function BottomTabNavigator() {
@@ -157,7 +165,7 @@ export function BottomTabNavigator() {
     console.log("current screen::::" + index + ":::::=> " + routeName)
     return hideTabBar.includes(routeName) ? null : <TabBar {...props} />
   }, [])
-  
+
   return (
     <BottomTab.Navigator
       initialRouteName={'HomeStack'}
@@ -188,7 +196,7 @@ export function BottomTabNavigator() {
       />
       <BottomTab.Screen
         name='ResultStack'
-        component={ResultScreen}
+        component={ResultNavigation}
         options={{
           tabBarIcon: ({ focused }) =>
             getTabBarIcon({
@@ -214,7 +222,7 @@ export function BottomTabNavigator() {
       />
       <BottomTab.Screen
         name='ScanStack'
-        component={ScanScreen}
+        component={ScanNavigation}
         options={{
           tabBarIcon: ({ focused }) =>
             getTabBarIcon({

@@ -34,6 +34,7 @@
 		E1E9B0FDD9AB426FB9EC2310 /* myriadpro-boldit.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1C36FC6AA1BA49F18E3AEE3C /* myriadpro-boldit.ttf */; };
 		E99D501C0F8B4AB986F9F5BE /* myriadpro-semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D2CFD055C7B74D13808AD036 /* myriadpro-semibold.ttf */; };
 		FDA40337A65548EBAFED15A2 /* myriadpro-semiboldit.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B3D68C2AAD544735A1CC7FA5 /* myriadpro-semiboldit.ttf */; };
+		D4B43B60BCAE4F0795215B99 /* consolab.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E345BD3B9EE0491CBA11D2D6 /* consolab.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -84,6 +85,7 @@
 		E228926468158D8197D88998 /* Pods_luckyking_app_react.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_luckyking_app_react.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3EC9A344B984B13963CCF02 /* consolas.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = consolas.ttf; path = ../src/assets/fonts/consolas.ttf; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		E345BD3B9EE0491CBA11D2D6 /* consolab.ttf */ = {isa = PBXFileReference; name = "consolab.ttf"; path = "../src/assets/fonts/consolab.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -164,6 +166,7 @@
 				E3EC9A344B984B13963CCF02 /* consolas.ttf */,
 				6BD423B59F75440A936261EF /* digital-7.ttf */,
 				CAF2EEA0E859438388640438 /* myriadpro-it.ttf */,
+				E345BD3B9EE0491CBA11D2D6 /* consolab.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -370,6 +373,7 @@
 				394A3D8C4CC84BD8A047A7BD /* consolas.ttf in Resources */,
 				A4869340266B4977A4324048 /* digital-7.ttf in Resources */,
 				9B332564D7EB49E790AE137D /* myriadpro-it.ttf in Resources */,
+				D4B43B60BCAE4F0795215B99 /* consolab.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

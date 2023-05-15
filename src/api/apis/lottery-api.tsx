@@ -23,6 +23,26 @@ class LotteryApi {
         return await window.connection.GET(fullUrl, params)
     }
 
+    getResultKeno = async (params: any) => {
+        let fullUrl = API_URI.GET_RESULT_KENO;
+        return await window.connection.GET(fullUrl, params)
+    }
+
+    getResultMega = async (params: any) => {
+        let fullUrl = API_URI.GET_RESULT_MEGA;
+        return await window.connection.GET(fullUrl, params)
+    }
+
+    getResultPower = async (params: any) => {
+        let fullUrl = API_URI.GET_RESULT_POWER;
+        return await window.connection.GET(fullUrl, params)
+    }
+
+    getResultMax3d = async (params: any) => {
+        let fullUrl = API_URI.GET_RESULT_MAX3D;
+        return await window.connection.GET(fullUrl, params)
+    }
+
     // Order Lottery
     bookLotteryMax3d = async (body: any) => {
         let fullUrl = API_URI.BOOK_LOTTERY_MAX3D;

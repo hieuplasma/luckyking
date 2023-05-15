@@ -56,5 +56,19 @@ export const ScreenName = {
     Max3dScreen: "Max3dScreen",
     Max3dProScreen: "Max3dProScreen",
     OrderScreen: "OrderScreen"
+  },
+
+  ResultChild: {
+    Result: "Result",
+    DetailKeno: "DetailKeno",
+    DetailMega: "DetailMega",
+    DetailPower: "DetailPower",
+    DetailMax3d: "DetailMax3d",
+    DetailMax3dPro: "DetailMax3dPro",
+  },
+
+  ScanChild: {
+    ScanScreen: "ScanScreen",
+    ScanResult: "ScanResultScreen"
   }
 };
