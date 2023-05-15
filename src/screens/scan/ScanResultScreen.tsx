@@ -1,4 +1,4 @@
-import { IText } from "@components";
+import { BasicHeader, IText } from "@components";
 import { ScanStackParamList } from "@navigation";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
@@ -20,10 +20,17 @@ export const ScanResultScreen = React.memo(() => {
 
     const scan_result = route.params.data
 
+
+
     return (
         <View style={styles.container}>
+            <BasicHeader
+                navigation={navigation}
+                title={"Quét vé so kết quả"}
+            />
+
             <IText>
-                {`Data scan được\n${scan_result}`}
+                {`Data scan được\n${scan_result.NGAY_QSMT}`}
             </IText>
         </View>
     )

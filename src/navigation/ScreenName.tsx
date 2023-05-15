@@ -68,7 +68,7 @@ export const ScreenName = {
   },
 
   ScanChild: {
-    ScanScreen: "ScanScreen",
-    ScanResult: "ScanResultScreen"
+    ScanScreen: "Scan",
+    ScanResult: "ScanResult"
   }
 };

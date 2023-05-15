@@ -153,7 +153,9 @@ const hideTabBar = [
   ScreenName.ResultChild.DetailKeno,
   ScreenName.ResultChild.DetailMega,
   ScreenName.ResultChild.DetailPower,
-  ScreenName.ResultChild.DetailMax3d
+  ScreenName.ResultChild.DetailMax3d,
+
+  ScreenName.ScanChild.ScanResult
 ]
 
 export function BottomTabNavigator() {

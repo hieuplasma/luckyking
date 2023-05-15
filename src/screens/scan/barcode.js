@@ -146,7 +146,7 @@ function scan(param) {
 		NGAY_QSMT: printDate(draw_date_hex),
 		DAY_SO_MUA: res
 	}
-	// return JSON.stringify(obj)
+	return JSON.stringify(obj)
 	let str = ''
 	for (const key in obj) {
 		str = str + key + ": " + JSON.stringify(obj[key]) + "\n"
