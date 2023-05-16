@@ -30,7 +30,7 @@ export const ScanResultScreen = React.memo(() => {
             />
 
             <IText>
-                {`Data scan được\n${scan_result.NGAY_QSMT}`}
+                {`Data scan được\n${scan_result}`}
             </IText>
         </View>
     )
