@@ -16,6 +16,25 @@ interface FirstItemProps {
 
 export const FirstItemMega = React.memo(({ data, navigation, hideBtm }: FirstItemProps) => {
 
+    if (!data.drawn) return (
+        <View >
+            <Image style={{ width: windowWidth - 20, height: 170, marginVertical: 8 }} resizeMode="stretch" source={Images.mega_banner}>
+                <View style={styles.above}>
+                    <IText style={styles.titleFirstItem}>
+                        {`Kỳ quay ${printDrawWeekDate(data)}`}
+                    </IText>
+                </View>
+                <Image source={Images.mega_logo_stroke1} style={{ height: 72, marginTop: 48 }} resizeMode="contain" />
+                <IText style={{
+                    fontWeight: 'bold', color: Color.white,
+                    fontSize: 20, alignSelf: 'center',
+                    marginTop: 16
+                }}>{"Chưa có kết quả"}
+                </IText>
+            </Image>
+        </View>
+    )
+
     const result = data.result.split("-").map(Number)
 
     const navigate = useCallback(() => {

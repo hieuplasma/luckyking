@@ -30,6 +30,25 @@ interface FirstItemProps {
 
 export const FirstItemKeno = React.memo(({ data, navigation, hideBtm }: FirstItemProps) => {
 
+    if (!data.drawn) return (
+        <View >
+            <Image style={{ width: windowWidth - 20, height: 160, marginVertical: 8 }} resizeMode="stretch" source={Images.keno_banner}>
+                <View style={styles.above}>
+                    <IText style={styles.titleFirstItem}>
+                        {`Kỳ quay ${printDraw2(data)}`}
+                    </IText>
+                </View>
+                <Image source={Images.keno_logo} style={{ height: 64.71, marginTop: 48 }} resizeMode="contain" />
+                <IText style={{
+                    fontWeight: 'bold', color: Color.white,
+                    fontSize: 20, alignSelf: 'center',
+                    marginTop: 16
+                }}>{"Chưa có kết quả"}
+                </IText>
+            </Image>
+        </View>
+    )
+
     const result = data.result.split("-").map(Number)
     const analysis = kenoAnalysis(result)
 

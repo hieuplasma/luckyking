@@ -33,10 +33,8 @@ export function fullDateTimeConvert2(param: Date) {
     return smallThan10(hour) + ":" + smallThan10(min) + ":" + smallThan10(second) + " - " + smallThan10(date) + "/" + smallThan10(month) + "/" + year
 }
 
-export
-
-    function smallThan10(param: number) {
-    return param < 10 ? "0" + param : '' + param
+export function smallThan10(param: number) {
+    return param < 10 ? "0" + parseInt(param.toString()) : '' + param
 }
 
 export function printWeekDate(param: Date) {

@@ -43,6 +43,11 @@ class LotteryApi {
         return await window.connection.GET(fullUrl, params)
     }
 
+    getResultByDrawCode = async (params: any) => {
+        let fullUrl = API_URI.GET_RESULT_BY_DRAWCODE;
+        return await window.connection.GET(fullUrl, params)
+    }
+
     // Order Lottery
     bookLotteryMax3d = async (body: any) => {
         let fullUrl = API_URI.BOOK_LOTTERY_MAX3D;

@@ -2,19 +2,27 @@ import { ScanStackParamList, ScreenName } from '@navigation';
 import { RouteProp, useNavigation, useIsFocused } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, StyleSheet, Button } from 'react-native';
-import { BarCodeScanner } from 'expo-barcode-scanner';
+import { View, StyleSheet, Button, TouchableOpacity } from 'react-native';
 import { scanBarCode } from './barcode';
 import { IText } from '@components';
 import { NavigationUtils } from '@utils';
 
 import { useCameraDevices } from 'react-native-vision-camera';
 import { Camera } from 'react-native-vision-camera';
-// import { useScanBarcodes, BarcodeFormat } from 'vision-camera-qrcode-scanner';
 import { useScanBarcodes, BarcodeFormat } from 'vision-camera-code-scanner';
 
 type NavigationProp = StackNavigationProp<ScanStackParamList, 'Scan'>;
 type NavigationRoute = RouteProp<ScanStackParamList, 'Scan'>;
+
+const POWER_NOT_DRAW = "AicMSIk/uKCgAawuhBOpHSAAbwMAALAuAgZkCACAAAAJCACBAA=="
+const POWER_DRAWN = 'AiAEKCGNgcIBAawobyRiEyAApwEAAKwoAQZkCIAAAgAkIAAFAIACAQACRBAAAA=='
+const KENO_NOT_DRAW = "AgIIyB+WkTDAAYsuRRapHQQA8v8BAIsuAQpkDQAAAAAZWgCAABIAAAEK"
+const KENO_DRAWN = 'AggAQ8lPLdDCAYUqsiMjJgQA39IAAIUqAQpkDQAAAAEAAAAAAAAAAAUQAAAAAgAAAAAAAAAABRE='
+const KENO_DRAWN2 = 'AgIIyB+WkTDAAYsuRRapHQQA8v8BAIsuAQpkDQAAAAAZWgCAABIAAAEK'
+const MEGA_DRAWN = 'AgqETWoiweYCASohMxUIEggAGAAAACshAQZkCICAFAQABBAAAA=='
+const MAX3D_PRO = 'AgZKs5VDEFAyAZgu5BSpHQAI+wAAAJkuAANkBwECAA8CwQMB'
+const MAX3D_DRAWN = 'AgiIUtJAiiAoAZQmuBPbFAACAQAAAJYmAANkB4EBAF4DAAAB'
+const TEST = KENO_DRAWN2
 
 export interface ScanScreenParamsList { }
 
@@ -38,15 +46,24 @@ export const ScanScreen = React.memo(() => {
     }, []);
 
     React.useEffect(() => {
-        console.log(barcodes)
         if (barcodes[0])
             handleBarCodeScanned({ data: barcodes[0].displayValue })
     }, [barcodes]);
 
     const handleBarCodeScanned = ({ data }: any) => {
-        setScanned(true);
-        NavigationUtils.navigate(navigation, ScreenName.ScanChild.ScanResult, { data: scanBarCode(data) })
+        let tmp = scanBarCode(data)
+        if (tmp.message == "success") {
+            setScanned(true);
+            NavigationUtils.navigate(navigation, ScreenName.ScanChild.ScanResult, { data: tmp })
+        }
+        else {
+            alert(tmp.message)
+        }
     }
+
+    const touchableTest = useCallback(() => {
+        handleBarCodeScanned({ data: TEST })
+    }, [])
 
     if (hasPermission === null) {
         return <IText>Requesting for camera permission</IText>;
@@ -73,6 +90,7 @@ export const ScanScreen = React.memo(() => {
                     {/* {scanned && <Button title={'Nhấn để scan lại'} onPress={() => setScanned(false)} />} */}
                 </>
             }
+            <TouchableOpacity style={{ flex: 1 }} onPress={touchableTest}></TouchableOpacity>
         </View>
     )
 })

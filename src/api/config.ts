@@ -45,6 +45,7 @@ export const API_URI = {
   GET_RESULT_POWER: "/result/power",
   GET_RESULT_MEGA: "/result/mega",
   GET_RESULT_MAX3D: "/result/max3d",
+  GET_RESULT_BY_DRAWCODE: "/result/get-by-draw",
 
   GET_LIST_ITEM_CART: "/cart/list",
   ADD_POWER_MEGA_CART: "/cart/add-power-mega",

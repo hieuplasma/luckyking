@@ -25,12 +25,14 @@ export function convolutions(a: number, b: number, lotteryType?: LotteryType) {
 
 export function printMoney(param: any) {
     let amount = parseInt(param.toString())
-    return amount.toLocaleString()
+    //@ts-ignore
+    return amount.toLocaleString().replaceAll(",", ".")
 }
 
 export function printMoneyK(param: any) {
     let amount = parseInt(param.toString()) / 1000
-    return amount.toLocaleString() + 'K'
+    //@ts-ignore
+    return amount.toLocaleString().replaceAll(",", ".") + 'K'
 }
 
 export function printDrawCode(drawCode: any) {
@@ -208,6 +210,8 @@ export function kenoAnalysis(param: number[]) {
         if (element % 2 == 0) even++; else odd++;
     }
 
+    let event_number: number[] = []
+
     if (big > 10) small_big = 'big'
     if (big == 10) small_big = 'draw'
     if (big < 10) small_big = 'small'
@@ -218,5 +222,55 @@ export function kenoAnalysis(param: number[]) {
     if (odd == 9 || odd == 8) even_odd = 'even_11_12'
     if (odd < 8) even_odd = 'even'
 
-    return { small, big, even, odd, small_big, even_odd }
+    switch (small_big) {
+        case 'big':
+            event_number.push(81)
+            break;
+        case 'small':
+            event_number.push(82)
+            break;
+        case 'draw':
+            event_number.push(83)
+            break;
+        default:
+            break;
+    }
+
+    switch (even_odd) {
+        case 'even':
+            event_number.push(84)
+            break;
+        case 'draw':
+            event_number.push(85)
+            break;
+        case 'odd':
+            event_number.push(86)
+            break;
+        case 'even_11_12':
+            event_number.push(87)
+            break;
+        case 'odd_11_12':
+            event_number.push(88)
+            break;
+        default:
+            break;
+    }
+
+    return { small, big, even, odd, small_big, even_odd, event_number }
+}
+
+const getData = {
+    81: 'Lớn',
+    82: 'Nhỏ',
+    83: 'Hoà LN',
+    84: 'Chẵn 13+',
+    85: 'Hòa CL',
+    86: 'Lẻ 13+',
+    87: 'Chẵn 11-12',
+    88: 'Lẻ 11-12'
+}
+
+export function getSpecialValueKeno(param: any) {
+    //@ts-ignore
+    return getData[`${param}`]
 }

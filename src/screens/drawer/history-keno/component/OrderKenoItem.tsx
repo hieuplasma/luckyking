@@ -12,17 +12,6 @@ interface OrderItemProps {
     onPress: () => void
 }
 
-const getData = {
-    81: 'Lớn',
-    82: 'Nhỏ',
-    83: 'Hoà LN',
-    84: 'Chẵn 13+',
-    85: 'Hòa CL',
-    86: 'Lẻ 13+',
-    87: 'Chẵn 11-12',
-    88: 'Lẻ 11-12'
-}
-
 export const OrderItem = React.memo(({ order, onPress }: OrderItemProps) => {
 
     const user = useSelector((state: any) => state.userReducer)

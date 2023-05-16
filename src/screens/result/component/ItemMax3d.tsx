@@ -16,13 +16,33 @@ interface FirstItemProps {
 
 export const FirstItemMax3d = React.memo(({ data, type, navigation, hideBtm }: FirstItemProps) => {
 
+    const lottColor = getColorLott(type)
+    const logo = type == LotteryType.Max3D ? Images.max3d_logo_stroke1 : Images.max3dpro_logo
+
+    if (!data.drawn) return (
+        <View >
+            <Image style={{ width: windowWidth - 20, height: 170, marginVertical: 8 }} resizeMode="stretch" source={Images.max3d_banner}>
+                <View style={styles.above}>
+                    <IText style={styles.titleFirstItem}>
+                        {`Kỳ quay ${printDrawWeekDate(data)}`}
+                    </IText>
+                </View>
+                <Image source={logo} style={{ height: 75.80, marginTop: 48 }} resizeMode="contain" />
+                <IText style={{
+                    fontWeight: 'bold', color: Color.white,
+                    fontSize: 20, alignSelf: 'center',
+                    marginTop: 16
+                }}>{"Chưa có kết quả"}
+                </IText>
+            </Image>
+        </View>
+    )
+
     const navigate = useCallback(() => {
         if (navigation)
             NavigationUtils.navigate(navigation, ScreenName.ResultChild.DetailMax3d, { data, type })
     }, [navigation, data])
 
-    const lottColor = getColorLott(type)
-    const logo = type == LotteryType.Max3D ? Images.max3d_logo_stroke1 : Images.max3dpro_logo
     return (
         <TouchableOpacity onPress={navigate} activeOpacity={1}>
             <Image style={[styles.img_cont, { height: hideBtm ? 130 : 160 }]} resizeMode="stretch" source={Images.max3d_banner}>
