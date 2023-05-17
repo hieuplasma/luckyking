@@ -1,6 +1,6 @@
 import { lotteryApi } from '@api';
 import { LotteryType } from '@common';
-import { getKenoDraw } from '@redux';
+import { deleteFirstDrawKeno } from '@redux';
 import { Label } from '@shared';
 import { Style } from '@styles';
 import { printNumber } from '@utils';
@@ -23,17 +23,9 @@ export const HomeCountdownClockComponent = React.memo(
     const dispatch = useDispatch()
 
     const resetScheduleKeno = useCallback(async (interval: any) => {
-      const listKeno = await lotteryApi.getScheduleKeno({ type: LotteryType.Keno, take: 20, skip: 0 })
-      if (listKeno) {
-        if (listKeno.data.length > 0) {
-          dispatch(getKenoDraw(listKeno.data))
-        }
-        else {
-          clearInterval(interval);
-          setTimeRemaining({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-        }
-      }
-      else {
+      try {
+        dispatch(deleteFirstDrawKeno())
+      } catch (error) {
         clearInterval(interval);
         setTimeRemaining({ days: 0, hours: 0, minutes: 0, seconds: 0 });
       }

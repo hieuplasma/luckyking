@@ -202,7 +202,6 @@ export async function taoChuoiTuToHopChap(arr: string[], m: number) {
     return results;
 }
 
-
 export function kenoAnalysis(param: number[]) {
     let small = 0, big = 0, even = 0, odd = 0, small_big: SMALL_BIG = 'small', even_odd: EVEN_ODD = 'even'
     for (const element of param) {

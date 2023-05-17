@@ -45,8 +45,8 @@ export const LotteryKenoItem = React.memo(({ section }: LotteryItem) => {
                                 })
                             }
                         </View>
-                        <IText style={{ marginRight: 30, marginLeft: 5 }}>{numbers.length}</IText>
-                        <IText style={{ marginRight: 15 }}>{`${printMoney(it.tienCuoc)}đ`}</IText>
+                        <IText style={{ marginLeft: 5 }}>{numbers.length}</IText>
+                        <IText style={{ marginRight: 10, textAlign:'right', width: 70}}>{`${printMoney(it.tienCuoc)}đ`}</IText>
                     </View>
                 )
             })}
@@ -88,5 +88,5 @@ const styles = StyleSheet.create({
         justifyContent: 'center', alignItems: 'center',
         margin: 5, borderWidth: 1, borderColor: lottColor
     },
-    textBall: { fontSize: 13, color: lottColor },
+    textBall: { fontSize: 13, color: lottColor }
 })

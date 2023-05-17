@@ -83,7 +83,8 @@ const styles = StyleSheet.create({
     btn: {
         height: 26, borderRadius: 10,
         borderWidth: 1,
-        paddingHorizontal: 10
+        paddingHorizontal: 10,
+        justifyContent:'center', alignItems:'center'
     },
     imgContainer: {
         flexDirection: 'row', width: '100%',

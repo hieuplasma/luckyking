@@ -42,12 +42,20 @@ const drawSlice = createSlice({
             state.kenoFirstDraw = action.payload[0]
             state.kenoListDraw = action.payload
         },
+        loadMoreKenoDraw: (state, action) => {
+            state.kenoListDraw = [...state.kenoListDraw.concat(action.payload)]
+        },
+        deleteFirstDrawKeno: (state) => {
+            state.kenoFirstDraw = [...state.kenoListDraw][1]
+            state.kenoListDraw = [...state.kenoListDraw.slice(1)]
+        },
     },
 })
 
 export const {
     getPowerDraw, getMegaDraw,
     getMax3dDraw, getMax3dProDraw,
-    getKenoDraw
+    getKenoDraw,
+    loadMoreKenoDraw, deleteFirstDrawKeno
 } = drawSlice.actions
 export default drawReducer = drawSlice.reducer

@@ -173,7 +173,7 @@ export const ScanResultScreen = React.memo(() => {
                         : benefits > 0 ?
                             <IText style={styles.result_txt} uppercase>
                                 {"Tiền thưởng nhận được: "}
-                                <IText style={{ fontSize: 16, color: Color.luckyKing }}>
+                                <IText style={[styles.result_txt, {color: Color.luckyKing}]}>
                                     {printMoney(benefits) + "đ"}
                                 </IText>
                             </IText>
