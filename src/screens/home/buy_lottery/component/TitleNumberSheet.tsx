@@ -9,17 +9,22 @@ interface HeaderNumberSheetProps {
     swiperRef: any,
     totalSelected?: number,
     currentLevel?: number
+    maxIndex?: number,
+    minIndex?: number
 }
 
-export const TitleNumberSheet = React.memo(({ indexPage, swiperRef, totalSelected, currentLevel }: HeaderNumberSheetProps) => {
+export const TitleNumberSheet = React.memo(({ indexPage, swiperRef, totalSelected, currentLevel, maxIndex }: HeaderNumberSheetProps) => {
+
+    const max = maxIndex ? maxIndex : 5
 
     const moveLeft = useCallback(() => {
         if (indexPage > 0) swiperRef.current?.scrollToIndex({ animated: true, index: indexPage - 1 })
     }, [indexPage, swiperRef])
 
     const moveRight = useCallback(() => {
-        if (indexPage < 5) swiperRef.current?.scrollToIndex({ animated: true, index: indexPage + 1 })
+        if (indexPage < max) swiperRef.current?.scrollToIndex({ animated: true, index: indexPage + 1 })
     }, [indexPage, swiperRef])
+
     return (
         <View style={{ flexDirection: 'row', paddingHorizontal: 18 }}>
             <TouchableOpacity
@@ -34,11 +39,11 @@ export const TitleNumberSheet = React.memo(({ indexPage, swiperRef, totalSelecte
                 {`Chọn bộ số ${String.fromCharCode(65 + indexPage)} ${(totalSelected || totalSelected === 0) ? `(${totalSelected}/${currentLevel})` : ``}`}
             </IText>
             <TouchableOpacity
-                disabled={indexPage == 5 ? true : false}
+                disabled={indexPage == max ? true : false}
                 style={{ flex: 1, flexDirection: 'row-reverse', alignItems: 'center' }}
                 onPress={moveRight}
             >
-                {indexPage < 5 ?
+                {indexPage < max ?
                     <Image source={Images.right_arrow} style={{ width: 12, height: 24 }} tintColor={Color.black} /> : <></>}
             </TouchableOpacity>
         </View>

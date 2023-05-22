@@ -1,24 +1,48 @@
-import { NumberDetail } from "@common";
-import { kenoAnalysis } from "./lottery-utils";
+import { INumberDetail, NumberDetail } from "@common";
+import { getLevelFromNumberKeno, kenoAnalysis } from "./lottery-utils";
 
 const MUOI_NGHIN = 10000
 const TRIEU = 1000000
 const TY = 1000000000
 
+function isString(element: any) {
+    return typeof element === 'string';
+}
+
+function printDetailKeno(level: number, duplicate: number) {
+    if (level <= 10) return `Bậc ${level} - trùng ${duplicate} số`
+    switch (level) {
+        case 11: return 'Lớn'
+        case 12: return 'Nhỏ'
+        case 13: return 'Chẵn 13+'
+        case 14: return 'Lẻ 13+'
+        case 15: return 'Hoà lớn nhỏ'
+        case 16: return 'Hoà (chẵn lẻ)'
+        case 17: return 'Chẵn (11-12)'
+        case 18: return 'Lẻ (11-12)'
+        default: return `Bậc ${level} - trùng ${duplicate} số`
+    }
+}
+
 export function caculateKenoBenefits(numberDetail: any, resultString: string) {
     const result: number[] = resultString.split("-").map(Number)
     let totalBenefits = 0;
-    numberDetail.map((item: any) => {
+    let detailBenefits: any = []
+    numberDetail.map((item: any, index: number) => {
         let benefits = 0
-        const numbers: number[] = item.boSo
-        const level = item.bac
+        let numbers: number[] = []
+        if (isString(item.boSo)) numbers = item.boSo.split("-").map(Number)
+        else numbers = item.boSo
+        let level = numbers.length
+        if (item.bac) level = item.bac
+        if (numbers[0] > 80) {
+            level = getLevelFromNumberKeno(numbers[0], level)
+        }
         let duplicate = 0;
         numbers.map(number => {
             if (result.includes(number)) duplicate++
         })
-
         const analysis = kenoAnalysis(result)
-
         switch (level) {
             case 1:
                 if (duplicate == 1) benefits = benefits + 2 * MUOI_NGHIN
@@ -113,16 +137,23 @@ export function caculateKenoBenefits(numberDetail: any, resultString: string) {
             default:
                 break;
         }
-        let tmp = Math.floor(parseInt(item.tien.toString()) / 10000) * benefits
+        let tmp = Math.floor(parseInt(item.tienCuoc.toString()) / 10000) * benefits
         totalBenefits = totalBenefits + tmp
+        if (benefits > 0) {
+            detailBenefits.push({
+                row: String.fromCharCode(65 + index),
+                detail: printDetailKeno(level, duplicate),
+                benefits: benefits
+            })
+        }
     })
-    return totalBenefits
+    return { totalBenefits, detailBenefits }
 }
 
 export function caculateMegaBenefits(lottery: any, resultString: string, jackPot: number) {
     const result: number[] = resultString.split("-").map(Number)
     let totalBenefits = 0;
-    const numberDetail: NumberDetail[] = JSON.parse(lottery.NumberLottery.numberDetail.toString())
+    const numberDetail = lottery.NumberLottery.numberDetail as INumberDetail[]
     const level = lottery.NumberLottery.level
     numberDetail.map(item => {
         let benefits = 0
@@ -202,7 +233,7 @@ export function caculateMegaBenefits(lottery: any, resultString: string, jackPot
             default:
                 break;
         }
-        // let tmp = Math.floor(parseInt(item.tienCuoc.toString()) / 10000) * benefits
+        // let tmp = Math.floor(parseInt(item.tienCuocCuoc.toString()) / 10000) * benefits
         totalBenefits = totalBenefits + benefits
     })
     return totalBenefits
@@ -211,7 +242,7 @@ export function caculateMegaBenefits(lottery: any, resultString: string, jackPot
 export function caculatePowerBenefits(lottery: any, resultString: string, specialNumber: number, jackpot1: number, jackpot2: number) {
     const result: number[] = resultString.split("-").map(Number)
     let totalBenefits = 0;
-    const numberDetail: NumberDetail[] = JSON.parse(lottery.NumberLottery.numberDetail.toString())
+    const numberDetail = lottery.NumberLottery.numberDetail as INumberDetail[]
     const level = lottery.NumberLottery.level
     numberDetail.map(item => {
         let benefits = 0
@@ -340,7 +371,7 @@ export function caculatePowerBenefits(lottery: any, resultString: string, specia
             default:
                 break;
         }
-        // let tmp = Math.floor(parseInt(item.tienCuoc.toString()) / 10000) * benefits
+        // let tmp = Math.floor(parseInt(item.tienCuocCuoc.toString()) / 10000) * benefits
         totalBenefits = totalBenefits + benefits
     })
     return totalBenefits
@@ -348,7 +379,7 @@ export function caculatePowerBenefits(lottery: any, resultString: string, specia
 
 export function caculateMax3dBenefits(lottery: any, special: string[], fitst: string[], second: string[], third: string[]) {
     let totalBenefits = 0;
-    const numberDetail: NumberDetail[] = JSON.parse(lottery.NumberLottery.numberDetail.toString())
+    const numberDetail = lottery.NumberLottery.numberDetail as INumberDetail[]
     numberDetail.map(item => {
         let benefits = 0
         if (special.includes(item.boSo)) benefits = benefits + TRIEU
@@ -363,7 +394,7 @@ export function caculateMax3dBenefits(lottery: any, special: string[], fitst: st
 
 export function caculateMax3PlusdBenefits(lottery: any, special: string[], fitst: string[], second: string[], third: string[]) {
     let totalBenefits = 0;
-    const numberDetail: NumberDetail[] = JSON.parse(lottery.NumberLottery.numberDetail.toString())
+    const numberDetail = lottery.NumberLottery.numberDetail as INumberDetail[]
     numberDetail.map(item => {
         let benefits = 0
         const numbers: string[] = item.boSo.split("-")

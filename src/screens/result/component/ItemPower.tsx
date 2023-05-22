@@ -86,14 +86,17 @@ export const FirstItemPower = React.memo(({ data, navigation, hideBtm }: FirstIt
                 <IText style={[styles.txt_bold, { lineHeight: 28, fontSize: 28 }]}>
                     {parseInt(data.jackpot1) > 0 ? `${printMoney(data.jackpot2)}đ` : "Không có thông tin"}
                 </IText>
-
-                <TouchableOpacity style={{ flexDirection: 'row', marginTop: 12 }} onPress={() => { }} activeOpacity={1}>
-                    <View style={{ flex: 1 }} />
-                    <IText style={{ fontSize: 16, fontWeight: 'bold', color: Color.white, marginHorizontal: 8 }}>{"Xem chi tiết"}</IText>
-                    <View style={{ flex: 1, justifyContent: 'center' }} >
-                        <Image style={{ width: 20, height: 10 }} source={Images.right_arrow} />
-                    </View>
-                </TouchableOpacity>
+                {
+                    hideBtm ? <></>
+                        :
+                        <View style={{ flexDirection: 'row', marginTop: 12 }} >
+                            <View style={{ flex: 1 }} />
+                            <IText style={{ fontSize: 16, fontWeight: 'bold', color: Color.white, marginHorizontal: 8 }}>{"Xem chi tiết"}</IText>
+                            <View style={{ flex: 1, justifyContent: 'center' }} >
+                                <Image style={{ width: 20, height: 10 }} source={Images.right_arrow} />
+                            </View>
+                        </View>
+                }
             </Image>
 
             {

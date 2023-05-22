@@ -44,7 +44,7 @@ const DrawerCustom = React.memo((props: any) => {
     auth()
       .signOut()
       .then(() => console.log('User signed out!'));
-  }, [])
+  }, [auth])
 
   return (
     <View style={{ flex: 1 }}>

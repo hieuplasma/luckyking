@@ -2,7 +2,7 @@ import { Image, Images } from "@assets";
 import { OrderStatus } from "@common";
 import { IText } from "@components";
 import { Color } from "@styles";
-import { printDisplayId, printDraw, printDraw2, printMoney } from "@utils";
+import { printDisplayId, printMoney } from "@utils";
 import React, { useEffect, useState } from "react";
 import { Dimensions, StyleSheet, TouchableOpacity, View } from "react-native";
 import { useSelector } from "react-redux";

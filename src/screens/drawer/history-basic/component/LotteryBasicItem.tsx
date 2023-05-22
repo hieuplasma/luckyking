@@ -1,10 +1,10 @@
-import { LotteryType, NumberDetail, OrderStatus } from "@common"
+import { INumberDetail, LotteryType, NumberDetail, OrderStatus } from "@common"
 import { ConsolasText, IText } from "@components"
 import { Color } from "@styles"
 import { doNotExits, getColorLott, getLogoHeader, printDisplayId, printDraw2, printDrawCode, printMoney, printNumber, printWeekDate } from "@utils"
 import React, { useCallback, useState } from "react"
 import { Dimensions, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native"
-import { PrintDrawItem } from "../../component/PrintDrawItem"
+import { PrintDrawItem } from "../../history-keno/component/PrintDrawItem"
 import { Image, Images } from "@assets"
 import { API_HOST } from "@api"
 
@@ -39,9 +39,8 @@ const getStatusName: any = {
 
 export const LotteryBasicItem = React.memo(({ lottery, tab }: LotteryItem) => {
 
-    const numberDetail: NumberDetail[] = JSON.parse(lottery.NumberLottery.numberDetail.toString())
-    const lottColor = getColorLott(lottery.type)
-
+    const numberDetail = lottery.NumberLottery.numberDetail as INumberDetail[]
+  
     const showImg = useCallback((uri: string) => {
         if (doNotExits(uri)) { }
         else window.image.show(uri)
@@ -50,7 +49,7 @@ export const LotteryBasicItem = React.memo(({ lottery, tab }: LotteryItem) => {
     return (
         <View style={styles.container}>
             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                <View style={{flex: 1, paddingRight: 16}}>
+                <View style={{ flex: 1, paddingRight: 16 }}>
                     {
                         numberDetail.map((it: any, id: number) => {
                             let numbers: number[] = []

@@ -6,6 +6,7 @@ import { Connection } from '@api';
 import { Color } from '@styles';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
+// import { PermissionsAndroid } from 'react-native';
 
 class App extends React.PureComponent {
   constructor(props) {
@@ -22,7 +23,9 @@ class App extends React.PureComponent {
     };
   }
 
-  componentDidMount() { }
+  // componentDidMount() {
+  //   PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
+  // }
 
   render() {
     const { isLoading, store } = this.state;

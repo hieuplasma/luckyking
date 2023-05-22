@@ -64,6 +64,8 @@ export function printDrawWeekDate(param: any) {
 
 
 export function printNumber(number: any) {
+    if (isNaN(number)) return 'TC'
+    if (typeof number === 'string' && number.length == 3) return number
     if (number === false) return ""
     if (number < 10) return '0' + number
     return number
@@ -99,7 +101,7 @@ function PowerMegaType(value: number) {
 
 function Max3dProType(value: number) {
     switch (value) {
-        case 4: return "Bao bộ 3 số";
+        // case 4: return "Bao bộ 3 số";
         case 10: return "Bao nhiều bộ 3 số";
         default: return "Max 3D Pro";
     }
@@ -272,4 +274,31 @@ const getData = {
 export function getSpecialValueKeno(param: any) {
     //@ts-ignore
     return getData[`${param}`]
+}
+
+export function getLevelFromNumberKeno(param: number, oldLevel: number) {
+    const number = parseInt(param.toString())
+    switch (number) {
+        case 81: return 11
+        case 82: return 12
+        case 84: return 13
+        case 86: return 14
+        case 83: return 15
+        case 85: return 16
+        case 87: return 17
+        case 88: return 18
+        default: return oldLevel
+    }
+}
+
+export function getLotteryName(param: LotteryType) {
+    switch (param) {
+        case LotteryType.Keno: return "Keno"
+        case LotteryType.Max3D: return "Max3D"
+        case LotteryType.Max3DPlus: return "Max3D+"
+        case LotteryType.Max3DPro: return "Max3D Pro"
+        case LotteryType.Power: return "Power"
+        case LotteryType.Mega: return "Mega+"
+
+    }
 }

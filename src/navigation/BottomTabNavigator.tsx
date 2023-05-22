@@ -4,7 +4,7 @@ import {
 } from '@react-navigation/bottom-tabs';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import {
-  ScanScreen, StatisticalScreen,
+   StatisticalScreen,
 } from '@screen';
 import { Label, LineSeparator, translate } from '@shared';
 import { Icon } from '@assets'

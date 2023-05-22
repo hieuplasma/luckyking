@@ -23,19 +23,30 @@ export const OrderKenoScreen = React.memo(({ }: any) => {
 
     const navigation = useNavigation<NavigationProp>();
     const route = useRoute<NavigationRoute>();
+    const order = route.params.order
+    const [thisOrder, setThisOrder] = useState(route.params.order)
+    const [isLoading, setLoading] = useState(false)
+
+    const onRefresh = useCallback(async () => {
+        setLoading(true)
+        window.loadingIndicator.show()
+        const res = await lotteryApi.getOrderById({ orderId: order.id })
+        if (res) {
+            setThisOrder(res.data)
+        }
+        setLoading(false)
+        window.loadingIndicator.hide()
+    }, [])
+
 
     const [showBottomSheet, setShowBottomSheet] = useState(false)
     useEffect(() => {
-        window.loadingIndicator.show()
         const timer = setTimeout(() => {
-            window.loadingIndicator.hide()
+            onRefresh()
             setShowBottomSheet(true);
         }, DELAY_SCREEN);
         return () => clearTimeout(timer);
     }, []);
-
-    const order = route.params.order
-    const createdAt = new Date(order.createdAt)
 
     const sheetRef: any = useRef(null)
 
@@ -46,35 +57,37 @@ export const OrderKenoScreen = React.memo(({ }: any) => {
         let tmpBoSo = new Set()
         let tmpSection: any = []
         let money = 0
-        order.Lottery.map((it: any) => {
+        let index = 0
+        thisOrder.Lottery.map((it: any) => {
             if (tmpBoSo.has(it.NumberLottery.numberDetail)) {
                 tmpSection[tmpSection.findIndex((item: any) => item.boSo == it.NumberLottery.numberDetail)].lotteries.push(it)
             }
             else {
                 tmpBoSo.add(it.NumberLottery.numberDetail)
-                tmpSection.push({ boSo: it.NumberLottery.numberDetail, lotteries: [it] })
+                tmpSection.push({ boSo: it.NumberLottery.numberDetail, lotteries: [it], idSection: index })
+                index++
             }
             money = money + it.benefits
         })
         setSectionData(tmpSection)
         setBenefit(money)
-    }, [order])
+    }, [thisOrder])
 
     const openSheet = useCallback(() => { sheetRef.current?.openSheet() }, [sheetRef])
     const renderSheet = useCallback(() => {
         return (
             <DetailOrderSheet
                 ref={sheetRef}
-                order={order}
+                order={thisOrder}
             />
         )
-    }, [sheetRef, order])
+    }, [sheetRef, thisOrder])
 
     return (
         <View style={{ flex: 1 }}>
             <BasicHeader
                 navigation={navigation}
-                title={"Chi tiết đơn " + printDisplayId(order.displayId)}
+                title={"Chi tiết đơn " + printDisplayId(thisOrder.displayId)}
                 rightAction={
                     <TouchableOpacity style={styles.infoIcon} onPress={openSheet}>
                         <IText style={{ fontSize: 20, fontWeight: 'bold', color: Color.white, marginLeft: 1 }}>{"i"}</IText>
@@ -88,7 +101,7 @@ export const OrderKenoScreen = React.memo(({ }: any) => {
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <Image source={Images.luckyking_logo} style={styles.iconPayment} />
                         <IText style={{ marginLeft: 8, color: Color.luckyPayment, fontWeight: 'bold' }}>
-                            {`${printMoney(order.amount + order.surcharge)}đ`}
+                            {`${printMoney(thisOrder.amount + thisOrder.surcharge)}đ`}
                         </IText>
                     </View>
                 </View>
@@ -103,7 +116,7 @@ export const OrderKenoScreen = React.memo(({ }: any) => {
                 <View>
                     <IText style={{ textAlign: 'center' }}>{"Trúng thưởng"}</IText>
                     <IText style={{ textAlign: 'center', color: Color.luckyKing, fontWeight: 'bold' }}>
-                        {`${printMoney(benefit)}đ`}
+                        {`${printMoney(thisOrder.benefits)}đ`}
                     </IText>
                 </View>
             </View>
@@ -114,9 +127,12 @@ export const OrderKenoScreen = React.memo(({ }: any) => {
                     data={sectionData}
                     extraData={sectionData}
                     renderItem={({ item, index }: any) => {
-                        return <LotteryKenoItem section={item} />
+                        return <LotteryKenoItem section={item} navigation={navigation}/>
                     }}
-                    keyExtractor={(item: any, index) => String(item.boSo)}
+                    keyExtractor={(item: any, index) => String(item.idSection)}
+                    refreshControl={
+                        <RefreshControl refreshing={isLoading} onRefresh={onRefresh} />
+                    }
                     ListFooterComponent={<View style={{ height: 100 }}></View>}
                 />
             </View>

@@ -12,13 +12,12 @@ import { FirstItemKeno } from "../result/component/ItemKeno";
 import { FirstItemMega } from "../result/component/ItemMega";
 import { FirstItemPower } from "../result/component/ItemPower";
 import { FirstItemMax3d } from "../result/component/ItemMax3d";
-import { caculateKenoBenefits, getSpecialValueKeno, kenoAnalysis, printMoney, printNumber } from "@utils";
+import { caculateKenoBenefits, getLotteryName, getSpecialValueKeno, kenoAnalysis, printMoney, printNumber } from "@utils";
 
 type NavigationProp = StackNavigationProp<ScanStackParamList, 'ScanResult'>;
 type NavigationRoute = RouteProp<ScanStackParamList, 'ScanResult'>;
 
 export interface ScanResultScreenParamsList { data: any }
-
 
 export const ScanResultScreen = React.memo(() => {
 
@@ -35,7 +34,7 @@ export const ScanResultScreen = React.memo(() => {
     }, [route.params.data])
 
     const [drawResult, setDrawResult] = useState<any>(false)
-    const [benefits, setBenefits] = useState(0)
+    const [benefits, setBenefits]: any = useState(false)
 
     const getResult = useCallback(async (drawCode: number, type: LotteryType) => {
         window.loadingIndicator.show()
@@ -83,7 +82,7 @@ export const ScanResultScreen = React.memo(() => {
             scan_result.LOAI_VE == LotteryType.Mega) {
 
             if (scan_result.LOAI_VE == LotteryType.Power) {
-                if (scan_result.specialNumber == number) return true
+                if (drawResult.specialNumber == number) return true
             }
 
             const result = drawResult.result.split("-").map(Number)
@@ -113,19 +112,60 @@ export const ScanResultScreen = React.memo(() => {
         else return printNumber(number)
     }, [])
 
+    const renderResult = useCallback(() => {
+        if (!drawResult.drawn || !benefits) return (
+            <IText style={[styles.result_txt, { color: Color.luckyKing }]} uppercase>
+                {"Chưa có kết quả"}
+            </IText>
+        )
+        if (benefits.totalBenefits == 0) return (
+            <IText style={[styles.result_txt, { color: Color.blue }]} uppercase>
+                {"Không trúng thưởng :("}
+            </IText>
+        )
+        return (
+            <View style={{ marginTop: 16, paddingHorizontal: 16 }}>
+                <View style={{ flexDirection: 'row' }}>
+                    <IText style={{ fontWeight: 'bold' }}>{"Giải thưởng: "}</IText>
+                    <IText style={{ fontWeight: 'bold', color: Color.luckyKing }}>{`${printMoney(benefits.totalBenefits)}đ`}</IText>
+                </View>
+                {
+                    benefits.detailBenefits.map((item: any) => {
+                        return (
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }} key={item.row}>
+                                <IText >
+                                    <IText style={{ fontWeight: 'bold', color: Color.blue }}>
+                                        {`${item.row}: `}
+                                    </IText>
+                                    <IText>{item.detail}</IText>
+                                </IText>
+                                <IText style={{ fontWeight: 'bold', color: Color.luckyKing }}>{`${printMoney(item.benefits)}đ`}</IText>
+                            </View>
+                        )
+                    })
+                }
+            </View>
+        )
+    }, [drawResult, benefits])
+
     return (
-        <View style={styles.container}>
+        <View style={[styles.container]}>
             <BasicHeader
                 navigation={navigation}
                 title={"Quét vé so kết quả"}
             />
 
+            {/* <View style={{height: 100}}></View> */}
+
             <ScrollView style={styles.body}>
                 {renderResultDraw()}
 
                 <View style={{ paddingHorizontal: 8 }}>
-                    <IText style={{ fontWeight: 'bold', fontSize: 18 , marginTop: 8}}>
+                    <IText style={{ fontWeight: 'bold', fontSize: 18, marginTop: 8 }}>
                         {"Kết quả quét vé:"}
+                    </IText>
+                    <IText style={{ fontSize: 14, color: Color.blue }}>
+                        {`Loại vé: ${getLotteryName(scan_result.LOAI_VE)}  -  Ngày mua:  ${scan_result.NGAY_MUA}`}
                     </IText>
                     {
                         scan_result.DAY_SO_MUA.map((it: any, id: number) => {
@@ -147,7 +187,7 @@ export const ScanResultScreen = React.memo(() => {
                                             })
                                         }
                                     </View>
-                                    <IText style={{ color: Color.blue, fontSize: 16, fontWeight: 'bold' }}>{`${printMoney(it.tien)}đ`}</IText>
+                                    <IText style={{ color: Color.blue, fontSize: 16, fontWeight: 'bold' }}>{`${printMoney(it.tienCuoc)}đ`}</IText>
                                 </View>
                             )
                         })
@@ -165,22 +205,7 @@ export const ScanResultScreen = React.memo(() => {
                     {"Kết quả quay thưởng"}
                 </IText>
 
-                {
-                    !drawResult.drawn ?
-                        <IText style={[styles.result_txt, { color: Color.luckyKing }]} uppercase>
-                            {"Chưa có kết quả"}
-                        </IText>
-                        : benefits > 0 ?
-                            <IText style={styles.result_txt} uppercase>
-                                {"Tiền thưởng nhận được: "}
-                                <IText style={[styles.result_txt, {color: Color.luckyKing}]}>
-                                    {printMoney(benefits) + "đ"}
-                                </IText>
-                            </IText>
-                            : <IText style={[styles.result_txt, {color: Color.blue}]} uppercase>
-                                {"Không trúng thưởng :("}
-                            </IText>
-                }
+                {renderResult()}
             </ScrollView>
         </View>
     )
@@ -192,7 +217,7 @@ const windowHeight = Dimensions.get('window').height;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: Color.buyLotteryBackGround
+        backgroundColor: Color.buyLotteryBackGround,
     },
     body: {
         flex: 1, padding: 10

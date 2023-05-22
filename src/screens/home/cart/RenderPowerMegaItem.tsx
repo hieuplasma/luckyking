@@ -1,5 +1,5 @@
 import { Image, Images } from "@assets";
-import { NumberDetail } from "@common";
+import { INumberDetail, NumberDetail } from "@common";
 import { ConsolasText, IText, LogoIcon } from "@components";
 import { Color } from "@styles";
 import { getColorLott, printDrawCode, printMoney, printNumber, printTypePlay, printWeekDate } from "@utils";
@@ -14,7 +14,7 @@ interface Props {
 
 export const RenderPowerMegaItem = React.memo(({ item, openModalDeleteLottery }: Props) => {
 
-    const numberDetail: NumberDetail[] = JSON.parse(item.NumberLottery.numberDetail.toString())
+    const numberDetail = item.NumberLottery.numberDetail as INumberDetail[]
     const lottColor = getColorLott(item.type)
     return (
         <View style={styles.borderItem}>

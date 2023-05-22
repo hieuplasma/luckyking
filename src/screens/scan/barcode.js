@@ -97,7 +97,7 @@ function scan(param) {
 		res[index] = {
 			boSo: [],
 			bac: 0,
-			tien: 0
+			tienCuoc: 0
 		}
 		// Lay 11 byte
 		let data_so = hex.slice(0, LOTTERY_BYTE)
@@ -137,7 +137,7 @@ function scan(param) {
 		if (LOTTERY_BYTE == KENO_BYTE || LOTTERY_BYTE == MAX3D_BYTE) {
 			let tien1 = hex.slice(0, 2)
 			hex = hex.slice(2)
-			res[index].tien = parseInt(tien1, 16) * 10000
+			res[index].tienCuoc = parseInt(tien1, 16) * 10000
 			if (LOTTERY_BYTE == KENO_BYTE) {
 				let bac1 = hex.slice(0, 2)
 				hex = hex.slice(2)
@@ -147,7 +147,7 @@ function scan(param) {
 
 		if (LOTTERY_BYTE == POWER_BYTE) {
 			res[index].bac = res[index].boSo.length
-			res[index].tien = convolutions(6, res[index].boSo.length, LOTTERY_TYPE) * 10000
+			res[index].tienCuoc = convolutions(6, res[index].boSo.length, LOTTERY_TYPE) * 10000
 		}
 
 		// Convert special value Keno
@@ -165,7 +165,7 @@ function scan(param) {
 
 	let total = 0;
 	for (const element of res) {
-		total = total + element.tien
+		total = total + element.tienCuoc
 	}
 
 	return {

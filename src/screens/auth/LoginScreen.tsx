@@ -18,6 +18,8 @@ import DeviceInfo from 'react-native-device-info';
 import { authApi } from '@api';
 import { useDispatch } from 'react-redux';
 import { updateToken } from '../../redux/reducer/auth';
+import messaging from '@react-native-firebase/messaging'
+import auth from '@react-native-firebase/auth'
 
 type NavigationProp = StackNavigationProp<AuthenticationStackParamList, 'Login'>;
 type NavigationRoute = RouteProp<AuthenticationStackParamList, 'Login'>;
@@ -43,11 +45,24 @@ export const LoginWidget = React.memo((props: any) => {
   const deviceId = DeviceInfo.getDeviceId();
 
   const onLoginPress = useCallback(async () => {
+    if (phoneNumber == "" || phoneNumber == undefined)
+      return (Alert.alert("Lỗi", "Bạn chưa nhập số điện thoại"))
+    if (password == "")
+      return (Alert.alert("Lỗi", "Bạn chưa nhập mật khẩu"))
+
+    // if (!auth().currentUser) {
+    //   let tmp = phoneNumber.trim()
+    //   if (tmp.charAt(0) == '0') tmp = tmp.replace('0', '+84')
+    //   await auth().signInWithPhoneNumber(tmp)
+    // }
+
+    // const fcmToken = await messaging().getToken()
     setLoading(true);
     const body = {
       phoneNumber: phoneNumber,
       password: password,
       deviceId: deviceId,
+      // fcmToken: fcmToken
     }
     const res = await authApi.login(body)
     if (res?.data?.accessToken) {

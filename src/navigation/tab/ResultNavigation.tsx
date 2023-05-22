@@ -1,7 +1,10 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import {
-  DetailResultKeno, DetailResultMax3d, DetailResultMega,
-  DetailResultPower, ResultKenoParamsList,
+  DetailResultKeno, DetailResultMax3d,
+  DetailResultMega, DetailResultPower,
+  OrderBasicScreen, OrderBasicScreenParamsList,
+  OrderKenoScreen, OrderKenoScreenParamsList,
+  ResultKenoParamsList,
   ResultMax3dParamsList,
   ResultMegaParamsList,
   ResultPowerParamsList,
@@ -14,7 +17,9 @@ export type ResultStackParamList = {
   DetailKeno: ResultKenoParamsList,
   DetailMega: ResultMegaParamsList,
   DetailPower: ResultPowerParamsList,
-  DetailMax3d: ResultMax3dParamsList
+  DetailMax3d: ResultMax3dParamsList,
+  OrderKenoScreen: OrderKenoScreenParamsList,
+  OrderBasicScreen: OrderBasicScreenParamsList
 };
 
 const Stack = createStackNavigator<ResultStackParamList>();
@@ -45,6 +50,16 @@ export function ResultNavigation() {
       <Stack.Screen
         name={'DetailMax3d'}
         component={DetailResultMax3d}
+        options={{ headerShown: false, title: undefined }}
+      />
+      <Stack.Screen
+        name={'OrderKenoScreen'}
+        component={OrderKenoScreen}
+        options={{ headerShown: false, title: undefined }}
+      />
+      <Stack.Screen
+        name={'OrderBasicScreen'}
+        component={OrderBasicScreen}
         options={{ headerShown: false, title: undefined }}
       />
     </Stack.Navigator>

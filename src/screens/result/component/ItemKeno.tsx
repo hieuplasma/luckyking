@@ -109,13 +109,13 @@ export const FirstItemKeno = React.memo(({ data, navigation, hideBtm }: FirstIte
 
                 {hideBtm ? <></>
                     :
-                    <TouchableOpacity style={{ flexDirection: 'row', marginTop: 16 }} onPress={() => { }} activeOpacity={1}>
+                    <View style={{ flexDirection: 'row', marginTop: 16 }}>
                         <View style={{ flex: 1 }} />
                         <IText style={{ fontSize: 16, fontWeight: 'bold', color: Color.white, marginHorizontal: 8 }}>{"Xem chi tiết"}</IText>
                         <View style={{ flex: 1, justifyContent: 'center' }} >
                             <Image style={{ width: 20, height: 10 }} source={Images.right_arrow} />
                         </View>
-                    </TouchableOpacity>}
+                    </View>}
             </Image>
 
             {

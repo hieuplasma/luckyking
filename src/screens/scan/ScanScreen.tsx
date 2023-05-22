@@ -50,6 +50,10 @@ export const ScanScreen = React.memo(() => {
             handleBarCodeScanned({ data: barcodes[0].displayValue })
     }, [barcodes]);
 
+    // React.useEffect(()=> {
+    //     if (isFocused) setScanned(false)
+    // }, [isFocused])
+
     const handleBarCodeScanned = ({ data }: any) => {
         let tmp = scanBarCode(data)
         if (tmp.message == "success") {
@@ -73,6 +77,7 @@ export const ScanScreen = React.memo(() => {
     }
 
     return (
+        console.log("isFocused", isFocused, hasPermission),
         <View style={styles.container}>
             {
                 isFocused &&
@@ -90,13 +95,13 @@ export const ScanScreen = React.memo(() => {
                     {/* {scanned && <Button title={'Nhấn để scan lại'} onPress={() => setScanned(false)} />} */}
                 </>
             }
-            <TouchableOpacity style={{ flex: 1 }} onPress={touchableTest}></TouchableOpacity>
+            {/* <TouchableOpacity style={{ flex: 1 }} onPress={touchableTest}></TouchableOpacity> */}
         </View>
     )
 })
 
 const styles = StyleSheet.create({
-    container: { flex: 1 },
+    container: { flex: 1},
     barcodeTextURL: {
         fontSize: 20,
         color: 'white',
