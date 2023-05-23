@@ -30,6 +30,18 @@ export enum OrderStatus {
     CART = "CART", // trong giỏ hàng, dành cho vé
 }
 
+export enum TransactionType {
+    Recharge = "recharge",
+    WithDraw = "withdraw",
+    Rewarded = "rewarded",
+    BuyLottery = "buylottery"
+}
+
+export enum TransactionDestination {
+    LUCKY_KING = "Ví LuckyKing",
+    REWARD = "Ví nhận thưởng"
+}
+
 export function getNameStatus(param: OrderStatus) {
     switch (param) {
         case OrderStatus.PENDING:

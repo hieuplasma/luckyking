@@ -3,7 +3,7 @@ import { LotteryType } from "@common";
 import { IText } from "@components";
 import { Color } from "@styles";
 import React, { useCallback, useEffect, useState } from "react";
-import { ActivityIndicator, Dimensions, FlatList, RefreshControl, StyleSheet, View } from "react-native";
+import { ActivityIndicator, Dimensions, FlatList, RefreshControl, StyleSheet, TouchableOpacity, View } from "react-native";
 import { FirstItemMax3d, PerItemMax3d } from "../component/ItemMax3d";
 
 const lottColor = Color.max3d
@@ -24,6 +24,7 @@ const ExpensiveRerender = React.memo(({ navigation }: any) => {
     const [list, setList] = useState<any>([])
 
     const [isLoading, setIsLoading] = useState(false)
+    const [currentType, setCurrentType] = useState(LotteryType.Max3D)
 
     const onRefresh = useCallback(async () => {
         window.loadingIndicator.show()
@@ -46,12 +47,27 @@ const ExpensiveRerender = React.memo(({ navigation }: any) => {
     }, [list])
 
     const renderItem = useCallback(({ item, index }: any) => {
-        if (index == 0) return <FirstItemMax3d data={item} type={LotteryType.Max3D} navigation={navigation} />
-        return <PerItemMax3d data={item} type={LotteryType.Max3D} navigation={navigation} />
-    }, [])
+        if (index == 0) return <FirstItemMax3d data={item} type={currentType} navigation={navigation} />
+        return <PerItemMax3d data={item} type={currentType} navigation={navigation} />
+    }, [currentType])
 
     return (
         <View style={{ flex: 1 }}>
+            <View style={styles.choosingBar}>
+                <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => setCurrentType(LotteryType.Max3D)}>
+                    <View style={styles.circleOut}>
+                        <View style={[styles.circleIn, { backgroundColor: currentType == LotteryType.Max3D ? lottColor : Color.transparent }]}></View>
+                    </View>
+                    <IText style={{ marginLeft: 4 }}>{"Max3D"}</IText>
+                </TouchableOpacity>
+                <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => setCurrentType(LotteryType.Max3DPlus)}>
+                    <View style={styles.circleOut}>
+                        <View style={[styles.circleIn, { backgroundColor: currentType == LotteryType.Max3DPlus ? lottColor : Color.transparent }]}></View>
+                    </View>
+                    <IText style={{ marginLeft: 4 }}>{"Max3D+"}</IText>
+                </TouchableOpacity>
+            </View>
+
             <FlatList
                 style={{ flex: 1, width: windowWidth, paddingHorizontal: -10 }}
                 data={list}
@@ -97,25 +113,25 @@ const styles = StyleSheet.create({
     }
 })
 
-// {/* <View style={styles.choosingBar}>
-//                 <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => setCurrentType(LotteryType.Max3D)}>
-//                     <View style={styles.circleOut}>
-//                         <View style={[styles.circleIn, { backgroundColor: currentType == LotteryType.Max3D ? lottColor : Color.transparent }]}></View>
-//                     </View>
-//                     <IText style={{ marginLeft: 4 }}>{"Max3D"}</IText>
-//                 </TouchableOpacity>
+{/* <View style={styles.choosingBar}>
+                <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => setCurrentType(LotteryType.Max3D)}>
+                    <View style={styles.circleOut}>
+                        <View style={[styles.circleIn, { backgroundColor: currentType == LotteryType.Max3D ? lottColor : Color.transparent }]}></View>
+                    </View>
+                    <IText style={{ marginLeft: 4 }}>{"Max3D"}</IText>
+                </TouchableOpacity>
 
-//                 <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => setCurrentType(LotteryType.Max3DPlus)}>
-//                     <View style={styles.circleOut}>
-//                         <View style={[styles.circleIn, { backgroundColor: currentType == LotteryType.Max3DPlus ? lottColor : Color.transparent }]}></View>
-//                     </View>
-//                     <IText style={{ marginLeft: 4 }}>{"Max3D+"}</IText>
-//                 </TouchableOpacity>
+                <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => setCurrentType(LotteryType.Max3DPlus)}>
+                    <View style={styles.circleOut}>
+                        <View style={[styles.circleIn, { backgroundColor: currentType == LotteryType.Max3DPlus ? lottColor : Color.transparent }]}></View>
+                    </View>
+                    <IText style={{ marginLeft: 4 }}>{"Max3D+"}</IText>
+                </TouchableOpacity>
 
-//                 <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => setCurrentType(LotteryType.Max3DPro)}>
-//                     <View style={styles.circleOut}>
-//                         <View style={[styles.circleIn, { backgroundColor: currentType == LotteryType.Max3DPro ? lottColor : Color.transparent }]}></View>
-//                     </View>
-//                     <IText style={{ marginLeft: 4 }}>{"Max3DPro"}</IText>
-//                 </TouchableOpacity>
-//             </View> */}
+                <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => setCurrentType(LotteryType.Max3DPro)}>
+                    <View style={styles.circleOut}>
+                        <View style={[styles.circleIn, { backgroundColor: currentType == LotteryType.Max3DPro ? lottColor : Color.transparent }]}></View>
+                    </View>
+                    <IText style={{ marginLeft: 4 }}>{"Max3DPro"}</IText>
+                </TouchableOpacity>
+            </View> */}

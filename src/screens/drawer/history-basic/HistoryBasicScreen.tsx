@@ -28,15 +28,6 @@ const ErrorList = [OrderStatus.ERROR, OrderStatus.RETURNED]
 
 export const HistoryBasicScreen = React.memo(() => {
     const navigation = useNavigation<NavigationProp>();
-    const route = useRoute<NavigationRoute>();
-    const safeAreaInsets = useSafeAreaInsets();
-
-    const user = useSelector((state: any) => state.userReducer)
-    const rewardWalletBalance = useSelector((state: any) => state.userReducer.rewardWalletBalance)
-
-    const navigate = (screen: string) => {
-        NavigationUtils.navigate(navigation, screen)
-    }
 
     const [listOrder, setListOrder] = useState([])
     const [isLoading, setLoading] = useState(false)

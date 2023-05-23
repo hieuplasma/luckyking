@@ -12,7 +12,7 @@ import { FirstItemKeno } from "../result/component/ItemKeno";
 import { FirstItemMega } from "../result/component/ItemMega";
 import { FirstItemPower } from "../result/component/ItemPower";
 import { FirstItemMax3d } from "../result/component/ItemMax3d";
-import { caculateKenoBenefits, getLotteryName, getSpecialValueKeno, kenoAnalysis, printMoney, printNumber } from "@utils";
+import { caculateLotteryBenefits, getLotteryName, getSpecialValueKeno, kenoAnalysis, printMoney, printNumber } from "@utils";
 
 type NavigationProp = StackNavigationProp<ScanStackParamList, 'ScanResult'>;
 type NavigationRoute = RouteProp<ScanStackParamList, 'ScanResult'>;
@@ -42,13 +42,8 @@ export const ScanResultScreen = React.memo(() => {
         if (res) {
             setDrawResult(res.data)
             if (res.data.drawn) {
-                switch (scan_result.LOAI_VE) {
-                    case LotteryType.Keno:
-                        setBenefits(caculateKenoBenefits(scan_result.DAY_SO_MUA, res.data.result))
-                        break;
-                    default:
-                        break;
-                }
+                setBenefits(caculateLotteryBenefits(scan_result, res.data))
+                console.log(caculateLotteryBenefits(scan_result, res.data))
             }
         }
         window.loadingIndicator.hide()
@@ -86,7 +81,7 @@ export const ScanResultScreen = React.memo(() => {
             }
 
             const result = drawResult.result.split("-").map(Number)
-            if (result.includes(number)) return true
+            if (result.includes(parseInt(number.toString()))) return true
 
             if (bac > 10 && scan_result.LOAI_VE == LotteryType.Keno) {
                 const analysis = kenoAnalysis(result)

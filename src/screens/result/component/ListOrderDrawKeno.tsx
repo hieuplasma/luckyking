@@ -1,12 +1,25 @@
 import { lotteryApi } from "@api"
-import { LotteryType } from "@common"
+import { LotteryType, OrderStatus } from "@common"
 import { IText } from "@components"
 import { ScreenName } from "@navigation"
 import { Color } from "@styles"
-import { NavigationUtils, caculateKenoBenefits, getSpecialValueKeno, kenoAnalysis, printDisplayId, printMoney, printNumber } from "@utils"
+import {
+    NavigationUtils,
+    caculateLotteryBenefits,
+    getSpecialValueKeno, getSplitCharater, kenoAnalysis, printDisplayId,
+    printMoney, printNumber
+} from "@utils"
 import React, { useCallback, useMemo } from "react"
-import { Dimensions } from "react-native"
-import { ScrollView, StyleSheet, View } from "react-native"
+import { StyleSheet, View, Dimensions } from "react-native"
+
+type Status = 'pending' | 'complete' | 'returned'
+
+const PendingList = [OrderStatus.PENDING, OrderStatus.LOCK]
+
+const CompleteList = [OrderStatus.CONFIRMED,
+OrderStatus.WON, OrderStatus.PAID, OrderStatus.NO_PRIZE]
+
+const ErrorList = [OrderStatus.ERROR, OrderStatus.RETURNED]
 
 export const ListOrderDrawKeno = React.memo(({ listOrder, navigation, lotteryType, drawResult }: any) => {
 
@@ -17,12 +30,12 @@ export const ListOrderDrawKeno = React.memo(({ listOrder, navigation, lotteryTyp
     )
 
     const renderResult = useCallback((lottery: any) => {
-        if (!lottery.result|| !lottery.result.drawn) return (
-            <IText style={{marginLeft: 4}}>
+        if (!lottery.result || !lottery.result.drawn) return (
+            <IText style={{ marginLeft: 4 }}>
                 {"Vé chưa được xác nhận"}
             </IText>
         )
-        const benefits = caculateKenoBenefits(lottery.NumberLottery.numberDetail, drawResult.result)
+        const benefits = caculateLotteryBenefits(lottery, drawResult)
         return (
             <View style={{ marginTop: 8, paddingHorizontal: 4 }}>
                 <View style={{ flexDirection: 'row' }}>
@@ -31,9 +44,9 @@ export const ListOrderDrawKeno = React.memo(({ listOrder, navigation, lotteryTyp
                 </View>
                 <View style={{ height: 4 }} />
                 {
-                    benefits.detailBenefits.map((item: any) => {
+                    benefits.detailBenefits.map((item: any, index: number) => {
                         return (
-                            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }} key={item.row}>
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }} key={item.row + index}>
                                 <IText >
                                     <IText style={{ fontWeight: 'bold', color: Color.blue, fontSize: 16 }}>
                                         {`${item.row}:     `}
@@ -50,7 +63,8 @@ export const ListOrderDrawKeno = React.memo(({ listOrder, navigation, lotteryTyp
     }, [drawResult])
 
     let analysis: any = false
-    if (lotteryType == LotteryType.Keno) analysis = useMemo(() => kenoAnalysis(drawResult.result.split("-")), [drawResult])
+    if (lotteryType == LotteryType.Keno)
+        analysis = useMemo(() => kenoAnalysis(drawResult.result.split("-")), [drawResult])
 
     const checking = useCallback((number: number) => {
         if (!drawResult) return false
@@ -65,7 +79,7 @@ export const ListOrderDrawKeno = React.memo(({ listOrder, navigation, lotteryTyp
             }
 
             const result = drawResult.result.split("-").map(Number)
-            if (result.includes(number)) return true
+            if (result.includes(parseInt(number.toString()))) return true
 
             if (number > 80 && lotteryType == LotteryType.Keno) {
                 //@ts-ignore
@@ -97,7 +111,7 @@ export const ListOrderDrawKeno = React.memo(({ listOrder, navigation, lotteryTyp
                 <View style={{ paddingHorizontal: 8 }}>
                     {
                         numberDetail.map((it: any, id: number) => {
-                            let numbers: number[] = it.boSo.split("-").map(Number)
+                            let numbers: number[] = it.boSo.split(getSplitCharater(lotteryType))
                             return (
                                 <View style={styles.lineNumber} key={'' + it.boSo + id}>
                                     <IText style={{ fontSize: 16, color: Color.blue, fontWeight: 'bold' }}>
@@ -140,13 +154,23 @@ export const ListOrderDrawKeno = React.memo(({ listOrder, navigation, lotteryTyp
     }, [checking])
 
     const navigate = useCallback(async (item: any) => {
-        window.loadingIndicator.show()
+        let screenName = ScreenName.Drawer.OrderKenoScreen
+        if (lotteryType)
+            window.loadingIndicator.show()
         const res = await lotteryApi.getOrderById({ orderId: item.id })
         window.loadingIndicator.hide()
         if (res) {
-            NavigationUtils.navigate(navigation, ScreenName.Drawer.OrderKenoScreen, { order: res.data })
+            if (res.data.ticketType == 'basic') {
+                screenName = ScreenName.Drawer.OrderBasicScreen
+                const status: Status = PendingList.includes(res.data.status) ? 'pending'
+                    : ErrorList.includes(res.data.status) ? 'returned' : 'complete'
+                NavigationUtils.navigate(navigation, screenName, { order: res.data, status: status })
+            }
+            else {
+                NavigationUtils.navigate(navigation, screenName, { order: res.data })
+            }
         }
-    }, [navigation])
+    }, [navigation, lotteryType])
 
     return (
         <View>

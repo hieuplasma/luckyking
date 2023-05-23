@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { ResultStackParamList } from "@navigation";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
@@ -9,6 +9,8 @@ import { Color } from "@styles";
 import { FirstItemPower } from "../component/ItemPower";
 import { PeriodStructure } from "../component/PeriodStructure";
 import { LotteryType } from "@common";
+import { lotteryApi } from "@api";
+import { ListOrderDrawKeno } from "../component/ListOrderDrawKeno";
 
 type NavigationProp = StackNavigationProp<ResultStackParamList, 'DetailPower'>;
 type NavigationRoute = RouteProp<ResultStackParamList, 'DetailPower'>;
@@ -22,6 +24,17 @@ export const DetailResultPower = React.memo(() => {
     const safeAreaInsets = useSafeAreaInsets();
 
     const data = route.params.data
+
+    const [listOrder, setListOrder] = useState([])
+
+    const getListOrder = useCallback(async () => {
+        const res = await lotteryApi.getOrderByDraw({ drawCode: data.drawCode, type: LotteryType.Power })
+        if (res) setListOrder(res.data)
+    }, [])
+
+    useEffect(() => {
+        getListOrder()
+    }, [])
 
     return (
         <View style={styles.container}>
@@ -38,9 +51,11 @@ export const DetailResultPower = React.memo(() => {
                     third={50000}
                 />
 
-                <IText style={{ marginTop: 8, fontWeight: '600', fontSize: 15 }}>
-                    {"Quý khách đã không mua vé nào cho kỳ này"}
-                </IText>
+                <ListOrderDrawKeno
+                    listOrder={listOrder}
+                    navigation={navigation}
+                    lotteryType={LotteryType.Power}
+                    drawResult={data} />
             </View>
         </View>
     )

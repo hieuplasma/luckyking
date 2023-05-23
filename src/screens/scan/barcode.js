@@ -1,5 +1,5 @@
 import { LotteryType } from '@common';
-import { convolutions } from '@utils';
+import { convolutions, getSplitCharater } from '@utils';
 import { Buffer } from 'buffer';
 
 export const mapDataFromScannerKeno = {
@@ -172,12 +172,17 @@ function scan(param) {
 		ID_MBH: machine_code.slice(2) + machine_code.slice(0, 2),
 		ID_VE: lottery_id,
 		LOAI_VE: LOTTERY_TYPE,
+		type:LOTTERY_TYPE,
 		NGAY_MUA: printDate(buy_date_hex),
 		KY_QUAY: draw_code_number,
 		NGAY_QSMT: printDate(draw_date_hex),
 		DAY_SO_MUA: res,
 		TOTAL: total,
-		message: "success"
+		message: "success",
+		NumberLottery: {
+			numberDetail: getNumberDetail(res, LOTTERY_TYPE),
+			level: res[0].boSo.length
+		}
 	}
 	// return obj
 	// return JSON.stringify(obj)
@@ -186,6 +191,19 @@ function scan(param) {
 	// 	str = str + key + ": " + JSON.stringify(obj[key]) + "\n"
 	// }
 	// return str
+}
+
+function getNumberDetail(numbers, LOAI_VE) {
+	const splitCharater = getSplitCharater(LOAI_VE)
+	let tmp = []
+	for (const element of numbers) {
+		tmp.push({
+			boSo: element.boSo.join(splitCharater),
+			tienCuoc: element.tienCuoc,
+			bac: element.bac
+		})
+	}
+	return tmp
 }
 
 export function scanBarCode(param) {

@@ -1,17 +1,18 @@
-import { INumberDetail, LotteryType, NumberDetail, OrderStatus } from "@common"
-import { ConsolasText, IText } from "@components"
+import { INumberDetail, LotteryType } from "@common"
+import { IText } from "@components"
 import { Color } from "@styles"
-import { doNotExits, getColorLott, getLogoHeader, printDisplayId, printDraw2, printDrawCode, printMoney, printNumber, printWeekDate } from "@utils"
-import React, { useCallback, useState } from "react"
+import { NavigationUtils, caculateLotteryBenefits, doNotExits, getLogoHeader, printDisplayId, printDrawCode, printMoney, printNumber, printWeekDate } from "@utils"
+import React, { useCallback } from "react"
 import { Dimensions, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native"
-import { PrintDrawItem } from "../../history-keno/component/PrintDrawItem"
 import { Image, Images } from "@assets"
 import { API_HOST } from "@api"
+import { ScreenName } from "@navigation"
 
 type Status = 'pending' | 'complete' | 'returned'
 interface LotteryItem {
     lottery: any,
-    tab: Status
+    tab: Status,
+    navigation: any
 }
 
 const getStatusName: any = {
@@ -37,14 +38,90 @@ const getStatusName: any = {
     }
 }
 
-export const LotteryBasicItem = React.memo(({ lottery, tab }: LotteryItem) => {
+export const LotteryBasicItem = React.memo(({ lottery, tab, navigation }: LotteryItem) => {
 
     const numberDetail = lottery.NumberLottery.numberDetail as INumberDetail[]
-  
+
     const showImg = useCallback((uri: string) => {
         if (doNotExits(uri)) { }
         else window.image.show(uri)
     }, [])
+
+    const checking = useCallback((number: number) => {
+        const lotteryType = lottery.type
+        const drawResult = lottery.result
+        if (!drawResult) return false
+        if (!drawResult.drawn) return false
+        if (lotteryType == LotteryType.Power ||
+            lotteryType == LotteryType.Mega) {
+
+            if (lotteryType == LotteryType.Power) {
+                if (drawResult.specialNumber == number) return true
+            }
+
+            const result = drawResult.result.split("-").map(Number)
+            if (result.includes(parseInt(number.toString()))) return true
+        }
+        else {
+            if (drawResult.special.includes(number)) return true
+            if (drawResult.first.includes(number)) return true
+            if (drawResult.second.includes(number)) return true
+            if (drawResult.third.includes(number)) return true
+        }
+
+        return false
+    }, [lottery.result, lottery.type])
+
+    const renderWinning = useCallback(() => {
+        const drawResult = lottery.result
+        if (!drawResult) return <></>
+        if (!drawResult.drawn) return <></>
+
+        const sove = caculateLotteryBenefits(lottery, drawResult)
+        if (sove.totalBenefits == 0) return <></>
+        return (
+            <View>
+                <View style={{ flexDirection: 'row' }}>
+                    <IText style={{ fontWeight: 'bold' }}>{"Giải thưởng: "}</IText>
+                    <IText style={{ fontWeight: 'bold', color: Color.luckyKing }}>{`${printMoney(sove.totalBenefits)}đ`}</IText>
+                </View>
+                {
+                    sove.detailBenefits.map((item: any, index: number) => {
+                        return (
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }} key={item.row + index}>
+                                <IText >
+                                    <IText style={{ fontWeight: 'bold', color: Color.blue }}>
+                                        {`${item.row}: `}
+                                    </IText>
+                                    <IText>{item.detail}</IText>
+                                </IText>
+                                <IText style={{ fontWeight: 'bold', color: Color.luckyKing }}>{`${printMoney(item.benefits)}đ`}</IText>
+                            </View>
+                        )
+                    })
+                }
+            </View>
+        )
+    }, [lottery.result])
+
+    const navigateToResult = useCallback((lottery: any) => {
+        if (!lottery.result) return;
+        if (!lottery.result.drawn) return;
+        let screenName = ScreenName.ResultChild.DetailMega
+        switch (lottery.type) {
+            case LotteryType.Power:
+                screenName = ScreenName.ResultChild.DetailPower
+                break;
+            case LotteryType.Max3D:
+            case LotteryType.Max3DPlus:
+            case LotteryType.Max3DPro:
+                screenName = ScreenName.ResultChild.DetailMax3d
+                break;
+            default:
+                break;
+        }
+        NavigationUtils.navigate(navigation, screenName, { data: lottery.result, type: lottery.type })
+    }, [navigation])
 
     return (
         <View style={styles.container}>
@@ -64,8 +141,9 @@ export const LotteryBasicItem = React.memo(({ lottery, tab }: LotteryItem) => {
                                     <View style={{ marginLeft: 5, flexDirection: 'row', flexWrap: 'wrap', marginVertical: 8 }}>
                                         {
                                             numbers.map((number: any, id2: number) => {
+                                                const check = checking(number)
                                                 return (
-                                                    <IText style={styles.textBall} key={id2}>
+                                                    <IText style={[styles.textBall, { color: check ? Color.luckyKing : Color.black }]} key={id2}>
                                                         {`${printNumber(number)}`}
                                                     </IText>
                                                 )
@@ -117,7 +195,8 @@ export const LotteryBasicItem = React.memo(({ lottery, tab }: LotteryItem) => {
                         <TouchableOpacity style={[styles.btnStatus,
                         { borderColor: getStatusName[lottery.status].borderColor },
                         { backgroundColor: getStatusName[lottery.status].bgColor }
-                        ]}>
+                        ]}
+                            onPress={() => navigateToResult(lottery)}>
                             <IText style={{ fontSize: 16, color: getStatusName[lottery.status].borderColor }}>
                                 {getStatusName[lottery.status].label}
                             </IText>
@@ -125,6 +204,7 @@ export const LotteryBasicItem = React.memo(({ lottery, tab }: LotteryItem) => {
                         : <></>
                 }
             </View>
+            {renderWinning()}
         </View>
     )
 })

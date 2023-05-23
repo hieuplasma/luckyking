@@ -4,7 +4,7 @@ import { OrderStatus, getNameStatus } from "@common";
 import { IText } from "@components";
 import { ScreenName } from "@navigation";
 import { Color } from "@styles";
-import { NavigationUtils, caculateKenoBenefits, doNotExits, printDraw2, printMoney } from "@utils";
+import { NavigationUtils, caculateLotteryBenefits, doNotExits, printDraw2, printMoney } from "@utils";
 import React, { useCallback, } from "react";
 import { ColorValue, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
 
@@ -44,7 +44,7 @@ export const PrintDrawItem = React.memo(({ lottery, expand, toggle, lottColor, n
     const renderWinning = useCallback(() => {
         if (!result) return <></>
         if (!result.drawn) return <></>
-        const sove = caculateKenoBenefits(lottery.NumberLottery.numberDetail, result.result)
+        const sove = caculateLotteryBenefits(lottery, result)
         if (sove.totalBenefits == 0) return <></>
         return (
             <View>
