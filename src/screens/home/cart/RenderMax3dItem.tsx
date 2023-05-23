@@ -1,5 +1,5 @@
 import { Image, Images } from "@assets";
-import { LotteryType, NumberDetail } from "@common";
+import { INumberDetail, LotteryType, NumberDetail } from "@common";
 import { ConsolasText, IText, LogoIcon } from "@components";
 import { Color } from "@styles";
 import { getColorLott, printDrawCode, printMoney, printNumber, printTypePlay, printWeekDate } from "@utils";
@@ -14,7 +14,7 @@ interface Props {
 
 export const RenderMax3dItem = React.memo(({ item, openModalDeleteLottery }: Props) => {
 
-    const numberDetail: NumberDetail[] = JSON.parse(item.NumberLottery.numberDetail.toString())
+    const numberDetail = item.NumberLottery.numberDetail as INumberDetail[]
     const lottColor = getColorLott(item.type)
     return (
         <View style={styles.borderItem}>
@@ -31,16 +31,17 @@ export const RenderMax3dItem = React.memo(({ item, openModalDeleteLottery }: Pro
                                     <IText style={{ fontSize: 18, fontWeight: '600', color: Color.black }}>
                                         {String.fromCharCode(65 + id)}
                                     </IText>
-                                    <View style={[styles.boxNumber, { backgroundColor: lottColor }]}>
-                                        <IText style={[styles.numberText, { backgroundColor: lottColor }]}>{numbers[0]}</IText>
+                                    <View style={{ flexDirection: 'row', flexWrap: 'wrap', flex: 1 }}>
+                                        {
+                                            numbers.map((number: any, index: number) => {
+                                                return (
+                                                    <View style={[styles.boxNumber, { backgroundColor: lottColor }]} key={index}>
+                                                        <IText style={styles.numberText}>{number}</IText>
+                                                    </View>
+                                                )
+                                            })
+                                        }
                                     </View>
-                                    {
-                                        item.type == LotteryType.Max3D ? <></>
-                                            : <View style={[styles.boxNumber, { backgroundColor: lottColor }]}>
-                                                <IText style={styles.numberText}>{numbers[1]}</IText>
-                                            </View>
-                                    }
-                                    <View style={{ flex: 1 }} />
                                     <IText style={{ fontSize: 16, fontWeight: '600', color: Color.black }}>
                                         {`${printMoney(it.tienCuoc)}đ`}
                                     </IText>

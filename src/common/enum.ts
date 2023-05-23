@@ -19,6 +19,7 @@ export enum OrderMethod {
 export enum OrderStatus {
     PENDING = "PENDING", // đã trả tiền, chờ khoá đơn
     LOCK = "LOCK", // đã khoá đơn, chờ in
+    PRINTED = "PRINTED", // đã in 1 phần vé của order
     CONFIRMED = "CONFIRMED",//đã nhận tiền, in xong
     ERROR = "ERROR",//Lỗi hết bộ số hay 1 lý do nào đó
     RETURNED = "RETURNED",//đã hoàn lại
@@ -29,17 +30,31 @@ export enum OrderStatus {
     CART = "CART", // trong giỏ hàng, dành cho vé
 }
 
+export enum TransactionType {
+    Recharge = "recharge",
+    WithDraw = "withdraw",
+    Rewarded = "rewarded",
+    BuyLottery = "buylottery"
+}
+
+export enum TransactionDestination {
+    LUCKY_KING = "Ví LuckyKing",
+    REWARD = "Ví nhận thưởng"
+}
+
 export function getNameStatus(param: OrderStatus) {
     switch (param) {
         case OrderStatus.PENDING:
         case OrderStatus.LOCK:
             return "Đợi in vé"
+        case OrderStatus.PRINTED:
+            return "Đang in vé"
         case OrderStatus.CONFIRMED: return "Đã in vé"
         case OrderStatus.ERROR: return "Bị lỗi"
         case OrderStatus.RETURNED: return "Đã huỷ"
         case OrderStatus.WON: return "Trúng thưởng"
         case OrderStatus.PAID: return "Đã trả thưởng"
-        case OrderStatus.NO_PRIZE: return "Không trúng thưởng :("
+        case OrderStatus.NO_PRIZE: return "Không trúng"
         case OrderStatus.CART: return "Trong giỏ hàng"
         default: return "Không hợp lệ"
     }

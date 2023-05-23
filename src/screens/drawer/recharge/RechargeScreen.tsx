@@ -1,12 +1,14 @@
+import { lotteryApi } from '@api';
 import { Icon, Images, Image } from '@assets';
+import { TransactionType } from '@common';
 import { ImageHeader, IText } from '@components';
 import { RechargeStackParamList, ScreenName } from '@navigation';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Color, Style } from '@styles';
 import { NavigationUtils, printMoney, ScreenUtils } from '@utils';
-import { useCallback } from 'react';
-import { StyleSheet, View, Dimensions, StatusBar, TouchableOpacity } from 'react-native';
+import { useCallback, useEffect, useState } from 'react';
+import { StyleSheet, View, Dimensions, StatusBar, TouchableOpacity, FlatList, RefreshControl } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
 
@@ -21,6 +23,39 @@ export const RechargeScreen = () => {
     const safeAreaInsets = useSafeAreaInsets();
 
     const luckykingBalance = useSelector((state: any) => state.userReducer.luckykingBalance)
+
+    const [listTransaction, setListTransaction] = useState([])
+    const [isLoading, setLoading] = useState(false)
+
+    const onRefresh = async () => {
+        setLoading(true)
+        window.loadingIndicator.show()
+        const res = await lotteryApi.getTransactionHistory()
+        if (res) {
+            setListTransaction(res.data.filter(check).sort(compare))
+        }
+        setLoading(false)
+        window.loadingIndicator.hide()
+    }
+
+    function check(param: any) {
+        if (param.type == TransactionType.WithDraw && param.destination == 'Ví LuckyKing') return true
+        return (param.type == TransactionType.Recharge || param.type == TransactionType.BuyLottery)
+    }
+
+    function compare(a: any, b: any) {
+        if (a.createdAt < b.createdAt) {
+            return 1;
+        }
+        if (a.createdAt > b.createdAt) {
+            return -1;
+        }
+        return 0;
+    }
+
+    useEffect(() => {
+        onRefresh()
+    }, [])
 
     return (
         <View style={styles.container}>
@@ -63,6 +98,40 @@ export const RechargeScreen = () => {
                     <View style={{ flex: 1 }} />
                     <Image source={Images.right_arrow} style={styles.rightArrow} tintColor={Color.black} />
                 </TouchableOpacity>
+
+                <IText style={{ marginTop: 20, marginLeft: 8 }}>
+                    {"Lịch sử Tài khoản đổi thưởng:"}
+                </IText>
+
+                <FlatList
+                    style={{ marginTop: 16 }}
+                    data={listTransaction.sort()}
+                    renderItem={({ item, index }: any) => {
+                        return (
+                            <View style={{
+                                height: 50, width: '100%',
+                                paddingHorizontal: 8, alignItems: 'center',
+                                backgroundColor: index % 2 == 0 ? Color.white : "#EFEEEC",
+                                flexDirection: 'row',
+                            }}>
+                                <Image style={{ width: 36, height: 36 }} source={Images.transaction} />
+                                <View style={{ marginLeft: 8, justifyContent: 'center' }}>
+                                    <IText style={{ fontWeight: 'bold' }}>{item.description}</IText>
+                                    <IText>{new Date(item.createdAt).toLocaleString()}</IText>
+                                </View>
+                                <View style={{ flex: 1 }} />
+                                <IText style={{ fontWeight: 'bold' }}>
+                                    {`${item.type == TransactionType.BuyLottery ? '-' : '+'} ${printMoney(item.amount)}đ`}
+                                </IText>
+                            </View>
+                        )
+                    }}
+                    keyExtractor={(item: any, index) => String(item.id)}
+                    refreshControl={
+                        <RefreshControl refreshing={isLoading} onRefresh={onRefresh} />
+                    }
+                    ListFooterComponent={<View style={{ height: 100 }}></View>}
+                />
             </View>
         </View>
     )

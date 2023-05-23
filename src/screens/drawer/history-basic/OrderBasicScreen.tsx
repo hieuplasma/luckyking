@@ -12,6 +12,7 @@ import { DetailOrderSheet } from "../component/DetailOrderSheet";
 import { LotteryBasicItem } from "./component/LotteryBasicItem";
 import DropDownPicker from "react-native-dropdown-picker";
 import { DELAY_SCREEN, OrderStatus } from "@common";
+import { lotteryApi } from "@api";
 
 type NavigationProp = StackNavigationProp<HistoryBasicStackParamList, 'OrderBasicScreen'>;
 type NavigationRoute = RouteProp<HistoryBasicStackParamList, 'OrderBasicScreen'>;
@@ -37,21 +38,35 @@ export const OrderBasicScreen = React.memo(({ }: any) => {
 
     const order = route.params.order
     const status = route.params.status
-    const createdAt = new Date(order.createdAt)
 
     const sheetRef: any = useRef(null)
 
-    const [sectionData, setSectionData] = useState(order.Lottery)
+    const [thisOrder, setThisOrder] = useState(route.params.order)
+    const [isLoading, setLoading] = useState(false)
+
+    const onRefresh = useCallback(async () => {
+        setLoading(true)
+        window.loadingIndicator.show()
+        const res = await lotteryApi.getOrderById({ orderId: order.id })
+        if (res) {
+            setThisOrder(res.data)
+            // setSectionData(thisOrder.Lottery)
+        }
+        setLoading(false)
+        window.loadingIndicator.hide()
+    }, [])
+
+    const [sectionData, setSectionData] = useState(thisOrder.Lottery)
 
     const openSheet = useCallback(() => { sheetRef.current?.openSheet() }, [sheetRef])
     const renderSheet = useCallback(() => {
         return (
             <DetailOrderSheet
                 ref={sheetRef}
-                order={order}
+                order={thisOrder}
             />
         )
-    }, [sheetRef, order])
+    }, [sheetRef, thisOrder])
 
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState('all');
@@ -75,19 +90,19 @@ export const OrderBasicScreen = React.memo(({ }: any) => {
     ]);
 
     useEffect(() => {
-        let tmp = [...order.Lottery]
+        let tmp = [...thisOrder.Lottery]
         if (value != 'all')
             tmp = tmp.filter((param: any) => { return param.type == value })
         if (valueStatus != 'all')
             tmp = tmp.filter((param: any) => { return param.status == valueStatus })
         setSectionData(tmp)
-    }, [value, valueStatus])
+    }, [value, valueStatus, thisOrder])
 
     return (
         <View style={{ flex: 1 }}>
             <BasicHeader
                 navigation={navigation}
-                title={"Chi tiết đơn " + printDisplayId(order.displayId)}
+                title={"Chi tiết đơn " + printDisplayId(thisOrder.displayId)}
                 rightAction={
                     <TouchableOpacity style={styles.infoIcon} onPress={openSheet}>
                         <IText style={{ fontSize: 20, fontWeight: 'bold', color: Color.white, marginLeft: 1 }}>{"i"}</IText>
@@ -155,10 +170,13 @@ export const OrderBasicScreen = React.memo(({ }: any) => {
                     data={sectionData}
                     extraData={sectionData}
                     renderItem={({ item, index }: any) => {
-                        return (<LotteryBasicItem lottery={item} tab={status}/>)
+                        return (<LotteryBasicItem lottery={item} tab={status} navigation={navigation} />)
                     }
                     }
                     keyExtractor={(item: any, index) => item.id}
+                    refreshControl={
+                        <RefreshControl refreshing={isLoading} onRefresh={onRefresh} />
+                    }
                     ListFooterComponent={<View style={{ height: 100 }}></View>}
                 />
             </View>

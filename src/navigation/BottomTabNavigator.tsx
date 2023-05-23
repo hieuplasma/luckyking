@@ -4,7 +4,7 @@ import {
 } from '@react-navigation/bottom-tabs';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import {
-  ScanScreen, StatisticalScreen,
+   StatisticalScreen,
 } from '@screen';
 import { Label, LineSeparator, translate } from '@shared';
 import { Icon } from '@assets'
@@ -153,7 +153,9 @@ const hideTabBar = [
   ScreenName.ResultChild.DetailKeno,
   ScreenName.ResultChild.DetailMega,
   ScreenName.ResultChild.DetailPower,
-  ScreenName.ResultChild.DetailMax3d
+  ScreenName.ResultChild.DetailMax3d,
+
+  ScreenName.ScanChild.ScanResult
 ]
 
 export function BottomTabNavigator() {

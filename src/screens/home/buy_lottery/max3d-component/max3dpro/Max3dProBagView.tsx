@@ -1,8 +1,8 @@
 import { LotteryType } from "@common";
 import { ConsolasText, IText } from "@components";
 import { Color } from "@styles";
-import { generateStringsFromArray, generateUniqueStrings } from "@utils";
-import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from "react";
+import { generateStringsFromArray } from "@utils";
+import React, { forwardRef, useCallback, useEffect, useRef, useState } from "react";
 import { Dimensions, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import { ChangeBetButton } from "../../component/ChangeBetButton";
 import { BagNumberSheet } from "../../component/BagNumberSheet";

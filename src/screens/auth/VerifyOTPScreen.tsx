@@ -13,6 +13,7 @@ import { Button } from '@widgets';
 import React, { useCallback, useEffect, useState } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import auth from '@react-native-firebase/auth';
+import messaging from '@react-native-firebase/messaging'
 import DeviceInfo from 'react-native-device-info';
 import { useDispatch } from 'react-redux';
 import { updateToken } from '../../redux/reducer/auth';
@@ -54,7 +55,9 @@ export const VerifyOTPScreen = React.memo((props?: any) => {
 
   useEffect(() => {
     async function signInWithPhoneNumber(phoneNumber: string) {
-      setConfirm(await auth().signInWithPhoneNumber(phoneNumber.replace('0', '+84')))
+      let tmp = phoneNumber.trim()
+      if (tmp.charAt(0) == '0') tmp = tmp.replace('0', '+84')
+      setConfirm(await auth().signInWithPhoneNumber(tmp))
     }
     signInWithPhoneNumber(route.params.phoneNumber)
   }, [])
@@ -70,13 +73,17 @@ export const VerifyOTPScreen = React.memo((props?: any) => {
     if (user) {
       // console.log(user)
       // console.log("firebaseTOken::::", await user.getIdToken())
+      const fcmToken = await messaging().getToken()
+      console.log("FCMTOKEN",fcmToken)
       verifyOtpHooks.setLoading(true)
       const uri: string = API_URI.REGISTER
       const body = {
         phoneNumber: route.params.phoneNumber,
         password: route.params.password,
         deviceId: DeviceInfo.getDeviceId(),
+        fcmToken: fcmToken
       }
+      console.log(body)
       const res = await window.connection.requestApi("POST", uri, body, null, null, await user.getIdToken())
       if (res) {
         // console.log(res.data)

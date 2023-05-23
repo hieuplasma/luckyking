@@ -1,3 +1,8 @@
+export type INumberDetail = {
+    boSo: string
+    tienCuoc: number
+}
+
 export class NumberDetail {
     boSo: string = ""
     tienCuoc: string = "0"

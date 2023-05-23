@@ -1,4 +1,18 @@
+import { LotteryType } from '@common';
+import { convolutions, getSplitCharater } from '@utils';
 import { Buffer } from 'buffer';
+
+export const mapDataFromScannerKeno = {
+	'11': '81', // Lớn
+	'12': '82', // Nhỏ
+	'13': '84', // Chẵn 13+
+	'14': '86', // Lẻ 13+
+	'15': '83', // Hoà lớn nhỏ =================chưa kiểm định
+	'16': '85', // Hoà (chẵn lẻ)
+	'17': '87', // Chẵn (11-12)
+	'18': '88' // Lẻ (11-12)  ==================chưa kiểm định
+}
+
 
 function hex2bin(hex) {
 	return (parseInt(hex, 16)).toString(2).padStart(16, "0");
@@ -27,7 +41,9 @@ function scan(param) {
 	let data = '';
 
 	if (param) data = param
-	else return "Không có dữ liệu"
+	else return {
+		message: "Không có dữ liệu"
+	}
 
 	let buff = Buffer.from(data, 'base64');
 	let hex = buff.toString('hex')
@@ -45,27 +61,27 @@ function scan(param) {
 	switch (lottery_code.toString()) {
 		case '0800':
 			LOTTERY_BYTE = MEGA_BYTE
-			LOTTERY_TYPE = 'MEGA'
+			LOTTERY_TYPE = LotteryType.Mega
 			break;
 		case '2000':
 			LOTTERY_BYTE = POWER_BYTE
-			LOTTERY_TYPE = 'POWER'
+			LOTTERY_TYPE = LotteryType.Power
 			break;
 		case '0400':
 			LOTTERY_BYTE = KENO_BYTE
-			LOTTERY_TYPE = 'KENO'
+			LOTTERY_TYPE = LotteryType.Keno
 			break;
 		case '0002':
 			LOTTERY_BYTE = MAX3D_BYTE
-			LOTTERY_TYPE = 'MAX3D'
+			LOTTERY_TYPE = LotteryType.Max3D
 			break;
 		case '0008':
 			LOTTERY_BYTE = MAX3D_BYTE
-			LOTTERY_TYPE = 'MAX3D PRO'
+			LOTTERY_TYPE = LotteryType.Max3DPro
 			break;
 		default:
 			LOTTERY_BYTE = MAX3D_BYTE
-			LOTTERY_TYPE = 'MAX3D PLUS'
+			LOTTERY_TYPE = LotteryType.Max3DPlus
 			break
 	}
 	let draw_code_string = hex.slice(0, 8)
@@ -81,7 +97,7 @@ function scan(param) {
 		res[index] = {
 			boSo: [],
 			bac: 0,
-			tien: 0
+			tienCuoc: 0
 		}
 		// Lay 11 byte
 		let data_so = hex.slice(0, LOTTERY_BYTE)
@@ -92,6 +108,8 @@ function scan(param) {
 			let count = parseInt('0x' + data_so.slice(0, 4).match(/../g).reverse().join(''))
 			let so1 = parseInt('0x' + data_so.slice(4, 8).match(/../g).reverse().join(''))
 			let so2 = parseInt('0x' + data_so.slice(8, 12).match(/../g).reverse().join(''))
+			if (so1 < 100) so1 = '0' + so1
+			if (so2 < 100) so2 = '0' + so2
 			res[index].boSo.push(so1)
 			if (count == 2) res[index].boSo.push(so2)
 		}
@@ -101,8 +119,6 @@ function scan(param) {
 				if (i % 2 == 0) {
 					let so_hex = data_so[i] + data_so[i + 1] // lay so hex 
 					so_hex = '0x' + so_hex
-					// let so_dec = parseInt(so_hex) //Convert sang Decimal
-					// let so_bin = converter(so_dec).toBinary() // Convert sang binary
 					let so_bin = parseInt(so_hex, 16).toString(2);
 					let len = so_bin.length
 					for (let j = 0; j < 8 - len; j++) {
@@ -121,7 +137,7 @@ function scan(param) {
 		if (LOTTERY_BYTE == KENO_BYTE || LOTTERY_BYTE == MAX3D_BYTE) {
 			let tien1 = hex.slice(0, 2)
 			hex = hex.slice(2)
-			res[index].tien = parseInt(tien1, 16) * 10000
+			res[index].tienCuoc = parseInt(tien1, 16) * 10000
 			if (LOTTERY_BYTE == KENO_BYTE) {
 				let bac1 = hex.slice(0, 2)
 				hex = hex.slice(2)
@@ -130,28 +146,64 @@ function scan(param) {
 		}
 
 		if (LOTTERY_BYTE == POWER_BYTE) {
-			delete res[index].bac
-			delete res[index].tien
+			res[index].bac = res[index].boSo.length
+			res[index].tienCuoc = convolutions(6, res[index].boSo.length, LOTTERY_TYPE) * 10000
+		}
+
+		// Convert special value Keno
+		if (LOTTERY_BYTE == KENO_BYTE) {
+			if (res[index].bac > 10) {
+				for (let i = 0; i < res[index].boSo.length; i++) {
+					const element = res[index].boSo[i]
+					res[index].boSo[i] = mapDataFromScannerKeno['' + element]
+				}
+			}
 		}
 
 		index++
 	}
 
-	const obj = {
+	let total = 0;
+	for (const element of res) {
+		total = total + element.tienCuoc
+	}
+
+	return {
 		ID_MBH: machine_code.slice(2) + machine_code.slice(0, 2),
 		ID_VE: lottery_id,
 		LOAI_VE: LOTTERY_TYPE,
+		type:LOTTERY_TYPE,
 		NGAY_MUA: printDate(buy_date_hex),
 		KY_QUAY: draw_code_number,
 		NGAY_QSMT: printDate(draw_date_hex),
-		DAY_SO_MUA: res
+		DAY_SO_MUA: res,
+		TOTAL: total,
+		message: "success",
+		NumberLottery: {
+			numberDetail: getNumberDetail(res, LOTTERY_TYPE),
+			level: res[0].boSo.length
+		}
 	}
+	// return obj
 	// return JSON.stringify(obj)
-	let str = ''
-	for (const key in obj) {
-		str = str + key + ": " + JSON.stringify(obj[key]) + "\n"
+	// let str = ''
+	// for (const key in obj) {
+	// 	str = str + key + ": " + JSON.stringify(obj[key]) + "\n"
+	// }
+	// return str
+}
+
+function getNumberDetail(numbers, LOAI_VE) {
+	const splitCharater = getSplitCharater(LOAI_VE)
+	let tmp = []
+	for (const element of numbers) {
+		tmp.push({
+			boSo: element.boSo.join(splitCharater),
+			tienCuoc: element.tienCuoc,
+			bac: element.bac
+		})
 	}
-	return str
+	return tmp
 }
 
 export function scanBarCode(param) {
@@ -159,7 +211,9 @@ export function scanBarCode(param) {
 	try {
 		tmp = scan(param)
 	} catch (error) {
-		return 'Mã vạch không hợp lệ'
+		return {
+			message: 'Mã vạch không hợp lệ'
+		}
 	}
 	return tmp
 }

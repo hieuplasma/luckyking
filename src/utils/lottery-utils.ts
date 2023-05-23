@@ -25,12 +25,14 @@ export function convolutions(a: number, b: number, lotteryType?: LotteryType) {
 
 export function printMoney(param: any) {
     let amount = parseInt(param.toString())
-    return amount.toLocaleString()
+    //@ts-ignore
+    return amount.toLocaleString().replaceAll(",", ".")
 }
 
 export function printMoneyK(param: any) {
     let amount = parseInt(param.toString()) / 1000
-    return amount.toLocaleString() + 'K'
+    //@ts-ignore
+    return amount.toLocaleString().replaceAll(",", ".") + 'K'
 }
 
 export function printDrawCode(drawCode: any) {
@@ -62,6 +64,8 @@ export function printDrawWeekDate(param: any) {
 
 
 export function printNumber(number: any) {
+    if (isNaN(number)) return 'TC'
+    if (typeof number === 'string' && number.length == 3) return number
     if (number === false) return ""
     if (number < 10) return '0' + number
     return number
@@ -97,7 +101,7 @@ function PowerMegaType(value: number) {
 
 function Max3dProType(value: number) {
     switch (value) {
-        case 4: return "Bao bộ 3 số";
+        // case 4: return "Bao bộ 3 số";
         case 10: return "Bao nhiều bộ 3 số";
         default: return "Max 3D Pro";
     }
@@ -200,13 +204,14 @@ export async function taoChuoiTuToHopChap(arr: string[], m: number) {
     return results;
 }
 
-
 export function kenoAnalysis(param: number[]) {
     let small = 0, big = 0, even = 0, odd = 0, small_big: SMALL_BIG = 'small', even_odd: EVEN_ODD = 'even'
     for (const element of param) {
         if (element <= 40) small++; else big++;
         if (element % 2 == 0) even++; else odd++;
     }
+
+    let event_number: number[] = []
 
     if (big > 10) small_big = 'big'
     if (big == 10) small_big = 'draw'
@@ -218,5 +223,82 @@ export function kenoAnalysis(param: number[]) {
     if (odd == 9 || odd == 8) even_odd = 'even_11_12'
     if (odd < 8) even_odd = 'even'
 
-    return { small, big, even, odd, small_big, even_odd }
+    switch (small_big) {
+        case 'big':
+            event_number.push(81)
+            break;
+        case 'small':
+            event_number.push(82)
+            break;
+        case 'draw':
+            event_number.push(83)
+            break;
+        default:
+            break;
+    }
+
+    switch (even_odd) {
+        case 'even':
+            event_number.push(84)
+            break;
+        case 'draw':
+            event_number.push(85)
+            break;
+        case 'odd':
+            event_number.push(86)
+            break;
+        case 'even_11_12':
+            event_number.push(87)
+            break;
+        case 'odd_11_12':
+            event_number.push(88)
+            break;
+        default:
+            break;
+    }
+
+    return { small, big, even, odd, small_big, even_odd, event_number }
+}
+
+const getData = {
+    81: 'Lớn',
+    82: 'Nhỏ',
+    83: 'Hoà LN',
+    84: 'Chẵn 13+',
+    85: 'Hòa CL',
+    86: 'Lẻ 13+',
+    87: 'Chẵn 11-12',
+    88: 'Lẻ 11-12'
+}
+
+export function getSpecialValueKeno(param: any) {
+    //@ts-ignore
+    return getData[`${param}`]
+}
+
+export function getLevelFromNumberKeno(param: number, oldLevel: number) {
+    const number = parseInt(param.toString())
+    switch (number) {
+        case 81: return 11
+        case 82: return 12
+        case 84: return 13
+        case 86: return 14
+        case 83: return 15
+        case 85: return 16
+        case 87: return 17
+        case 88: return 18
+        default: return oldLevel
+    }
+}
+
+export function getLotteryName(param: LotteryType) {
+    switch (param) {
+        case LotteryType.Keno: return "Keno"
+        case LotteryType.Max3D: return "Max3D"
+        case LotteryType.Max3DPlus: return "Max3D+"
+        case LotteryType.Max3DPro: return "Max3D Pro"
+        case LotteryType.Power: return "Power"
+        case LotteryType.Mega: return "Mega+"
+
+    }
 }

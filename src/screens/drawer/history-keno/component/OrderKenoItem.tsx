@@ -2,7 +2,7 @@ import { Image, Images } from "@assets";
 import { OrderStatus } from "@common";
 import { IText } from "@components";
 import { Color } from "@styles";
-import { printDisplayId, printDraw, printDraw2, printMoney } from "@utils";
+import { printDisplayId, printDraw2, printMoney } from "@utils";
 import React, { useEffect, useState } from "react";
 import { Dimensions, StyleSheet, TouchableOpacity, View } from "react-native";
 import { useSelector } from "react-redux";
@@ -10,17 +10,6 @@ import { useSelector } from "react-redux";
 interface OrderItemProps {
     order: any,
     onPress: () => void
-}
-
-const getData = {
-    81: 'Lớn',
-    82: 'Nhỏ',
-    83: 'Hoà LN',
-    84: 'Chẵn 13+',
-    85: 'Hòa CL',
-    86: 'Lẻ 13+',
-    87: 'Chẵn 11-12',
-    88: 'Lẻ 11-12'
 }
 
 export const OrderItem = React.memo(({ order, onPress }: OrderItemProps) => {

@@ -44,3 +44,13 @@ export function getBallLott(params: LotteryType) {
             return Color.power
     }
 }
+
+export function getSplitCharater(param: LotteryType) {
+    switch (param) {
+        case LotteryType.Max3D:
+        case LotteryType.Max3DPlus:
+        case LotteryType.Max3DPro:
+            return " "
+        default: return "-"
+    }
+}

@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
     },
     ballContainer: {
-        width: (windowWidth - 196) / 5,
+        width: (windowWidth - 206) / 5,
         justifyContent: 'center',
         alignItems: 'center',
         marginVertical: 8,

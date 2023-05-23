@@ -66,12 +66,14 @@ export const Max3dProScreen = () => {
     const [numberFake, setNumberFake]: any = useState(initNumber)
     const [bets, setBets] = useState(initBets)
     const [generated, setGenrated] = useState([])
+    const [bagGenerated, setBagGenerated] = useState([])
     const [generatedBets, setGeneratedBets] = useState([])
     const [totalCost, setTotalCost] = useState(0)
     const [pageNumber, setPageNumber] = useState(0)
     const [hugePosition, setHugePosition] = useState([-1, -1])
 
     const typeBagRef: any = useRef(null);
+    const multiBagRef: any = useRef(null)
     const [totalCostBag, setTotalCostBag] = useState(0)
 
     const randomNumber = (index: number) => {
@@ -104,6 +106,10 @@ export const Max3dProScreen = () => {
     }
 
     const fastPick = useCallback(() => {
+        if (typePlay.value == 10) {
+            multiBagRef.current?.random()
+            return
+        }
         let tmp = []
         for (let i = 0; i < MAX_SET; i++) {
             const randomNumbers = [];
@@ -170,6 +176,7 @@ export const Max3dProScreen = () => {
 
 
     const onChangeType = useCallback((type: any) => {
+        setBagGenerated([])
         setType(type)
         setNumbers(initNumber)
         setBets(initBets)
@@ -247,8 +254,7 @@ export const Max3dProScreen = () => {
         )
     }, [chooseNumberRef, numberFake, pageNumber])
 
-
-    const bookLottery = async () => {
+    const createBody = (status: OrderStatus) => {
         if (generated.length == 0) {
             return Alert.alert("Thông báo", "Bạn chưa chọn bộ số nào")
         }
@@ -261,44 +267,28 @@ export const Max3dProScreen = () => {
             drawCodes.push(item.drawCode)
             drawTimes.push(item.drawTime)
         })
-        const total = (typePlay.value != 7 && typePlay.value != 8) ? totalCost : totalCostBag
+        const total = (typePlay.value != 7 && typePlay.value != 8 && typePlay.value != 10) ? totalCost : totalCostBag
         let body: any = {
             lotteryType: LotteryType.Max3DPro,
             amount: total,
-            status: OrderStatus.PENDING,
+            status: status,
             level: typePlay.value,
             drawCode: drawCodes,
             drawTime: drawTimes,
-            numbers: generated,
+            numbers: (typePlay.value == 10) ? bagGenerated : generated,
             bets: generatedBets
         }
+
+        return body
+    }
+
+    const bookLottery = async () => {
+        const body = createBody(OrderStatus.PENDING)
         NavigationUtils.navigate(navigation, ScreenName.HomeChild.OrderScreen, { body: body })
     }
 
     const addToCart = async () => {
-        if (generated.length == 0) {
-            return Alert.alert("Thông báo", "Bạn chưa chọn bộ số nào")
-        }
-        if (drawSelected.length <= 0) {
-            return window.myalert.show({ title: 'Kỳ quay không hợp lệ', btnLabel: "Đã hiểu" })
-        }
-        let drawCodes: any = []
-        let drawTimes: any = []
-        drawSelected.map((item: any) => {
-            drawCodes.push(item.drawCode)
-            drawTimes.push(item.drawTime)
-        })
-        const total = (typePlay.value != 7 && typePlay.value != 8) ? totalCost : totalCostBag
-        let body: any = {
-            lotteryType: LotteryType.Max3DPro,
-            amount: total,
-            status: OrderStatus.CART,
-            level: typePlay.value,
-            drawCode: drawCodes,
-            drawTime: drawTimes,
-            numbers: generated,
-            bets: generatedBets
-        }
+        const body = createBody(OrderStatus.CART)
         window.loadingIndicator.show()
         const res = await lotteryApi.addMax3dToCart(body)
         if (res) {
@@ -315,6 +305,7 @@ export const Max3dProScreen = () => {
         setBets(initBets)
         setHugePosition([-1, -1])
         setDraw([listDraw[0]])
+        setBagGenerated([])
     }, [listDraw])
 
     return (
@@ -342,7 +333,14 @@ export const Max3dProScreen = () => {
                         typePlay={typePlay}
                     />
                     : typePlay.value == 10 ?
-                        <MultiBagView />
+                        <MultiBagView
+                            ref={multiBagRef}
+                            changeCost={(data: number) => setTotalCostBag(data)}
+                            changeBets={(data: any) => setGeneratedBets(data)}
+                            changeGenerated={(data: any) => setGenrated(data)}
+                            changeNumber={(data: any) => setBagGenerated(data)}
+                            typePlay={typePlay}
+                        />
                         : <ScrollView style={{ flex: 1 }}>
                             <View style={{ paddingHorizontal: 16, paddingVertical: 8 }}>
                                 {numberSet.map((item: any, index: number) => {
@@ -397,7 +395,7 @@ export const Max3dProScreen = () => {
                         </>
                 }
                 <ViewFooter2
-                    totalCost={(typePlay.value != 7 && typePlay.value != 8) ? totalCost : totalCostBag * drawSelected.length}
+                    totalCost={(typePlay.value != 7 && typePlay.value != 8 && typePlay.value != 10) ? totalCost : totalCostBag * drawSelected.length}
                     addToCart={addToCart}
                     bookLottery={bookLottery}
                     lotteryType={LotteryType.Max3DPro}

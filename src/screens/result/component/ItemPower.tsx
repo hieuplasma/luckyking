@@ -15,6 +15,26 @@ interface FirstItemProps {
 }
 
 export const FirstItemPower = React.memo(({ data, navigation, hideBtm }: FirstItemProps) => {
+
+    if (!data.drawn) return (
+        <View >
+            <Image style={{ width: windowWidth - 20, height: 170, marginVertical: 8 }} resizeMode="stretch" source={Images.power_banner}>
+                <View style={styles.above}>
+                    <IText style={styles.titleFirstItem}>
+                        {`Kỳ quay ${printDrawWeekDate(data)}`}
+                    </IText>
+                </View>
+                <Image source={Images.power_logo_stroke1} style={{ height: 72, marginTop: 48 }} resizeMode="contain" />
+                <IText style={{
+                    fontWeight: 'bold', color: Color.white,
+                    fontSize: 20, alignSelf: 'center',
+                    marginTop: 16
+                }}>{"Chưa có kết quả"}
+                </IText>
+            </Image>
+        </View>
+    )
+
     const result = data.result.split("-").map(Number)
 
     const navigate = useCallback(() => {
@@ -34,15 +54,17 @@ export const FirstItemPower = React.memo(({ data, navigation, hideBtm }: FirstIt
 
                 <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 12 }}>
                     {
-                        result.map((number: number) => {
-                            return (
-                                <View style={styles.ball} key={number}>
-                                    <ConsolasText style={{ color: lottColor, fontSize: 26, fontWeight: 'bold', lineHeight: 30.44 }} >
-                                        {printNumber(number)}
-                                    </ConsolasText>
-                                </View>
-                            )
-                        })
+                        data.drawn ?
+                            result.map((number: number) => {
+                                return (
+                                    <View style={styles.ball} key={number}>
+                                        <ConsolasText style={{ color: lottColor, fontSize: 26, fontWeight: 'bold', lineHeight: 30.44 }} >
+                                            {printNumber(number)}
+                                        </ConsolasText>
+                                    </View>
+                                )
+                            })
+                            : <IText style={{ fontWeight: 'bold', color: Color.white, fontSize: 20 }}>{"Chưa có kết quả"}</IText>
                     }
                     <View style={[styles.ball, { backgroundColor: Color.luckyKing }]}>
                         <ConsolasText style={{ color: Color.white, fontSize: 26, fontWeight: 'bold', lineHeight: 30.44 }} >
@@ -64,14 +86,17 @@ export const FirstItemPower = React.memo(({ data, navigation, hideBtm }: FirstIt
                 <IText style={[styles.txt_bold, { lineHeight: 28, fontSize: 28 }]}>
                     {parseInt(data.jackpot1) > 0 ? `${printMoney(data.jackpot2)}đ` : "Không có thông tin"}
                 </IText>
-
-                <TouchableOpacity style={{ flexDirection: 'row', marginTop: 12 }} onPress={() => { }} activeOpacity={1}>
-                    <View style={{ flex: 1 }} />
-                    <IText style={{ fontSize: 16, fontWeight: 'bold', color: Color.white, marginHorizontal: 8 }}>{"Xem chi tiết"}</IText>
-                    <View style={{ flex: 1, justifyContent: 'center' }} >
-                        <Image style={{ width: 20, height: 10 }} source={Images.right_arrow} />
-                    </View>
-                </TouchableOpacity>
+                {
+                    hideBtm ? <></>
+                        :
+                        <View style={{ flexDirection: 'row', marginTop: 12 }} >
+                            <View style={{ flex: 1 }} />
+                            <IText style={{ fontSize: 16, fontWeight: 'bold', color: Color.white, marginHorizontal: 8 }}>{"Xem chi tiết"}</IText>
+                            <View style={{ flex: 1, justifyContent: 'center' }} >
+                                <Image style={{ width: 20, height: 10 }} source={Images.right_arrow} />
+                            </View>
+                        </View>
+                }
             </Image>
 
             {

@@ -69,6 +69,20 @@ export const SimpleKenoTab = React.memo(({ showBottomSheet, navigation }: Props)
         setRandomLine(-1)
     }, [numberSet, randomLine])
 
+    const randomNumberDefault = useCallback((index: number) => {
+        let newNumbers: any = [...numberSet]
+        const level = numberSet[index].length == 0 ? 2 : numberSet[index].length
+        const randomNumbers = new Set();
+        while (randomNumbers.size < level) {
+            const randomNumber = Math.floor(Math.random() * KENO_NUMBER) + 1;
+            randomNumbers.add(randomNumber);
+        }
+        const resultArray = Array.from(randomNumbers).map(Number).sort((a, b) => a - b);
+        newNumbers[index] = resultArray
+        setNumbers(newNumbers)
+        setRandomLine(-1)
+    }, [numberSet])
+
     const deleteNumber = useCallback((index: number) => {
         let newNumbers: any = [...numberSet]
         // const level = numberSet[index].length
@@ -194,7 +208,7 @@ export const SimpleKenoTab = React.memo(({ showBottomSheet, navigation }: Props)
                                 item={item}
                                 openNumberSheet={() => openNumberSheet(index)}
                                 deleteNumber={() => deleteNumber(index)}
-                                randomNumber={() => setRandomLine(index)}
+                                randomNumber={() => randomNumberDefault(index)}
                                 randoming={randomLine == index ? true : false}
                                 bet={bets[index]}
                             />

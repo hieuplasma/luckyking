@@ -16,6 +16,25 @@ interface FirstItemProps {
 
 export const FirstItemMega = React.memo(({ data, navigation, hideBtm }: FirstItemProps) => {
 
+    if (!data.drawn) return (
+        <View >
+            <Image style={{ width: windowWidth - 20, height: 170, marginVertical: 8 }} resizeMode="stretch" source={Images.mega_banner}>
+                <View style={styles.above}>
+                    <IText style={styles.titleFirstItem}>
+                        {`Kỳ quay ${printDrawWeekDate(data)}`}
+                    </IText>
+                </View>
+                <Image source={Images.mega_logo_stroke1} style={{ height: 72, marginTop: 48 }} resizeMode="contain" />
+                <IText style={{
+                    fontWeight: 'bold', color: Color.white,
+                    fontSize: 20, alignSelf: 'center',
+                    marginTop: 16
+                }}>{"Chưa có kết quả"}
+                </IText>
+            </Image>
+        </View>
+    )
+
     const result = data.result.split("-").map(Number)
 
     const navigate = useCallback(() => {
@@ -54,13 +73,18 @@ export const FirstItemMega = React.memo(({ data, navigation, hideBtm }: FirstIte
                     {parseInt(data.jackpot1) > 0 ? `${printMoney(data.jackpot1)}đ` : "Không có thông tin"}
                 </IText>
 
-                <TouchableOpacity style={{ flexDirection: 'row', marginTop: 8 }} onPress={() => { }} activeOpacity={1}>
-                    <View style={{ flex: 1 }} />
-                    <IText style={{ fontSize: 16, fontWeight: 'bold', color: Color.white, marginHorizontal: 8 }}>{"Xem chi tiết"}</IText>
-                    <View style={{ flex: 1, justifyContent: 'center' }} >
-                        <Image style={{ width: 20, height: 10 }} source={Images.right_arrow} />
-                    </View>
-                </TouchableOpacity>
+                {
+                    hideBtm ?
+                        <></>
+                        :
+                        <View style={{ flexDirection: 'row', marginTop: 8 }} >
+                            <View style={{ flex: 1 }} />
+                            <IText style={{ fontSize: 16, fontWeight: 'bold', color: Color.white, marginHorizontal: 8 }}>{"Xem chi tiết"}</IText>
+                            <View style={{ flex: 1, justifyContent: 'center' }} >
+                                <Image style={{ width: 20, height: 10 }} source={Images.right_arrow} />
+                            </View>
+                        </View>
+                }
             </Image>
 
             {

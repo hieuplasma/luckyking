@@ -1,7 +1,7 @@
 import { Image, Images } from "@assets"
 import { IText } from "@components"
 import { Color } from "@styles"
-import { printNumber } from "@utils"
+import { getSpecialValueKeno, printNumber } from "@utils"
 import React, { useCallback, useState } from "react"
 import { StyleSheet, TouchableOpacity, View } from "react-native"
 
@@ -9,31 +9,6 @@ interface TitleSimpleKenoNumberSheetProps {
     indexPage: number,
     swiperRef: any,
     selected: number[],
-}
-
-const LonNho = [
-    { label: "Lớn", value: 81 },
-    { label: "Nhỏ", value: 82 },
-    { label: "Hoà LN", value: 83 }
-]
-
-const ChanLe = [
-    { label: "Chẵn 13+", value: 84 },
-    { label: "Hòa CL", value: 85 },
-    { label: "Lẻ 13+", value: 86 },
-    { label: "Chẵn 11-12", value: 87 },
-    { label: "Lẻ 11-12", value: 88 }
-]
-
-const getData = {
-    81: 'Lớn',
-    82: 'Nhỏ',
-    83: 'Hoà LN',
-    84: 'Chẵn 13+',
-    85: 'Hòa CL',
-    86: 'Lẻ 13+',
-    87: 'Chẵn 11-12',
-    88: 'Lẻ 11-12'
 }
 
 export const TitleSimpleKenoNumberSheet = React.memo(({ indexPage, swiperRef, selected }: TitleSimpleKenoNumberSheetProps) => {
@@ -55,8 +30,7 @@ export const TitleSimpleKenoNumberSheet = React.memo(({ indexPage, swiperRef, se
     }, [selected])
 
     const getName = useCallback(() => {
-        //@ts-ignore
-        return getData[`${selected[0]}`]
+        return getSpecialValueKeno(selected[0])
     }, [selected])
 
     return (

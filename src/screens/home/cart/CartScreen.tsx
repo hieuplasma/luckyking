@@ -42,7 +42,7 @@ export const CartScreen = React.memo(() => {
     async function getListItem() {
         const res = await lotteryApi.getListItemCart()
         if (res?.data) {
-            dispatch(getCart(res?.data))
+            dispatch(getCart(res?.data.sort((a: any, b: any) => b.displayId - a.displayId)))
         }
     }
 

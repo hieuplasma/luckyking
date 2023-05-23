@@ -1,5 +1,6 @@
 import { lotteryApi } from '@api';
 import { Icon, Images, Image } from '@assets';
+import { TransactionType } from '@common';
 import { ImageHeader, IText } from '@components';
 import { ScreenName, WithdrawStackParamList } from '@navigation';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
@@ -42,20 +43,18 @@ export const WithdrawScreen = () => {
     }
 
     function check(param: any) {
-        return true
-        return param.type == "withdraw"
-      }
+        return (param.type == TransactionType.WithDraw || param.type == TransactionType.Rewarded)
+    }
 
-      function compare( a: any, b: any ) {
-        if ( a.createAt < b.createAt ){
-          return 1;
+    function compare(a: any, b: any) {
+        if (a.createdAt < b.createdAt) {
+            return 1;
         }
-        if ( a.createAt > b.createAt ){
-          return -1;
+        if (a.createdAt > b.createdAt) {
+            return -1;
         }
         return 0;
-      }
-      
+    }
 
     useEffect(() => {
         onRefresh()
@@ -93,12 +92,12 @@ export const WithdrawScreen = () => {
                     <Image source={Images.right_arrow} style={styles.rightArrow} tintColor={Color.black} />
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.borderItem}>
+                {/* <TouchableOpacity style={styles.borderItem}>
                     <Image source={Images.momo} style={{ width: 28, height: 28 }} />
                     <IText style={{ marginLeft: 16 }}>{"Đổi thưởng về ví MoMo"}</IText>
                     <View style={{ flex: 1 }} />
                     <Image source={Images.right_arrow} style={styles.rightArrow} tintColor={Color.black} />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
 
                 <IText style={{ marginTop: 20, marginLeft: 8 }}>
                     {"Lịch sử Tài khoản đổi thưởng:"}
@@ -118,10 +117,12 @@ export const WithdrawScreen = () => {
                                 <Image style={{ width: 36, height: 36 }} source={Images.transaction} />
                                 <View style={{ marginLeft: 8, justifyContent: 'center' }}>
                                     <IText style={{ fontWeight: 'bold' }}>{item.description}</IText>
-                                    <IText>{new Date(Date.parse(item.createAt)).toLocaleString()}</IText>
+                                    <IText>{new Date(item.createdAt).toLocaleString()}</IText>
                                 </View>
                                 <View style={{ flex: 1 }} />
-                                <IText style={{ fontWeight: 'bold' }}>{`${printMoney(item.amount)}đ`}</IText>
+                                <IText style={{ fontWeight: 'bold' }}>
+                                    {`${item.type == TransactionType.Rewarded ? '+' : '-'} ${printMoney(item.amount)}đ`}
+                                </IText>
                             </View>
                         )
                     }}

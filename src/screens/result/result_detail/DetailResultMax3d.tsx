@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { ResultStackParamList } from "@navigation";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Dimensions, StyleSheet, View } from "react-native";
+import { Dimensions, ScrollView, StyleSheet, View } from "react-native";
 import { BasicHeader, IText, ImageHeader } from "@components";
 import { Color } from "@styles";
 import { FirstItemMax3d } from "../component/ItemMax3d";
 import { LotteryType } from "@common";
+import { ListOrderDrawKeno } from "../component/ListOrderDrawKeno";
+import { lotteryApi } from "@api";
 
 type NavigationProp = StackNavigationProp<ResultStackParamList, 'DetailMax3d'>;
 type NavigationRoute = RouteProp<ResultStackParamList, 'DetailMax3d'>;
@@ -20,15 +22,30 @@ export const DetailResultMax3d = React.memo(() => {
     const route = useRoute<NavigationRoute>();
     const safeAreaInsets = useSafeAreaInsets();
 
+    const data = route.params.data
+
+    const [listOrder, setListOrder] = useState([])
+
+    const getListOrder = useCallback(async () => {
+        const res = await lotteryApi.getOrderByDraw({ drawCode: data.drawCode, type: route.params.type })
+        if (res) setListOrder(res.data)
+    }, [])
+
+    useEffect(() => {
+        getListOrder()
+    }, [])
+
     return (
         <View style={styles.container}>
             <BasicHeader navigation={navigation} title={"Chi tiết kết quả"} />
-            <View style={styles.body}>
+            <ScrollView style={styles.body}>
                 <FirstItemMax3d data={route.params.data} hideBtm={true} type={route.params.type} />
-                <IText style={{ marginTop: 8, fontWeight: '600', fontSize: 15 }}>
-                    {"Quý khách đã không mua vé nào cho kỳ này"}
-                </IText>
-            </View>
+                <ListOrderDrawKeno
+                    listOrder={listOrder}
+                    navigation={navigation}
+                    lotteryType={route.params.type}
+                    drawResult={data} />
+            </ScrollView>
         </View>
     )
 })

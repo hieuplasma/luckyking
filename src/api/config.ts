@@ -7,14 +7,14 @@ export const RESPONSE_TIMEOUT = 15000;
 export const TIMEOUT_MESSAGE = "request timeout"
 
 /** config for debug */
-// const config = {
-//   host: 'http://192.168.246.50:3001',
-// };
+const config = {
+  host:'http://192.168.246.104:3001',
+};
 
 /** config for VPS */
-const config = {
-  host: 'http://103.162.31.84:3003',
-};
+// const config = {
+//   host: 'http://103.162.31.84:3003',
+// };
 
 export const API_HOST = config.host;
 
@@ -33,7 +33,8 @@ export const API_URI = {
   BOOK_LOTTERY_MAX3D: "/order/add-max3d",
   BOOK_LOTTERY_CART: "/order/add-multi",
   GET_ALL_ORDER: "/order/get-all",
-
+  GET_ORDER_DRAW: "/order/get-by-draw",
+  GET_ORDER_BY_ID: "/order/get-by-id",
 
 
   GET_SCHEDULE_KENO: "/result/schedule/keno",
@@ -45,6 +46,9 @@ export const API_URI = {
   GET_RESULT_POWER: "/result/power",
   GET_RESULT_MEGA: "/result/mega",
   GET_RESULT_MAX3D: "/result/max3d",
+  GET_RESULT_BY_DRAWCODE: "/result/get-by-draw",
+
+  VIEW_JACKPOT: "/result/jackpot",
 
   GET_LIST_ITEM_CART: "/cart/list",
   ADD_POWER_MEGA_CART: "/cart/add-power-mega",

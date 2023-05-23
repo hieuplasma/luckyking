@@ -3,7 +3,7 @@ import { LotteryType } from '@common';
 import { RootStackParamsList, ScreenName } from '@navigation';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { getCart, getKenoDraw, getMax3dDraw, getMax3dProDraw, getMegaDraw, getPowerDraw, updateUser } from '@redux';
+import { getCart, getJackpot, getKenoDraw, getMax3dDraw, getMax3dProDraw, getMegaDraw, getPowerDraw, updateUser } from '@redux';
 import { Color } from '@styles';
 import { doNotExits, NavigationUtils } from '@utils';
 import React, { useEffect } from 'react';
@@ -18,7 +18,7 @@ export const SplashScreen = React.memo(() => {
 
   const token = useSelector((state: any) => state.authReducer.accessToken);
   const navigation = useNavigation<NavigationProp>();
-  
+
   const dispatch = useDispatch()
 
   async function intiApp() {
@@ -64,11 +64,17 @@ export const SplashScreen = React.memo(() => {
         }
       }
 
+      const FIRST_TAKE_KENO = 400
       const listKeno = await lotteryApi.getScheduleKeno({ type: LotteryType.Keno, take: 20, skip: 0 })
       if (listKeno) {
         if (listKeno.data.length > 0) {
           dispatch(getKenoDraw(listKeno.data))
         }
+      }
+
+      const jackpots = await lotteryApi.getJackpot()
+      if (jackpots) {
+        dispatch(getJackpot(jackpots.data))
       }
 
       NavigationUtils.resetGlobalStackWithScreen(navigation, ScreenName.Main);

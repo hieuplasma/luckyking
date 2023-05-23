@@ -1,14 +1,13 @@
 import { lotteryApi } from '@api';
-import { Icon, Images, Image } from '@assets';
-import { NumberDetail, OrderMethod, OrderStatus } from '@common';
-import { ConsolasText, ImageHeader, IText } from '@components';
+import { OrderStatus } from '@common';
+import { ImageHeader, IText } from '@components';
 import { HistoryBasicStackParamList, ScreenName } from '@navigation';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { Color, Style } from '@styles';
-import { dateTimeConvert, NavigationUtils, printDisplayId, printDrawCode, printMoney, printNumber, printWeekDate, ScreenUtils } from '@utils';
+import { Color } from '@styles';
+import { NavigationUtils } from '@utils';
 import React, { useCallback, useEffect, useState } from 'react';
-import { StyleSheet, View, Dimensions, StatusBar, TouchableOpacity, FlatList, RefreshControl } from 'react-native';
+import { StyleSheet, View, Dimensions, TouchableOpacity, FlatList, RefreshControl } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
 import { OrderBasicItem } from './component/OrderBasicItem';
@@ -29,15 +28,6 @@ const ErrorList = [OrderStatus.ERROR, OrderStatus.RETURNED]
 
 export const HistoryBasicScreen = React.memo(() => {
     const navigation = useNavigation<NavigationProp>();
-    const route = useRoute<NavigationRoute>();
-    const safeAreaInsets = useSafeAreaInsets();
-
-    const user = useSelector((state: any) => state.userReducer)
-    const rewardWalletBalance = useSelector((state: any) => state.userReducer.rewardWalletBalance)
-
-    const navigate = (screen: string) => {
-        NavigationUtils.navigate(navigation, screen)
-    }
 
     const [listOrder, setListOrder] = useState([])
     const [isLoading, setLoading] = useState(false)

@@ -1,13 +1,15 @@
 import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Dimensions, Animated } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Dimensions, Animated, FlatList, ActivityIndicator } from 'react-native';
 import BottomSheet from '@gorhom/bottom-sheet';
 import { Color } from '@styles';
 import { Image, Images } from '@assets'
 import { getColorLott, printDraw } from '@utils';
 import { LotteryType } from '@common';
 import { IText } from '@components';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { ScrollView } from 'react-native-gesture-handler';
+import { lotteryApi } from '@api';
+import { loadMoreKenoDraw } from '@redux';
 
 interface ChooseTypeSheetProps {
     currentChoose: any,
@@ -20,6 +22,8 @@ const Wiget = forwardRef(({ currentChoose, onChoose }: ChooseTypeSheetProps, ref
 
     const bottomSheetRef = useRef<BottomSheet>(null);
     const listDraw = useSelector((state: any) => state.drawReducer.kenoListDraw)
+
+    const dispatch = useDispatch()
 
     const specificInclude = useCallback((array: any, element: any) => {
         for (let i = 0; i < array.length; i++) {
@@ -103,6 +107,26 @@ const Wiget = forwardRef(({ currentChoose, onChoose }: ChooseTypeSheetProps, ref
         if (to == -1) onClose()
     }
 
+    const renderItem = (item: any) => {
+        return (
+            <TouchableOpacity activeOpacity={0.4} style={styles.item} onPress={() => changeDraw(item)}>
+                <Image
+                    source={specificInclude(currentDraw, item) ? Images.checked_box : Images.check_box}
+                    style={{ width: 24, height: 24 }}
+                    tintColor={specificInclude(currentDraw, item) ? lottColor : '#130F26'}
+                />
+                <IText style={{ fontSize: 14, marginLeft: 18, color: Color.black }}>
+                    {`${printDraw(item)}`}
+                </IText>
+            </TouchableOpacity>
+        )
+    }
+
+    const loadMore = useCallback(async () => {
+        const res = await lotteryApi.getScheduleKeno({ skip: listDraw.length, take: 20 })
+        if (res) dispatch(loadMoreKenoDraw(res.data))
+    }, [listDraw])
+
     return (
         <BottomSheet
             ref={bottomSheetRef}
@@ -119,24 +143,19 @@ const Wiget = forwardRef(({ currentChoose, onChoose }: ChooseTypeSheetProps, ref
         >
             <View style={{ flex: 1 }}>
                 <IText style={{ fontSize: 18, color: Color.black, alignSelf: 'center', fontWeight: 'bold' }}>{"Chọn kì quay"}</IText>
-                <ScrollView style={{ flex: 1 }}>
-                    <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', paddingHorizontal: 24, paddingVertical: 6, flex: 1 }}>
-                        {listDraw.map((item: any, index: number) => {
-                            return (
-                                <TouchableOpacity activeOpacity={0.4} key={index} style={styles.item} onPress={() => changeDraw(item)}>
-                                    <Image
-                                        source={specificInclude(currentDraw, item) ? Images.checked_box : Images.check_box}
-                                        style={{ width: 24, height: 24 }}
-                                        tintColor={specificInclude(currentDraw, item) ? lottColor : '#130F26'}
-                                    />
-                                    <IText style={{ fontSize: 14, marginLeft: 18, color: Color.black }}>
-                                        {`${printDraw(item)}`}
-                                    </IText>
-                                </TouchableOpacity>
-                            )
-                        })}
-                    </View>
-                </ScrollView>
+                <FlatList
+                    style={{ paddingHorizontal: 24, paddingVertical: 6, flex: 1 }}
+                    data={listDraw}
+                    extraData={listDraw}
+                    keyExtractor={(item, index) => item.id}
+                    renderItem={({ item, index }) => renderItem(item)}
+                    ListFooterComponent={<View style={{ height: 100, justifyContent: 'center', alignItems: 'center' }}>
+                        <ActivityIndicator size='small' />
+                    </View>}
+                    onEndReached={loadMore}
+                    onEndReachedThreshold={0.5}
+                    maxToRenderPerBatch={10}
+                />
                 <TouchableOpacity style={[styles.confirmButton, { backgroundColor: lottColor }]} onPress={() => choosing(currentDraw)}>
                     <IText style={styles.textConfirm}>{`Xác nhận`.toUpperCase()}</IText>
                 </TouchableOpacity>

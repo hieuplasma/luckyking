@@ -21,6 +21,7 @@ export interface HomeTicketLongFormComponent extends ViewProps {
   rightView?: () => JSX.Element;
   centerView?: () => JSX.Element;
   type?: LotteryType;
+  jackpot?: string
 }
 
 export const HomeTicketLongFormComponent = React.memo((props?: HomeTicketLongFormComponent) => {
@@ -127,7 +128,7 @@ export const HomeTicketLongFormComponent = React.memo((props?: HomeTicketLongFor
             Style.Space.MarginTop.small_8,
             { color: mainColor },
           ]}>
-          {'56.487.021.150 đ'}
+          {props?.jackpot}
         </Label.Widget>
         <HomeCountdownClockComponent
           targetTime={props?.targetTime ? props.targetTime : new Date('2023-04-15T18:00:00Z')}
@@ -135,7 +136,7 @@ export const HomeTicketLongFormComponent = React.memo((props?: HomeTicketLongFor
         />
       </View>
     );
-  }, [mainColor, props?.targetTime, props?.nextDate]);
+  }, [mainColor, props?.targetTime, props?.nextDate, props?.jackpot]);
 
   const renderRightView = useCallback(() => {
     return (

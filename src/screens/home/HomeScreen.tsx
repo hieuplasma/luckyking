@@ -6,7 +6,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { SimpleHeaderView, translate } from '@shared';
 import { Icon, Image, Images } from '@assets'
 import { Color, Style } from '@styles';
-import { dateConvert, NavigationUtils, ScreenUtils } from '@utils';
+import { dateConvert, NavigationUtils, printMoney, ScreenUtils } from '@utils';
 import React, { useCallback } from 'react';
 import { ScrollView, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -31,6 +31,8 @@ export const HomeScreen = React.memo((props?: HomeScreenProps) => {
   const max3dFirstDraw = useSelector((state: any) => state.drawReducer.max3dFirstDraw)
   const max3dProFirstDraw = useSelector((state: any) => state.drawReducer.max3dProFirstDraw)
   const kenoFirstDraw = useSelector((state: any) => state.drawReducer.kenoFirstDraw)
+
+  const jackpots = useSelector((state: any) => state.drawReducer.jackpots)
 
   useBackButtonWithNavigation(
     React.useCallback(() => {
@@ -106,6 +108,7 @@ export const HomeScreen = React.memo((props?: HomeScreenProps) => {
         type={LotteryType.Keno}
         targetTime={kenoFirstDraw ? new Date(kenoFirstDraw.drawTime) : undefined}
         action={() => NavigationUtils.navigate(navigation, ScreenName.HomeChild.KenoScreen)}
+        jackpot='Lên đến 10 tỷ '
       />
     );
   }, [kenoFirstDraw]);
@@ -119,6 +122,7 @@ export const HomeScreen = React.memo((props?: HomeScreenProps) => {
         action={() => NavigationUtils.navigate(navigation, ScreenName.HomeChild.MegaScreen)}
         nextDate={megaFirstDraw ? dateConvert(new Date(megaFirstDraw.drawTime)) : ""}
         QSMT={'T4, T6, CN'}
+        jackpot={`${printMoney(jackpots.JackPotMega)}`}
       />
     );
   }, [megaFirstDraw]);
@@ -132,6 +136,7 @@ export const HomeScreen = React.memo((props?: HomeScreenProps) => {
         action={() => NavigationUtils.navigate(navigation, ScreenName.HomeChild.Max3dScreen)}
         nextDate={max3dFirstDraw ? dateConvert(new Date(max3dFirstDraw.drawTime)) : ""}
         QSMT={'T2, T4, T6'}
+        jackpot='x100.000 lần'
       />
     );
   }, [max3dFirstDraw]);
@@ -145,6 +150,7 @@ export const HomeScreen = React.memo((props?: HomeScreenProps) => {
         action={() => NavigationUtils.navigate(navigation, ScreenName.HomeChild.PowerScreen)}
         nextDate={powerFirstDraw ? dateConvert(new Date(powerFirstDraw.drawTime)) : ""}
         QSMT={'T3, T5, T7'}
+        jackpot={`${printMoney(jackpots.JackPot1Power)}đ`}
       />
     );
   }, [powerFirstDraw]);
@@ -158,6 +164,7 @@ export const HomeScreen = React.memo((props?: HomeScreenProps) => {
         action={() => NavigationUtils.navigate(navigation, ScreenName.HomeChild.Max3dProScreen)}
         nextDate={max3dProFirstDraw ? dateConvert(new Date(max3dProFirstDraw.drawTime)) : ""}
         QSMT={'T3, T5, T7'}
+        jackpot='x200.000 lần'
       />
     );
   }, [max3dProFirstDraw]);

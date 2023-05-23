@@ -41,7 +41,7 @@ export const ViewFooter1 = React.memo(({ fastPick, selfPick, pickingType }: View
             <TouchableOpacity
                 style={[styles.buttonFooterUp, { backgroundColor: pickingType == 'selfpick' ? "#FFC42C" : Color.white }]}
                 activeOpacity={0.6}
-                onPress={selfPick}
+                onPress={doingSelfPick}
             >
                 <View style={{ width: 21, height: 21, borderRadius: 99, backgroundColor: Color.luckyKing, justifyContent: 'center', alignItems: 'center' }}>
                     <IText style={{ fontSize: 14, color: Color.white, fontWeight: 'bold' }}>TC</IText>

@@ -43,6 +43,11 @@ class LotteryApi {
         return await window.connection.GET(fullUrl, params)
     }
 
+    getResultByDrawCode = async (params: any) => {
+        let fullUrl = API_URI.GET_RESULT_BY_DRAWCODE;
+        return await window.connection.GET(fullUrl, params)
+    }
+
     // Order Lottery
     bookLotteryMax3d = async (body: any) => {
         let fullUrl = API_URI.BOOK_LOTTERY_MAX3D;
@@ -74,6 +79,16 @@ class LotteryApi {
     addMax3dToCart = async (body: any) => {
         let fullUrl = API_URI.ADD_MAX3D_CART;
         return await window.connection.POST(fullUrl, body)
+    }
+
+    getOrderByDraw = async (param: any) => {
+        let fullUrl = API_URI.GET_ORDER_DRAW;
+        return await window.connection.GET(fullUrl, param)
+    }
+
+    getOrderById = async (param: any) => {
+        let fullUrl = API_URI.GET_ORDER_BY_ID + '/' + param.orderId;
+        return await window.connection.GET(fullUrl)
     }
     // ---- End -----
 
@@ -110,6 +125,12 @@ class LotteryApi {
     getAllOrder = async (params: { ticketType?: TicketType, status?: OrderStatus }) => {
         let fullUrl = API_URI.GET_ALL_ORDER;
         return await window.connection.GET(fullUrl, params)
+    }
+
+    //View JackPot
+    getJackpot = async () => {
+        let fullUrl = API_URI.VIEW_JACKPOT;
+        return await window.connection.GET(fullUrl)
     }
 }
 
