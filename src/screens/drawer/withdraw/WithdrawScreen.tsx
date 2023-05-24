@@ -85,7 +85,7 @@ export const WithdrawScreen = () => {
                     <Image source={Images.right_arrow} style={styles.rightArrow} tintColor={Color.black} />
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.borderItem}>
+                <TouchableOpacity style={styles.borderItem} onPress={() => navigate(ScreenName.Drawer.BankWithdrawScreen)}>
                     <Image source={Images.bank_center} style={{ width: 28, height: 28 }} />
                     <IText style={{ marginLeft: 16 }}>{"Đổi thưởng về TK Ngân hàng"}</IText>
                     <View style={{ flex: 1 }} />

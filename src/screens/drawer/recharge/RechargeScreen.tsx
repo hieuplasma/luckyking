@@ -75,14 +75,14 @@ export const RechargeScreen = () => {
                 <IText style={{ marginTop: 16, marginLeft: 8 }}>{"Các hình thức nạp tiền:"}</IText>
                 <View style={{ height: 8 }} />
 
-                <TouchableOpacity style={styles.borderItem} onPress={()=> NavigationUtils.navigate(navigation, ScreenName.Drawer.BankRechargeScreen)}>
+                <TouchableOpacity style={styles.borderItem} onPress={() => NavigationUtils.navigate(navigation, ScreenName.Drawer.BankRechargeScreen)}>
                     <Image source={Images.bank_center} style={{ width: 28, height: 28 }} />
                     <IText style={{ marginLeft: 16 }}>{"Chuyển khoản ngân hàng"}</IText>
                     <View style={{ flex: 1 }} />
                     <Image source={Images.right_arrow} style={styles.rightArrow} tintColor={Color.black} />
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.borderItem}>
+                {/* <TouchableOpacity style={styles.borderItem}>
                     <Image source={Images.momo} style={{ width: 28, height: 28 }} />
                     <IText style={{ marginLeft: 16 }}>{"Nạp tiền bằng ví Momo"}</IText>
                     <View style={{ flex: 1 }} />
@@ -97,10 +97,10 @@ export const RechargeScreen = () => {
                     </View>
                     <View style={{ flex: 1 }} />
                     <Image source={Images.right_arrow} style={styles.rightArrow} tintColor={Color.black} />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
 
                 <IText style={{ marginTop: 20, marginLeft: 8 }}>
-                    {"Lịch sử Tài khoản đổi thưởng:"}
+                    {"Lịch sử  Ví LuckyKing:"}
                 </IText>
 
                 <FlatList
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
         backgroundColor: Color.buyLotteryBackGround
     },
     body: {
-
+        flex: 1
     },
     line: {
         height: 1, backgroundColor: '#A0A0A0', opacity: 0.2,

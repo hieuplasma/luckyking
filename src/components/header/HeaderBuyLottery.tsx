@@ -3,7 +3,7 @@ import { LotteryType } from "@common";
 import { Color, Style } from "@styles";
 import { ScreenUtils } from "@utils";
 import React, { useCallback, useEffect, useState } from "react";
-import { StatusBar, StyleSheet, View } from "react-native";
+import { StatusBar, StyleSheet, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { CartIcon } from "../icon-specials";
 
@@ -53,7 +53,7 @@ export const HeaderBuyLottery = React.memo(({ navigation, lotteryType }: HeaderB
             <StatusBar translucent={true} barStyle={'dark-content'} backgroundColor={"transparent"} />
             {/* //Header */}
             <View style={[styles.headerContainer, { marginTop: 0 }]}>
-                <View style={{ flex: 1 }}>
+                <TouchableOpacity style={{ flex: 1 }} onPress={onGoBack}>
                     <Icon.Button
                         size={'small'}
                         color={Color.gray}
@@ -61,7 +61,7 @@ export const HeaderBuyLottery = React.memo(({ navigation, lotteryType }: HeaderB
                         style={[Style.Space.Padding.Zero]}
                         onPressed={onGoBack}
                     />
-                </View>
+                </TouchableOpacity>
                 <Image source={logo.source} style={logo.style} />
                 <View style={{ flex: 1, alignItems: 'flex-end' }}>
                     <CartIcon navigation={navigation} />

@@ -122,6 +122,11 @@ class LotteryApi {
         return await window.connection.POST(fullUrl, body)
     }
 
+    withdrawBankAccount = async (body: any) => {
+        let fullUrl = API_URI.WITHDRAW_TO_BANK;
+        return await window.connection.POST(fullUrl, body)
+    }
+
     getAllOrder = async (params: { ticketType?: TicketType, status?: OrderStatus }) => {
         let fullUrl = API_URI.GET_ALL_ORDER;
         return await window.connection.GET(fullUrl, params)

@@ -11,7 +11,8 @@ const initialState = {
     avatar: "",
     personNumber: "",
     luckykingBalance: 0,
-    rewardWalletBalance: 0
+    rewardWalletBalance: 0,
+    bankAccount: []
 }
 
 // Create Redux state slice
@@ -20,7 +21,7 @@ const userSlice = createSlice({
     initialState,
     reducers: {
         updateUser: (state, action) => {
-            // console.log(action)
+            console.log(action)
             let newState = { ...state }
             state.id = action.payload.id || newState.id
             state.phoneNumber = action.payload.phoneNumber || newState.phoneNumber
@@ -35,6 +36,7 @@ const userSlice = createSlice({
                 (action.payload.luckykingBalance || newState.luckykingBalance) : 0
             state.rewardWalletBalance = action.payload.rewardWalletBalance !== 0 ?
                 (action.payload.rewardWalletBalance || newState.rewardWalletBalance) : 0
+            state.bankAccount = action.payload.BankAccount || newState.bankAccount
         },
         removeUser: (state) => {
             state = initialState

@@ -95,7 +95,7 @@ export const OrderBasicScreen = React.memo(({ }: any) => {
             tmp = tmp.filter((param: any) => { return param.type == value })
         if (valueStatus != 'all')
             tmp = tmp.filter((param: any) => { return param.status == valueStatus })
-        setSectionData(tmp)
+        setSectionData(tmp.sort((a: any,b: any)=> b.displayId - a.displayId))
     }, [value, valueStatus, thisOrder])
 
     return (

@@ -130,7 +130,7 @@ export const CartScreen = React.memo(() => {
         <View style={styles.container}>
             <StatusBar translucent={true} barStyle={'light-content'} backgroundColor={"transparent"} />
             <Image source={Images.bg_header} style={[styles.headerContainer, { paddingTop: safeAreaInsets.top }]}>
-                <View style={{ flex: 1 }}>
+                <TouchableOpacity style={{ flex: 1 }} onPress={onGoBack}>
                     <Icon.Button
                         size={'small'}
                         color={Color.white}
@@ -138,10 +138,10 @@ export const CartScreen = React.memo(() => {
                         style={{ paddingHorizontal: 0 }}
                         onPressed={onGoBack}
                     />
-                </View>
+                </TouchableOpacity>
                 <IText style={styles.textTitle}>{"GIỎ HÀNG"}</IText>
                 <TouchableOpacity style={{ flex: 1, alignItems: 'flex-end' }} onPress={openModalEmptyCart} >
-                    <Image source={Images.trash} style={{ width: 26, height: 26 }}></Image>
+                    <Image source={Images.empty_trash} style={{ width: 26, height: 26 }} tintColor={Color.white}></Image>
                 </TouchableOpacity>
             </Image>
 

@@ -8,9 +8,29 @@ import { SafeAreaView, StyleSheet, View, Dimensions, TouchableOpacity, Alert } f
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
 import Clipboard from '@react-native-clipboard/clipboard';
+import { useCallback } from 'react';
 
 type NavigationProp = StackNavigationProp<RechargeStackParamList, 'BankRechargeScreen'>;
 type NavigationRoute = RouteProp<RechargeStackParamList, 'BankRechargeScreen'>;
+
+const listBank = [
+    {
+        "id": 21,
+        "name": "Ngân hàng TMCP Quân đội",
+        "code": "MB",
+        "bin": "970422",
+        "shortName": "MBBank",
+        "logo": "https://api.vietqr.io/img/MB.png",
+        "transferSupported": 1,
+        "lookupSupported": 1,
+        "short_name": "MBBank",
+        "support": 3,
+        "isTransfer": 1,
+        "swift_code": "MSCBVNVX",
+        "STK": "586888879"
+    },
+
+]
 
 export interface BankRechargeScreenParamsList { }
 
@@ -21,10 +41,18 @@ export const BankRechargeScreen = () => {
 
     const user = useSelector((state: any) => state.userReducer)
 
-    const copyToClipboard = (text: string) => {
+    const copyToClipboard = (text: string, extra: string = '') => {
         Clipboard.setString(text);
-        Alert.alert("Thông báo", "Đã sao chép!")
+        Alert.alert("Thông báo", `Đã sao chép ${extra}!`)
     };
+
+    const copyContent = useCallback(() => {
+        copyToClipboard(`NAP${user.phoneNumber}`, 'nội dung chuyển khoản')
+    }, [user])
+
+    const copySTK = useCallback((STK: string) => {
+        copyToClipboard(`${STK}`, 'số tài khoản')
+    }, [])
 
     return (
         <View style={{ flex: 1 }}>
@@ -45,7 +73,7 @@ export const BankRechargeScreen = () => {
                     <View style={styles.boxInside}>
                         <IText uppercase style={styles.textInside}>{`NAP${user.phoneNumber}`}</IText>
                     </View>
-                    <TouchableOpacity style={[styles.boxInside, { paddingHorizontal: 4 }]} onPress={() => copyToClipboard(`NAP${user.phoneNumber}`)}>
+                    <TouchableOpacity style={[styles.boxInside, { paddingHorizontal: 4 }]} onPress={copyContent}>
                         <IText style={styles.textInside}>{"Sao chép"}</IText>
                     </TouchableOpacity>
                 </View>
@@ -79,7 +107,7 @@ export const BankRechargeScreen = () => {
                 <IText style={{ fontStyle: 'italic', marginTop: 8 }}>
                     {"Số tài khoản - Chuyển khoản tới 1 trong số các TK sau:"}
                 </IText>
-                <View style={styles.boxBankAccount}>
+                {/* <View style={styles.boxBankAccount}>
                     <Image source={Images.vietcom_bank} style={{ width: 45, height: 45 }} />
                     <View style={{ marginLeft: 4, justifyContent: 'center', flex: 1 }}>
                         <IText style={{ fontWeight: 'bold' }}>{"0011001234567"}</IText>
@@ -88,17 +116,33 @@ export const BankRechargeScreen = () => {
                     <TouchableOpacity style={styles.boxCopy} onPress={() => copyToClipboard(`0011001234567`)}>
                         <IText style={{ fontWeight: 'bold', fontSize: 16, color: Color.blue }}>{"Sao chép"}</IText>
                     </TouchableOpacity>
-                </View>
-                <View style={styles.boxBankAccount}>
+                </View> */}
+                {/* <View style={styles.boxBankAccount}>
                     <Image source={Images.mb_bank} style={{ width: 45, height: 45 }} />
                     <View style={{ marginLeft: 4, justifyContent: 'center', flex: 1 }}>
-                        <IText style={{ fontWeight: 'bold' }}>{"0011001234567"}</IText>
-                        <IText>{"MBBank - CN: PGD Nguyễn Chí Thanh"}</IText>
+                        <IText style={{ fontWeight: 'bold' }}>{"586888879"}</IText>
+                        <IText>{"MBBank - CN: Hà Nội"}</IText>
                     </View>
                     <TouchableOpacity style={styles.boxCopy} onPress={() => copyToClipboard(`0011001234567`)}>
                         <IText style={{ fontWeight: 'bold', fontSize: 16, color: Color.blue }}>{"Sao chép"}</IText>
                     </TouchableOpacity>
-                </View>
+                </View> */}
+                {
+                    listBank.map(item => {
+                        return (
+                            <View style={styles.boxBankAccount}>
+                                <Image source={{ uri: item.logo }} style={{ width: 45, height: 45 }} resizeMode='contain' />
+                                <View style={{ marginLeft: 4, justifyContent: 'center', flex: 1 }}>
+                                    <IText style={{ fontWeight: 'bold' }}>{item.STK}</IText>
+                                    <IText>{item.name}</IText>
+                                </View>
+                                <TouchableOpacity style={styles.boxCopy} onPress={() => copySTK(item.STK)}>
+                                    <IText style={{ fontWeight: 'bold', fontSize: 16, color: Color.blue }}>{"Sao chép"}</IText>
+                                </TouchableOpacity>
+                            </View>
+                        )
+                    })
+                }
 
                 <IText style={{ fontStyle: 'italic', marginTop: 8, color: Color.luckyKing }}>
                     {"(*) Lưu ý: Nếu sau 4h tài khoản vẫn chưa được nạp vui lòng liên hệ với bộ phận CSKH của LuckyKing như trên."}

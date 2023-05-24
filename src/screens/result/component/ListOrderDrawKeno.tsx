@@ -164,10 +164,10 @@ export const ListOrderDrawKeno = React.memo(({ listOrder, navigation, lotteryTyp
                 screenName = ScreenName.Drawer.OrderBasicScreen
                 const status: Status = PendingList.includes(res.data.status) ? 'pending'
                     : ErrorList.includes(res.data.status) ? 'returned' : 'complete'
-                NavigationUtils.navigate(navigation, screenName, { order: res.data, status: status })
+                NavigationUtils.push(navigation, screenName, { order: res.data, status: status })
             }
             else {
-                NavigationUtils.navigate(navigation, screenName, { order: res.data })
+                NavigationUtils.push(navigation, screenName, { order: res.data })
             }
         }
     }, [navigation, lotteryType])

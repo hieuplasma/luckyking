@@ -70,4 +70,5 @@ export const Images = {
   mega_logo_stroke1: require('./mega_logo_stroke1.png'),
   power_logo_stroke1: require('./power_logo_stroke1.png'),
   max3d_logo_stroke1: require('./max3d_logo_stroke1.png'),
+  empty_trash: require('./empty_trash.png'),
 };

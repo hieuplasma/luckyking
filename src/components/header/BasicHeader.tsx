@@ -2,7 +2,7 @@ import { Icon, Image, Images } from "@assets"
 import { Color, Style } from "@styles"
 import { ScreenUtils } from "@utils"
 import React, { useCallback } from "react"
-import { StyleSheet } from "react-native"
+import { StyleSheet, TouchableOpacity } from "react-native"
 import { StatusBar, View } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { IText } from "../texts"
@@ -25,7 +25,7 @@ export const BasicHeader = React.memo(({ navigation, title, rightAction }: Image
         <>
             <StatusBar translucent={true} barStyle={'dark-content'} backgroundColor={"transparent"} />
             <View style={[styles.headerContainer, { paddingTop: safeAreaInsets.top }]}>
-                <View style={{ flex: 1 }}>
+                <TouchableOpacity style={{ flex: 1 }} onPress={onGoBack}>
                     <Icon.Button
                         size={'small'}
                         color={Color.black}
@@ -33,7 +33,7 @@ export const BasicHeader = React.memo(({ navigation, title, rightAction }: Image
                         style={[Style.Space.Padding.Zero]}
                         onPressed={onGoBack}
                     />
-                </View>
+                </TouchableOpacity>
                 <IText style={styles.textTitle}>{title}</IText>
                 <View style={{ flex: 1 }}>
                     {rightAction ? rightAction : <></>}
