@@ -6,6 +6,7 @@ import { Connection } from '@api';
 import { Color } from '@styles';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
+import { IText } from '@components';
 // import { PermissionsAndroid } from 'react-native';
 
 class App extends React.PureComponent {
@@ -47,13 +48,15 @@ class App extends React.PureComponent {
             style={{
               alignItems: 'center',
               justifyContent: 'center',
-              flexDirection: 'row',
+              // flexDirection: 'row',
               backgroundColor: 'white',
               minHeight: 100,
               minWidth: 100,
               borderRadius: 8,
+              padding: 16
             }}>
             <ActivityIndicator size="large" color={Color.luckyKing} />
+            <IText style={{ fontWeight: 'bold', color: Color.luckyKing, marginTop: 12 }}>{"Đang đồng bộ dữ liệu"}</IText>
           </View>
         </View>
       );

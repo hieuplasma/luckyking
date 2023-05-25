@@ -6,7 +6,8 @@
 import { API_HOST } from '@api';
 import { Image, Images } from '@assets';
 import React, { PureComponent } from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { Dimensions, TouchableOpacity, View } from 'react-native';
+import { ReactNativeZoomableView } from '@openspacelabs/react-native-zoomable-view';
 
 export class ImageFullScreen extends PureComponent {
     state = {
@@ -59,10 +60,10 @@ export class ImageFullScreen extends PureComponent {
                             left: 0,
                             right: 0,
                             bottom: 0,
-                            position:'absolute'
+                            position: 'absolute'
                         }} onPress={this._hide}>
                         </TouchableOpacity>
-                        <Image source={uri ? { uri: API_HOST + uri } : Images.no_picture} style={{
+                        <View style={{
                             position: 'absolute',
                             top: 150,
                             left: 15,
@@ -70,11 +71,26 @@ export class ImageFullScreen extends PureComponent {
                             bottom: 150,
                             backgroundColor: 'orange',
                             borderRadius: 20
-                        }} resizeMode='contain' />
-
+                        }}>
+                            <ReactNativeZoomableView
+                                maxZoom={10}
+                                minZoom={0.5}
+                                zoomStep={0.5}
+                                initialZoom={1}
+                                style={{ borderRadius: 20, }}
+                            >
+                                <Image source={uri ? { uri: API_HOST + uri } : Images.no_picture} style={{
+                                    width: windowWidth - 30,
+                                    height: windowHeight - 300
+                                }} resizeMode='contain' />
+                            </ReactNativeZoomableView>
+                        </View>
                     </View>
                 )}
             </>
         );
     }
 }
+
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('screen').height;

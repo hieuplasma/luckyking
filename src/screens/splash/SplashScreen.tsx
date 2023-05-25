@@ -1,5 +1,6 @@
 import { lotteryApi, userApi } from '@api';
 import { LotteryType } from '@common';
+import { IText } from '@components';
 import { RootStackParamsList, ScreenName } from '@navigation';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -101,13 +102,15 @@ export const SplashScreen = React.memo(() => {
       style={{
         alignItems: 'center',
         justifyContent: 'center',
-        flexDirection: 'row',
+        // flexDirection: 'row',
         backgroundColor: 'white',
         minHeight: 100,
         minWidth: 100,
         borderRadius: 8,
+        padding: 16
       }}>
       <ActivityIndicator size="large" color={Color.luckyKing} />
+      <IText style={{ fontWeight: 'bold', color: Color.luckyKing, marginTop: 12 }}>{"Đang đồng bộ dữ liệu"}</IText>
     </View>
   </View>
 });

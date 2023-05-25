@@ -149,6 +149,8 @@ const hideTabBar = [
   ScreenName.HomeChild.OrderScreen,
 
   ScreenName.Drawer.RechargeStack,
+  ScreenName.Drawer.OrderBasicScreen,
+  ScreenName.Drawer.OrderKenoScreen,
 
   ScreenName.ResultChild.DetailKeno,
   ScreenName.ResultChild.DetailMega,

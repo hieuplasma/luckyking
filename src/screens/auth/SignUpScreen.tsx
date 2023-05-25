@@ -61,7 +61,7 @@ export const SignUpScreen = React.memo((props?: SignUpScreenProps) => {
     if (password != repeatPassword)
       return (Alert.alert("Lỗi", "Mật khẩu và mật khẩu xác nhận phải giống nhau"))
     NavigationUtils.navigate(navigation, ScreenName.Authentications.VerifyOTP, {
-      phoneNumber: phoneNumber, password: password
+      phoneNumber: phoneNumber, password: password, type: 'signUp'
     });
   }
 

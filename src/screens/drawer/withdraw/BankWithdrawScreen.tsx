@@ -161,6 +161,7 @@ export const BankWithdrawScreen = () => {
                         <TextInput
                             style={styles.txtInput}
                             placeholder={"Nhập số tiền thưởng"}
+                            placeholderTextColor={'rgba(0, 0, 0, 0.3)'}
                             value={amount}
                             onChangeText={onChangeAmount}
                             keyboardType="decimal-pad"
@@ -186,6 +187,7 @@ export const BankWithdrawScreen = () => {
                         <TextInput
                             style={styles.txtInput}
                             placeholder={"Chủ tài khoản"}
+                            placeholderTextColor={'rgba(0, 0, 0, 0.3)'}
                             value={userName}
                             onChangeText={onChangeUserName}
                         />
@@ -195,6 +197,7 @@ export const BankWithdrawScreen = () => {
                         <TextInput
                             style={styles.txtInput}
                             placeholder={"Số tài khoản"}
+                            placeholderTextColor={'rgba(0, 0, 0, 0.3)'}
                             value={accountNumber}
                             onChangeText={onChangeAccountNumber}
                             keyboardType="decimal-pad"

@@ -54,6 +54,7 @@ export const useVerifyOtp = () => {
     countingTime,
     getTimeToString,
     timeResend,
-    setLoading
+    setLoading,
+    setTimeResend
   };
 };

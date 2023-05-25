@@ -22,7 +22,8 @@ const KENO_DRAWN2 = 'AgIIyB+WkTDAAYsuRRapHQQA8v8BAIsuAQpkDQAAAAAZWgCAABIAAAEK'
 const MEGA_DRAWN = 'AgqETWoiweYCASohMxUIEggAGAAAACshAQZkCICAFAQABBAAAA=='
 const MAX3D_PRO = 'AgZKs5VDEFAyAZgu5BSpHQAI+wAAAJkuAANkBwECAA8CwQMB'
 const MAX3D_DRAWN = 'AgiIUtJAiiAoAZQmuBPbFAACAQAAAJYmAANkB4EBAF4DAAAB'
-const TEST = POWER_DRAWN
+const KENO_NOT_EXITS = 'AgZK7JdGolAUAZsuVBapHQQA5QsCAJsuAQpkDQACCEAAAhCAAAQAAAEH'
+const TEST = KENO_NOT_EXITS
 
 export interface ScanScreenParamsList { }
 
@@ -101,7 +102,7 @@ export const ScanScreen = React.memo(() => {
 })
 
 const styles = StyleSheet.create({
-    container: { flex: 1},
+    container: { flex: 1, zIndex: -1 },
     barcodeTextURL: {
         fontSize: 20,
         color: 'white',

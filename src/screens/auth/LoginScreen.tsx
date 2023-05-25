@@ -133,8 +133,8 @@ export const LoginWidget = React.memo((props: any) => {
     return (
       <Label.Widget
         style={[Style.Label.Regular.PrimaryContentL_14]}
-        // onPress={onViewForgetPassword}
-        onPress={() => { }}
+        onPress={onViewForgetPassword}
+        // onPress={() => { }}
       >
         {translate('button.forgetPassword')}
       </Label.Widget>

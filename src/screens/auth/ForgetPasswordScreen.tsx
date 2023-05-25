@@ -11,8 +11,8 @@ import {
 import { NavigationUtils } from '@utils';
 import { Color, Style } from '@styles';
 import { Button } from '@widgets';
-import React, { useCallback } from 'react';
-import { View } from 'react-native';
+import React, { useCallback, useState } from 'react';
+import { Alert, View } from 'react-native';
 import { Icon } from '@assets';
 
 type NavigationProp = StackNavigationProp<
@@ -33,11 +33,38 @@ export const ForgetPassword = React.memo(() => {
     navigation.goBack();
   }, []);
 
+  const [phoneNumber, setPhoneNumber] = useState<string | undefined>(undefined);
+  const [password, setPassword] = useState<string | undefined>(undefined);
+  const [repeatPassword, setRepeatPassword] = useState<string | undefined>(
+    undefined,
+  );
+
+  const [errorMessage, setErrorMessage] = useState<| { phonenumber?: string; password?: string; } | undefined>(undefined);
+
+
   const onSubmit = useCallback(() => {
+    if (phoneNumber == "" || phoneNumber == undefined)
+      return (Alert.alert("Lỗi", "Bạn chưa nhập số điện thoại"))
+    if (password == "")
+      return (Alert.alert("Lỗi", "Bạn chưa nhập mật khẩu"))
+    if (password != repeatPassword)
+      return (Alert.alert("Lỗi", "Mật khẩu và mật khẩu xác nhận phải giống nhau"))
     NavigationUtils.navigate(navigation, ScreenName.Authentications.VerifyOTP, {
       type: 'forgetPassword',
+      phoneNumber: phoneNumber,
+      password: password
     });
-  }, [navigation]);
+  }, [navigation, phoneNumber, password, repeatPassword]);
+
+  const onChangePhoneNumber = useCallback((phoneNumber?: string) => {
+    setPhoneNumber(phoneNumber);
+  }, []);
+  const onChangePassword = useCallback((password?: string) => {
+    setPassword(password);
+  }, []);
+  const onChangeRepeatPassword = useCallback((password?: string) => {
+    setRepeatPassword(password);
+  }, []);
 
   const renderPhoneNumberInput = useCallback(() => {
     return (
@@ -47,16 +74,49 @@ export const ForgetPassword = React.memo(() => {
         value={forgetPasswordHooks.phoneNumber}
         placeholder={translate('input.phoneNumber')}
         label={translate('input.phoneNumber')}
-        onChangeText={forgetPasswordHooks.onChangePhoneNumber}
+        onChangeText={onChangePhoneNumber}
         containerStyle={[Style.Space.MarginTop.xLarge_24]}
         errorMessage={forgetPasswordHooks.errorMessage?.phonenumber}
-        secureTextEntry={true}
       />
     );
   }, [
     forgetPasswordHooks.phoneNumber,
     forgetPasswordHooks.errorMessage?.phonenumber,
   ]);
+
+  const renderPasswordInput = useCallback(() => {
+    return (
+      <InputComponent
+        editable={true}
+        keyboardType="default"
+        value={password}
+        placeholder={translate('input.password')}
+        label={translate('input.password')}
+        onChangeText={onChangePassword}
+        containerStyle={[Style.Space.MarginTop.xLarge_24]}
+        errorMessage={errorMessage?.password}
+        secureTextEntry={true}
+        textContentType="oneTimeCode"
+      />
+    );
+  }, [password, errorMessage?.password]);
+
+  const renderRepeatPasswordInput = useCallback(() => {
+    return (
+      <InputComponent
+        editable={true}
+        keyboardType="default"
+        value={repeatPassword}
+        placeholder={translate('input.repeatPassword')}
+        label={translate('input.repeatPassword')}
+        onChangeText={onChangeRepeatPassword}
+        containerStyle={[Style.Space.MarginTop.xLarge_24]}
+        errorMessage={errorMessage?.password}
+        secureTextEntry={true}
+        textContentType="oneTimeCode"
+      />
+    );
+  }, [repeatPassword, errorMessage?.password]);
 
   const renderSubmitButton = useCallback(() => {
     return (
@@ -104,6 +164,8 @@ export const ForgetPassword = React.memo(() => {
           </Label.Widget>
         </View>
         {renderPhoneNumberInput()}
+        {renderPasswordInput()}
+        {renderRepeatPasswordInput()}
         {renderSubmitButton()}
       </ShadowView>
     </View>

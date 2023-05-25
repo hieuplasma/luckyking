@@ -12,8 +12,13 @@ export const TIMEOUT_MESSAGE = "request timeout"
 // };
 
 /** config for VPS */
+// const config = {
+//   host: 'http://103.162.31.84:3003',
+// };
+
+/** config for Production */
 const config = {
-  host: 'http://103.162.31.84:3003',
+  host: 'http://42.96.40.239',
 };
 
 export const API_HOST = config.host;
@@ -22,6 +27,7 @@ export const API_URI = {
   CHEATE_REGISTER: "/auth/register",
   REGISTER: "/auth/sercure/register",
   LOGIN: "/auth/login",
+  FORGET_PASSWORD: "/auth/forgot-password",
 
   GET_USER_INFO: "/users/get-info",
   UPDATE_USER_INFO: "/users/update-info",

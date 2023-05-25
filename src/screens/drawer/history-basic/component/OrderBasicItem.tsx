@@ -113,8 +113,8 @@ export const OrderBasicItem = React.memo(({ order, onPress }: OrderItemProps) =>
             {
                 (order.status == OrderStatus.NO_PRIZE)
                 && <View style={styles.lineItem}>
-                    <Image source={Images.trophy} style={styles.iconStatus} />
-                    <IText style={{ marginLeft: 12, color: Color.luckyKing }}>{"Không trúng thưởng :("}</IText>
+                    {/* <Image source={Images.trophy} style={styles.iconStatus} /> */}
+                    <IText style={{ color: Color.luckyKing }}>{"Không trúng thưởng :("}</IText>
                     <View style={{ flex: 1 }} />
                     <IText style={{ fontWeight: 'bold', color: Color.luckyKing }}>{`${printMoney(benefit)}đ`}</IText>
                 </View>

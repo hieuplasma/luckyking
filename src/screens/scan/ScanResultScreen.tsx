@@ -144,7 +144,7 @@ export const ScanResultScreen = React.memo(() => {
     }, [drawResult, benefits])
 
     return (
-        <View style={[styles.container]}>
+        <View style={[styles.container, {zIndex: 100}]}>
             <BasicHeader
                 navigation={navigation}
                 title={"Quét vé so kết quả"}

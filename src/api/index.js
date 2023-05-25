@@ -97,7 +97,7 @@ export class Connection {
 
         const source = axios.CancelToken.source();
 
-        // console.log("url:::::", `${API_HOST}${uri}`)
+        console.log("url:::::", `${API_HOST}${uri}`)
         console.log("body:::::", JSON.stringify(body))
 
         return (typeApi === TYPE_API.POST ? axios.post(`${API_HOST}${uri}`, isFormData && body ? body : body ? JSON.stringify(body) : null, {
@@ -115,6 +115,7 @@ export class Connection {
         }))
             .then((res) => {
                 console.log("RES IN API OF " + uri + " :::::::::::>", res)
+                if (!res.data) return undefined
                 if (res.data.errorCode) {
                     Alert.alert("Lỗi", res.data.errorMessage)
                     return 0
@@ -125,13 +126,16 @@ export class Connection {
                 };
             })
             .catch(async (error) => {
-                console.log("ERROR IN API OF " + uri + " :::::::::::>", error.response?.data?.statusCode)
+                console.log("ERROR IN API OF " + uri + " :::::::::::>", error)
                 if (error.response?.data?.statusCode == 401) {
                     this._dispatch(removeUser())
                     NavigationUtils.resetGlobalStackWithScreen(undefined, ScreenName.Authentication)
                     return undefined
                 }
-                // Alert.alert("Lỗi", JSON.stringify(error.response?.data).toString())
+                // if (error.response?.data?.statusCode == 403) {
+                //     Alert.alert("Lỗi", "User này đã được đăng ký")
+                // }
+                Alert.alert("Lỗi", JSON.stringify(error).toString())
                 return undefined
             })
     }
