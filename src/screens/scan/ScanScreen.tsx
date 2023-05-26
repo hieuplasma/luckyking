@@ -107,7 +107,6 @@ export const ScanScreen = React.memo(() => {
                             style={{
                                 flex: 1,
                                 zIndex: -10,
-                                // width: isFocused ? windowWidth : 0
                             }}
                             device={device}
                             isActive={isFocused}

@@ -2,7 +2,7 @@ import { lotteryApi } from '@api';
 import { OrderStatus } from '@common';
 import { ImageHeader, IText } from '@components';
 import { HistoryBasicStackParamList, ScreenName } from '@navigation';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { RouteProp, useIsFocused, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Color } from '@styles';
 import { NavigationUtils } from '@utils';
@@ -27,6 +27,8 @@ OrderStatus.WON, OrderStatus.PAID, OrderStatus.NO_PRIZE]
 const ErrorList = [OrderStatus.ERROR, OrderStatus.RETURNED]
 
 export const HistoryBasicScreen = React.memo(() => {
+
+    const isFocused = useIsFocused();
     const navigation = useNavigation<NavigationProp>();
 
     const [listOrder, setListOrder] = useState([])
@@ -43,7 +45,7 @@ export const HistoryBasicScreen = React.memo(() => {
         window.loadingIndicator.hide()
     }, [])
 
-    const [status, setStatus] = useState<Status>('complete')
+    const [status, setStatus] = useState<Status>('pending')
 
     const check = useCallback((param: any) => {
         if (status == 'complete') return CompleteList.includes(param.status)
@@ -62,8 +64,9 @@ export const HistoryBasicScreen = React.memo(() => {
     }
 
     useEffect(() => {
-        onRefresh()
-    }, [navigation])
+        if (isFocused)
+            onRefresh()
+    }, [isFocused])
 
     return (
         <View style={styles.container}>

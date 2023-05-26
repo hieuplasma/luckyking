@@ -2,7 +2,7 @@ import { lotteryApi } from '@api';
 import { OrderStatus } from '@common';
 import { ImageHeader, IText } from '@components';
 import { HistoryKenoStackParamList, ScreenName } from '@navigation';
-import { RouteProp, useNavigation } from '@react-navigation/native';
+import { RouteProp, useIsFocused, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Color } from '@styles';
 import { NavigationUtils } from '@utils';
@@ -23,7 +23,9 @@ OrderStatus.WON, OrderStatus.PAID, OrderStatus.NO_PRIZE]
 const ErrorList = [OrderStatus.ERROR, OrderStatus.RETURNED]
 
 export const HistoryKenoScreen = React.memo(() => {
+
     const navigation = useNavigation<NavigationProp>();
+    const isFocused = useIsFocused();
 
     const [listOrderKeno, setListOrderKeno] = useState([])
     const [isLoading, setLoading] = useState(false)
@@ -57,8 +59,9 @@ export const HistoryKenoScreen = React.memo(() => {
     }
 
     useEffect(() => {
-        onRefresh()
-    }, [navigation])
+        if (isFocused)
+            onRefresh()
+    }, [isFocused])
 
     return (
         <View style={styles.container}>

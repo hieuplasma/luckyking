@@ -11,6 +11,8 @@ import {
 } from '@screen';
 import React from 'react';
 import { RechargeNavigation, RechargeStackParamList } from '../drawer/RechargeNavigation';
+import { HistoryBasicNavigation, HistoryBasicStackParamList } from '../drawer/HistoryBasicNavigation';
+import { HistoryKenoNavigation, HistoryKenoStackParamList } from '../drawer/HistoryKenoNavigation';
 
 export type HomeStackParamList = {
   HomeScreen: HomeScreenParamsList;
@@ -22,7 +24,9 @@ export type HomeStackParamList = {
   CartScreen: CartScreenParamsList,
   OrderScreen: OrderScreenParamsList;
 
-  RechargeStack: RechargeStackParamList
+  RechargeStack: RechargeStackParamList,
+  HistoryBasicStack: HistoryBasicStackParamList,
+  HistoryKenoStack: HistoryKenoStackParamList
 };
 
 const HomeStack = createStackNavigator<HomeStackParamList>();
@@ -73,6 +77,16 @@ export function HomeNavigation() {
       <HomeStack.Screen
         name={'RechargeStack'}
         component={RechargeNavigation}
+        options={{ headerShown: false, title: undefined }}
+      />
+      <HomeStack.Screen
+        name={'HistoryBasicStack'}
+        component={HistoryBasicNavigation}
+        options={{ headerShown: false, title: undefined }}
+      />
+      <HomeStack.Screen
+        name={'HistoryKenoStack'}
+        component={HistoryKenoNavigation}
         options={{ headerShown: false, title: undefined }}
       />
     </HomeStack.Navigator>

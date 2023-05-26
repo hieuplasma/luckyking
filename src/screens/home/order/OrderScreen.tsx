@@ -75,7 +75,12 @@ export const OrderScreen = React.memo(() => {
                 title: 'Đã thanh toán mua vé thành công!',
                 btnLabel: "OK",
                 alertType: 'success',
-                onPress: () => NavigationUtils.goBack(navigation)
+                onPress: () => {
+                    if (bodyPay.lotteryType == LotteryType.Keno)
+                        NavigationUtils.navigate(navigation, ScreenName.Drawer.HistoryKenoStack)
+                    else
+                        NavigationUtils.navigate(navigation, ScreenName.Drawer.HistoryBasicStack)
+                }
             })
         }
         window.loadingIndicator.hide()
