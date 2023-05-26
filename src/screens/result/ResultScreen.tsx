@@ -9,6 +9,7 @@ import Animated from 'react-native-reanimated';
 import React, { useCallback, useRef, useState } from 'react';
 import { LotteryType } from '@common';
 import { Color } from '@styles';
+import { useBackButtonWithNavigation } from '@hooks';
 
 type NavigationProp = StackNavigationProp<ResultStackParamList, 'Result'>;
 type NavigationRoute = RouteProp<ResultStackParamList, 'Result'>;
@@ -47,6 +48,13 @@ const ResultMax3dProTab = React.lazy(() => import('./result_tabs/ResultMax3dProT
 const AnimatedPager = Animated.createAnimatedComponent(PagerView);
 
 export const ResultScreen = () => {
+
+  useBackButtonWithNavigation(
+    React.useCallback(() => {
+      return true;
+    }, []),
+  );
+
   const navigation = useNavigation<NavigationProp>();
   const route = useRoute<NavigationRoute>();
   const safeAreaInsets = useSafeAreaInsets();

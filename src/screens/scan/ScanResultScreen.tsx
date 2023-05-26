@@ -12,7 +12,7 @@ import { FirstItemKeno } from "../result/component/ItemKeno";
 import { FirstItemMega } from "../result/component/ItemMega";
 import { FirstItemPower } from "../result/component/ItemPower";
 import { FirstItemMax3d } from "../result/component/ItemMax3d";
-import { caculateLotteryBenefits, getLotteryName, getSpecialValueKeno, kenoAnalysis, printMoney, printNumber } from "@utils";
+import { caculateLotteryBenefits, getLotteryName, getSpecialValueKeno, kenoAnalysis, printDraw, printDrawCode, printMoney, printNumber } from "@utils";
 
 type NavigationProp = StackNavigationProp<ScanStackParamList, 'ScanResult'>;
 type NavigationRoute = RouteProp<ScanStackParamList, 'ScanResult'>;
@@ -51,7 +51,8 @@ export const ScanResultScreen = React.memo(() => {
 
     const renderResultDraw = useCallback(() => {
         if (!drawResult) return (
-            <ActivityIndicator size="large" />
+            // <ActivityIndicator size="large" />
+            <></>
         )
         switch (route.params.data.LOAI_VE) {
             case LotteryType.Keno: return <FirstItemKeno data={drawResult} hideBtm={true} />
@@ -161,6 +162,9 @@ export const ScanResultScreen = React.memo(() => {
                     </IText>
                     <IText style={{ fontSize: 14, color: Color.blue }}>
                         {`Loại vé: ${getLotteryName(scan_result.LOAI_VE)}  -  Ngày mua:  ${scan_result.NGAY_MUA}`}
+                    </IText>
+                    <IText style={{ fontSize: 14, color: Color.blue }}>
+                        {`Kỳ quay: ${printDrawCode(scan_result.KY_QUAY)}`}
                     </IText>
                     {
                         scan_result.DAY_SO_MUA.map((it: any, id: number) => {

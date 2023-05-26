@@ -71,4 +71,5 @@ export const Images = {
   power_logo_stroke1: require('./power_logo_stroke1.png'),
   max3d_logo_stroke1: require('./max3d_logo_stroke1.png'),
   empty_trash: require('./empty_trash.png'),
+  scanner: require('./scanner.png'),
 };

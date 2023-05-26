@@ -1,6 +1,7 @@
 import { lotteryApi, userApi } from '@api';
 import { LotteryType } from '@common';
 import { IText } from '@components';
+import { useBackButtonWithNavigation } from '@hooks';
 import { RootStackParamsList, ScreenName } from '@navigation';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -16,6 +17,12 @@ type NavigationRoute = RouteProp<RootStackParamsList, 'SplashScreen'>;
 export interface SplashScreenRouteParams { }
 
 export const SplashScreen = React.memo(() => {
+
+  useBackButtonWithNavigation(
+    React.useCallback(() => {
+      return true;
+    }, []),
+  );
 
   const token = useSelector((state: any) => state.authReducer.accessToken);
   const navigation = useNavigation<NavigationProp>();
