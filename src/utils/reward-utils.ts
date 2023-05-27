@@ -42,7 +42,7 @@ function printDetailMega(level: number, duplicate: number) {
     switch (duplicate) {
         case 3: return 'Giải ba'
         case 4: return 'Giải nhì'
-        case 5: return 'Gỉai nhất'
+        case 5: return 'Giải nhất'
         case 6: return 'Giải đặc biệt'
         default: return `Bao ${level} - trùng ${duplicate} số`
     }
@@ -56,7 +56,7 @@ function printDetailPower(level: number, duplicate: number, bonus: boolean) {
     switch (duplicate) {
         case 3: return 'Giải ba'
         case 4: return 'Giải nhì'
-        case 5: return 'Gỉai nhất'
+        case 5: return 'Giải nhất'
         case 6: return 'Giải đặc biệt'
         default: return `Bao ${level} - trùng ${duplicate} số`
     }
@@ -164,12 +164,12 @@ function caculateKenoBenefits(lottery: any, drawResult: any) {
                 break;
             case 12:
                 // Nhỏ
-                if (analysis.small == 11 || analysis.big == 12) benefits = benefits + MUOI_NGHIN
+                if (analysis.small == 11 || analysis.small == 12) benefits = benefits + MUOI_NGHIN
                 if (analysis.small >= 13) benefits = benefits + 2.6 * MUOI_NGHIN
                 break;
             case 13:
                 // Chẵn 13+
-                if (analysis.even == 13 || analysis.big == 14) benefits = benefits + 4 * MUOI_NGHIN
+                if (analysis.even == 13 || analysis.even == 14) benefits = benefits + 4 * MUOI_NGHIN
                 if (analysis.even >= 15) benefits = benefits + 20 * MUOI_NGHIN
                 break;
             case 14:

@@ -150,7 +150,9 @@ const hideTabBar = [
 
   ScreenName.Drawer.RechargeStack,
   ScreenName.Drawer.HistoryKenoStack,
+  ScreenName.Drawer.HistoryBasicStack,
   ScreenName.Drawer.HistoryBasicScreen,
+  ScreenName.Drawer.HistoryKenoScreen,
   ScreenName.Drawer.OrderBasicScreen,
   ScreenName.Drawer.OrderKenoScreen,
 

@@ -116,7 +116,7 @@ export const ScanResultScreen = React.memo(() => {
         )
         if (benefits.totalBenefits == 0) return (
             <IText style={[styles.result_txt, { color: Color.blue }]} uppercase>
-                {"Không trúng thưởng :("}
+                {"Không trúng thưởng"}
             </IText>
         )
         return (
@@ -205,6 +205,8 @@ export const ScanResultScreen = React.memo(() => {
                 </IText>
 
                 {renderResult()}
+
+                <View style={{height: 100}}/>
             </ScrollView>
         </View>
     )

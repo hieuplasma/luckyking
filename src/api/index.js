@@ -128,6 +128,7 @@ export class Connection {
             .catch(async (error) => {
                 console.log("ERROR IN API OF " + uri + " :::::::::::>", error)
                 if (error.response?.data?.statusCode == 401) {
+                    Alert.alert("Lỗi", "Phiên đăng nhập hết hạn hoặc Mật khẩu đã bị đổi ở thiết bị khác!")
                     this._dispatch(removeUser())
                     NavigationUtils.resetGlobalStackWithScreen(undefined, ScreenName.Authentication)
                     return undefined
@@ -135,7 +136,13 @@ export class Connection {
                 // if (error.response?.data?.statusCode == 403) {
                 //     Alert.alert("Lỗi", "User này đã được đăng ký")
                 // }
-                Alert.alert("Lỗi", JSON.stringify(error).toString())
+                if (error.response?.data?.message) {
+                    Alert.alert("Lỗi", JSON.stringify(error.response.data.message).toString())
+                }
+                else {
+                    Alert.alert("Lỗi", JSON.stringify(error).toString())
+                }
+
                 return undefined
             })
     }

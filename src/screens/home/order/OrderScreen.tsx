@@ -76,10 +76,22 @@ export const OrderScreen = React.memo(() => {
                 btnLabel: "OK",
                 alertType: 'success',
                 onPress: () => {
-                    if (bodyPay.lotteryType == LotteryType.Keno)
-                        NavigationUtils.navigate(navigation, ScreenName.Drawer.HistoryKenoStack)
-                    else
-                        NavigationUtils.navigate(navigation, ScreenName.Drawer.HistoryBasicStack)
+                    if (bodyPay.lotteryType == LotteryType.Keno) {
+                        navigation.navigate('HomeScreen', {
+                            navToKenoStack: {
+                                screen: ScreenName.Drawer.HistoryKenoStack,
+                                params: {}
+                            }
+                        })
+                    }
+                    else {
+                        navigation.navigate('HomeScreen', {
+                            navToBasicStack: {
+                                screen: ScreenName.Drawer.HistoryBasicStack,
+                                params: {}
+                            }
+                        })
+                    }
                 }
             })
         }

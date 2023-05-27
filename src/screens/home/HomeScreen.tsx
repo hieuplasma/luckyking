@@ -7,7 +7,7 @@ import { SimpleHeaderView, translate } from '@shared';
 import { Icon, Image, Images } from '@assets'
 import { Color, Style } from '@styles';
 import { dateConvert, NavigationUtils, printMoney, ScreenUtils } from '@utils';
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { ScrollView, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
@@ -16,7 +16,7 @@ import { LotteryType } from '@common';
 type NavigationProp = StackNavigationProp<HomeStackParamList, 'HomeScreen'>;
 type NavigationRoute = RouteProp<HomeStackParamList, 'HomeScreen'>;
 
-export interface HomeScreenParamsList { }
+export interface HomeScreenParamsList { navToKenoStack?: any, navToBasicStack?: any }
 
 export interface HomeScreenProps { }
 
@@ -39,6 +39,17 @@ export const HomeScreen = React.memo((props?: HomeScreenProps) => {
       return true;
     }, []),
   );
+
+  useEffect(() => {
+    if (route?.params?.navToKenoStack) {
+      const navTo = route.params.navToKenoStack;
+      navigation.navigate(navTo.screen, navTo.params);
+    }
+    if (route?.params?.navToBasicStack) {
+      const navTo = route.params.navToBasicStack;
+      navigation.navigate(navTo.screen, navTo.params);
+    }
+  }, [route]);
 
   const renderHeaderLeftView = useCallback(() => {
     return (
