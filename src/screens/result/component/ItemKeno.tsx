@@ -144,7 +144,7 @@ export const PerItemKeno = React.memo(({ data, navigation }: any) => {
                 <Image style={{ width: 20, height: 10 }} source={Images.right_arrow} tintColor={'#303030'} />
             </View>
 
-            <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-evenly', paddingHorizontal: '1%' }}>
+            <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' }}>
                 {
                     result.map((it: number, id: number) => {
                         return (
@@ -200,7 +200,7 @@ const styles = StyleSheet.create({
         color: Color.white,
         fontWeight: 'bold',
     },
-    ball_container: { width: '10%', height: 34, justifyContent: 'center', alignItems: 'center' },
+    ball_container: { width: '9.5%', height: 34, justifyContent: 'center', alignItems: 'center' },
     ball_first: {
         width: 28, height: 28,
         backgroundColor: Color.white,

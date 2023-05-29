@@ -72,4 +72,5 @@ export const Images = {
   max3d_logo_stroke1: require('./max3d_logo_stroke1.png'),
   empty_trash: require('./empty_trash.png'),
   scanner: require('./scanner.png'),
+  luckyking_banner: require('./luckyking_banner.jpg'),
 };

@@ -98,8 +98,9 @@ export const HomeScreen = React.memo((props?: HomeScreenProps) => {
   const renderBanner = useCallback(() => {
     return (
       <Image
-        source={Images.good_luck}
-        resizeMode='contain'
+        // source={Images.good_luck}
+        source={Images.luckyking_banner}
+        resizeMode='cover'
         style={[
           Style.Background.White,
           Style.Size.WidthMatchParent,

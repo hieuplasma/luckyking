@@ -2,7 +2,7 @@ import { NumberDetail } from "@common"
 import { ConsolasText, IText } from "@components"
 import { Color } from "@styles"
 import { getSpecialValueKeno, kenoAnalysis, printMoney, printNumber } from "@utils"
-import React, { useCallback, useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import { Dimensions, StyleSheet, View } from "react-native"
 import { PrintDrawItem } from "./PrintDrawItem"
 
@@ -19,6 +19,10 @@ export const LotteryKenoItem = React.memo(({ section, navigation }: LotteryItem)
     const [expandNumber, setExpandNumber] = useState(0)
     const [drawResult, setDrawResult] = useState<any>(false)
     const lotteries = section.lotteries.sort((a: any, b: any) => a.drawCode - b.drawCode)
+
+    // useEffect(() => {
+    //     setDrawResult(section.lotteries.sort((a: any, b: any) => a.drawCode - b.drawCode)[expandNumber])
+    // }, [section.lotteries])
 
     const handleExpandNumber = useCallback(async (index: number, lottery: any) => {
         if (index == expandNumber) {
