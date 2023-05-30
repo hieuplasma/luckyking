@@ -79,27 +79,45 @@ export const ScanScreen = React.memo(() => {
         handleBarCodeScanned({ data: TEST })
     }, [])
 
-    if (hasPermission === null) {
-        return <IText>Requesting for camera permission</IText>;
-    }
-    if (hasPermission === false) {
-        return <IText>No access to camera</IText>;
-    }
+    // if (hasPermission === null) {
+    //     return <IText>Requesting for camera permission</IText>;
+    // }
+    // if (hasPermission === false) {
+    //     return <IText>No access to camera</IText>;
+    // }
 
     return (
         <View style={styles.container}>
             <ImageHeader title={"Quét vé"} />
             <View style={{ flex: 1 }}>
-                <Image
-                    source={Images.scanner} 
-                    tintColor={'#1cc74a'}
-                    // tintColor={Color.luckyKing}
-                    resizeMode='contain'
-                    style={{
-                        position: 'absolute',
-                        top: 50, bottom: 50, right: -20, left: -20, opacity: 0.5
-                    }}
-                />
+                {
+                    (hasPermission === null) && <IText style={styles.noPermission}>{"Đang yêu cầu quyền truy cập Camera!"}</IText>
+                }
+                {
+                    (hasPermission === false)
+                    && <IText style={styles.noPermission}>
+                        {"Không có quyền truy cập Camera"}
+                    </IText>
+                }
+                {
+                    !device ?
+                        <IText style={styles.noPermission}>{"Thiết bị không có Camera sau!"}</IText>
+                        : <></>
+                }
+                {
+                    (device != null && hasPermission) ?
+                        <Image
+                            source={Images.scanner}
+                            tintColor={'#1cc74a'}
+                            // tintColor={Color.luckyKing}
+                            resizeMode='contain'
+                            style={{
+                                position: 'absolute',
+                                top: 50, bottom: 50, right: -20, left: -20, opacity: 0.5
+                            }}
+                        />
+                        : <></>
+                }
                 {
                     (device != null && hasPermission) ?
                         <Camera
@@ -131,4 +149,8 @@ const styles = StyleSheet.create({
         color: 'white',
         fontWeight: 'bold',
     },
+    noPermission: {
+        textAlign: 'center', fontWeight: 'bold', fontSize: 15,
+        margin: 30, color: Color.luckyKing, marginTop: 30
+    }
 }); 

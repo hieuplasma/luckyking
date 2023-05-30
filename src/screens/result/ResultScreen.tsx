@@ -30,7 +30,7 @@ const list_type = [
     title: "Power"
   },
   {
-    type: [LotteryType.Max3D, LotteryType.Max3DPlus, LotteryType.Max3DPro],
+    type: [LotteryType.Max3D, LotteryType.Max3DPlus],
     title: "Max3D/3D+"
   },
   {

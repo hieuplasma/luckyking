@@ -66,3 +66,11 @@ export type TicketType = 'keno' | 'basic'
 
 export type SMALL_BIG = 'small' | 'big' | 'draw'
 export type EVEN_ODD = 'even' | 'odd' | 'even_11_12' | 'odd_11_12' | 'draw'
+
+export enum KenoStatistical {
+    EVEN_ODD = "even_odd",
+    HEAD_TAIL = "head_tail",
+    NUMBER = "number",
+    BIG_SMALL = "big_small",
+    ADVANCE = "advance"
+}
