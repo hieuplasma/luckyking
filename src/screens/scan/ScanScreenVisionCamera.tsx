@@ -1,3 +1,4 @@
+import { runOnJS } from 'react-native-reanimated';
 import { ScanStackParamList, ScreenName } from '@navigation';
 import { RouteProp, useNavigation, useIsFocused } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -7,8 +8,8 @@ import { scanBarCode } from './barcode';
 import { IText, ImageHeader } from '@components';
 import { NavigationUtils } from '@utils';
 
-import { useCameraDevices, Camera } from 'react-native-vision-camera';
-import { useScanBarcodes, BarcodeFormat } from 'vision-camera-code-scanner';
+import { useCameraDevices, Camera, useFrameProcessor } from 'react-native-vision-camera';
+import { BarcodeFormat, scanBarcodes } from "vision-camera-code-scanner";
 import { useBackButtonWithNavigation } from '@hooks';
 import { Images, Image } from '@assets';
 import { Color } from '@styles';
@@ -29,7 +30,7 @@ const TEST = KENO_NOT_EXITS
 
 export interface ScanScreenParamsList { }
 
-export const ScanScreen = React.memo(() => {
+export const ScanScreenVisionCamera = React.memo(() => {
 
     useBackButtonWithNavigation(
         React.useCallback(() => {
@@ -39,14 +40,21 @@ export const ScanScreen = React.memo(() => {
 
     const navigation = useNavigation<NavigationProp>();
     const isFocused = useIsFocused();
-    // const isFocused = true
 
     const [hasPermission, setHasPermission] = React.useState(false);
     const devices = useCameraDevices();
     const device = devices.back;
     const [scanned, setScanned] = useState(false);
 
-    const [frameProcessor, barcodes] = useScanBarcodes([BarcodeFormat.PDF417], { checkInverted: true });
+    const frameProcessor = useFrameProcessor((frame) => {
+        "worklet";
+        const detectedBarcodes = scanBarcodes(frame, [BarcodeFormat.PDF417], {
+            checkInverted: true,
+        });
+        if (detectedBarcodes?.length !== 0) {
+            runOnJS(handleBarCodeScanned)({ data: detectedBarcodes[0].displayValue })
+        }
+    }, [])
 
     React.useEffect(() => {
         (async () => {
@@ -54,15 +62,6 @@ export const ScanScreen = React.memo(() => {
             setHasPermission(status === 'authorized');
         })();
     }, []);
-
-    React.useEffect(() => {
-        if (barcodes[0])
-            handleBarCodeScanned({ data: barcodes[0].displayValue })
-    }, [barcodes]);
-
-    // React.useEffect(()=> {
-    //     if (isFocused) setScanned(false)
-    // }, [isFocused])
 
     const handleBarCodeScanned = ({ data }: any) => {
         let tmp = scanBarCode(data)
@@ -79,12 +78,6 @@ export const ScanScreen = React.memo(() => {
         handleBarCodeScanned({ data: TEST })
     }, [])
 
-    // if (hasPermission === null) {
-    //     return <IText>Requesting for camera permission</IText>;
-    // }
-    // if (hasPermission === false) {
-    //     return <IText>No access to camera</IText>;
-    // }
 
     return (
         <View style={styles.container}>
@@ -105,7 +98,7 @@ export const ScanScreen = React.memo(() => {
                         : <></>
                 }
                 {
-                    (device != null && hasPermission) ?
+                    (device != null && hasPermission && isFocused) ?
                         <Image
                             source={Images.scanner}
                             tintColor={'#1cc74a'}

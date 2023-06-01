@@ -26,13 +26,17 @@ export const API_HOST = config.host;
 export const API_URI = {
   CHEATE_REGISTER: "/auth/register",
   REGISTER: "/auth/sercure/register",
+  CHEATE_FORGET_PASSWORD: "/auth/forgot-password",
+  FORGET_PASSWORD: "/auth/sercure/forgot-password",
   LOGIN: "/auth/login",
-  FORGET_PASSWORD: "/auth/forgot-password",
 
   GET_USER_INFO: "/users/get-info",
   UPDATE_USER_INFO: "/users/update-info",
 
   UPDATE_PASSWORD: "/auth/update-password",
+
+  GET_FIREBASE_TOKEN:"/device/get-firebase-token",
+  UPDATE_FCM_TOKEN:"/device/update-token",
 
   BOOK_LOTTERY_KENO: "/order/add-keno",
   BOOK_LOTTERY_POWER_MEGA: "/order/add-power-mega",

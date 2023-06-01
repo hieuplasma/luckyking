@@ -1,6 +1,12 @@
 import { createStackNavigator } from '@react-navigation/stack';
-import { ScanResultScreen, ScanResultScreenParamsList, ScanScreen, ScanScreenParamsList } from '@screen';
+import {
+  ScanResultScreen, ScanResultScreenParamsList,
+  ScanScreenExpo,
+  ScanScreenVisionCamera,
+  ScanScreenParamsList
+} from '@screen';
 import React from 'react';
+import { Platform } from 'react-native';
 
 export type ScanStackParamList = {
   Scan: ScanScreenParamsList;
@@ -8,6 +14,8 @@ export type ScanStackParamList = {
 };
 
 const HomeStack = createStackNavigator<ScanStackParamList>();
+
+const ScanScreen = Platform.OS == 'ios' ? ScanScreenExpo : ScanScreenVisionCamera
 
 export function ScanNavigation() {
   return (
