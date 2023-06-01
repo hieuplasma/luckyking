@@ -36,9 +36,9 @@ const DrawerCustom = React.memo((props: any) => {
   }, [])
 
   const logOut = useCallback(async () => {
-    await dispatch(removeToken())
-    await dispatch(removeUser())
-    await dispatch(removeCart())
+    dispatch(removeToken())
+    dispatch(removeUser())
+    dispatch(removeCart())
     navigation?.closeDrawer();
     NavigationUtils.resetGlobalStackWithScreen(navigation, ScreenName.Authentication);
     await auth()

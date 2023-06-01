@@ -15,7 +15,7 @@ import { View, Button as ButtonRN, Alert } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Button } from '@widgets';
 import DeviceInfo from 'react-native-device-info';
-import { authApi } from '@api';
+import { authApi, userApi } from '@api';
 import { useDispatch } from 'react-redux';
 import { updateToken } from '../../redux/reducer/auth';
 import messaging from '@react-native-firebase/messaging'
@@ -50,19 +50,12 @@ export const LoginWidget = React.memo((props: any) => {
     if (password == "")
       return (Alert.alert("Lỗi", "Bạn chưa nhập mật khẩu"))
 
-    // if (!auth().currentUser) {
-    //   let tmp = phoneNumber.trim()
-    //   if (tmp.charAt(0) == '0') tmp = tmp.replace('0', '+84')
-    //   await auth().signInWithPhoneNumber(tmp)
-    // }
-
-    // const fcmToken = await messaging().getToken()
     setLoading(true);
+
     const body = {
       phoneNumber: phoneNumber,
       password: password,
       deviceId: deviceId,
-      // fcmToken: fcmToken
     }
     const res = await authApi.login(body)
     if (res?.data?.accessToken) {
@@ -134,7 +127,7 @@ export const LoginWidget = React.memo((props: any) => {
       <Label.Widget
         style={[Style.Label.Regular.PrimaryContentL_14]}
         onPress={onViewForgetPassword}
-        // onPress={() => { }}
+      // onPress={() => { }}
       >
         {translate('button.forgetPassword')}
       </Label.Widget>

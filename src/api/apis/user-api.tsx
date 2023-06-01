@@ -15,6 +15,16 @@ class UserApi {
     let fullUrl = API_URI.UPDATE_PASSWORD;
     return await window.connection.POST(fullUrl, body)
   }
+
+  getFirebaseToken = async () => {
+    let fullUrl = API_URI.GET_FIREBASE_TOKEN;
+    return await window.connection.GET(fullUrl)
+  }
+
+  updateFCMToken = async (body: any) => {
+    let fullUrl = API_URI.UPDATE_FCM_TOKEN;
+    return await window.connection.POST(fullUrl, body)
+  }
 }
 
 const userApi = new UserApi

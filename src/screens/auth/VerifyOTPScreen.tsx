@@ -13,7 +13,6 @@ import { Button } from '@widgets';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Alert, TouchableOpacity, View } from 'react-native';
 import auth from '@react-native-firebase/auth';
-import messaging from '@react-native-firebase/messaging'
 import DeviceInfo from 'react-native-device-info';
 import { useDispatch } from 'react-redux';
 import { updateToken } from '../../redux/reducer/auth';
@@ -47,46 +46,53 @@ export const VerifyOTPScreen = React.memo((props?: any) => {
 
   const confirmCode = useCallback(async () => {
     try {
-      await confirm.confirm(verifyOtpHooks.otp);
-    } catch (error) {
-      // Alert.alert("Lỗi", "Mã OTP không đúng")
       verifyOtpHooks.setLoading(true)
-      const type = route.params.type
-      let uri: string = API_URI.CHEATE_REGISTER
-      if (type == 'forgetPassword') uri = API_URI.FORGET_PASSWORD
-      let body = {
-        phoneNumber: route.params.phoneNumber,
-        password: route.params.password,
-        deviceId: DeviceInfo.getDeviceId(),
-        fcmToken: ""
-      }
-      if (type == 'forgetPassword') body = {
-        phoneNumber: route.params.phoneNumber,
-        //@ts-ignore
-        newPassword: route.params.password
-      }
-      const res = await window.connection.requestApi("POST", uri, body, null, null, '')
-      // console.log(res)
-      if (res) {
-        if (type == 'signUp') {
-          dispatch(updateToken(res.data.accessToken))
-          NavigationUtils.resetGlobalStackWithScreen(navigation, ScreenName.SplashScreen);
-        }
-        else {
-          Alert.alert("Thông báo", "Đã đổi mật khẩu thành công!")
-          NavigationUtils.navigate(navigation, ScreenName.Authentications.Login)
-        }
-      }
+      await confirm.confirm(verifyOtpHooks.otp);
       verifyOtpHooks.setLoading(false)
+    } catch (error) {
+      Alert.alert("Lỗi", "Mã OTP không đúng")
+      verifyOtpHooks.setLoading(false)
+      // verifyOtpHooks.setLoading(true)
+      // const type = route.params.type
+      // let uri: string = API_URI.CHEATE_REGISTER
+      // if (type == 'forgetPassword') uri = API_URI.CHEATE_FORGET_PASSWORD
+      // let body = {
+      //   phoneNumber: route.params.phoneNumber,
+      //   password: route.params.password,
+      //   deviceId: DeviceInfo.getDeviceId(),
+      // }
+      // if (type == 'forgetPassword') body = {
+      //   phoneNumber: route.params.phoneNumber,
+      //   //@ts-ignore
+      //   newPassword: route.params.password
+      // }
+      // const res = await window.connection.requestApi("POST", uri, body, null, null, '')
+      // // console.log(res)
+      // if (res) {
+      //   if (type == 'signUp') {
+      //     dispatch(updateToken(res.data.accessToken))
+      //     NavigationUtils.resetGlobalStackWithScreen(navigation, ScreenName.SplashScreen);
+      //   }
+      //   else {
+      //     Alert.alert("Thông báo", "Đã đổi mật khẩu thành công!")
+      //     NavigationUtils.navigate(navigation, ScreenName.Authentications.Login)
+      //   }
+      // }
+      // verifyOtpHooks.setLoading(false)
     }
   }, [verifyOtpHooks.otp, confirm, navigation, route.params]);
 
   const signInWithPhoneNumber = useCallback(async () => {
-    let tmp = route.params.phoneNumber.trim()
-    if (tmp.charAt(0) == '0') tmp = tmp.replace('0', '+84')
-    // const confirm = await auth().signInWithPhoneNumber(tmp)
-    // setConfirm(confirm)
-    verifyOtpHooks.onResendOtp()
+    try {
+      let tmp = route.params.phoneNumber.trim()
+      if (tmp.charAt(0) == '0') tmp = tmp.replace('0', '+84')
+      // Alert.alert("sdt", tmp)
+      const confirm = await auth().signInWithPhoneNumber(tmp)
+      setConfirm(confirm)
+      verifyOtpHooks.onResendOtp()
+    } catch (error) {
+      Alert.alert("Lỗi", JSON.stringify(error))
+    }
   }, [verifyOtpHooks.onResendOtp, setConfirm, route.params.phoneNumber])
 
   useEffect(() => {
@@ -99,25 +105,23 @@ export const VerifyOTPScreen = React.memo((props?: any) => {
   }, []);
 
   const confirmOTPSuccess = async (user: any) => {
-    // console.log(user)
-    // console.log("firebaseTOken::::", await user.getIdToken())
-    // const fcmToken = await messaging().getToken()
-    // console.log("FCMTOKEN", fcmToken)
     verifyOtpHooks.setLoading(true)
     const type = route.params.type
+
     let uri: string = API_URI.REGISTER
     if (type == 'forgetPassword') uri = API_URI.FORGET_PASSWORD
+
     let body = {
       phoneNumber: route.params.phoneNumber,
       password: route.params.password,
       deviceId: DeviceInfo.getDeviceId(),
-      fcmToken: ""
     }
     if (type == 'forgetPassword') body = {
       phoneNumber: route.params.phoneNumber,
       //@ts-ignore
       newPassword: route.params.password
     }
+
     const token = await user.getIdToken()
     const res = await window.connection.requestApi("POST", uri, body, null, null, token)
     if (res) {
@@ -139,8 +143,8 @@ export const VerifyOTPScreen = React.memo((props?: any) => {
 
   // Handle login
   async function onAuthStateChanged(user: any) {
-    // console.log('user', user);
-    if (user) confirmOTPSuccess(user)
+    console.log('user', user);
+    if (user) await confirmOTPSuccess(user)
   }
 
   const onGoBack = useCallback(() => {

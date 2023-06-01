@@ -130,7 +130,7 @@ export const BankRechargeScreen = () => {
                 {
                     listBank.map(item => {
                         return (
-                            <View style={styles.boxBankAccount}>
+                            <View style={styles.boxBankAccount} key={item.shortName}>
                                 <Image source={{ uri: item.logo }} style={{ width: 45, height: 45 }} resizeMode='contain' />
                                 <View style={{ marginLeft: 4, justifyContent: 'center', flex: 1 }}>
                                     <IText style={{ fontWeight: 'bold' }}>{item.STK}</IText>

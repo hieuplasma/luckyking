@@ -51,40 +51,41 @@
 		00E356EE1AD99517003FC87E /* luckyking_app_reactTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = luckyking_app_reactTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* luckyking_app_reactTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = luckyking_app_reactTests.m; sourceTree = "<group>"; };
-		0D6654B594F34B97A8FB0965 /* myriadpro-regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "myriadpro-regular.ttf"; path = "../src/assets/fonts/myriadpro-regular.ttf"; sourceTree = "<group>"; };
+		0D6654B594F34B97A8FB0965 /* myriadpro-regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "myriadpro-regular.ttf"; path = "../src/assets/fonts/myriadpro-regular.ttf"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* luckyking_app_react.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = luckyking_app_react.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = luckyking_app_react/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = luckyking_app_react/AppDelegate.mm; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = luckyking_app_react/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = luckyking_app_react/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = luckyking_app_react/main.m; sourceTree = "<group>"; };
-		1C36FC6AA1BA49F18E3AEE3C /* myriadpro-boldit.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "myriadpro-boldit.ttf"; path = "../src/assets/fonts/myriadpro-boldit.ttf"; sourceTree = "<group>"; };
+		1C36FC6AA1BA49F18E3AEE3C /* myriadpro-boldit.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "myriadpro-boldit.ttf"; path = "../src/assets/fonts/myriadpro-boldit.ttf"; sourceTree = "<group>"; };
 		38577CA629BC701800C8B0FE /* Bebeboo-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Bebeboo-SemiBold.ttf"; path = "luckyking_app_react/Bebeboo-SemiBold.ttf"; sourceTree = "<group>"; };
 		38577CA729BC701800C8B0FE /* LuckyKingIcon.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = LuckyKingIcon.ttf; path = luckyking_app_react/LuckyKingIcon.ttf; sourceTree = "<group>"; };
 		38577CA829BC701800C8B0FE /* Bebeboo-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Bebeboo-Italic.ttf"; path = "luckyking_app_react/Bebeboo-Italic.ttf"; sourceTree = "<group>"; };
 		38577CA929BC701800C8B0FE /* Bebeboo-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Bebeboo-Regular.ttf"; path = "luckyking_app_react/Bebeboo-Regular.ttf"; sourceTree = "<group>"; };
 		38832C2829CED58300026527 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		389EDC152A27380500E227FF /* luckyking_app_react.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = luckyking_app_react.entitlements; path = luckyking_app_react/luckyking_app_react.entitlements; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-luckyking_app_react.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-luckyking_app_react.debug.xcconfig"; path = "Target Support Files/Pods-luckyking_app_react/Pods-luckyking_app_react.debug.xcconfig"; sourceTree = "<group>"; };
 		45F27A3F207C79DF66758BDC /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-luckyking_app_react/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-luckyking_app_react.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-luckyking_app_react.release.xcconfig"; path = "Target Support Files/Pods-luckyking_app_react/Pods-luckyking_app_react.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-luckyking_app_react-luckyking_app_reactTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-luckyking_app_react-luckyking_app_reactTests.debug.xcconfig"; path = "Target Support Files/Pods-luckyking_app_react-luckyking_app_reactTests/Pods-luckyking_app_react-luckyking_app_reactTests.debug.xcconfig"; sourceTree = "<group>"; };
-		6BD423B59F75440A936261EF /* digital-7.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "digital-7.ttf"; path = "../src/assets/fonts/digital-7.ttf"; sourceTree = "<group>"; };
-		711B5C07D9FE4A5DA11563B7 /* myriadpro-bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "myriadpro-bold.ttf"; path = "../src/assets/fonts/myriadpro-bold.ttf"; sourceTree = "<group>"; };
+		6BD423B59F75440A936261EF /* digital-7.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "digital-7.ttf"; path = "../src/assets/fonts/digital-7.ttf"; sourceTree = "<group>"; };
+		711B5C07D9FE4A5DA11563B7 /* myriadpro-bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "myriadpro-bold.ttf"; path = "../src/assets/fonts/myriadpro-bold.ttf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = luckyking_app_react/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-luckyking_app_react-luckyking_app_reactTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-luckyking_app_react-luckyking_app_reactTests.release.xcconfig"; path = "Target Support Files/Pods-luckyking_app_react-luckyking_app_reactTests/Pods-luckyking_app_react-luckyking_app_reactTests.release.xcconfig"; sourceTree = "<group>"; };
-		8F315200FF8A47E59CD546A2 /* myriadpro-cond.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "myriadpro-cond.ttf"; path = "../src/assets/fonts/myriadpro-cond.ttf"; sourceTree = "<group>"; };
-		980FFB3A04984340A0117D3D /* myriadpro-condit.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "myriadpro-condit.ttf"; path = "../src/assets/fonts/myriadpro-condit.ttf"; sourceTree = "<group>"; };
+		8F315200FF8A47E59CD546A2 /* myriadpro-cond.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "myriadpro-cond.ttf"; path = "../src/assets/fonts/myriadpro-cond.ttf"; sourceTree = "<group>"; };
+		980FFB3A04984340A0117D3D /* myriadpro-condit.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "myriadpro-condit.ttf"; path = "../src/assets/fonts/myriadpro-condit.ttf"; sourceTree = "<group>"; };
 		AAB00DE1B4135ED615AEC9F3 /* Pods_luckyking_app_react_luckyking_app_reactTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_luckyking_app_react_luckyking_app_reactTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		AD57E0B1D23B4BA88D68D49E /* myriadpro-boldcondit.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "myriadpro-boldcondit.ttf"; path = "../src/assets/fonts/myriadpro-boldcondit.ttf"; sourceTree = "<group>"; };
-		B3D68C2AAD544735A1CC7FA5 /* myriadpro-semiboldit.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "myriadpro-semiboldit.ttf"; path = "../src/assets/fonts/myriadpro-semiboldit.ttf"; sourceTree = "<group>"; };
+		AD57E0B1D23B4BA88D68D49E /* myriadpro-boldcondit.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "myriadpro-boldcondit.ttf"; path = "../src/assets/fonts/myriadpro-boldcondit.ttf"; sourceTree = "<group>"; };
+		B3D68C2AAD544735A1CC7FA5 /* myriadpro-semiboldit.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "myriadpro-semiboldit.ttf"; path = "../src/assets/fonts/myriadpro-semiboldit.ttf"; sourceTree = "<group>"; };
 		B5D8D4C25E318E42BC676EE3 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-luckyking_app_react-luckyking_app_reactTests/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
-		C725447042434C908D70C90C /* myriadpro-boldcond.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "myriadpro-boldcond.ttf"; path = "../src/assets/fonts/myriadpro-boldcond.ttf"; sourceTree = "<group>"; };
-		CAF2EEA0E859438388640438 /* myriadpro-it.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "myriadpro-it.ttf"; path = "../src/assets/fonts/myriadpro-it.ttf"; sourceTree = "<group>"; };
-		D2CFD055C7B74D13808AD036 /* myriadpro-semibold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "myriadpro-semibold.ttf"; path = "../src/assets/fonts/myriadpro-semibold.ttf"; sourceTree = "<group>"; };
-		D6EF1C4DD45E48A993FECEA2 /* myriadpro-light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "myriadpro-light.ttf"; path = "../src/assets/fonts/myriadpro-light.ttf"; sourceTree = "<group>"; };
+		C725447042434C908D70C90C /* myriadpro-boldcond.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "myriadpro-boldcond.ttf"; path = "../src/assets/fonts/myriadpro-boldcond.ttf"; sourceTree = "<group>"; };
+		CAF2EEA0E859438388640438 /* myriadpro-it.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "myriadpro-it.ttf"; path = "../src/assets/fonts/myriadpro-it.ttf"; sourceTree = "<group>"; };
+		D2CFD055C7B74D13808AD036 /* myriadpro-semibold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "myriadpro-semibold.ttf"; path = "../src/assets/fonts/myriadpro-semibold.ttf"; sourceTree = "<group>"; };
+		D6EF1C4DD45E48A993FECEA2 /* myriadpro-light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "myriadpro-light.ttf"; path = "../src/assets/fonts/myriadpro-light.ttf"; sourceTree = "<group>"; };
 		E228926468158D8197D88998 /* Pods_luckyking_app_react.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_luckyking_app_react.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		E345BD3B9EE0491CBA11D2D6 /* consolab.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = consolab.ttf; path = ../src/assets/fonts/consolab.ttf; sourceTree = "<group>"; };
-		E3EC9A344B984B13963CCF02 /* consolas.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = consolas.ttf; path = ../src/assets/fonts/consolas.ttf; sourceTree = "<group>"; };
+		E345BD3B9EE0491CBA11D2D6 /* consolab.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = consolab.ttf; path = ../src/assets/fonts/consolab.ttf; sourceTree = "<group>"; };
+		E3EC9A344B984B13963CCF02 /* consolas.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = consolas.ttf; path = ../src/assets/fonts/consolas.ttf; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -128,6 +129,7 @@
 		13B07FAE1A68108700A75B9A /* luckyking_app_react */ = {
 			isa = PBXGroup;
 			children = (
+				389EDC152A27380500E227FF /* luckyking_app_react.entitlements */,
 				38577C8E29BC6B6A00C8B0FE /* Resources */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
@@ -187,7 +189,6 @@
 			children = (
 			);
 			name = Resources;
-			path = "";
 			sourceTree = "<group>";
 		};
 		58FAF64BA3ADF818CDD7B535 /* ExpoModulesProviders */ = {
@@ -598,8 +599,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = luckyking_app_react/luckyking_app_react.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = "";
@@ -621,7 +623,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = vn.vietpointer.luckyking;
 				PRODUCT_NAME = luckyking_app_react;
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = LuckyKingProvisioningProfile;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = LuckyKingProvisioningDistribiution;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -634,8 +636,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = luckyking_app_react/luckyking_app_react.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = "";
@@ -656,7 +659,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = vn.vietpointer.luckyking;
 				PRODUCT_NAME = luckyking_app_react;
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = LuckyKingProvisioningProfile;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = LuckyKingProvisioningDistribiution;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
