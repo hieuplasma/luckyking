@@ -8,18 +8,18 @@ import {
   translate,
   useBase,
 } from '@shared';
-import { NavigationUtils } from '@utils'
+import { NavigationUtils, doNotExits } from '@utils'
 import { Color, Style } from '@styles';
 import React, { useCallback, useEffect, useState } from 'react';
-import { View, Button as ButtonRN, Alert } from 'react-native';
+import { View, Button as ButtonRN, Alert, Platform, KeyboardAvoidingView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Button } from '@widgets';
 import DeviceInfo from 'react-native-device-info';
 import { authApi, userApi } from '@api';
 import { useDispatch } from 'react-redux';
 import { updateToken } from '../../redux/reducer/auth';
-import messaging from '@react-native-firebase/messaging'
-import auth from '@react-native-firebase/auth'
+import { useHeaderHeight } from '@react-navigation/elements'
+
 
 type NavigationProp = StackNavigationProp<AuthenticationStackParamList, 'Login'>;
 type NavigationRoute = RouteProp<AuthenticationStackParamList, 'Login'>;
@@ -35,6 +35,7 @@ export const LoginWidget = React.memo((props: any) => {
   const route = useRoute<NavigationRoute>();
   const safeAreaInsets = useSafeAreaInsets();
   const dispatch = useDispatch()
+  const height = useHeaderHeight()
 
 
   const [password, setPassword] = useState<string | undefined>(undefined);
@@ -45,9 +46,9 @@ export const LoginWidget = React.memo((props: any) => {
   const deviceId = DeviceInfo.getDeviceId();
 
   const onLoginPress = useCallback(async () => {
-    if (phoneNumber == "" || phoneNumber == undefined)
+    if (doNotExits(phoneNumber))
       return (Alert.alert("Lỗi", "Bạn chưa nhập số điện thoại"))
-    if (password == "")
+    if (doNotExits(password))
       return (Alert.alert("Lỗi", "Bạn chưa nhập mật khẩu"))
 
     setLoading(true);
@@ -151,7 +152,7 @@ export const LoginWidget = React.memo((props: any) => {
   }, [onLoginPress, isLoading, phoneNumber, password]);
 
   return (
-    <View
+    <KeyboardAvoidingView keyboardVerticalOffset={height + 45} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={[
         Style.Size.MatchParent,
         Style.Background.Red,
@@ -181,7 +182,7 @@ export const LoginWidget = React.memo((props: any) => {
         </View>
         {renderLoginButton()}
       </ShadowView>
-    </View>
+    </KeyboardAvoidingView>
   );
 });
 

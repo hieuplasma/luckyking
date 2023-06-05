@@ -47,30 +47,30 @@ export function MainNavigation(props: any) {
             if (!messaging().isDeviceRegisteredForRemoteMessages) {
                 await messaging().registerDeviceForRemoteMessages();
             }
-            const firebaseToken = await userApi.getFirebaseToken()
-            if (firebaseToken) {
-                await auth().signInWithCustomToken(firebaseToken.data).then(async (res) => {
-                    await checkApplicationPermission()
-                    await messaging()
-                        .hasPermission()
-                        .then(async (enabled) => {
-                            if (enabled) {
-                                const fcmToken = await messaging().getToken()
-                                const resFCM = await userApi.updateFCMToken({
-                                    deviceId: DeviceInfo.getDeviceId(),
-                                    deviceToken: fcmToken
-                                })
-                                if (resFCM) {
-                                    console.log("regist FCM token success", fcmToken)
-                                }
-                            }
+            // const firebaseToken = await userApi.getFirebaseToken()
+            // if (firebaseToken) {
+            // await auth().signInWithCustomToken(firebaseToken.data).then(async (res) => {
+            await checkApplicationPermission()
+            await messaging()
+                .hasPermission()
+                .then(async (enabled) => {
+                    if (enabled) {
+                        const fcmToken = await messaging().getToken()
+                        const resFCM = await userApi.updateFCMToken({
+                            deviceId: DeviceInfo.getDeviceId(),
+                            deviceToken: fcmToken
                         })
+                        if (resFCM) {
+                            console.log("regist FCM token success", fcmToken)
+                        }
+                    }
                 })
-            }
-            else {
-                // Alert.alert("Lỗi không xác định!")
-            }
+            // })
         }
+        //     else {
+        //         // Alert.alert("Lỗi không xác định!")
+        //     }
+        // }
         if (!doNotExits(token)) registerFCM()
     }, [token])
 

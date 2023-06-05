@@ -8,7 +8,7 @@ export const TIMEOUT_MESSAGE = "request timeout"
 
 /** config for debug */
 // const config = {
-//   host:'http://192.168.246.104:3001',
+//   host:'http://192.168.246.43:3001',
 // };
 
 /** config for VPS */

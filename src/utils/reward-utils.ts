@@ -487,7 +487,7 @@ function caculateMax3dBenefits(lottery: any, result: any) {
             detailBenefits.push({
                 row: String.fromCharCode(65 + index),
                 detail: BasicPrize.SECOND,
-                benefits: 21 * MUOI_NGHIN * benefits
+                benefits: 21 * MUOI_NGHIN * coefficient
             })
         }
         if (third.includes(item.boSo)) {
@@ -495,7 +495,7 @@ function caculateMax3dBenefits(lottery: any, result: any) {
             detailBenefits.push({
                 row: String.fromCharCode(65 + index),
                 detail: BasicPrize.THIRD,
-                benefits: 10 * MUOI_NGHIN * benefits
+                benefits: 10 * MUOI_NGHIN * coefficient
             })
         }
         let tmp = coefficient * benefits

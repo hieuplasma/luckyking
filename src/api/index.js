@@ -125,25 +125,31 @@ export class Connection {
                     success: true
                 };
             })
-            .catch(async (error) => {
+            .catch((error) => {
                 console.log("ERROR IN API OF " + uri + " :::::::::::>", error)
-                if (error.response?.data?.statusCode == 401) {
-                    Alert.alert("Lỗi", "Phiên đăng nhập hết hạn hoặc Mật khẩu đã bị đổi ở thiết bị khác!")
-                    this._dispatch(removeUser())
-                    NavigationUtils.resetGlobalStackWithScreen(undefined, ScreenName.Authentication)
-                    return undefined
-                }
-                // if (error.response?.data?.statusCode == 403) {
-                //     Alert.alert("Lỗi", "User này đã được đăng ký")
-                // }
-                if (error.response?.data?.message) {
-                    Alert.alert("Lỗi", JSON.stringify(error.response.data.message).toString())
-                }
-                else {
-                    Alert.alert("Lỗi", JSON.stringify(error).toString())
-                }
+                if (error.response) {
+                    if (error.response?.data?.statusCode == 401) {
+                        if (token) Alert.alert("Lỗi", "Phiên đăng nhập hết hạn hoặc mật khẩu đã bị đổi ở thiết bị khác!")
+                        else Alert.alert("Lỗi", error.response?.data?.message)
+                        this._dispatch(removeUser())
+                        NavigationUtils.resetGlobalStackWithScreen(undefined, ScreenName.Authentication)
+                        return undefined
+                    }
 
-                return undefined
+                    if (error.response?.data?.message) {
+                        console.log(error)
+                        if (Array.isArray(error.response?.data?.message))
+                            Alert.alert("Lỗi", error.response.data.message[0])
+                        else
+                            Alert.alert("Lỗi", error.response.data.message)
+                    }
+                } else if (error.request) {
+                    Alert.alert("Lỗi", JSON.stringify(error.request.toString()))
+                } else {
+                    // Something happened in setting up the request that triggered an Error
+                    Alert.alert("Lỗi", "Lỗi không xác định")
+                    console.log('Error', error.message);
+                }
             })
     }
 }

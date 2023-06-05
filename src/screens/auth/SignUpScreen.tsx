@@ -12,12 +12,13 @@ import {
 import { Color, Style } from '@styles';
 import { Button } from '@widgets';
 import React, { useCallback, useEffect, useState } from 'react';
-import { Alert, View } from 'react-native';
+import { Alert, KeyboardAvoidingView, Platform, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import auth from '@react-native-firebase/auth';
 import DeviceInfo from 'react-native-device-info';
-import { NavigationUtils } from '@utils';
+import { NavigationUtils, doNotExits } from '@utils';
 import { Icon } from '@assets';
+import { useHeaderHeight } from '@react-navigation/elements'
 
 type NavigationProp = StackNavigationProp<AuthenticationStackParamList, 'SignUp'>;
 type NavigationRoute = RouteProp<AuthenticationStackParamList, 'SignUp'>;
@@ -27,6 +28,8 @@ export interface SignUpScreenRouteParams { }
 export interface SignUpScreenProps { }
 
 export const SignUpScreen = React.memo((props?: SignUpScreenProps) => {
+
+  const height = useHeaderHeight()
   const navigation = useNavigation<NavigationProp>();
   const safeAreaInsets = useSafeAreaInsets();
   const [password, setPassword] = useState<string | undefined>(undefined);
@@ -54,9 +57,9 @@ export const SignUpScreen = React.memo((props?: SignUpScreenProps) => {
   }, []);
 
   const onSignupClick = async () => {
-    if (phoneNumber == "" || phoneNumber == undefined)
+    if (doNotExits(phoneNumber))
       return (Alert.alert("Lỗi", "Bạn chưa nhập số điện thoại"))
-    if (password == "")
+    if (doNotExits(password))
       return (Alert.alert("Lỗi", "Bạn chưa nhập mật khẩu"))
     if (password != repeatPassword)
       return (Alert.alert("Lỗi", "Mật khẩu và mật khẩu xác nhận phải giống nhau"))
@@ -135,7 +138,7 @@ export const SignUpScreen = React.memo((props?: SignUpScreenProps) => {
   }, [onSignupClick, isLoading]);
 
   return (
-    <View
+    <KeyboardAvoidingView keyboardVerticalOffset={height + 45} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={[
         Style.Size.MatchParent,
         Style.Background.Red,
@@ -168,6 +171,6 @@ export const SignUpScreen = React.memo((props?: SignUpScreenProps) => {
         {renderRepeatPasswordInput()}
         {renderSignupButton()}
       </ShadowView>
-    </View>
+    </KeyboardAvoidingView>
   );
 });

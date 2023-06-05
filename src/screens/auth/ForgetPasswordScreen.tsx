@@ -12,8 +12,10 @@ import { NavigationUtils } from '@utils';
 import { Color, Style } from '@styles';
 import { Button } from '@widgets';
 import React, { useCallback, useState } from 'react';
-import { Alert, View } from 'react-native';
+import { Alert, Platform, View ,KeyboardAvoidingView} from 'react-native';
 import { Icon } from '@assets';
+import { useHeaderHeight } from '@react-navigation/elements'
+
 
 type NavigationProp = StackNavigationProp<
   AuthenticationStackParamList,
@@ -26,6 +28,7 @@ export interface ForgetScreenRouteParams { }
 export interface ForgetScreenProps { }
 
 export const ForgetPassword = React.memo(() => {
+  const height = useHeaderHeight()
   const navigation = useNavigation<NavigationProp>();
   const forgetPasswordHooks = useForgetPassword();
 
@@ -135,7 +138,7 @@ export const ForgetPassword = React.memo(() => {
   }, [onSubmit, forgetPasswordHooks.isLoading]);
 
   return (
-    <View
+    <KeyboardAvoidingView keyboardVerticalOffset={height} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={[
         Style.Size.MatchParent,
         Style.Background.Red,
@@ -168,6 +171,6 @@ export const ForgetPassword = React.memo(() => {
         {renderRepeatPasswordInput()}
         {renderSubmitButton()}
       </ShadowView>
-    </View>
+    </KeyboardAvoidingView>
   );
 });
