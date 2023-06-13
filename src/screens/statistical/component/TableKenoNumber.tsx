@@ -1,5 +1,4 @@
 import { IText } from "@components"
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome"
 import { Color } from "@styles"
 import { printNumber } from "@utils"
 import React from "react"
@@ -29,11 +28,9 @@ export const TableKenoNumber = React.memo(({ title, data, toggle }: TableProps) 
     }
     const element = (data: any, index: number) => (
         <TouchableOpacity onPress={() => _alertIndex(index)}>
-            {/* <View style={styles.btn}>
+            <View style={styles.btn}>
                 <IText style={styles.btnText}>button</IText>
-            </View> */}
-
-            <FontAwesomeIcon icon="fa-regular fa-square-check" />
+            </View>
         </TouchableOpacity>
     );
 
