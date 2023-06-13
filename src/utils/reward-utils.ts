@@ -188,6 +188,7 @@ function caculateKenoBenefits(lottery: any, drawResult: any) {
             case 17:
                 //  Chẵn 11-12
                 if (analysis.even == 11 || analysis.even == 12) benefits = benefits + 2 * MUOI_NGHIN
+                break;
             case 18:
                 //  Lẻ 11-12
                 if (analysis.odd == 11 || analysis.odd == 12) benefits = benefits + 2 * MUOI_NGHIN
@@ -358,18 +359,23 @@ function caculatePowerBenefits(lottery: any, drawResult: any) {
                 case 12:
                     if (duplicate == 5) benefits = benefits + jackpot2 + 310 * TRIEU
                     if (duplicate == 6) benefits = benefits + jackpot1 + jackpot2 + 1330 * TRIEU
+                    break;
                 case 13:
                     if (duplicate == 5) benefits = benefits + jackpot2 + 378 * TRIEU
                     if (duplicate == 6) benefits = benefits + jackpot1 + jackpot2 + 1630 * TRIEU
+                    break;
                 case 14:
                     if (duplicate == 5) benefits = benefits + jackpot2 + 452 * TRIEU
                     if (duplicate == 6) benefits = benefits + jackpot1 + jackpot2 + 1940 * TRIEU
+                    break;
                 case 15:
                     if (duplicate == 5) benefits = benefits + jackpot2 + 532 * TRIEU + 50 * MUOI_NGHIN
                     if (duplicate == 6) benefits = benefits + jackpot1 + jackpot2 + 2270 * TRIEU
+                    break;
                 case 18:
                     if (duplicate == 5) benefits = benefits + jackpot2 + 818 * TRIEU
                     if (duplicate == 6) benefits = benefits + jackpot1 + jackpot2 + 3350 * TRIEU
+                    break;
                 default:
                     break;
             }
@@ -422,26 +428,31 @@ function caculatePowerBenefits(lottery: any, drawResult: any) {
                 if (duplicate == 4) benefits = benefits + 25 * TRIEU + 20 * MUOI_NGHIN
                 if (duplicate == 5) benefits = benefits + 350 * TRIEU
                 if (duplicate == 6) benefits = benefits + jackpot1 + 1570 * TRIEU
+                break;
             case 13:
                 if (duplicate == 3) benefits = benefits + 6 * TRIEU
                 if (duplicate == 4) benefits = benefits + 34 * TRIEU + 88 * MUOI_NGHIN
                 if (duplicate == 5) benefits = benefits + 418 * TRIEU
                 if (duplicate == 6) benefits = benefits + jackpot1 + 1870 * TRIEU
+                break;
             case 14:
                 if (duplicate == 3) benefits = benefits + 8 * TRIEU + 25 * MUOI_NGHIN
                 if (duplicate == 4) benefits = benefits + 46 * TRIEU + 5 * MUOI_NGHIN
                 if (duplicate == 5) benefits = benefits + 492 * TRIEU + 20 * MUOI_NGHIN
                 if (duplicate == 6) benefits = benefits + jackpot1 + 2180 * TRIEU
+                break;
             case 15:
                 if (duplicate == 3) benefits = benefits + 11 * TRIEU
                 if (duplicate == 4) benefits = benefits + 60 * TRIEU + 50 * MUOI_NGHIN
                 if (duplicate == 5) benefits = benefits + 572 * TRIEU + 50 * MUOI_NGHIN
                 if (duplicate == 6) benefits = benefits + jackpot1 + 2510 * TRIEU
+                break;
             case 18:
                 if (duplicate == 3) benefits = benefits + 22 * TRIEU + 75 * MUOI_NGHIN
                 if (duplicate == 4) benefits = benefits + 118 * TRIEU + 30 * MUOI_NGHIN
                 if (duplicate == 5) benefits = benefits + 858 * TRIEU + 80 * MUOI_NGHIN
                 if (duplicate == 6) benefits = benefits + jackpot1 + 3590 * TRIEU
+                break;
             default:
                 break;
         }

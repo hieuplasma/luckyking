@@ -9,6 +9,7 @@ export const TIMEOUT_MESSAGE = "request timeout"
 /** config for debug */
 // const config = {
 //   host:'http://192.168.246.43:3001',
+//   // host: 'http://192.168.246.45:3001'
 // };
 
 /** config for VPS */
@@ -35,8 +36,8 @@ export const API_URI = {
 
   UPDATE_PASSWORD: "/auth/update-password",
 
-  GET_FIREBASE_TOKEN:"/device/get-firebase-token",
-  UPDATE_FCM_TOKEN:"/device/update-token",
+  GET_FIREBASE_TOKEN: "/device/get-firebase-token",
+  UPDATE_FCM_TOKEN: "/device/update-token",
 
   BOOK_LOTTERY_KENO: "/order/add-keno",
   BOOK_LOTTERY_POWER_MEGA: "/order/add-power-mega",

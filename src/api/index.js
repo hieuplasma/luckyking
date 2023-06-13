@@ -47,13 +47,12 @@ export class Connection {
 
     requestApi = async (typeApi, uri, body, isFormData, timeout, firebaseToken) => {
 
-        // await NetInfo.fetch().then(state => {
-        //     console.log(state)
-        //     if (!state.isConnected) {
-        //         window.myalert.show({ title: "Thiết bị không có kết nối Internnet" })
-        //         return undefined
-        //     }
-        // });
+        await NetInfo.fetch().then(state => {
+            if (!state.isConnected) {
+                window.myalert.show({ title: "Thiết bị không có kết nối Internet!" })
+                return undefined
+            }
+        });
 
         let token = this._store.getState().authReducer.accessToken;
         let tokenDecode = token === '' ? null : jwtDecode(token);

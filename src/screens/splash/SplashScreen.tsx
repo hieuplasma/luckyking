@@ -16,6 +16,8 @@ type NavigationProp = StackNavigationProp<RootStackParamsList, 'SplashScreen'>;
 type NavigationRoute = RouteProp<RootStackParamsList, 'SplashScreen'>;
 export interface SplashScreenRouteParams { }
 
+const FIRST_TAKE_KENO = 20
+
 export const SplashScreen = React.memo(() => {
 
   useBackButtonWithNavigation(
@@ -33,57 +35,27 @@ export const SplashScreen = React.memo(() => {
     if (doNotExits(token))
       NavigationUtils.resetGlobalStackWithScreen(navigation, ScreenName.Authentication);
     else {
-      const user = await userApi.getuserInfo()
-      if (user?.data) {
-        dispatch(updateUser(user.data))
-      }
-      else return NavigationUtils.resetGlobalStackWithScreen(navigation, ScreenName.Authentication);
+      await Promise.all([
+        userApi.getuserInfo().then(user => { if (user) dispatch(updateUser(user.data)) }),
+        lotteryApi.getListItemCart().then(cart => { if (cart) dispatch(getCart(cart.data)) }),
 
-      const cart = await lotteryApi.getListItemCart()
-      if (cart) {
-        dispatch(getCart(cart.data))
-      }
+        lotteryApi.getSchedulePower({ take: 6, skip: 0 })
+          .then(listPower => { if (listPower?.data?.length > 0) dispatch(getPowerDraw(listPower.data)) }),
 
-      const listPower = await lotteryApi.getSchedulePower({ take: 6, skip: 0 })
-      if (listPower) {
-        if (listPower.data.length > 0) {
-          dispatch(getPowerDraw(listPower.data))
-        }
-      }
+        lotteryApi.getScheduleMega({ take: 6, skip: 0 })
+          .then(listMega => { if (listMega?.data?.length > 0) dispatch(getMegaDraw(listMega.data)) }),
 
-      const listMega = await lotteryApi.getScheduleMega({ take: 6, skip: 0 })
-      if (listMega) {
-        if (listMega.data.length > 0) {
-          dispatch(getMegaDraw(listMega.data))
-        }
-      }
+        lotteryApi.getScheduleMax3d({ type: LotteryType.Max3D, take: 6, skip: 0 })
+          .then(listMax3d => { if (listMax3d?.data?.length > 0) dispatch(getMax3dDraw(listMax3d.data)) }),
 
-      const listMax3d = await lotteryApi.getScheduleMax3d({ type: LotteryType.Max3D, take: 6, skip: 0 })
-      if (listMax3d) {
-        if (listMax3d.data.length > 0) {
-          dispatch(getMax3dDraw(listMax3d.data))
-        }
-      }
+        lotteryApi.getScheduleMax3d({ type: LotteryType.Max3DPro, take: 6, skip: 0 })
+          .then(listMax3dPro => { if (listMax3dPro?.data?.length > 0) dispatch(getMax3dProDraw(listMax3dPro.data)) }),
 
-      const listMax3dPro = await lotteryApi.getScheduleMax3d({ type: LotteryType.Max3DPro, take: 6, skip: 0 })
-      if (listMax3dPro) {
-        if (listMax3dPro.data.length > 0) {
-          dispatch(getMax3dProDraw(listMax3dPro.data))
-        }
-      }
+        lotteryApi.getScheduleKeno({ type: LotteryType.Keno, take: FIRST_TAKE_KENO, skip: 0 })
+          .then(listKeno => { if (listKeno?.data?.length > 0) dispatch(getKenoDraw(listKeno.data)) }),
 
-      const FIRST_TAKE_KENO = 400
-      const listKeno = await lotteryApi.getScheduleKeno({ type: LotteryType.Keno, take: 20, skip: 0 })
-      if (listKeno) {
-        if (listKeno.data.length > 0) {
-          dispatch(getKenoDraw(listKeno.data))
-        }
-      }
-
-      const jackpots = await lotteryApi.getJackpot()
-      if (jackpots) {
-        dispatch(getJackpot(jackpots.data))
-      }
+        lotteryApi.getJackpot().then(jackpots => { if (jackpots) dispatch(getJackpot(jackpots.data)) })
+      ])
 
       NavigationUtils.resetGlobalStackWithScreen(navigation, ScreenName.Main);
     }
