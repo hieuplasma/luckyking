@@ -131,6 +131,7 @@ const Wiget = forwardRef(({ page, numberSet, listBets, onChoose }: any, ref) => 
                         ref={swiperRef}
                         data={currentNumbers}
                         extraData={currentNumbers}
+                        // useReactNativeGestureHandler
                         renderItem={({ item, index }) => {
                             return (
                                 <PerPageSimpleKeno

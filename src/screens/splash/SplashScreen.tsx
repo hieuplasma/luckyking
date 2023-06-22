@@ -16,7 +16,7 @@ type NavigationProp = StackNavigationProp<RootStackParamsList, 'SplashScreen'>;
 type NavigationRoute = RouteProp<RootStackParamsList, 'SplashScreen'>;
 export interface SplashScreenRouteParams { }
 
-const FIRST_TAKE_KENO = 20
+const FIRST_TAKE_KENO = 40
 
 export const SplashScreen = React.memo(() => {
 

@@ -150,7 +150,7 @@ const Wiget = forwardRef(({ onChoose, numberSet, page, type }: ChooseTypeSheetPr
                 <View style={{ flex: 1, marginTop: 12 }}>
                     <SwiperFlatList
                         // onViewableItemsChanged={(params) => setIndexPage(params.changed?.[0]?.index)}
-                        useReactNativeGestureHandler
+                        // useReactNativeGestureHandler={true}
                         index={0}
                         ref={swiperRef}
                         data={currentNumbers}

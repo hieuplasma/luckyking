@@ -9,6 +9,7 @@ import { NavigationUtils } from '@utils';
 import { ScreenName } from '@navigation';
 import { removeUser } from '@redux';
 import NetInfo from "@react-native-community/netinfo";
+import { PureComponent } from 'react';
 
 const axios = require('axios').default;
 
@@ -22,6 +23,19 @@ export class Connection {
 
     constructor(store) {
         this._store = store
+    }
+
+    state = {
+        alertPresent: false
+    };
+
+    _showErrorAlert(message) {
+        if (!this.state.alertPresent) {
+            this.state.alertPresent = true
+            Alert.alert("Lỗi", message, [
+                { text: 'OK', onPress: () => { this.state.alertPresent = false } },
+            ])
+        }
     }
 
     _dispatch(action) {
@@ -47,12 +61,12 @@ export class Connection {
 
     requestApi = async (typeApi, uri, body, isFormData, timeout, firebaseToken) => {
 
-        await NetInfo.fetch().then(state => {
-            if (!state.isConnected) {
-                window.myalert.show({ title: "Thiết bị không có kết nối Internet!" })
-                return undefined
-            }
-        });
+        // await NetInfo.fetch().then(state => {
+        //     if (!state.isConnected) {
+        //         window.myalert.show({ title: "Thiết bị không có kết nối Internet!" })
+        //         return undefined
+        //     }
+        // });
 
         let token = this._store.getState().authReducer.accessToken;
         let tokenDecode = token === '' ? null : jwtDecode(token);
@@ -116,7 +130,7 @@ export class Connection {
                 console.log("RES IN API OF " + uri + " :::::::::::>", res)
                 if (!res.data) return undefined
                 if (res.data.errorCode) {
-                    Alert.alert("Lỗi", res.data.errorMessage)
+                    this._showErrorAlert(res.data.errorMessage)
                     return 0
                 }
                 return {
@@ -128,26 +142,24 @@ export class Connection {
                 console.log("ERROR IN API OF " + uri + " :::::::::::>", error)
                 if (error.response) {
                     if (error.response?.data?.statusCode == 401) {
-                        if (token) Alert.alert("Lỗi", "Phiên đăng nhập hết hạn hoặc mật khẩu đã bị đổi ở thiết bị khác!")
-                        else Alert.alert("Lỗi", error.response?.data?.message)
+                        if (token) this._showErrorAlert("Phiên đăng nhập hết hạn hoặc mật khẩu đã bị đổi ở thiết bị khác!")
+                        else this._showErrorAlert(error.response?.data?.message)
                         this._dispatch(removeUser())
                         NavigationUtils.resetGlobalStackWithScreen(undefined, ScreenName.Authentication)
                         return undefined
                     }
 
                     if (error.response?.data?.message) {
-                        console.log(error)
                         if (Array.isArray(error.response?.data?.message))
-                            Alert.alert("Lỗi", error.response.data.message[0])
+                            this._showErrorAlert(error.response.data.message[0])
                         else
-                            Alert.alert("Lỗi", error.response.data.message)
+                            this._showErrorAlert(error.response.data.message)
                     }
                 } else if (error.request) {
-                    Alert.alert("Lỗi", JSON.stringify(error.request.toString()))
+                    this._showErrorAlert(error.request._response)
                 } else {
                     // Something happened in setting up the request that triggered an Error
-                    Alert.alert("Lỗi", "Lỗi không xác định")
-                    console.log('Error', error.message);
+                    this._showErrorAlert("Lỗi không xác định")
                 }
             })
     }

@@ -1,18 +1,12 @@
 import { IText } from "@components";
 import { Color } from "@styles"
-import React, { useEffect } from "react"
-import { Dimensions, StyleSheet, TouchableOpacity, View } from "react-native"
+import React, { useCallback, useEffect, useState } from "react"
+import { Dimensions, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native"
 import { Table, Row, Rows, Cols, TableWrapper, Col } from 'react-native-table-component';
 import { TableKenoNumber } from "../component/TableKenoNumber";
-const lottColor = Color.keno
-const borderColor = '#BEBCBA'
 
-const tableData = [
-    ['02', '6'],
-    ['14', '5'],
-    ['16', '5'],
-    ['19', '4']
-]
+const lottColor = Color.keno
+
 const KenoNumberStatistical = React.memo(({ navigation }: any) => {
     return (
         <ExpensiveRerender navigation={navigation} />
@@ -22,44 +16,37 @@ export default KenoNumberStatistical
 
 const ExpensiveRerender = React.memo(({ navigation }: any) => {
 
-    // const element = (data: any, index: number) => (
-    //     <TouchableOpacity onPress={() => this._alertIndex(index)}>
-    //         <View style={styles.btn}>
-    //             <IText style={styles.btnText}>button</IText>
-    //         </View>
-    //     </TouchableOpacity>
-    // );
+    const [numbers, setNumbers] = useState<number[]>([])
+
+    const onChangeNumber = useCallback((data: number[]) => {
+        setNumbers(data)
+    }, [])
 
     return (
-        <View style={{ flex: 1, flexDirection: 'row', marginTop: 10 }}>
-           <TableKenoNumber title={["Nhiều nhất"]}/>
+        <View style={{ flex: 1, marginTop: 10 }}>
+            <ScrollView showsVerticalScrollIndicator={false}>
+                <View style={{ flex: 1, flexDirection: 'row' }}>
+                    <TableKenoNumber title={["Nhiều nhất"]} numbers={numbers} onChangeNumber={onChangeNumber} />
+                    <View style={{ width: 16 }} />
+                    <TableKenoNumber title={["Ít nhất"]} numbers={numbers} onChangeNumber={onChangeNumber} />
+                </View>
 
-            <View style={{ width: 16 }} />
+                <View style={{ height: 8 }} />
 
-            <View style={{ flex: 1 }}>
-                <Table borderStyle={{ borderWidth: 1, borderColor: 'black' }}>
-                    <Row data={["Ít nhất"]} style={styles.head} textStyle={styles.textHead} />
-                    <Rows data={tableData} textStyle={styles.textData} />
-                </Table>
-            </View>
+                <View style={{ flex: 1, flexDirection: 'row' }}>
+                    <TableKenoNumber title={["Chưa về"]} numbers={numbers} onChangeNumber={onChangeNumber} />
+                    <View style={{ width: 16 }} />
+                    <TableKenoNumber title={["Về liên tiếp"]} numbers={numbers} onChangeNumber={onChangeNumber} />
+                </View>
+
+                <View style={{ height: 20 }} />
+
+            </ScrollView>
         </View>
     )
 })
 
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
-
-// const widthArr = Array(colData.length).fill((windowWidth - 32) / 6)
-// const widthArrHeader = Array(6).fill((windowWidth - 32) / 6)
-// const heightArr = Array(tableData.length).fill(26)
-
 const styles = StyleSheet.create({
     //table style: 
-    head: { height: 40, backgroundColor: lottColor },
-    textHead: { color: Color.white, alignSelf: 'center', textAlign: 'center' },
-    textData: { color: lottColor, alignSelf: 'center', textAlign: 'center' },
 
-    wraper: { flexDirection: 'row' },
-    btn: { width: 58, height: 18, backgroundColor: '#78B7BB', borderRadius: 2 },
-    btnText: { textAlign: 'center', color: '#fff' }
 })

@@ -35,10 +35,17 @@ const getStatusName: any = {
         label: 'Đã trả thưởng',
         borderColor: Color.white,
         bgColor: Color.luckyKing
+    },
+    RETURNED: {
+        label: 'Đã hoàn vé',
+        borderColor: Color.white,
+        bgColor: Color.gray
     }
 }
 
 export const LotteryBasicItem = React.memo(({ lottery, tab, navigation }: LotteryItem) => {
+
+    console.log(lottery.status)
 
     const numberDetail = lottery.NumberLottery.numberDetail as INumberDetail[]
 

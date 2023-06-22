@@ -123,9 +123,11 @@ const Wiget = forwardRef(({ currentChoose, onChoose }: ChooseTypeSheetProps, ref
     }
 
     const loadMore = useCallback(async () => {
-        const res = await lotteryApi.getScheduleKeno({ skip: listDraw.length, take: 20 })
-        if (res) dispatch(loadMoreKenoDraw(res.data))
-    }, [listDraw])
+        if (isOpen) {
+            const res = await lotteryApi.getScheduleKeno({ skip: listDraw.length, take: 20 })
+            if (res) dispatch(loadMoreKenoDraw(res.data))
+        }
+    }, [listDraw, isOpen])
 
     return (
         <BottomSheet
