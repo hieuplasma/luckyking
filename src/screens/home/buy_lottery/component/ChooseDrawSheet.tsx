@@ -145,7 +145,7 @@ export const ChooseDrawSheet = React.memo(ChooseDrawSheetComponent);
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
-const SHEET_HEIGHT = 415
+const SHEET_HEIGHT = 380
 const BACKGROUND_OPACITY = 0.85
 
 const styles = StyleSheet.create({

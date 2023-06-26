@@ -7,7 +7,6 @@ import { getColorLott, printDraw } from '@utils';
 import { LotteryType } from '@common';
 import { IText } from '@components';
 import { useDispatch, useSelector } from 'react-redux';
-import { ScrollView } from 'react-native-gesture-handler';
 import { lotteryApi } from '@api';
 import { loadMoreKenoDraw } from '@redux';
 
@@ -23,6 +22,21 @@ const Wiget = forwardRef(({ currentChoose, onChoose }: ChooseTypeSheetProps, ref
     const bottomSheetRef = useRef<BottomSheet>(null);
     const listDraw = useSelector((state: any) => state.drawReducer.kenoListDraw)
 
+    const [displayListDraw, setDisplayListDraw] = useState(listDraw)
+    const [pickRow, setPickRow] = useState(true)
+
+    useEffect(() => {
+        if (listDraw.length == 0) return setDisplayListDraw([])
+        let tmp = [...displayListDraw]
+        if (listDraw.length > tmp.length) setDisplayListDraw(listDraw)
+        else {
+            if (tmp[0]?.drawCode != listDraw[0]?.drawCode) {
+                tmp.splice(0, 1)
+                setDisplayListDraw(tmp)
+            }
+        }
+    }, [listDraw])
+
     const dispatch = useDispatch()
 
     const specificInclude = useCallback((array: any, element: any) => {
@@ -33,29 +47,71 @@ const Wiget = forwardRef(({ currentChoose, onChoose }: ChooseTypeSheetProps, ref
     }, [])
 
     useEffect(() => {
-        if (listDraw.length == 0) return setCurrentDraw([])
+        if (displayListDraw.length == 0) return setCurrentDraw([])
         let tmp = [...currentDraw]
         for (let i = 0; i < currentDraw.length; i++) {
-            if (!specificInclude(listDraw, currentDraw[i]))
+            if (!specificInclude(displayListDraw, currentDraw[i]))
                 tmp.splice(i, 1)
         }
-        if (tmp.length == 0) tmp = [listDraw[0]]
+        if (tmp.length == 0) tmp = [displayListDraw[0]]
         setCurrentDraw(tmp)
-    }, [listDraw])
+    }, [displayListDraw])
 
     const [currentDraw, setCurrentDraw] = useState(currentChoose)
 
-    const changeDraw = (item: any) => {
-        const newList = [...currentDraw]
+    const changeDraw = useCallback((item: any) => {
+        let newList = [...currentDraw]
         if (specificInclude(newList, item)) {
             if (newList.length > 1) {
                 const index = newList.indexOf(item)
                 newList.splice(index, 1)
             }
         }
-        else newList.push(item)
+        else {
+            if (pickRow) {
+                let minDraw = item.drawCode
+                let maxDraw = item.drawCode
+                for (const element of currentDraw) {
+                    if (element.drawCode < minDraw) minDraw = element.drawCode
+                    if (element.drawCode > maxDraw) maxDraw = element.drawCode
+                }
+
+                newList = []
+                for (const element of displayListDraw) {
+                    if (element.drawCode < minDraw) continue;
+                    if (element.drawCode >= minDraw && element.drawCode <= maxDraw) {
+                        newList.push(element)
+                    }
+                    if (element.drawCode > maxDraw) break;
+                }
+            }
+            else newList.push(item)
+        }
         setCurrentDraw(newList)
-    }
+    }, [currentDraw, pickRow, displayListDraw])
+
+    const togglePickRow = useCallback(() => {
+        if (!pickRow) {
+            let minDraw = currentDraw[0].drawCode
+            let maxDraw = currentDraw[0].drawCode
+            for (const element of currentDraw) {
+                if (element.drawCode < minDraw) minDraw = element.drawCode
+                if (element.drawCode > maxDraw) maxDraw = element.drawCode
+            }
+
+            let newList = []
+            for (const element of displayListDraw) {
+                if (element.drawCode < minDraw) continue;
+                if (element.drawCode >= minDraw && element.drawCode <= maxDraw) {
+                    newList.push(element)
+                }
+                if (element.drawCode > maxDraw) break;
+            }
+
+            setCurrentDraw(newList)
+        }
+        setPickRow(!pickRow)
+    }, [pickRow, currentDraw, displayListDraw])
 
     useImperativeHandle(ref, () => ({
         openSheet: onOpen,
@@ -122,12 +178,16 @@ const Wiget = forwardRef(({ currentChoose, onChoose }: ChooseTypeSheetProps, ref
         )
     }
 
+    const [loading, setLoading] = useState(false)
     const loadMore = useCallback(async () => {
         if (isOpen) {
-            const res = await lotteryApi.getScheduleKeno({ skip: listDraw.length, take: 20 })
-            if (res) dispatch(loadMoreKenoDraw(res.data))
+            setLoading(true)
+            const res = await lotteryApi.getScheduleKeno({ skip: displayListDraw.length, take: 20 })
+            if (res) setDisplayListDraw([...displayListDraw.concat(res.data)])
+            // if (res) dispatch(loadMoreKenoDraw(res.data))
+            setLoading(false)
         }
-    }, [listDraw, isOpen])
+    }, [displayListDraw, isOpen])
 
     return (
         <BottomSheet
@@ -145,19 +205,35 @@ const Wiget = forwardRef(({ currentChoose, onChoose }: ChooseTypeSheetProps, ref
         >
             <View style={{ flex: 1 }}>
                 <IText style={{ fontSize: 18, color: Color.black, alignSelf: 'center', fontWeight: 'bold' }}>{"Chọn kì quay"}</IText>
-                <FlatList
-                    style={{ paddingHorizontal: 24, paddingVertical: 6, flex: 1 }}
-                    data={listDraw}
-                    extraData={listDraw}
-                    keyExtractor={(item, index) => item.id}
-                    renderItem={({ item, index }) => renderItem(item)}
-                    ListFooterComponent={<View style={{ height: 100, justifyContent: 'center', alignItems: 'center' }}>
-                        <ActivityIndicator size='small' />
-                    </View>}
-                    onEndReached={loadMore}
-                    onEndReachedThreshold={0.5}
-                    maxToRenderPerBatch={10}
-                />
+                <View style={{ flex: 1, flexDirection: 'row', paddingHorizontal: 24, paddingVertical: 6, }}>
+                    <FlatList
+                        style={{ flex: 1 }}
+                        data={displayListDraw}
+                        extraData={displayListDraw}
+                        keyExtractor={(item, index) => item.id}
+                        renderItem={({ item, index }) => renderItem(item)}
+                        ListFooterComponent={<View style={{ height: 100, justifyContent: 'center', alignItems: 'center' }}>
+                            {loading ? <ActivityIndicator size='small' /> : <></>}
+                        </View>}
+                        onEndReached={loadMore}
+                        onEndReachedThreshold={0.5}
+                        maxToRenderPerBatch={10}
+                        showsVerticalScrollIndicator={false}
+                    />
+                    <View style={{ justifyContent: 'center' }}>
+                        <TouchableOpacity activeOpacity={0.4} style={styles.item} onPress={togglePickRow}>
+                            <Image
+                                source={pickRow ? Images.checked_box : Images.check_box}
+                                style={{ width: 24, height: 24 }}
+                                tintColor={pickRow ? lottColor : '#130F26'}
+                            />
+                            <IText style={{ fontSize: 14, marginLeft: 12, color: Color.black }}>
+                                {'Liên tiếp'}
+                            </IText>
+                        </TouchableOpacity>
+                    </View>
+
+                </View>
                 <TouchableOpacity style={[styles.confirmButton, { backgroundColor: lottColor }]} onPress={() => choosing(currentDraw)}>
                     <IText style={styles.textConfirm}>{`Xác nhận`.toUpperCase()}</IText>
                 </TouchableOpacity>
@@ -183,7 +259,10 @@ const styles = StyleSheet.create({
         right: 0,
         bottom: 0,
     },
-    item: { alignItems: 'center', width: '100%', flexDirection: 'row', marginVertical: 6 },
+    item: {
+        alignItems: 'center',
+        flexDirection: 'row', marginVertical: 6
+    },
     confirmButton: {
         margin: 16, backgroundColor: Color.power, borderRadius: 10,
         justifyContent: 'center', alignItems: 'center',
