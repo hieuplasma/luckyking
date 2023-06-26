@@ -110,7 +110,7 @@ export const BankWithdrawScreen = () => {
 
     return (
         <View style={styles.container}>
-            <BasicHeader navigation={navigation} title={"Đổi thưởng về TK đặt vé"} />
+            <BasicHeader navigation={navigation} title={"Đổi thưởng về TK ngân hàng"} />
 
             <KeyboardAvoidingView keyboardVerticalOffset={height + 45} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
                 style={{ flex: 1 }}>

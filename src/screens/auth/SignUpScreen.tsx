@@ -2,13 +2,7 @@ import { useSignup } from '@hooks';
 import { AuthenticationStackParamList, ScreenName } from '@navigation';
 import { RouteProp, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import {
-  InputComponent,
-  Label,
-  ShadowView,
-  translate,
-  useBase,
-} from '@shared';
+import { InputComponent, Label, ShadowView, translate, useBase } from '@shared';
 import { Color, Style } from '@styles';
 import { Button } from '@widgets';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -16,11 +10,15 @@ import { Alert, KeyboardAvoidingView, Platform, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import auth from '@react-native-firebase/auth';
 import DeviceInfo from 'react-native-device-info';
-import { NavigationUtils, doNotExits } from '@utils';
+import { NavigationUtils, doNotExits, isVietnamesePhoneNumber } from '@utils';
 import { Icon } from '@assets';
-import { useHeaderHeight } from '@react-navigation/elements'
+import { useHeaderHeight } from '@react-navigation/elements';
+import { authApi } from '@api';
 
-type NavigationProp = StackNavigationProp<AuthenticationStackParamList, 'SignUp'>;
+type NavigationProp = StackNavigationProp<
+  AuthenticationStackParamList,
+  'SignUp'
+>;
 type NavigationRoute = RouteProp<AuthenticationStackParamList, 'SignUp'>;
 
 export interface SignUpScreenRouteParams { }
@@ -28,8 +26,7 @@ export interface SignUpScreenRouteParams { }
 export interface SignUpScreenProps { }
 
 export const SignUpScreen = React.memo((props?: SignUpScreenProps) => {
-
-  const height = useHeaderHeight()
+  const height = useHeaderHeight();
   const navigation = useNavigation<NavigationProp>();
   const safeAreaInsets = useSafeAreaInsets();
   const [password, setPassword] = useState<string | undefined>(undefined);
@@ -42,7 +39,9 @@ export const SignUpScreen = React.memo((props?: SignUpScreenProps) => {
       phonenumber?: string;
       password?: string;
       repeatpassword?: string;
-    } | undefined>(undefined);
+    }
+    | undefined
+  >(undefined);
   const { isLoading, setLoading } = useBase();
 
   const onChangePhoneNumber = useCallback((phoneNumber?: string) => {
@@ -58,15 +57,34 @@ export const SignUpScreen = React.memo((props?: SignUpScreenProps) => {
 
   const onSignupClick = async () => {
     if (doNotExits(phoneNumber))
-      return (Alert.alert("Lỗi", "Bạn chưa nhập số điện thoại"))
+      return Alert.alert('Lỗi', 'Bạn chưa nhập số điện thoại');
+    if (!isVietnamesePhoneNumber(phoneNumber))
+      return Alert.alert('Lỗi', 'Vui lòng nhập số điện thoại Việt Nam hợp lệ!');
     if (doNotExits(password))
-      return (Alert.alert("Lỗi", "Bạn chưa nhập mật khẩu"))
+      return Alert.alert('Lỗi', 'Bạn chưa nhập mật khẩu');
     if (password != repeatPassword)
-      return (Alert.alert("Lỗi", "Mật khẩu và mật khẩu xác nhận phải giống nhau"))
-    NavigationUtils.navigate(navigation, ScreenName.Authentications.VerifyOTP, {
-      phoneNumber: phoneNumber, password: password, type: 'signUp'
-    });
-  }
+      return Alert.alert(
+        'Lỗi',
+        'Mật khẩu và mật khẩu xác nhận phải giống nhau',
+      );
+
+    window.loadingIndicator.show()
+    const res = await authApi.checkPhoneNumber({ phoneNumber: phoneNumber })
+    window.loadingIndicator.hide()
+    if (res) {
+      if (res.data.registered) {
+        return Alert.alert('Lỗi', 'Số điện thoại này đã được đăng ký!');
+      }
+      else {
+        NavigationUtils.navigate(navigation, ScreenName.Authentications.VerifyOTP, {
+          phoneNumber: phoneNumber,
+          password: password,
+          type: 'signUp',
+        });
+      }
+    }
+
+  };
 
   const onGoBack = useCallback(() => {
     navigation.goBack();
@@ -138,7 +156,9 @@ export const SignUpScreen = React.memo((props?: SignUpScreenProps) => {
   }, [onSignupClick, isLoading]);
 
   return (
-    <KeyboardAvoidingView keyboardVerticalOffset={height + 45} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    <KeyboardAvoidingView
+      keyboardVerticalOffset={height + 45}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={[
         Style.Size.MatchParent,
         Style.Background.Red,

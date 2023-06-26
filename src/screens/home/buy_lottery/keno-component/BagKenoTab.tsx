@@ -182,7 +182,7 @@ export const BagKenoTab = React.memo(({ showBottomSheet, navigation }: Props) =>
             </View>
 
             <IText style={{ marginHorizontal: 16, fontSize: 16 }}>
-                {"Có tổng cổng "}
+                {"Có tổng cộng "}
                 <IText style={{ fontWeight: 'bold', fontSize: 16 }}>{generated.length}</IText>
                 <IText style={{ fontSize: 16 }}>{" bộ số sẽ được tạo:"}</IText>
             </IText>

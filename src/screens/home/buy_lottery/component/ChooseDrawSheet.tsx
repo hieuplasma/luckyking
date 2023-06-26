@@ -26,26 +26,26 @@ const ChooseDrawSheetComponent = forwardRef(({ currentChoose, onChoose, listDraw
         closeSheet: onClose
     }));
 
-    useEffect(() => {
-        // console.log('ChooseDrawSheet has been re-rendered, ');
-    });
-
     const choosing = (type: any) => {
         onClose()
         onChoose(type);
     }
 
-    const changeDraw = (item: any) => {
+    const changeDraw = useCallback((item: any) => {
         const newList = [...currentDraw]
         if (newList.includes(item)) {
-            if (newList.length > 0) {
+            if (newList.length > 1) {
                 const index = newList.indexOf(item)
                 newList.splice(index, 1)
             }
         }
         else newList.push(item)
         setCurrentDraw(newList)
-    }
+    }, [currentDraw])
+
+    const selectAll = useCallback(() => {
+        setCurrentDraw(listDraw)
+    }, [listDraw])
 
     const [opacity, setOpacity] = useState(new Animated.Value(0))
     const [isOpen, setIsOpen] = useState(false)
@@ -102,22 +102,36 @@ const ChooseDrawSheetComponent = forwardRef(({ currentChoose, onChoose, listDraw
             backgroundStyle={styles.sheetContainer}
         >
             <View style={{ flex: 1 }}>
-                <IText style={{ fontSize: 18, color: Color.black, alignSelf: 'center', fontWeight: 'bold' }}>{"Chọn kì quay"}</IText>
-                <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', paddingHorizontal: 24, paddingVertical: 6, flex: 1 }}>
-                    {listDraw.map((item: any, index: number) => {
-                        return (
-                            <TouchableOpacity activeOpacity={0.4} key={index} style={styles.item} onPress={() => changeDraw(item)}>
-                                <Image
-                                    source={currentDraw.includes(item) ? Images.checked_box : Images.check_box}
-                                    style={{ width: 24, height: 24 }}
-                                    tintColor={currentDraw.includes(item) ? lottColor : '#130F26'}
-                                />
-                                <IText style={{ fontSize: 14, marginLeft: 18, color: Color.black }}>
-                                    {`${printDraw(item)}`}
-                                </IText>
-                            </TouchableOpacity>
-                        )
-                    })}
+                <IText style={styles.titleSheet}>{"Chọn kì quay"}</IText>
+                <View style={{ flexDirection: 'row', flex: 1, paddingHorizontal: 24, paddingVertical: 6 }}>
+                    <View style={styles.listDrawContainer}>
+                        {listDraw.map((item: any, index: number) => {
+                            return (
+                                <TouchableOpacity activeOpacity={0.4} key={index} style={styles.item} onPress={() => changeDraw(item)}>
+                                    <Image
+                                        source={currentDraw.includes(item) ? Images.checked_box : Images.check_box}
+                                        style={{ width: 24, height: 24 }}
+                                        tintColor={currentDraw.includes(item) ? lottColor : '#130F26'}
+                                    />
+                                    <IText style={{ fontSize: 14, marginLeft: 18, color: Color.black }}>
+                                        {`${printDraw(item)}`}
+                                    </IText>
+                                </TouchableOpacity>
+                            )
+                        })}
+                    </View>
+                    <View style={{ justifyContent: 'center' }}>
+                        <TouchableOpacity activeOpacity={0.4} style={styles.item} onPress={selectAll}>
+                            <Image
+                                source={currentDraw.length == listDraw.length ? Images.checked_box : Images.check_box}
+                                style={{ width: 24, height: 24 }}
+                                tintColor={currentDraw.length == listDraw.length ? lottColor : '#130F26'}
+                            />
+                            <IText style={{ fontSize: 14, marginLeft: 12, color: Color.black }}>
+                                {'Chọn hết'}
+                            </IText>
+                        </TouchableOpacity>
+                    </View>
                 </View>
                 <TouchableOpacity style={[styles.confirmButton, { backgroundColor: lottColor }]} onPress={() => choosing(currentDraw)}>
                     <IText style={styles.textConfirm}>{`Xác nhận`.toUpperCase()}</IText>
@@ -144,7 +158,21 @@ const styles = StyleSheet.create({
         right: 0,
         bottom: 0,
     },
-    item: { alignItems: 'center', width: '100%', flexDirection: 'row', marginVertical: 6 },
+    item: {
+        alignItems: 'center',
+        flexDirection: 'row', marginVertical: 6
+    },
+    listDrawContainer: {
+        flex: 1,
+        // flexDirection: 'row', flexWrap: 'wrap',
+        justifyContent: 'center',
+        // backgroundColor:'blue',
+    },
+    titleSheet: {
+        fontSize: 18,
+        color: Color.black, alignSelf: 'center',
+        fontWeight: 'bold'
+    },
     confirmButton: {
         margin: 16, backgroundColor: Color.power, borderRadius: 10,
         justifyContent: 'center', alignItems: 'center',

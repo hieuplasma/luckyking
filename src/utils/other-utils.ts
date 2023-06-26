@@ -54,3 +54,8 @@ export function getSplitCharater(param: LotteryType) {
         default: return "-"
     }
 }
+
+export function isVietnamesePhoneNumber(number?: string) {
+    if (!number) return false
+    return /((^(\+84|84|0|0084){1})(3|5|7|8|9))+([0-9]{8})$/.test(number);
+  }

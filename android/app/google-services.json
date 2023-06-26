@@ -1,10 +1,48 @@
 {
   "project_info": {
     "project_number": "854352751535",
+    "firebase_url": "https://luckyking-development-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "luckyking-development",
     "storage_bucket": "luckyking-development.appspot.com"
   },
   "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:854352751535:android:78fa7496b6a50a985ddd5a",
+        "android_client_info": {
+          "package_name": "com.abc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "854352751535-3atb2p4hktc4khkl0dcgni11vbrsvlbn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyApQOmlJ3P2_njbdnNwIVAUsWxsVsuJWlM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "854352751535-3atb2p4hktc4khkl0dcgni11vbrsvlbn.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "854352751535-3pabgsadjdu712ihd20facorpu5rho47.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "vn.vietpointer.luckyking",
+                "app_store_id": "6446798973"
+              }
+            }
+          ]
+        }
+      }
+    },
     {
       "client_info": {
         "mobilesdk_app_id": "1:854352751535:android:a76ae8702175fcbf5ddd5a",
@@ -13,6 +51,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "854352751535-j9516l0e1vclbktean36493562db553e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.luckyking_app_react",
+            "certificate_hash": "866ef9ec42959bc4e8c4b014fb8909d421b603ea"
+          }
+        },
         {
           "client_id": "854352751535-qlaivphn0b16pl0b170i85k0gjhfa59c.apps.googleusercontent.com",
           "client_type": 1,
@@ -39,10 +85,48 @@
               "client_type": 3
             },
             {
-              "client_id": "854352751535-k5j16orgoe6kqrffrjfbu8i4e38a1289.apps.googleusercontent.com",
+              "client_id": "854352751535-3pabgsadjdu712ihd20facorpu5rho47.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "vn.vietpointer.luckyking"
+                "bundle_id": "vn.vietpointer.luckyking",
+                "app_store_id": "6446798973"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:854352751535:android:c50640772d8416da5ddd5a",
+        "android_client_info": {
+          "package_name": "com.selllottery"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "854352751535-3atb2p4hktc4khkl0dcgni11vbrsvlbn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyApQOmlJ3P2_njbdnNwIVAUsWxsVsuJWlM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "854352751535-3atb2p4hktc4khkl0dcgni11vbrsvlbn.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "854352751535-3pabgsadjdu712ihd20facorpu5rho47.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "vn.vietpointer.luckyking",
+                "app_store_id": "6446798973"
               }
             }
           ]
