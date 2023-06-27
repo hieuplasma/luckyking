@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { lotteryApi } from "@api";
 import { ChooseDrawSheet } from "./component/ChooseDrawSheet";
 import { ChooseNumberSheet } from "./power-mega-component/ChooseNumberSheet";
-import { DELAY_SCREEN, LotteryType, MAX_SET, MEGA_NUMBER, OrderStatus } from "@common";
+import { BTN_LABEL, DELAY_SCREEN, ERR_MES, LotteryType, MAX_SET, MEGA_NUMBER, OrderStatus, SUCCESS_MES } from "@common";
 import { addLottery } from "@redux";
 import { ConsolasText, HeaderBuyLottery, IText } from "@components";
 import { ViewAbove } from "./component/ViewAbove";
@@ -130,7 +130,7 @@ export const MegaScreen = React.memo((props: any) => {
         setNumbers(currentNumber)
     }
 
-    const bookLottery = async () => {
+    const createBody = (status: OrderStatus) => {
         const currentNumber = [...numberSet]
         let drawCodes: any = []
         let drawTimes: any = []
@@ -148,10 +148,13 @@ export const MegaScreen = React.memo((props: any) => {
             }
         }
         if (numbers.length == 0) {
-            return Alert.alert("Thông báo", "Bạn chưa chọn bộ số nào")
+            // return Alert.alert("Thông báo", "Bạn chưa chọn bộ số nào")
+            window.myalert.show({ title: ERR_MES.NONE_NUMBER, btnLabel: BTN_LABEL.UNDERSTOOD })
+            return undefined
         }
         if (drawSelected.length <= 0) {
-            return window.myalert.show({ title: 'Kỳ quay không hợp lệ', btnLabel: "Đã hiểu" })
+            window.myalert.show({ title: ERR_MES.INVALID_DRAW, btnLabel: BTN_LABEL.UNDERSTOOD })
+            return undefined
         }
         drawSelected.map((item: any) => {
             drawCodes.push(item.drawCode)
@@ -161,58 +164,30 @@ export const MegaScreen = React.memo((props: any) => {
         let body: any = {
             lotteryType: LotteryType.Mega,
             amount: total,
-            status: OrderStatus.PENDING,
+            status: status,
             level: typePlay.value,
             drawCode: drawCodes,
             drawTime: drawTimes,
             numbers: numbers,
             bets: bets
         }
+
+        return body
+    }
+
+    const bookLottery = async () => {
+        const body = createBody(OrderStatus.PENDING)
+        if (!body) return 0
         NavigationUtils.navigate(navigation, ScreenName.HomeChild.OrderScreen, { body: body })
     }
 
     const addToCart = async () => {
-        const currentNumber = [...numberSet]
-        let drawCodes: any = []
-        let drawTimes: any = []
-        let numbers: string[] = []
-        let bets: number[] = []
-        for (let i = 0; i < currentNumber.length; i++) {
-            let tmp = ""
-            if (currentNumber[i][0] !== false) {
-                currentNumber[i].map((item: number, index: number) => {
-                    if (index == 0) tmp = tmp + item
-                    else tmp = tmp + "-" + item
-                })
-                numbers.push(tmp)
-                bets.push(10000 * convolutions(MAX_SET, currentNumber[i].length, LotteryType.Mega))
-            }
-        }
-        if (numbers.length == 0) {
-            return Alert.alert("Thông báo", "Bạn chưa chọn bộ số nào")
-        }
-        if (drawSelected.length <= 0) {
-            return window.myalert.show({ title: 'Kỳ quay không hợp lệ', btnLabel: "Đã hiểu" })
-        }
-        drawSelected.map((item: any) => {
-            drawCodes.push(item.drawCode)
-            drawTimes.push(item.drawTime)
-        })
-        let body: any = {
-            lotteryType: LotteryType.Mega,
-            amount: totalCost,
-            status: OrderStatus.CART,
-            level: typePlay.value,
-            drawCode: drawCodes,
-            drawTime: drawTimes,
-            numbers: numbers,
-            bets: bets
-        }
+        const body = createBody(OrderStatus.CART)
+        if (!body) return 0
         window.loadingIndicator.show()
         const res = await lotteryApi.addPowerMegaToCart(body)
-        // console.log(res)
         if (res) {
-            Alert.alert("Thành công", "Đã thêm vé vào giỏ hàng!")
+            window.myalert.show({ title: SUCCESS_MES.CARTED_LOTTEY, btnLabel: "OK", alertType: 'success' })
             refreshChoosing()
             dispatch(addLottery(res.data))
         }

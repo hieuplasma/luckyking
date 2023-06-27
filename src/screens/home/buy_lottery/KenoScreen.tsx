@@ -1,21 +1,19 @@
-import { lotteryApi } from '@api';
 import { DELAY_SCREEN, DELAY_TAB, LotteryType } from '@common';
 import { HeaderBuyLottery, IText } from '@components';
 import { HomeStackParamList } from '@navigation';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { RouteProp, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Color } from '@styles';
 import { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, View, Dimensions, TouchableOpacity } from 'react-native';
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useDispatch } from 'react-redux';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { getColorLott } from '@utils';
 import { SimpleKenoTab } from './keno-component/SimpleKenoTab';
 import { BagKenoTab } from './keno-component/BagKenoTab';
 import { NurturingKenoTab } from './keno-component/NurturingKenoTab';
 
 type NavigationProp = StackNavigationProp<HomeStackParamList, 'KenoScreen'>;
-type NavigationRoute = RouteProp<HomeStackParamList, 'KenoScreen'>;
+// type NavigationRoute = RouteProp<HomeStackParamList, 'KenoScreen'>;
 
 export interface KenoScreenParamsList { }
 
@@ -28,9 +26,6 @@ const types = [
 
 export const KenoScreen = () => {
     const navigation = useNavigation<NavigationProp>();
-    const route = useRoute<NavigationRoute>();
-    const safeAreaInsets = useSafeAreaInsets();
-    const dispatch = useDispatch()
 
     const [type, setType] = useState(types[0])
 

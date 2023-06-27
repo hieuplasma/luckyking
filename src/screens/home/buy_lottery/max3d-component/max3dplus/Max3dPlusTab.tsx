@@ -1,5 +1,5 @@
 import { Image, Images } from "@assets";
-import { LotteryType, MAX3D_NUMBER, MAX_SET, MAX_SET_MAX3D, OrderMethod, OrderStatus } from "@common";
+import { BTN_LABEL, ERR_MES, LotteryType, MAX3D_NUMBER, MAX_SET, MAX_SET_MAX3D, OrderMethod, OrderStatus, SUCCESS_MES } from "@common";
 import { ConsolasText, IText } from "@components";
 import { Color } from "@styles";
 import { NavigationUtils, calSurcharge, printMoneyK } from "@utils";
@@ -228,12 +228,13 @@ export const Max3dPlusTab = React.memo((props: Props) => {
         )
     }, [chooseNumberRef, numberFake, pageNumber])
 
-    const bookLottery = async () => {
+    const createBody = (status: OrderStatus) => {
         if (generated.length == 0) {
-            return Alert.alert("Thông báo", "Bạn chưa chọn bộ số nào")
+            window.myalert.show({ title: ERR_MES.NONE_NUMBER, btnLabel: BTN_LABEL.UNDERSTOOD })
+            return undefined
         }
         if (drawSelected.length <= 0) {
-            return window.myalert.show({ title: 'Kỳ quay không hợp lệ', btnLabel: "Đã hiểu" })
+            return window.myalert.show({ title: ERR_MES.INVALID_DRAW, btnLabel: BTN_LABEL.UNDERSTOOD })
         }
         let drawCodes: any = []
         let drawTimes: any = []
@@ -245,44 +246,30 @@ export const Max3dPlusTab = React.memo((props: Props) => {
         let body: any = {
             lotteryType: LotteryType.Max3DPlus,
             amount: total,
-            status: OrderStatus.PENDING,
+            status: status,
             level: typePlay.value,
             drawCode: drawCodes,
             drawTime: drawTimes,
             numbers: generated,
             bets: generatedBets
         }
+
+        return body
+    }
+
+    const bookLottery = async () => {
+        const body = createBody(OrderStatus.PENDING)
+        if (!body) return 0;
         NavigationUtils.navigate(props.navigation, ScreenName.HomeChild.OrderScreen, { body: body })
     }
 
     const addToCart = async () => {
-        if (generated.length == 0) {
-            return Alert.alert("Thông báo", "Bạn chưa chọn bộ số nào")
-        }
-        if (drawSelected.length <= 0) {
-            return window.myalert.show({ title: 'Kỳ quay không hợp lệ', btnLabel: "Đã hiểu" })
-        }
-        let drawCodes: any = []
-        let drawTimes: any = []
-        drawSelected.map((item: any) => {
-            drawCodes.push(item.drawCode)
-            drawTimes.push(item.drawTime)
-        })
-        const total = (typePlay.value != 7 && typePlay.value != 8) ? totalCost : totalCostBag
-        let body: any = {
-            lotteryType: LotteryType.Max3DPlus,
-            amount: total,
-            status: OrderStatus.CART,
-            level: typePlay.value,
-            drawCode: drawCodes,
-            drawTime: drawTimes,
-            numbers: generated,
-            bets: generatedBets
-        }
+        const body = createBody(OrderStatus.CART)
+        if (!body) return 0;
         window.loadingIndicator.show()
         const res = await lotteryApi.addMax3dToCart(body)
         if (res) {
-            window.myalert.show({ title: "Đã thêm vé vào giỏ hàng!", alertType: 'success' })
+            window.myalert.show({ title: SUCCESS_MES.CARTED_LOTTEY, btnLabel: "OK", alertType: 'success' })
             refreshChoosing()
             dispatch(addLottery(res.data))
         }

@@ -298,7 +298,7 @@ export function getLotteryName(param: LotteryType) {
         case LotteryType.Max3DPlus: return "Max3D+"
         case LotteryType.Max3DPro: return "Max3D Pro"
         case LotteryType.Power: return "Power"
-        case LotteryType.Mega: return "Mega+"
+        case LotteryType.Mega: return "Mega"
 
     }
 }

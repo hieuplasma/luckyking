@@ -1,6 +1,6 @@
 import { lotteryApi } from '@api';
 import { Icon, Images, Image } from '@assets';
-import { LotteryType, OrderMethod } from '@common';
+import { LotteryType, OrderMethod, SUCCESS_MES } from '@common';
 import { BasicHeader, ImageHeader, IText } from '@components';
 import { HomeStackParamList, ScreenName, WithdrawStackParamList } from '@navigation';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
@@ -72,7 +72,7 @@ export const OrderScreen = React.memo(() => {
             dispatch(updateUser({ luckykingBalance: luckykingBalance - tmp.surcharge - tmp.amount }))
             if (bodyPay.lotteryType == LotteryType.Cart) dispatch(removeCart())
             window.myalert.show({
-                title: 'Đã thanh toán mua vé thành công!',
+                title: SUCCESS_MES.BOOKED_LOTTEY,
                 btnLabel: "OK",
                 alertType: 'success',
                 onPress: () => {

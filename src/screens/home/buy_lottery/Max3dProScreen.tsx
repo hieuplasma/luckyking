@@ -1,11 +1,11 @@
 import { lotteryApi } from '@api';
 import { Image, Images } from '@assets';
-import { DELAY_SCREEN, LotteryType, MAX3D_NUMBER, MAX_SET, MAX_SET_MAX3D, OrderMethod, OrderStatus } from '@common';
-import { ConsolasText, HeaderBuyLottery, IText } from '@components';
+import { BTN_LABEL, DELAY_SCREEN, ERR_MES, LotteryType, MAX3D_NUMBER, MAX_SET, MAX_SET_MAX3D, OrderMethod, OrderStatus, SUCCESS_MES } from '@common';
+import { HeaderBuyLottery, IText } from '@components';
 import { HomeStackParamList, ScreenName } from '@navigation';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { addLottery, getMax3dProDraw } from '@redux';
+import { addLottery } from '@redux';
 import { Color } from '@styles';
 import { NavigationUtils, calSurcharge, printMoneyK } from '@utils';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -256,10 +256,13 @@ export const Max3dProScreen = () => {
 
     const createBody = (status: OrderStatus) => {
         if (generated.length == 0) {
-            return Alert.alert("Thông báo", "Bạn chưa chọn bộ số nào")
+            window.myalert.show({ title: ERR_MES.NONE_NUMBER, btnLabel: BTN_LABEL.UNDERSTOOD })
+            // Alert.alert("Thông báo", "Bạn chưa chọn bộ số nào")
+            return undefined
         }
         if (drawSelected.length <= 0) {
-            return window.myalert.show({ title: 'Kỳ quay không hợp lệ', btnLabel: "Đã hiểu" })
+            window.myalert.show({ title: ERR_MES.INVALID_DRAW, btnLabel: BTN_LABEL.UNDERSTOOD })
+            return undefined
         }
         let drawCodes: any = []
         let drawTimes: any = []
@@ -284,15 +287,17 @@ export const Max3dProScreen = () => {
 
     const bookLottery = async () => {
         const body = createBody(OrderStatus.PENDING)
+        if (!body) return
         NavigationUtils.navigate(navigation, ScreenName.HomeChild.OrderScreen, { body: body })
     }
 
     const addToCart = async () => {
         const body = createBody(OrderStatus.CART)
+        if (!body) return
         window.loadingIndicator.show()
         const res = await lotteryApi.addMax3dToCart(body)
         if (res) {
-            window.myalert.show({ title: "Đã thêm vé vào giỏ hàng!", alertType: 'success' })
+            window.myalert.show({ title: SUCCESS_MES.CARTED_LOTTEY, alertType: 'success' })
             refreshChoosing()
             dispatch(addLottery(res.data))
         }

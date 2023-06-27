@@ -100,7 +100,7 @@ export const BankRechargeScreen = () => {
                 <IText style={{ fontStyle: 'italic', marginTop: 8 }}>
                     {"Người thụ hưởng:"}
                 </IText>
-                <IText style={{ fontWeight: 'bold' }}>{"Công ty cổ phần giải trí đa phương tiện LuckyKing"}</IText>
+                <IText style={{ fontWeight: 'bold' }}>{"Công ty TNHH Giải trí số LuckyKing"}</IText>
 
                 <View style={styles.line} />
 

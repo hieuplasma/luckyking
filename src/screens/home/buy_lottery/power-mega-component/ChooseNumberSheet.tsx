@@ -48,14 +48,14 @@ const Wiget = forwardRef(({ onChoose, numberSet, page, type }: ChooseTypeSheetPr
         onChoose(currentNumbers)
     }
 
-    const totalSelected = () => {
+    const totalSelected = useCallback(() => {
         const curr = [...currentNumbers]
         let count = 0;
         for (let i = 0; i < curr[indexPage].length; i++) {
             if (curr[indexPage][i] !== false) count++
         }
         return count
-    }
+    }, [currentNumbers, indexPage])
 
     const changeNumber = useCallback((numbers: any) => {
         let curr = [...currentNumbers]
@@ -146,6 +146,7 @@ const Wiget = forwardRef(({ onChoose, numberSet, page, type }: ChooseTypeSheetPr
                     swiperRef={swiperRef}
                     totalSelected={totalSelected()}
                     currentLevel={currentLevel}
+                    lottColot={lottColor}
                 />
                 <View style={{ flex: 1, marginTop: 12 }}>
                     <SwiperFlatList

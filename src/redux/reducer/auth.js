@@ -2,6 +2,9 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
   accessToken: "",
+  remember: true,
+  userName: '',
+  password: ''
 }
 
 // Create Redux state slice

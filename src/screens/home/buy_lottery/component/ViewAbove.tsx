@@ -11,9 +11,10 @@ interface ViewAboveProps {
     drawSelected: any,
     openTypeSheet: () => void,
     openDrawSheet: () => void
+    disableChooseType?: boolean
 }
 
-export const ViewAbove = React.memo(({ typePlay, drawSelected, openTypeSheet, openDrawSheet }: ViewAboveProps) => {
+export const ViewAbove = React.memo(({ typePlay, drawSelected, openTypeSheet, openDrawSheet, disableChooseType }: ViewAboveProps) => {
 
     const luckykingBalance = useSelector((state: any) => state.userReducer.luckykingBalance);
 
@@ -35,9 +36,12 @@ export const ViewAbove = React.memo(({ typePlay, drawSelected, openTypeSheet, op
                 </IText>
             </View>
             <View style={{ flexDirection: 'row', paddingTop: 5, justifyContent: 'space-between' }}>
-                <TouchableOpacity activeOpacity={0.6} style={styles.dropDown} onPress={openTypeSheet}>
+                <TouchableOpacity activeOpacity={0.6} style={[styles.dropDown, { opacity: disableChooseType ? 0.6 : 1 }]} onPress={openTypeSheet}>
                     <IText style={{ fontSize: 13 }}>{typePlay}</IText>
-                    <Image source={Images.down_arrow} style={{ width: 12, height: 6 }}></Image>
+                    {
+                        disableChooseType ? <></>
+                            : <Image source={Images.down_arrow} style={{ width: 12, height: 6 }}></Image>
+                    }
                 </TouchableOpacity>
 
                 <TouchableOpacity activeOpacity={0.6} style={[styles.dropDown]} onPress={openDrawSheet}>

@@ -7,7 +7,7 @@ import { ChooseDrawKeno } from "./simple-tab/ChooseDrawKeno";
 import { TypeBagKenoSheet } from "./bag-tab/TypeBagKenoSheet";
 import { ViewFooterKeno } from "./simple-tab/ViewFooterKeno";
 import { RenderLineKenobag } from "./bag-tab/RenderLineKenoBag";
-import { KENO_NUMBER, LotteryType, OrderMethod, OrderStatus } from "@common";
+import { BTN_LABEL, ERR_MES, KENO_NUMBER, LotteryType, OrderMethod, OrderStatus } from "@common";
 import { NumberSheetKenoBag } from "./bag-tab/NumberSheetKenoBag";
 import { ConsolasText, IText } from "@components";
 import { NavigationUtils, generateUniqueStrings, printNumber, taoChuoiTuToHopChap } from "@utils";
@@ -137,10 +137,10 @@ export const BagKenoTab = React.memo(({ showBottomSheet, navigation }: Props) =>
         let drawCodes: any = []
         let drawTimes: any = []
         if (currentNumber.length == 0) {
-            return window.myalert.show({ title: 'Bạn chưa chọn bộ số nào', btnLabel: "Đã hiểu" })
+            return window.myalert.show({ title: ERR_MES.NONE_NUMBER, btnLabel: BTN_LABEL.UNDERSTOOD })
         }
         if (drawSelected.length <= 0) {
-            return window.myalert.show({ title: 'Kỳ quay không hợp lệ', btnLabel: "Đã hiểu" })
+            return window.myalert.show({ title: ERR_MES.INVALID_DRAW, btnLabel: BTN_LABEL.UNDERSTOOD })
         }
         currentNumber.map((item: any) => tmp.push(item.trim().replaceAll(" ", "-")))
         drawSelected.map((item: any) => {
@@ -203,7 +203,7 @@ export const BagKenoTab = React.memo(({ showBottomSheet, navigation }: Props) =>
                 </View>
             </ScrollView>
 
-            <TableKenoBag />
+            {/* <TableKenoBag /> */}
 
             <View style={{ paddingHorizontal: 16, marginBottom: 5, zIndex: -1 }}>
                 <ViewFooterKeno totalCost={totalCost} bookLottery={bookLottery} />

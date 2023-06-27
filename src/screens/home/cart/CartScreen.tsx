@@ -9,10 +9,10 @@ import { Color } from '@styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { lotteryApi } from '@api';
 import { getCart, removeCart, removeLottery, updateLottery } from '@redux';
-import { NavigationUtils, printMoney } from '@utils';
+import { NavigationUtils, getLotteryName, printMoney } from '@utils';
 import { ConsolasText, IText, LogoIcon, ModalConfirm } from '@components';
 import { RenderPowerMegaItem } from './RenderPowerMegaItem';
-import { LotteryType, OrderMethod } from '@common';
+import { CONFIRM_MES, ERR_MES, LotteryType, OrderMethod, SUCCESS_MES } from '@common';
 import { RenderMax3dItem } from './RenderMax3dItem';
 
 type NavigationProp = StackNavigationProp<HomeStackParamList, 'CartScreen'>;
@@ -60,7 +60,6 @@ export const CartScreen = React.memo(() => {
     }
 
     const [modal1, setModal1] = useState(false)
-    const [modal2, setModal2] = useState(false)
     const [modal3, setModal3] = useState(false)
 
     const [currItem, setCurrItem]: any = useState(null)
@@ -70,48 +69,32 @@ export const CartScreen = React.memo(() => {
         const res = await lotteryApi.deleteItemCart({ lotteryId: id })
         if (res) {
             dispatch(removeLottery({ lotteryId: id }))
-            Alert.alert("Đã xoá vé thành công!")
-            setCurrItem(null)
-        }
-        window.loadingIndicator.hide()
-    }
-
-    const deleteNumber = async (id: string, index: number, lotteryId: string) => {
-        window.loadingIndicator.show()
-        const res = await lotteryApi.deleteNumberLottery({ numberId: id, position: index })
-        if (res) {
-            dispatch(updateLottery({ lotteryId: lotteryId, number: res.data }))
-            Alert.alert("Đã xoá bộ số thành công!")
+            // window.myalert.show({ title: SUCCESS_MES.DELETE_LOTERY, alertType: 'success' })
             setCurrItem(null)
         }
         window.loadingIndicator.hide()
     }
 
     const deleteAll = async () => {
-        if (cart.length == 0) return window.myalert.show({ title: "Giỏ hàng hiện đang trống rỗng!" })
+        if (cart.length == 0) return window.myalert.show({ title: ERR_MES.EMPTY_CART })
         window.loadingIndicator.show()
         const res = await lotteryApi.emptyCart({})
         if (res) {
             dispatch(removeCart())
-            Alert.alert("Đã làm trống giỏ hàng!")
+            // window.myalert.show({ title: SUCCESS_MES.EMPTY_CART, alertType: 'success' })
             setCurrItem(null)
         }
         window.loadingIndicator.hide()
     }
 
     const openModalEmptyCart = useCallback(() => {
-        if (cart.length == 0) return window.myalert.show({ title: "Giỏ hàng hiện đang trống rỗng!" })
+        if (cart.length == 0) return window.myalert.show({ title: ERR_MES.EMPTY_CART })
         setModal3(true)
     }, [cart])
 
     const openModalDeleteLottery = (lottery: any) => {
         setCurrItem(lottery)
         setModal1(true)
-    }
-
-    const openModalDeleteNumber = (param: any) => {
-        setCurrItem(param)
-        setModal2(true)
     }
 
     const orderCart = useCallback(() => {
@@ -169,7 +152,7 @@ export const CartScreen = React.memo(() => {
                 ListFooterComponent={<View style={{ height: 100 }}></View>}
                 ListEmptyComponent={
                     <View style={{ marginTop: 50, justifyContent: 'center', alignItems: 'center' }}>
-                        <IText style={{ fontSize: 20, color: Color.luckyKing, fontWeight: 'bold' }}>{"Giỏ hàng hiện tại đang trống!"}</IText>
+                        <IText style={{ fontSize: 20, color: Color.luckyKing, fontWeight: 'bold' }}>{ERR_MES.EMPTY_CART}</IText>
                     </View>}
             >
             </FlatList>
@@ -189,7 +172,7 @@ export const CartScreen = React.memo(() => {
             {/* Modal xoa ve */}
             <ModalConfirm
                 visible={modal1}
-                message={`Bạn có muốn xoá vé ${currItem?.type} này không?`}
+                message={`Bạn có muốn xoá vé ${getLotteryName(currItem?.type)} này không?`}
                 onConfirm={() => {
                     setModal1(false)
                     deleteLottety(currItem.id)
@@ -197,21 +180,10 @@ export const CartScreen = React.memo(() => {
                 onCancel={() => setModal1(false)}
             />
 
-            {/* Modal xoa bo so */}
-            {/* <ModalConfirm
-                visible={modal2}
-                message={`Bạn có muốn xoá bộ vé ${String.fromCharCode(65 + currItem?.indexNum)} loại hình ${currItem?.type} của vé ${printNumber(currItem?.indexLott + 1)} không?`}
-                onConfirm={() => {
-                    setModal2(false)
-                    deleteNumber(currItem?.id, currItem?.indexNum, currItem?.lotteryId)
-                }}
-                onCancel={() => setModal2(false)}
-            /> */}
-
             {/* Modal Empty Cart */}
             <ModalConfirm
                 visible={modal3}
-                message={`Bạn có muốn xóa tất cả vé trong giỏ hàng không?`}
+                message={CONFIRM_MES.EMPTY_CART}
                 onConfirm={() => {
                     setModal3(false)
                     deleteAll()

@@ -1,17 +1,15 @@
-import { Color } from "@styles";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { Dimensions, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Dimensions, ScrollView, StyleSheet, View } from "react-native";
 import { ViewAbove } from "../component/ViewAbove";
 import { useSelector } from "react-redux";
 import { ChooseDrawKeno } from "./simple-tab/ChooseDrawKeno";
 import { ViewFooterKeno } from "./simple-tab/ViewFooterKeno";
-import { IText } from "@components";
 import { NumberSheetSimpleKeno } from "./simple-tab/NumberSheetSimpleKeno";
 import { RenderLineKeno } from "./simple-tab/RenderLineKeno";
-import { KENO_NUMBER, LotteryType, OrderMethod, OrderStatus, PickingType } from "@common";
+import { BTN_LABEL, ERR_MES, KENO_NUMBER, LotteryType, OrderMethod, OrderStatus, PickingType } from "@common";
 import { ViewFooter1 } from "../component/ViewFoooter1";
 import { ChooseLevelKeno } from "./simple-tab/ChooseLevelKeno";
-import { NavigationUtils, calSurcharge } from "@utils";
+import { NavigationUtils } from "@utils";
 import { ScreenName } from "@navigation";
 
 interface Props {
@@ -56,14 +54,6 @@ export const SimpleKenoTab = React.memo(({ showBottomSheet, navigation }: Props)
 
     const randomNumber = useCallback((value: number[]) => {
         let newNumbers: any = [...numberSet]
-        // const level = numberSet[index].length == 0 ? 2 : numberSet[index].length
-        // const randomNumbers = new Set();
-        // while (randomNumbers.size < level) {
-        //     const randomNumber = Math.floor(Math.random() * KENO_NUMBER) + 1;
-        //     randomNumbers.add(randomNumber);
-        // }
-        // const resultArray = Array.from(randomNumbers).map(Number).sort((a, b) => a - b);
-        // newNumbers[index] = resultArray
         newNumbers[randomLine] = value
         setNumbers(newNumbers)
         setRandomLine(-1)
@@ -85,10 +75,6 @@ export const SimpleKenoTab = React.memo(({ showBottomSheet, navigation }: Props)
 
     const deleteNumber = useCallback((index: number) => {
         let newNumbers: any = [...numberSet]
-        // const level = numberSet[index].length
-        // let resultArray = (level == 1 && numberSet[index][0] > 80) ? [] : Array(level).fill(false)
-        // console.log(resultArray)
-        // newNumbers[index] = resultArray
         newNumbers[index] = []
         setNumbers(newNumbers)
     }, [numberSet])
@@ -171,10 +157,10 @@ export const SimpleKenoTab = React.memo(({ showBottomSheet, navigation }: Props)
             }
         }
         if (numbers.length == 0) {
-            return window.myalert.show({ title: 'Bạn chưa chọn bộ số nào', btnLabel: "Đã hiểu" })
+            return window.myalert.show({ title: ERR_MES.NONE_NUMBER, btnLabel: BTN_LABEL.UNDERSTOOD })
         }
         if (drawSelected.length <= 0) {
-            return window.myalert.show({ title: 'Kỳ quay không hợp lệ', btnLabel: "Đã hiểu" })
+            return window.myalert.show({ title: ERR_MES.INVALID_DRAW, btnLabel: BTN_LABEL.UNDERSTOOD })
         }
         drawSelected.map((item: any) => {
             drawCodes.push(item.drawCode)
@@ -196,7 +182,13 @@ export const SimpleKenoTab = React.memo(({ showBottomSheet, navigation }: Props)
 
     return (
         <View style={{ flex: 1 }}>
-            <ViewAbove typePlay={typePlay.label} drawSelected={drawSelected} openTypeSheet={openTypeSheet} openDrawSheet={openDrawSheet} />
+            <ViewAbove
+                typePlay={typePlay.label}
+                drawSelected={drawSelected}
+                openTypeSheet={openTypeSheet}
+                openDrawSheet={openDrawSheet}
+                disableChooseType={true}
+            />
 
             <ScrollView style={{ flex: 1 }}>
                 <View style={{ paddingHorizontal: 16, paddingVertical: 8 }}>
@@ -240,25 +232,4 @@ export const SimpleKenoTab = React.memo(({ showBottomSheet, navigation }: Props)
                 : <></>}
         </View>
     )
-})
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
-
-const styles = StyleSheet.create({
-    lineNumber: {
-        flexDirection: 'row', marginVertical: 4,
-        justifyContent: 'space-between',
-        alignItems: 'center',
-    },
-    ballContainer: { width: (windowWidth - 146) / 6, justifyContent: 'center', alignItems: 'center', marginVertical: 4 },
-    ballStyle: {
-        width: 28, height: 28, justifyContent: 'center', alignItems: 'center'
-    },
-    buttonBets: {
-        width: 40, height: 26,
-        justifyContent: 'center', alignItems: 'center',
-        borderRadius: 6,
-        borderColor: Color.blue,
-        borderWidth: 1, marginRight: 12
-    }
 })

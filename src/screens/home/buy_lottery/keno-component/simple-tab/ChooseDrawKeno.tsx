@@ -1,10 +1,9 @@
-import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Dimensions, Animated, FlatList, ActivityIndicator } from 'react-native';
+import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
+import { StyleSheet, View, TouchableOpacity, Dimensions, Animated, FlatList, ActivityIndicator } from 'react-native';
 import BottomSheet from '@gorhom/bottom-sheet';
 import { Color } from '@styles';
 import { Image, Images } from '@assets'
 import { getColorLott, printDraw } from '@utils';
-import { LotteryType } from '@common';
 import { IText } from '@components';
 import { useDispatch, useSelector } from 'react-redux';
 import { lotteryApi } from '@api';
