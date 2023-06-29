@@ -2,17 +2,25 @@ import { Images, Image } from '@assets';
 import { ScreenName, UserStackParamList } from '@navigation';
 import { RouteProp, useNavigation } from '@react-navigation/native';
 import { Color } from '@styles';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
-    StyleSheet, View, Dimensions,
-    TextInput, ScrollView, TouchableOpacity,
-    KeyboardAvoidingView, RefreshControl, Alert, ActivityIndicator, Platform
+    StyleSheet,
+    View,
+    Dimensions,
+    TextInput,
+    ScrollView,
+    TouchableOpacity,
+    KeyboardAvoidingView,
+    RefreshControl,
+    Alert,
+    ActivityIndicator,
+    Platform,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHeaderHeight } from '@react-navigation/elements'
+import { useHeaderHeight } from '@react-navigation/elements';
 import { userApi } from '@api';
-import { updateUser } from '@redux'
-import { doNotExits, NavigationUtils } from '@utils'
+import { updateUser } from '@redux';
+import { doNotExits, NavigationUtils } from '@utils';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { ImageHeader, IText } from '@components';
 
@@ -23,83 +31,97 @@ export interface UserScreenParamsList { }
 
 export const UserScreen = React.memo(() => {
     const navigation = useNavigation<NavigationProp>();
-    const height = useHeaderHeight()
+    const height = useHeaderHeight();
 
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
 
-    const [refreshing, setRefresing] = useState(false)
-    const onRefresh = async () => {
-        setRefresing(true)
-        await getUser()
-        setRefresing(false)
-    }
+    const [refreshing, setRefresing] = useState(false);
+    const onRefresh = useCallback(async () => {
+        setRefresing(true);
+        await getUser();
+        setRefresing(false);
+        setLoading(false)
+    }, []);
 
     useEffect(() => {
-        getUser()
-    }, [navigation])
+        getUser();
+    }, [navigation]);
 
     async function getUser() {
-        const res = await userApi.getuserInfo()
+        const res = await userApi.getuserInfo();
         // console.log(res.data)
         if (res?.data) {
-            dispatch(updateUser(res.data))
-            setFullName(res.data.fullName)
-            setPhoneNumber(res.data.phoneNumber)
-            setPeronNumber(res.data.personNumber)
-            setIdentify(res.data.identify)
-            setEmail(res.data.email)
-            setAddress(res.data.address)
+            dispatch(updateUser(res.data));
+            setFullName(res.data.fullName);
+            setPhoneNumber(res.data.phoneNumber);
+            setPeronNumber(res.data.personNumber);
+            setIdentify(res.data.identify);
+            setEmail(res.data.email);
+            setAddress(res.data.address);
         }
     }
 
-    const user = useSelector((state: any) => state.userReducer)
+    const user = useSelector((state: any) => state.userReducer);
 
-    const [fullName, setFullName] = useState(user.fullName)
-    const [phoneNumber, setPhoneNumber] = useState(user.phoneNumber)
-    const [personNumber, setPeronNumber] = useState(user.personNumber)
-    const [identify, setIdentify] = useState(user.identify)
-    const [email, setEmail] = useState(user.email)
-    const [address, setAddress] = useState(user.address)
+    const [fullName, setFullName] = useState(user.fullName);
+    const [phoneNumber, setPhoneNumber] = useState(user.phoneNumber);
+    const [personNumber, setPeronNumber] = useState(user.personNumber);
+    const [identify, setIdentify] = useState(user.identify);
+    const [email, setEmail] = useState(user.email);
+    const [address, setAddress] = useState(user.address);
 
-    const [isLoading, setLoading] = useState(false)
+    const [isLoading, setLoading] = useState(false);
+
+    const checkIdentify = useCallback((val: string) => {
+        if (val.trim().length != 12) return false;
+        if (!/^\d+$/.test(val.trim())) return false;
+        return true;
+    }, []);
 
     const updateUserInfo = async () => {
         if (doNotExits(fullName)) {
-            return Alert.alert("Thông báo", "Bạn không được để trống Họ và tên")
+            return Alert.alert('Thông báo', 'Bạn không được để trống Họ và tên');
         }
         if (doNotExits(identify)) {
-            return Alert.alert("Thông báo", "Bạn không được để trống CMND/CCCD")
+            return Alert.alert('Thông báo', 'Bạn không được để trống CMND/CCCD');
+        }
+        if (!checkIdentify(identify)) {
+            return Alert.alert('Thông báo', 'Số CMND/CCCD không hợp lệ!');
         }
 
-        setLoading(true)
+        setLoading(true);
         const body = {
-            fullName: fullName,
-            identify: identify,
-            email: email,
-            address: address,
-            personNumber: personNumber
-        }
-        if (doNotExits(email)) delete body.email
-        let res = await userApi.updateUserInfo(body)
+            fullName: fullName?.trim(),
+            identify: identify?.trim(),
+            email: email?.trim(),
+            address: address?.trim(),
+            personNumber: personNumber?.trim(),
+        };
+        // if (doNotExits(email)) delete body.email
+        let res = await userApi.updateUserInfo(body);
         if (res) {
-            if (res.data) dispatch(updateUser(res.data))
-            Alert.alert("Thành công", "Cập nhật thành công")
+            if (res.data) dispatch(updateUser(res.data));
+            Alert.alert('Thành công', 'Cập nhật thành công');
         }
-        setLoading(false)
-    }
+        setLoading(false);
+    };
 
     return (
-        <View style={styles.container} >
-            <ImageHeader navigation={navigation} title={"THÔNG TIN TÀI KHOẢN"} />
+        <View style={styles.container}>
+            <ImageHeader navigation={navigation} title={'THÔNG TIN TÀI KHOẢN'} />
 
             {/* Body */}
-            <KeyboardAvoidingView keyboardVerticalOffset={height + 45} behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
-                <ScrollView style={styles.body}
+            <KeyboardAvoidingView
+                keyboardVerticalOffset={height + 45}
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                style={{ flex: 1 }}>
+                <ScrollView
+                    style={styles.body}
                     refreshControl={
                         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
                     }>
                     <ItemView
-                        label={"Họ và tên"}
+                        label={'Họ và tên'}
                         value={fullName}
                         setValue={(text: string) => setFullName(text)}
                         force={true}
@@ -111,80 +133,112 @@ export const UserScreen = React.memo(() => {
                     force={false}
                 /> */}
                     <ItemView
-                        label={"Số điện thoại"}
+                        label={'Số điện thoại'}
                         value={phoneNumber}
                         setValue={(text: string) => setPhoneNumber(text)}
-                        force={true} disable={true}
+                        force={true}
+                        disable={true}
                     />
                     <ItemView
-                        label={"Mã số cá nhân"}
+                        label={'Mã số cá nhân'}
                         value={personNumber}
                         setValue={(text: string) => setPeronNumber(text)}
                         force={false}
                     />
-                    <IText style={{ fontSize: 14, marginTop: 4, marginLeft: 16, fontStyle: "italic" }}>
-                        {"(Gồm 8 số như 12345678, 66666666, 88888888....)"}
+                    <IText
+                        style={{
+                            fontSize: 14,
+                            marginTop: 4,
+                            marginLeft: 16,
+                            fontStyle: 'italic',
+                        }}>
+                        {'(Gồm 8 số như 12345678, 66666666, 88888888....)'}
                     </IText>
                     <ItemView
-                        label={"CMND/CCCD"}
+                        label={'CMND/CCCD'}
                         value={identify}
                         setValue={(text: string) => setIdentify(text)}
                         force={true}
                     />
                     <ItemView
-                        label={"Email"}
+                        label={'Email'}
                         value={email}
                         setValue={(text: string) => setEmail(text)}
                         force={false}
                     />
                     <ItemView
-                        label={"Địa chỉ"}
+                        label={'Địa chỉ'}
                         value={address}
                         setValue={(text: string) => setAddress(text)}
                         force={false}
                     />
 
-                    <TouchableOpacity style={styles.borderItem}
-                        onPress={() => NavigationUtils.navigate(navigation, ScreenName.Drawer.ChangePassScreen)}
-                    >
-                        <IText style={styles.textItem}>{"Đổi mật khẩu"}</IText>
-                        <Image source={Images.right_arrow} tintColor={Color.black} style={{ width: 10, height: 20 }}></Image>
+                    <TouchableOpacity
+                        style={styles.borderItem}
+                        onPress={() =>
+                            NavigationUtils.navigate(
+                                navigation,
+                                ScreenName.Drawer.ChangePassScreen,
+                            )
+                        }>
+                        <IText style={styles.textItem}>{'Đổi mật khẩu'}</IText>
+                        <Image
+                            source={Images.right_arrow}
+                            tintColor={Color.black}
+                            style={{ width: 10, height: 20 }}></Image>
                     </TouchableOpacity>
                 </ScrollView>
             </KeyboardAvoidingView>
 
-            <TouchableOpacity style={styles.buttonUpdate} activeOpacity={0.8} disabled={isLoading} onPress={updateUserInfo}>
-                <IText style={styles.textTitle}>{"CẬP NHẬT"}</IText>
-                {isLoading ?
-                    <ActivityIndicator size="small" color={Color.white} style={{ marginLeft: 8 }} />
-                    : <></>}
+            <TouchableOpacity
+                style={styles.buttonUpdate}
+                activeOpacity={0.8}
+                disabled={isLoading}
+                onPress={updateUserInfo}>
+                <IText style={styles.textTitle}>{'CẬP NHẬT'}</IText>
+                {isLoading ? (
+                    <ActivityIndicator
+                        size="small"
+                        color={Color.white}
+                        style={{ marginLeft: 8 }}
+                    />
+                ) : (
+                    <></>
+                )}
             </TouchableOpacity>
         </View>
-    )
+    );
 });
 
 const ItemView = ({ label, value, setValue, force, disable }: any) => {
     return (
         <View style={[styles.borderItem, { opacity: disable ? 0.6 : 1 }]}>
             <IText style={styles.textItem}>{label}</IText>
-            {force ? <Image source={Images.star} style={{ width: 8, height: 8, marginTop: -9, marginLeft: 2 }}></Image> : <></>}
+            {force ? (
+                <Image
+                    source={Images.star}
+                    style={{ width: 8, height: 8, marginTop: -9, marginLeft: 2 }}></Image>
+            ) : (
+                <></>
+            )}
             <View style={{ flex: 1 }} />
             <TextInput
                 style={{
                     backgroundColor: Color.white,
-                    height: 43, fontFamily: 'myriadpro-regular',
-                    color: Color.black
+                    height: 43,
+                    fontFamily: 'myriadpro-regular',
+                    color: Color.black,
                 }}
                 value={value}
-                onChangeText={(text) => setValue(text)}
-                placeholder={"Chưa cập nhật"}
+                onChangeText={text => setValue(text)}
+                placeholder={'Chưa cập nhật'}
                 placeholderTextColor={'#A19C9C'}
                 autoCorrect={false}
                 editable={disable ? false : true}
             />
         </View>
-    )
-}
+    );
+};
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -192,25 +246,35 @@ const windowHeight = Dimensions.get('window').height;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: Color.white
+        backgroundColor: Color.white,
     },
     textTitle: { color: Color.white, fontWeight: 'bold', fontSize: 16 },
     body: {
-        paddingHorizontal: 16, paddingBottom: 24
+        paddingHorizontal: 16,
+        paddingBottom: 24,
     },
     borderItem: {
-        width: '100%', height: 45,
-        borderRadius: 10, borderWidth: 1,
-        borderColor: '#E7E3E3', alignItems: 'center',
-        flexDirection: 'row', paddingHorizontal: 16,
-        marginTop: 16, justifyContent: 'space-between'
+        width: '100%',
+        height: 45,
+        borderRadius: 10,
+        borderWidth: 1,
+        borderColor: '#E7E3E3',
+        alignItems: 'center',
+        flexDirection: 'row',
+        paddingHorizontal: 16,
+        marginTop: 16,
+        justifyContent: 'space-between',
     },
-    textItem: {
-    },
+    textItem: {},
     buttonUpdate: {
-        width: windowWidth - 32, height: 45,
-        borderRadius: 10, flexDirection: 'row',
-        backgroundColor: Color.luckyKing, alignItems: 'center',
-        justifyContent: 'center', margin: 24, marginHorizontal: 16
-    }
-})
+        width: windowWidth - 32,
+        height: 45,
+        borderRadius: 10,
+        flexDirection: 'row',
+        backgroundColor: Color.luckyKing,
+        alignItems: 'center',
+        justifyContent: 'center',
+        margin: 24,
+        marginHorizontal: 16,
+    },
+});

@@ -36,17 +36,20 @@ export const ChangePassScreen = React.memo(() => {
     const [isLoading, setLoading] = useState(false)
 
     const updatePassWord = async () => {
-        if (doNotExits(oldPass)) {
+        if (doNotExits(oldPass.trim())) {
             return Alert.alert("Thông báo", "Bạn không được để trống mật khẩu hiện tại")
         }
-        if (doNotExits(newPass)) {
+        if (doNotExits(newPass.trim())) {
             return Alert.alert("Thông báo", "Bạn không được để trống mật khẩu mới")
         }
-        if (doNotExits(confirmPass)) {
+        if (doNotExits(confirmPass.trim())) {
             return Alert.alert("Thông báo", "Bạn không được để trống xác nhận mật khẩu")
         }
-        if (newPass !== confirmPass) {
+        if (newPass.trim() !== confirmPass.trim()) {
             return Alert.alert("Thông báo", "Xác nhận mật khẩu không chính xác")
+        }
+        if (newPass.trim().length < 8 || newPass.trim().length > 116) {
+            return Alert.alert("Thông báo", "Độ dài mật khẩu phải từ 8 - 16 kí tự")
         }
         setLoading(true)
         const body = {

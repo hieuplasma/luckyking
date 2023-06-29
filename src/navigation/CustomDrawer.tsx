@@ -117,11 +117,18 @@ const LineItem1 = React.memo(({ navigateTo, icon, icStyle, money, screen, btn }:
   const handlePress = useCallback(() => {
     navigateTo(screen)
   }, [])
+
+  const [sercure, setSercure] = useState(false)
+  const toggleSercure = useCallback(() => {
+    setSercure(!sercure)
+  }, [sercure])
   return (
     <View style={styles.lineItem1}>
       <Image source={icon} style={icStyle}></Image>
-      <IText style={styles.textMoney}>{`${printMoney(user[money])}đ`}</IText>
-      <Image source={Images.eye_open} style={styles.eye}></Image>
+      <IText style={styles.textMoney}>{`${sercure ? '******' : printMoney(user[money])}đ`}</IText>
+      <TouchableOpacity onPress={toggleSercure}>
+        <Image source={sercure ? Images.eye_close : Images.eye_open} style={styles.eye}></Image>
+      </TouchableOpacity>
       <View style={{ flex: 1 }} />
       <TouchableOpacity style={styles.button} activeOpacity={0.8} onPress={handlePress}>
         <IText style={styles.textButton}>{btn}</IText>

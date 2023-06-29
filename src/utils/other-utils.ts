@@ -3,7 +3,8 @@ import { LotteryType } from "@common"
 import { Color } from "@styles"
 
 export function doNotExits(param: any) {
-    if (param == "" || param == undefined || param == null) return true
+    const tmp = param.toString().trim()
+    if (tmp == "" || tmp == undefined || tmp == null) return true
     else return false
 }
 
@@ -58,4 +59,4 @@ export function getSplitCharater(param: LotteryType) {
 export function isVietnamesePhoneNumber(number?: string) {
     if (!number) return false
     return /((^(\+84|84|0|0084){1})(3|5|7|8|9))+([0-9]{8})$/.test(number);
-  }
+}

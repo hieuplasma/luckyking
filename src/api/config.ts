@@ -7,16 +7,16 @@ export const RESPONSE_TIMEOUT = 15000;
 export const TIMEOUT_MESSAGE = "request timeout"
 
 /** config for debug */
-const config = {
-  host: 'http://192.168.246.43:3001',
+// const config = {
+  // host: 'http://192.168.246.43:3001',
   // host: 'http://192.168.246.45:3001'
   // host: 'http://192.168.246.46:3001'
-};
+// };
 
 /** config for VPS */
-// const config = {
-//   host: 'http://103.162.31.84:3003',
-// };
+const config = {
+  host: 'http://103.162.31.84:3003',
+};
 
 /** config for Production */
 // const config = {

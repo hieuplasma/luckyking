@@ -65,7 +65,10 @@ export const Max3dPlusTab = React.memo((props: Props) => {
             randomNumbers.push(randomNumber);
         }
         let resultArray = Array.from(randomNumbers).map(Number)
-        if (typePlay.value == 5) resultArray[hugePosition[0]] = 10
+        if (typePlay.value == 5) {
+            if (hugePosition[0] > -1) resultArray[hugePosition[0]] = 10
+            if (hugePosition[1] > -1) resultArray[hugePosition[1]] = 10
+        }
         if (typePlay.value == 6) {
             resultArray[hugePosition[0]] = 10
             resultArray[hugePosition[1]] = 10
@@ -77,7 +80,10 @@ export const Max3dPlusTab = React.memo((props: Props) => {
     const deleteNumber = (index: number) => {
         const currentNumber = [...numberSet]
         const resultArray = Array(MAX_SET_MAX3D_PLUS).fill(false);
-        if (typePlay.value == 5) resultArray[hugePosition[0]] = 10
+        if (typePlay.value == 5) {
+            if (hugePosition[0] > -1) resultArray[hugePosition[0]] = 10
+            if (hugePosition[1] > -1) resultArray[hugePosition[1]] = 10
+        }
         if (typePlay.value == 6) {
             resultArray[hugePosition[0]] = 10
             resultArray[hugePosition[1]] = 10

@@ -1,7 +1,7 @@
 import { lotteryApi } from '@api';
 import { Image, Images } from '@assets';
 import { BTN_LABEL, DELAY_SCREEN, ERR_MES, LotteryType, MAX3D_NUMBER, MAX_SET, MAX_SET_MAX3D, OrderMethod, OrderStatus, SUCCESS_MES } from '@common';
-import { HeaderBuyLottery, IText } from '@components';
+import { ConsolasText, HeaderBuyLottery, IText } from '@components';
 import { HomeStackParamList, ScreenName } from '@navigation';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -84,7 +84,10 @@ export const Max3dProScreen = () => {
             randomNumbers.push(randomNumber);
         }
         let resultArray = Array.from(randomNumbers).map(Number)
-        if (typePlay.value == 5) resultArray[hugePosition[0]] = 10
+        if (typePlay.value == 5) {
+            if (hugePosition[0] > -1) resultArray[hugePosition[0]] = 10
+            if (hugePosition[1] > -1) resultArray[hugePosition[1]] = 10
+        }
         if (typePlay.value == 6) {
             resultArray[hugePosition[0]] = 10
             resultArray[hugePosition[1]] = 10
@@ -96,7 +99,10 @@ export const Max3dProScreen = () => {
     const deleteNumber = (index: number) => {
         const currentNumber = [...numberSet]
         const resultArray = Array(MAX_SET_MAX3D_PRO).fill(false);
-        if (typePlay.value == 5) resultArray[hugePosition[0]] = 10
+        if (typePlay.value == 5) {
+            if (hugePosition[0] > -1) resultArray[hugePosition[0]] = 10
+            if (hugePosition[1] > -1) resultArray[hugePosition[1]] = 10
+        }
         if (typePlay.value == 6) {
             resultArray[hugePosition[0]] = 10
             resultArray[hugePosition[1]] = 10
@@ -356,14 +362,14 @@ export const Max3dProScreen = () => {
                                                 <View style={styles.boxNumber}>
                                                     {item.slice(0, 3).map((number: any, index2: number) => {
                                                         return (
-                                                            <IText key={index2 + "::" + index} style={{ color: lottColor, fontSize: 16 }}>{numberMax3d(number)}</IText>
+                                                            <ConsolasText key={index2 + "::" + index} style={{ color: lottColor, fontSize: 16 }}>{numberMax3d(number)}</ConsolasText>
                                                         )
                                                     })}
                                                 </View>
                                                 <View style={styles.boxNumber}>
                                                     {item.slice(3, 6).map((number: any, index2: number) => {
                                                         return (
-                                                            <IText key={index2 + "::" + index} style={{ color: lottColor, fontSize: 16 }}>{numberMax3d(number)}</IText>
+                                                            <ConsolasText key={index2 + "::" + index} style={{ color: lottColor, fontSize: 16 }}>{numberMax3d(number)}</ConsolasText>
                                                         )
                                                     })}
                                                 </View>

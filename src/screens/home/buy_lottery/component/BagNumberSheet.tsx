@@ -111,8 +111,8 @@ export const BagNumberSheet = forwardRef(({ onChoose, numberSet, type, bagPositi
                         <View style={styles.half}>
                             {
                                 bagPosition == 1 ?
-                                    <View style={[styles.boxNumber, { borderColor: lottColor }]}>
-                                        <ConsolasText style={{ color: lottColor, fontSize: 16 }}>{"lmao"}</ConsolasText>
+                                    <View style={[styles.boxNumber, { borderColor: lottColor, width: 100 }]}>
+                                        <ConsolasText style={{ color: lottColor, fontSize: 16 }}>{"Bộ bao số"}</ConsolasText>
                                     </View>
                                     : [0, 1, 2].map((columnId: number, index: number) => {
                                         return (
@@ -132,7 +132,7 @@ export const BagNumberSheet = forwardRef(({ onChoose, numberSet, type, bagPositi
                             {
                                 bagPosition == 2 ?
                                     <View style={[styles.boxNumber, { borderColor: lottColor }]}>
-                                        <ConsolasText style={{ color: lottColor, fontSize: 16 }}>{"lmao"}</ConsolasText>
+                                        <ConsolasText style={{ color: lottColor, fontSize: 16 }}>{"Bộ bao số"}</ConsolasText>
                                     </View>
                                     : [3, 4, 5].map((columnId: number, index: number) => {
                                         return (

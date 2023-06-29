@@ -101,8 +101,9 @@ export function generateMax3DPlus(level: number, currentNumber: any, bets: numbe
                 if (item[0] !== false && item[1] !== false) {
                     fullNumber.map(number => {
                         let tmp = [...item]
-                        tmp[hugePosition[0]] = number
-                        tmpGenerated.push('' + tmp[0] + tmp[1] + tmp[2] + " " + item[3] + item[4] + item[5])
+                        if (hugePosition[0] > -1) tmp[hugePosition[0]] = number
+                        if (hugePosition[1] > -1) tmp[hugePosition[1]] = number
+                        tmpGenerated.push('' + tmp[0] + tmp[1] + tmp[2] + " " + tmp[3] + tmp[4] + tmp[5])
                     })
                     tmpBets = tmpBets.concat(Array(10).fill(bets[index]))
                 }
@@ -116,7 +117,7 @@ export function generateMax3DPlus(level: number, currentNumber: any, bets: numbe
                             let tmp = [...item]
                             tmp[hugePosition[0]] = number1
                             tmp[hugePosition[1]] = number2
-                            tmpGenerated.push('' + tmp[0] + tmp[1] + tmp[2] + " " + item[3] + item[4] + item[5])
+                            tmpGenerated.push('' + tmp[0] + tmp[1] + tmp[2] + " " + tmp[3] + tmp[4] + tmp[5])
                         })
                     })
                     tmpBets = tmpBets.concat(Array(100).fill(bets[index]))
