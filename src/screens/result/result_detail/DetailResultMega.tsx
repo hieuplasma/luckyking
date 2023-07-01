@@ -3,7 +3,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { ResultStackParamList } from "@navigation";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Dimensions, StyleSheet, View } from "react-native";
+import { Dimensions, ScrollView, StyleSheet, View } from "react-native";
 import { BasicHeader, IText } from "@components";
 import { Color } from "@styles";
 import { FirstItemMega } from "../component/ItemMega";
@@ -41,7 +41,7 @@ export const DetailResultMega = React.memo(() => {
     return (
         <View style={styles.container}>
             <BasicHeader navigation={navigation} title={"Chi tiết kết quả"} />
-            <View style={styles.body}>
+            <ScrollView style={styles.body}>
                 <FirstItemMega data={data} hideBtm={true} />
 
                 <PeriodStructure
@@ -57,7 +57,7 @@ export const DetailResultMega = React.memo(() => {
                     navigation={navigation}
                     lotteryType={LotteryType.Mega}
                     drawResult={data} />
-            </View>
+            </ScrollView>
         </View>
     )
 })

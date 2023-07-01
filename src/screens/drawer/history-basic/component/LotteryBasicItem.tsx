@@ -1,4 +1,4 @@
-import { INumberDetail, LotteryType } from "@common"
+import { INumberDetail, LOTTRERY_COLOR_STATUS, LotteryType, OrderStatus } from "@common"
 import { IText } from "@components"
 import { Color } from "@styles"
 import { NavigationUtils, caculateLotteryBenefits, doNotExits, getLogoHeader, printDisplayId, printDrawCode, printMoney, printNumber, printWeekDate } from "@utils"
@@ -16,30 +16,50 @@ interface LotteryItem {
 }
 
 const getStatusName: any = {
+    PENDING: {
+        label: 'Đợi in',
+        borderColor: LOTTRERY_COLOR_STATUS[OrderStatus.PENDING],
+        bgColor: Color.white
+    },
+    LOCK: {
+        label: 'Đang khoá',
+        borderColor: LOTTRERY_COLOR_STATUS[OrderStatus.LOCK],
+        bgColor: Color.white
+    },
+    PRINTED: {
+        label: 'Đã in',
+        borderColor: LOTTRERY_COLOR_STATUS[OrderStatus.PRINTED],
+        bgColor: Color.white
+    },
     CONFIRMED: {
         label: 'Chưa xổ',
-        borderColor: '#0171F5',
+        borderColor: LOTTRERY_COLOR_STATUS[OrderStatus.CONFIRMED],
         bgColor: Color.white
     },
     NO_PRIZE: {
         label: 'Không trúng',
-        borderColor: '#010BF5',
+        borderColor: LOTTRERY_COLOR_STATUS[OrderStatus.NO_PRIZE],
         bgColor: Color.white
     },
     WON: {
         label: 'Trúng thưởng',
-        borderColor: Color.white,
-        bgColor: Color.luckyKing
+        borderColor: LOTTRERY_COLOR_STATUS[OrderStatus.WON],
+        bgColor: Color.white
     },
     PAID: {
         label: 'Đã trả thưởng',
-        borderColor: Color.white,
-        bgColor: Color.luckyKing
+        borderColor: LOTTRERY_COLOR_STATUS[OrderStatus.PAID],
+        bgColor: Color.white
     },
     RETURNED: {
         label: 'Đã hoàn vé',
-        borderColor: Color.white,
-        bgColor: Color.gray
+        borderColor: LOTTRERY_COLOR_STATUS[OrderStatus.RETURNED],
+        bgColor: Color.white
+    },
+    ERROR: {
+        label: 'Vé bị lỗi',
+        borderColor: LOTTRERY_COLOR_STATUS[OrderStatus.ERROR],
+        bgColor: Color.white
     }
 }
 
@@ -112,8 +132,14 @@ export const LotteryBasicItem = React.memo(({ lottery, tab, navigation }: Lotter
     }, [lottery.result])
 
     const navigateToResult = useCallback((lottery: any) => {
-        if (!lottery.result) return;
-        if (!lottery.result.drawn) return;
+        if (!lottery.result) {
+            window.myalert.show({ title: "Chưa có kết quả cho vé số này hoặc vé đã bị huỷ!" })
+            return;
+        }
+        if (!lottery.result.drawn) {
+            window.myalert.show({ title: "Chưa có kết quả cho vé số này hoặc vé đã bị huỷ!" })
+            return;
+        }
         let screenName = ScreenName.ResultChild.DetailMega
         switch (lottery.type) {
             case LotteryType.Power:
@@ -198,13 +224,13 @@ export const LotteryBasicItem = React.memo(({ lottery, tab, navigation }: Lotter
                     <IText style={{ color: Color.luckyKing }}>{printMoney(lottery.amount) + "đ"}</IText>
                 </IText>
                 {
-                    tab == 'complete' ?
+                    1 ?
                         <TouchableOpacity style={[styles.btnStatus,
-                        { borderColor: getStatusName[lottery.status].borderColor },
-                        { backgroundColor: getStatusName[lottery.status].bgColor }
+                        { borderColor: getStatusName[lottery.status].bgColor },
+                        { backgroundColor: getStatusName[lottery.status].borderColor }
                         ]}
                             onPress={() => navigateToResult(lottery)}>
-                            <IText style={{ fontSize: 16, color: getStatusName[lottery.status].borderColor }}>
+                            <IText style={{ fontSize: 16, color: getStatusName[lottery.status].bgColor }}>
                                 {getStatusName[lottery.status].label}
                             </IText>
                         </TouchableOpacity>

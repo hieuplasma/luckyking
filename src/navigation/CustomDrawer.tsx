@@ -124,7 +124,7 @@ const LineItem1 = React.memo(({ navigateTo, icon, icStyle, money, screen, btn }:
   }, [sercure])
   return (
     <View style={styles.lineItem1}>
-      <Image source={icon} style={icStyle}></Image>
+      <Image source={icon} style={icStyle} tintColor={Color.luckyKing}></Image>
       <IText style={styles.textMoney}>{`${sercure ? '******' : printMoney(user[money])}đ`}</IText>
       <TouchableOpacity onPress={toggleSercure}>
         <Image source={sercure ? Images.eye_close : Images.eye_open} style={styles.eye}></Image>
@@ -226,10 +226,10 @@ const listItem1 = [
   {
     screenId: 3,
     icon: Images.trophy,
-    icStyle: { width: 44, height: 35, marginLeft: -8, marginRight: -10 },
+    icStyle: { width: 26, height: 26, tintColor: Color.luckyKing },
     money: 'rewardWalletBalance',
     screen: ScreenName.Drawer.WithDrawStack,
-    btn: "ĐỔI"
+    btn: "ĐỔI",
   }
 ]
 

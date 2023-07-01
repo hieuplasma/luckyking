@@ -1,5 +1,5 @@
 import { lotteryApi } from '@api';
-import { OrderStatus } from '@common';
+import { LIST_STATUS, OrderStatus } from '@common';
 import { ImageHeader, IText } from '@components';
 import { HistoryKenoStackParamList, ScreenName } from '@navigation';
 import { RouteProp, useIsFocused, useNavigation } from '@react-navigation/native';
@@ -16,11 +16,6 @@ type NavigationRoute = RouteProp<HistoryKenoStackParamList, 'HistoryKenoScreen'>
 export interface HistoryKenocreenParamsList { }
 
 type Status = 'booked' | 'returned'
-
-const BookedList = [OrderStatus.PENDING, OrderStatus.LOCK, OrderStatus.CONFIRMED,
-OrderStatus.WON, OrderStatus.PAID, OrderStatus.NO_PRIZE]
-
-const ErrorList = [OrderStatus.ERROR, OrderStatus.RETURNED]
 
 export const HistoryKenoScreen = React.memo(() => {
 
@@ -44,8 +39,8 @@ export const HistoryKenoScreen = React.memo(() => {
     const [status, setStatus] = useState<Status>('booked')
 
     const check = useCallback((param: any) => {
-        if (status == 'booked') return BookedList.includes(param.status)
-        if (status == 'returned') return ErrorList.includes(param.status)
+        if (status == 'booked') return LIST_STATUS.BOOKED.includes(param.status)
+        if (status == 'returned') return LIST_STATUS.ERROR.includes(param.status)
     }, [status])
 
     function compare(a: any, b: any) {
@@ -93,7 +88,11 @@ export const HistoryKenoScreen = React.memo(() => {
                     data={listOrderKeno.filter(check)}
                     extraData={listOrderKeno.filter(check)}
                     renderItem={({ item, index }: any) => {
-                        return <OrderItem order={item} onPress={() => NavigationUtils.navigate(navigation, ScreenName.Drawer.OrderKenoScreen, { order: item })} />
+                        return <OrderItem
+                            order={item}
+                            onPress={() => NavigationUtils.navigate(navigation, ScreenName.Drawer.OrderKenoScreen, { order: item })}
+                            bgColor={index % 2 == 0 ? Color.white : Color.transparent}
+                        />
                     }}
                     keyExtractor={(item: any, index) => String(item.id)}
                     refreshControl={

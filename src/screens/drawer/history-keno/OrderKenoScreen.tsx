@@ -12,7 +12,8 @@ import { useSelector } from "react-redux";
 import { HistoryKenoStackParamList } from "src/navigation/drawer/HistoryKenoNavigation";
 import { DetailOrderSheet } from "../component/DetailOrderSheet";
 import { LotteryKenoItem } from "./component/LotteryKenoItem";
-import { DELAY_SCREEN } from "@common";
+import { DELAY_SCREEN, TransactionType } from "@common";
+import { HeaderOrder } from "../component/HeaderOrder";
 
 type NavigationProp = StackNavigationProp<HistoryKenoStackParamList, 'OrderKenoScreen'>;
 type NavigationRoute = RouteProp<HistoryKenoStackParamList, 'OrderKenoScreen'>;
@@ -51,13 +52,14 @@ export const OrderKenoScreen = React.memo(({ }: any) => {
     const sheetRef: any = useRef(null)
 
     const [sectionData, setSectionData] = useState([])
-    const [benefit, setBenefit] = useState(0)
+    const [returnAmount, setReturnAmount] = useState(0)
 
     useEffect(() => {
-        let tmpBoSo = new Set()
-        let tmpSection: any = []
-        let money = 0
-        let index = 0
+        let tmpBoSo = new Set();
+        let tmpSection: any = [];
+        let index = 0;
+        let totalReturn = 0;
+
         thisOrder.Lottery.map((it: any) => {
             if (tmpBoSo.has(it.NumberLottery.numberDetail)) {
                 tmpSection[tmpSection.findIndex((item: any) => item.boSo == it.NumberLottery.numberDetail)].lotteries.push(it)
@@ -67,10 +69,15 @@ export const OrderKenoScreen = React.memo(({ }: any) => {
                 tmpSection.push({ boSo: it.NumberLottery.numberDetail, lotteries: [it], idSection: index })
                 index++
             }
-            money = money + it.benefits
+        })
+
+        thisOrder.transaction.map((it: any) => {
+            if (it.type == TransactionType.Refund) {
+                totalReturn = totalReturn + it.amount
+            }
         })
         setSectionData(tmpSection)
-        setBenefit(money)
+        setReturnAmount(totalReturn)
     }, [thisOrder])
 
     const openSheet = useCallback(() => { sheetRef.current?.openSheet() }, [sheetRef])
@@ -95,31 +102,11 @@ export const OrderKenoScreen = React.memo(({ }: any) => {
                 }
             />
 
-            <View style={styles.top}>
-                <View>
-                    <IText style={{ textAlign: 'center' }}>{"Thanh toán"}</IText>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Image source={Images.luckyking_logo} style={styles.iconPayment} />
-                        <IText style={{ marginLeft: 8, color: Color.luckyPayment, fontWeight: 'bold' }}>
-                            {`${printMoney(thisOrder.amount + thisOrder.surcharge)}đ`}
-                        </IText>
-                    </View>
-                </View>
-
-                <View>
-                    <IText style={{ textAlign: 'center' }}>{"Hoàn huỷ"}</IText>
-                    <IText style={{ textAlign: 'center', color: Color.mega, fontWeight: 'bold' }}>
-                        {`${printMoney(0)}đ`}
-                    </IText>
-                </View>
-
-                <View>
-                    <IText style={{ textAlign: 'center' }}>{"Trúng thưởng"}</IText>
-                    <IText style={{ textAlign: 'center', color: Color.luckyKing, fontWeight: 'bold' }}>
-                        {`${printMoney(thisOrder.benefits)}đ`}
-                    </IText>
-                </View>
-            </View>
+            <HeaderOrder
+                amount={thisOrder.amount + thisOrder.surcharge}
+                returnAmount={returnAmount}
+                benefits={order.benefits}
+            />
 
             <View style={styles.body}>
                 <FlatList
@@ -127,7 +114,7 @@ export const OrderKenoScreen = React.memo(({ }: any) => {
                     data={sectionData}
                     extraData={sectionData}
                     renderItem={({ item, index }: any) => {
-                        return <LotteryKenoItem section={item} navigation={navigation}/>
+                        return <LotteryKenoItem section={item} navigation={navigation} />
                     }}
                     keyExtractor={(item: any, index) => String(item.idSection)}
                     refreshControl={
@@ -149,13 +136,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center', alignItems: 'center',
         alignSelf: 'flex-end'
     },
-    top: {
-        width: WINDOW_WIDTH - 32, marginHorizontal: 16,
-        paddingVertical: 8,
-        borderBottomWidth: 1, borderBottomColor: 'rgba(51, 51, 51, 0.2)',
-        flexDirection: 'row', justifyContent: 'space-between'
-    },
-    iconPayment: { width: 18, height: 18 },
     body: {
         flex: 1, padding: 16, paddingTop: 4
     }

@@ -6,7 +6,7 @@ import { ScreenName, WithdrawStackParamList } from '@navigation';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Color, Style } from '@styles';
-import { NavigationUtils, printMoney, ScreenUtils } from '@utils';
+import { fullDateTimeConvert2, NavigationUtils, printMoney, ScreenUtils } from '@utils';
 import { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, View, Dimensions, StatusBar, TouchableOpacity, FlatList, RefreshControl } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -66,7 +66,7 @@ export const WithdrawScreen = () => {
 
             <View style={styles.body}>
                 <View style={{ flexDirection: 'row', marginTop: 16, marginLeft: 8 }}>
-                    <Image source={Images.trophy} style={{ width: 40, height: 40 }} />
+                    <Image source={Images.trophy} style={{ width: 40, height: 40 }}  tintColor={Color.luckyKing} />
                     <View style={{ marginLeft: 8 }}>
                         <IText style={{ lineHeight: 16.8 }}>{"Tiền thưởng"}</IText>
                         <IText style={{ lineHeight: 16.8, color: Color.luckyKing }}>{`${printMoney(rewardWalletBalance)}đ`}</IText>
@@ -117,7 +117,7 @@ export const WithdrawScreen = () => {
                                 <Image style={{ width: 36, height: 36 }} source={Images.transaction} />
                                 <View style={{ marginLeft: 8, justifyContent: 'center' }}>
                                     <IText style={{ fontWeight: 'bold' }}>{item.description}</IText>
-                                    <IText>{new Date(item.createdAt).toLocaleString()}</IText>
+                                    <IText>{fullDateTimeConvert2(new Date(item.createdAt))}</IText>
                                 </View>
                                 <View style={{ flex: 1 }} />
                                 <IText style={{ fontWeight: 'bold' }}>

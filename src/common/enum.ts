@@ -34,7 +34,8 @@ export enum TransactionType {
     Recharge = "recharge",
     WithDraw = "withdraw",
     Rewarded = "rewarded",
-    BuyLottery = "buylottery"
+    BuyLottery = "buylottery",
+    Refund = "refund"
 }
 
 export enum TransactionDestination {

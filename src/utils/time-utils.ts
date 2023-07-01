@@ -100,3 +100,9 @@ export function getWeekDate(day: number) {
     }
     return tmp
 }
+
+export function fDateTimeVi(date, newFormat) {
+    const fm = newFormat || 'dd-MM-yyyy HH:mm';
+  
+    return date ? format(new Date(date), fm) : 'Không xác định';
+  }

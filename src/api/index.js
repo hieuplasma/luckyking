@@ -7,7 +7,7 @@ import jwtDecode from 'jwt-decode';
 import { Alert } from 'react-native';
 import { NavigationUtils } from '@utils';
 import { ScreenName } from '@navigation';
-import { removeUser } from '@redux';
+import { removeToken, removeUser } from '@redux';
 import NetInfo from "@react-native-community/netinfo";
 import { PureComponent } from 'react';
 
@@ -145,7 +145,8 @@ export class Connection {
                         if (token) this._showErrorAlert("Phiên đăng nhập hết hạn hoặc mật khẩu đã bị đổi ở thiết bị khác!")
                         else this._showErrorAlert(error.response?.data?.message)
                         this._dispatch(removeUser())
-                        NavigationUtils.resetGlobalStackWithScreen(undefined, ScreenName.Authentication)
+                        this._dispatch(removeToken())
+                        // NavigationUtils.resetGlobalStackWithScreen(undefined, ScreenName.Authentication)
                         return undefined
                     }
 

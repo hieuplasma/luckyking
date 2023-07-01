@@ -60,7 +60,7 @@ export const BankWithdrawScreen = () => {
             if (tmp <= 0) setDisable(true)
             else setDisable(false)
         }
-    }, [amount])
+    }, [amount, userName, accountNumber, bank])
 
     const withdraw = async () => {
         const money = parseInt(amount)
@@ -116,7 +116,7 @@ export const BankWithdrawScreen = () => {
                 style={{ flex: 1 }}>
                 <ScrollView style={styles.body}>
                     <View style={{ flexDirection: 'row', marginTop: 16, marginLeft: 8 }}>
-                        <Image source={Images.trophy} style={{ width: 40, height: 40 }} />
+                        <Image source={Images.trophy} style={{ width: 40, height: 40 }} tintColor={Color.luckyKing}/>
                         <View style={{ marginLeft: 8 }}>
                             <IText style={{ lineHeight: 16.8 }}>{"Tiền thưởng"}</IText>
                             <IText style={{ lineHeight: 16.8, color: Color.luckyKing }}>{`${printMoney(rewardWalletBalance)}đ`}</IText>

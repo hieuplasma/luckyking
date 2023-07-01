@@ -11,8 +11,10 @@ import { HistoryBasicStackParamList } from "@navigation";
 import { DetailOrderSheet } from "../component/DetailOrderSheet";
 import { LotteryBasicItem } from "./component/LotteryBasicItem";
 import DropDownPicker from "react-native-dropdown-picker";
-import { DELAY_SCREEN, OrderStatus } from "@common";
+import { DELAY_SCREEN, OrderStatus, TransactionType } from "@common";
 import { lotteryApi } from "@api";
+import { Image, Images } from "@assets";
+import { HeaderOrder } from "../component/HeaderOrder";
 
 type NavigationProp = StackNavigationProp<HistoryBasicStackParamList, 'OrderBasicScreen'>;
 type NavigationRoute = RouteProp<HistoryBasicStackParamList, 'OrderBasicScreen'>;
@@ -57,6 +59,19 @@ export const OrderBasicScreen = React.memo(({ }: any) => {
     }, [])
 
     const [sectionData, setSectionData] = useState(thisOrder.Lottery)
+    const [returnAmount, setReturnAmount] = useState(0)
+
+    useEffect(() => {
+        let totalReturn = 0;
+
+        thisOrder.transaction.map((it: any) => {
+            if (it.type == TransactionType.Refund) {
+                totalReturn = totalReturn + it.amount
+            }
+        })
+
+        setReturnAmount(totalReturn)
+    }, [thisOrder])
 
     const openSheet = useCallback(() => { sheetRef.current?.openSheet() }, [sheetRef])
     const renderSheet = useCallback(() => {
@@ -95,7 +110,7 @@ export const OrderBasicScreen = React.memo(({ }: any) => {
             tmp = tmp.filter((param: any) => { return param.type == value })
         if (valueStatus != 'all')
             tmp = tmp.filter((param: any) => { return param.status == valueStatus })
-        setSectionData(tmp.sort((a: any,b: any)=> b.displayId - a.displayId))
+        setSectionData(tmp.sort((a: any, b: any) => b.displayId - a.displayId))
     }, [value, valueStatus, thisOrder])
 
     return (
@@ -108,6 +123,12 @@ export const OrderBasicScreen = React.memo(({ }: any) => {
                         <IText style={{ fontSize: 20, fontWeight: 'bold', color: Color.white, marginLeft: 1 }}>{"i"}</IText>
                     </TouchableOpacity>
                 }
+            />
+
+            <HeaderOrder
+                amount={thisOrder.amount + thisOrder.surcharge}
+                returnAmount={returnAmount}
+                benefits={order.benefits}
             />
 
             {
@@ -200,7 +221,6 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
     },
-    iconPayment: { width: 18, height: 18 },
     body: {
         flex: 1, padding: 16, paddingTop: 4, zIndex: -100
     }

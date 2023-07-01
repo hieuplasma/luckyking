@@ -1,15 +1,17 @@
 import { Image, Images } from "@assets";
-import { OrderStatus } from "@common";
+import { LIST_STATUS, OrderStatus } from "@common";
 import { IText } from "@components";
 import { Color } from "@styles";
-import { printDisplayId, printMoney } from "@utils";
+import { dateConvert, printDisplayId, printMoney } from "@utils";
 import React, { useEffect, useState } from "react";
-import { Dimensions, StyleSheet, TouchableOpacity, View } from "react-native";
+import { ColorValue, Dimensions, StyleSheet, TouchableOpacity, View } from "react-native";
 import { useSelector } from "react-redux";
+import { StatusOrderLine } from "../../component/StatusOrderLine";
 
 interface OrderItemProps {
     order: any,
-    onPress: () => void
+    onPress: () => void,
+    bgColor?: ColorValue
 }
 
 const list: any = {
@@ -20,35 +22,39 @@ const list: any = {
     max3dplus: '3D+'
 }
 
-export const OrderBasicItem = React.memo(({ order, onPress }: OrderItemProps) => {
+export const OrderBasicItem = React.memo(({ order, onPress, bgColor }: OrderItemProps) => {
 
     const user = useSelector((state: any) => state.userReducer)
 
     const createdAt = new Date(order.createdAt)
 
     const [listType, setType] = useState<any>([])
-    const [benefit, setBenefit] = useState(0)
+    const [printedCount, setPrintedCount] = useState(0)
+    const [bonusCount, setBonusCount] = useState(0)
 
     useEffect(() => {
         let tmp = new Set()
+        let totalPrinted = 0
+        let totalBonus = 0
         let tmpType: any = new Set()
-        let money = 0
         order.Lottery.map((it: any) => {
             if (tmp.has(it.drawCode)) { }
             else {
                 tmp.add(it.drawCode)
                 tmpType.add(list[it.type])
             }
-            money = money + it.benefits
+            if (LIST_STATUS.PRINTED.includes(it.status)) totalPrinted++
+            if (it.result) totalBonus++
         })
         setType(Array.from(tmpType))
-        setBenefit(money)
+        setPrintedCount(totalPrinted)
+        setBonusCount(bonusCount)
     }, [order])
 
     return (
-        <TouchableOpacity style={styles.itemContainer} onPress={onPress}>
+        <TouchableOpacity style={[styles.itemContainer, {backgroundColor: bgColor}]} onPress={onPress}>
             <IText style={{ fontWeight: 'bold', }}>
-                {createdAt.toLocaleDateString()}
+                {dateConvert(createdAt)}
             </IText>
             <View style={styles.lineItem}>
                 <IText>{`Nhận: ${user.fullName}`}</IText>
@@ -72,53 +78,13 @@ export const OrderBasicItem = React.memo(({ order, onPress }: OrderItemProps) =>
                 </View>
             </View>
 
-            {
-                (order.status == OrderStatus.PENDING || order.status == OrderStatus.LOCK)
-                && <View style={styles.lineItem}>
-                    <Image source={Images.print} style={styles.iconStatus} />
-                    <IText style={{ marginLeft: 12, color: '#F97701' }}>{"Đợi in vé"}</IText>
-                    <View style={{ flex: 1 }} />
-                </View>
-            }
-
-            {
-                (order.status == OrderStatus.CONFIRMED)
-                && <View style={styles.lineItem}>
-                    <Image source={Images.printed} style={styles.iconStatus} />
-                    <IText style={{ marginLeft: 12, color: '#F97701' }}>{"Đã in vé"}</IText>
-                    <View style={{ flex: 1 }} />
-                </View>
-            }
-
-            {
-                (order.status == OrderStatus.WON)
-                && <View style={styles.lineItem}>
-                    <Image source={Images.trophy} style={styles.iconStatus} />
-                    <IText style={{ marginLeft: 12, color: Color.luckyKing }}>{"Trúng thưởng"}</IText>
-                    <View style={{ flex: 1 }} />
-                    <IText style={{ fontWeight: 'bold', color: Color.luckyKing }}>{`${printMoney(benefit)}đ`}</IText>
-                </View>
-            }
-
-            {
-                (order.status == OrderStatus.PAID)
-                && <View style={styles.lineItem}>
-                    <Image source={Images.trophy} style={styles.iconStatus} />
-                    <IText style={{ marginLeft: 12, color: Color.luckyKing }}>{"Đã trả thưởng"}</IText>
-                    <View style={{ flex: 1 }} />
-                    <IText style={{ fontWeight: 'bold', color: Color.luckyKing }}>{`${printMoney(benefit)}đ`}</IText>
-                </View>
-            }
-
-            {
-                (order.status == OrderStatus.NO_PRIZE)
-                && <View style={styles.lineItem}>
-                    {/* <Image source={Images.trophy} style={styles.iconStatus} /> */}
-                    <IText style={{ color: Color.luckyKing }}>{"Không trúng thưởng"}</IText>
-                    <View style={{ flex: 1 }} />
-                    <IText style={{ fontWeight: 'bold', color: Color.luckyKing }}>{`${printMoney(benefit)}đ`}</IText>
-                </View>
-            }
+            <StatusOrderLine
+                status={order.status}
+                printedCount={printedCount}
+                totalLottery={order.Lottery.length}
+                benefits={order.benefits}
+                bonusCount={bonusCount}
+            />
         </TouchableOpacity>
     )
 })
@@ -128,8 +94,8 @@ const windowHeight = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
     itemContainer: {
-        width: windowWidth - 32, margin: 8, paddingVertical: 8, marginHorizontal: 16,
-        borderBottomColor: 'rgba(160, 160, 160, 0.2)', borderBottomWidth: 1
+        width: windowWidth, paddingVertical: 12, paddingHorizontal: 16,
+        // borderBottomColor: 'rgba(160, 160, 160, 0.4)', borderBottomWidth: 1,
     },
     lineItem: {
         marginTop: 12,

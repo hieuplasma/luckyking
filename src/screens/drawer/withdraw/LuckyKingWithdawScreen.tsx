@@ -76,7 +76,7 @@ export const LuckyKingWithdrawScreen = () => {
 
             <View style={styles.body}>
                 <View style={{ flexDirection: 'row', marginTop: 16, marginLeft: 8 }}>
-                    <Image source={Images.trophy} style={{ width: 40, height: 40 }} />
+                    <Image source={Images.trophy} style={{ width: 40, height: 40 }} tintColor={Color.luckyKing} />
                     <View style={{ marginLeft: 8 }}>
                         <IText style={{ lineHeight: 16.8 }}>{"Tiền thưởng"}</IText>
                         <IText style={{ lineHeight: 16.8, color: Color.luckyKing }}>{`${printMoney(rewardWalletBalance)}đ`}</IText>

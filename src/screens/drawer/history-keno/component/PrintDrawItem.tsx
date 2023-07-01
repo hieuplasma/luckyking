@@ -4,7 +4,7 @@ import { OrderStatus, getNameStatus } from "@common";
 import { IText } from "@components";
 import { ScreenName } from "@navigation";
 import { Color } from "@styles";
-import { NavigationUtils, caculateLotteryBenefits, doNotExits, printDraw2, printMoney } from "@utils";
+import { NavigationUtils, caculateLotteryBenefits, doNotExits, printDisplayId, printDraw2, printMoney } from "@utils";
 import React, { useCallback, } from "react";
 import { ColorValue, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
 
@@ -21,9 +21,9 @@ function getColorStatus(param: OrderStatus, lottColor: ColorValue) {
         case OrderStatus.PENDING:
         case OrderStatus.LOCK:
         case OrderStatus.CONFIRMED:
-            return Color.blue
-        // case OrderStatus.ERROR: return "Bị lỗi"
-        // case OrderStatus.RETURNED: return "Đã huỷ"
+            return '#0171F5'
+        case OrderStatus.ERROR: return Color.gray
+        case OrderStatus.RETURNED: return Color.gray
         case OrderStatus.WON: return lottColor
         case OrderStatus.PAID: return lottColor
         case OrderStatus.NO_PRIZE: return '#057A9F'
@@ -72,14 +72,24 @@ export const PrintDrawItem = React.memo(({ lottery, expand, toggle, lottColor, n
     }, [lottery, result])
 
     const navigate = useCallback(() => {
-        if (!result) return
-        if (!result.drawn) return
+        if (!lottery.result) {
+            window.myalert.show({ title: "Chưa có kết quả cho vé số này hoặc vé đã bị huỷ!" })
+            return;
+        }
+        if (!lottery.result.drawn) {
+            window.myalert.show({ title: "Chưa có kết quả cho vé số này hoặc vé đã bị huỷ!" })
+            return;
+        }
         NavigationUtils.push(navigation, ScreenName.ResultChild.DetailKeno, { data: result })
     }, [result, navigation])
 
     return (
         <TouchableOpacity style={[styles.container, { borderColor: expand ? lottColor : '#A0A0A0' }]}
             activeOpacity={1} onPress={toggle}>
+            <IText style={{ marginTop: 8, marginBottom: -8 }}>
+                <IText style={{ fontWeight: 'bold' }}>{"Vé Keno: "}</IText>
+                {printDisplayId(lottery.displayId)}
+            </IText>
             <View style={styles.topContainer}>
                 <IText>
                     <IText style={{ fontWeight: 'bold' }}>{"Kỳ: "}</IText>

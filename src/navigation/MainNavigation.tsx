@@ -12,7 +12,11 @@ import messaging from '@react-native-firebase/messaging'
 import auth from '@react-native-firebase/auth'
 import DeviceInfo from 'react-native-device-info';
 import { useSelector } from "react-redux";
-import { doNotExits } from "@utils";
+import { NavigationUtils, doNotExits } from "@utils";
+import { ScreenName } from "./ScreenName";
+import { useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamsList } from "@navigation";
 
 export type MainDrawerParamList = {
     BottomTab: {}
@@ -23,9 +27,13 @@ export type MainDrawerParamList = {
     HistoryBasicStack: {}
 };
 
+type NavigationProp = StackNavigationProp<RootStackParamsList, 'Main'>;
+
 const Drawer = createDrawerNavigator<MainDrawerParamList>();
 
 export function MainNavigation(props: any) {
+
+    const navigation = useNavigation<NavigationProp>();
 
     const token = useSelector((state: any) => state.authReducer.accessToken)
 
@@ -72,6 +80,7 @@ export function MainNavigation(props: any) {
         //     }
         // }
         if (!doNotExits(token)) registerFCM()
+        else NavigationUtils.resetGlobalStackWithScreen(navigation, ScreenName.Authentication)
     }, [token])
 
     const renderCustom = useCallback((props: any) => {

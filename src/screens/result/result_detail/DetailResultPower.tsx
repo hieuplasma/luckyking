@@ -3,7 +3,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { ResultStackParamList } from "@navigation";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Dimensions, StyleSheet, View } from "react-native";
+import { Dimensions, ScrollView, StyleSheet, View } from "react-native";
 import { BasicHeader, IText } from "@components";
 import { Color } from "@styles";
 import { FirstItemPower } from "../component/ItemPower";
@@ -39,7 +39,7 @@ export const DetailResultPower = React.memo(() => {
     return (
         <View style={styles.container}>
             <BasicHeader navigation={navigation} title={"Chi tiết kết quả"} />
-            <View style={styles.body}>
+            <ScrollView style={styles.body}>
                 <FirstItemPower data={data} hideBtm={true} />
 
                 <PeriodStructure
@@ -56,7 +56,7 @@ export const DetailResultPower = React.memo(() => {
                     navigation={navigation}
                     lotteryType={LotteryType.Power}
                     drawResult={data} />
-            </View>
+            </ScrollView>
         </View>
     )
 })

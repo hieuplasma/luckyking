@@ -1,15 +1,13 @@
 import { lotteryApi } from '@api';
-import { OrderStatus } from '@common';
+import { LIST_STATUS, OrderStatus } from '@common';
 import { ImageHeader, IText } from '@components';
 import { HistoryBasicStackParamList, ScreenName } from '@navigation';
 import { RouteProp, useIsFocused, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Color } from '@styles';
-import { NavigationUtils } from '@utils';
+import { NavigationUtils, printMoney } from '@utils';
 import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, View, Dimensions, TouchableOpacity, FlatList, RefreshControl } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useSelector } from 'react-redux';
 import { OrderBasicItem } from './component/OrderBasicItem';
 
 type NavigationProp = StackNavigationProp<HistoryBasicStackParamList, 'HistoryBasicScreen'>;
@@ -18,13 +16,6 @@ type NavigationRoute = RouteProp<HistoryBasicStackParamList, 'HistoryBasicScreen
 export interface HistoryBasicScreenParamsList { }
 
 type Status = 'pending' | 'complete' | 'returned'
-
-const PendingList = [OrderStatus.PENDING, OrderStatus.LOCK]
-
-const CompleteList = [OrderStatus.CONFIRMED,
-OrderStatus.WON, OrderStatus.PAID, OrderStatus.NO_PRIZE]
-
-const ErrorList = [OrderStatus.ERROR, OrderStatus.RETURNED]
 
 export const HistoryBasicScreen = React.memo(() => {
 
@@ -48,9 +39,9 @@ export const HistoryBasicScreen = React.memo(() => {
     const [status, setStatus] = useState<Status>('pending')
 
     const check = useCallback((param: any) => {
-        if (status == 'complete') return CompleteList.includes(param.status)
-        if (status == 'pending') return PendingList.includes(param.status)
-        if (status == 'returned') return ErrorList.includes(param.status)
+        if (status == 'complete') return LIST_STATUS.BOOKED.includes(param.status)
+        if (status == 'pending') return LIST_STATUS.PENDING.includes(param.status)
+        if (status == 'returned') return LIST_STATUS.ERROR.includes(param.status)
     }, [status])
 
     function compare(a: any, b: any) {
@@ -107,7 +98,8 @@ export const HistoryBasicScreen = React.memo(() => {
                     extraData={listOrder.filter(check)}
                     renderItem={({ item, index }: any) => {
                         return <OrderBasicItem order={item}
-                            onPress={() => NavigationUtils.navigate(navigation, ScreenName.Drawer.OrderBasicScreen, { order: item, status: status })} />
+                            onPress={() => NavigationUtils.navigate(navigation, ScreenName.Drawer.OrderBasicScreen, { order: item, status: status })}
+                            bgColor={index % 2 == 0 ? Color.white :Color.transparent} />
                     }}
                     keyExtractor={(item: any, index) => String(item.id)}
                     refreshControl={
