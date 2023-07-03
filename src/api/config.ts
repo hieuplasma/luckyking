@@ -7,11 +7,11 @@ export const RESPONSE_TIMEOUT = 15000;
 export const TIMEOUT_MESSAGE = "request timeout"
 
 /** config for debug */
-const config = {
-  host: 'http://192.168.246.43:3001',
-  // host: 'http://192.168.246.45:3001'
-  // host: 'http://192.168.246.46:3001'
-};
+// const config = {
+// host: 'http://192.168.246.43:3001',
+// host: 'http://192.168.246.45:3001'
+// host: 'http://192.168.246.46:3001'
+// };
 
 /** config for VPS */
 // const config = {
@@ -19,9 +19,9 @@ const config = {
 // };
 
 /** config for Production */
-// const config = {
-//   host: 'http://42.96.40.239',
-// };
+const config = {
+  host: 'http://42.96.40.239',
+};
 
 export const API_HOST = config.host;
 
@@ -36,6 +36,7 @@ export const API_URI = {
 
   GET_USER_INFO: "/users/get-info",
   UPDATE_USER_INFO: "/users/update-info",
+  GET_BALANCE: "/users/get-all-wallet",
 
   UPDATE_PASSWORD: "/auth/update-password",
 

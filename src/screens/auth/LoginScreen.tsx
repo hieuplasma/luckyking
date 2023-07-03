@@ -2,16 +2,12 @@ import { AuthenticationStackParamList, ScreenName } from '@navigation';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import {
-  InputComponent,
-  Label,
-  ShadowView,
-  translate,
   useBase,
 } from '@shared';
-import { NavigationUtils, doNotExits } from '@utils'
+import { NavigationUtils, doNotExits, isVietnamesePhoneNumber } from '@utils'
 import { Color, Style } from '@styles';
 import React, { useCallback, useEffect, useState } from 'react';
-import { View, Button as ButtonRN, Alert, Platform, KeyboardAvoidingView } from 'react-native';
+import { View, Button as ButtonRN, Alert, Platform, KeyboardAvoidingView, ScrollView, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Button } from '@widgets';
 import DeviceInfo from 'react-native-device-info';
@@ -19,6 +15,8 @@ import { authApi, userApi } from '@api';
 import { useDispatch } from 'react-redux';
 import { updateToken } from '../../redux/reducer/auth';
 import { useHeaderHeight } from '@react-navigation/elements'
+import { IText, ImageHeader, InputComponent } from '@components';
+import { Image, Images } from '@assets';
 
 
 type NavigationProp = StackNavigationProp<AuthenticationStackParamList, 'Login'>;
@@ -43,20 +41,29 @@ export const LoginWidget = React.memo((props: any) => {
   const [errorMessage, setErrorMessage] = useState<| { phonenumber?: string; password?: string; } | undefined>(undefined);
   const { isLoading, setLoading } = useBase();
 
-  const deviceId = DeviceInfo.getDeviceId();
-
   const onLoginPress = useCallback(async () => {
-    if (doNotExits(phoneNumber))
-      return (Alert.alert("Lỗi", "Bạn chưa nhập số điện thoại"))
-    if (doNotExits(password))
-      return (Alert.alert("Lỗi", "Bạn chưa nhập mật khẩu"))
+    if (doNotExits(phoneNumber)) {
+      setErrorMessage({ phonenumber: 'Bạn chưa nhập số điện thoại' })
+      return 0;
+    }
 
+    if (!isVietnamesePhoneNumber(phoneNumber)) {
+      setErrorMessage({ phonenumber: 'Số điện thoại không hợp lệ' })
+      return 0;
+    }
+
+    if (doNotExits(password)) {
+      setErrorMessage({ password: 'Bạn chưa nhập mật khẩu' })
+      return 0;
+    }
+
+    setErrorMessage(undefined)
     setLoading(true);
 
     const body = {
       phoneNumber: phoneNumber,
       password: password,
-      deviceId: deviceId,
+      deviceId: await DeviceInfo.getUniqueId(),
     }
     const res = await authApi.login(body)
     if (res?.data?.accessToken) {
@@ -64,7 +71,7 @@ export const LoginWidget = React.memo((props: any) => {
       NavigationUtils.resetGlobalStackWithScreen(navigation, ScreenName.SplashScreen);
     }
     setLoading(false)
-  }, [phoneNumber, password, deviceId]);
+  }, [phoneNumber, password])
 
   const onChangePhoneNumber = useCallback((phoneNumber?: string) => {
     setPhoneNumber(phoneNumber);
@@ -88,8 +95,8 @@ export const LoginWidget = React.memo((props: any) => {
         editable={true}
         keyboardType="phone-pad"
         value={phoneNumber}
-        placeholder={translate('input.phoneNumber')}
-        label={translate('input.phoneNumber')}
+        placeholder={'Nhập số điện thoại của quý khách'}
+        label={"Số điện thoại"}
         onChangeText={onChangePhoneNumber}
         containerStyle={[Style.Space.MarginTop.xLarge_24]}
         errorMessage={errorMessage?.phonenumber}
@@ -103,8 +110,8 @@ export const LoginWidget = React.memo((props: any) => {
         editable={true}
         keyboardType="default"
         value={password}
-        placeholder={translate('input.password')}
-        label={translate('input.password')}
+        placeholder={'Nhập mật khẩu'}
+        label={"Mật khẩu"}
         onChangeText={onChangePassword}
         containerStyle={[Style.Space.MarginTop.xLarge_24]}
         errorMessage={errorMessage?.password}
@@ -115,23 +122,22 @@ export const LoginWidget = React.memo((props: any) => {
 
   const renderSignupButton = useCallback(() => {
     return (
-      <Label.Widget
+      <IText
         onPress={onViewSignup}
-        style={[Style.Label.Regular.PrimaryContentL_14]}>
-        {translate('button.signUp')}
-      </Label.Widget>
+        style={styles.signupTxt}>
+        {"Đăng ký"}
+      </IText>
     );
   }, [onViewSignup]);
 
   const renderForgetPasswordButton = useCallback(() => {
     return (
-      <Label.Widget
-        style={[Style.Label.Regular.PrimaryContentL_14]}
+      <IText
         onPress={onViewForgetPassword}
-      // onPress={() => { }}
+        style={styles.signupTxt}
       >
-        {translate('button.forgetPassword')}
-      </Label.Widget>
+        {"Quên mật khẩu"}
+      </IText>
     );
   }, [onViewForgetPassword]);
 
@@ -142,8 +148,7 @@ export const LoginWidget = React.memo((props: any) => {
         type="primary"
         style={[
           Style.Self.Center,
-          Style.Space.MarginTop.large_16,
-          { backgroundColor: Color.vietlott },
+          { backgroundColor: Color.vietlott, width: '100%', marginTop: 50 },
         ]}
         onClicked={onLoginPress}
         isLoading={isLoading}
@@ -152,38 +157,48 @@ export const LoginWidget = React.memo((props: any) => {
   }, [onLoginPress, isLoading, phoneNumber, password]);
 
   return (
-    <KeyboardAvoidingView keyboardVerticalOffset={height + 45} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={[
-        Style.Size.MatchParent,
-        Style.Background.Red,
-        Style.Space.PaddingHorizontal.large_16,
-        Style.Content.CenterInVertical,
-      ]}>
-      <ShadowView>
-        <Label.Widget
-          uppercase
-          style={[
-            Style.Label.Regular.WhiteContentXL_16,
-            Style.Label.Align.Center,
-            { color: Color.black },
-          ]}>
-          {translate('label.login')}
-        </Label.Widget>
-        {renderNumberInput()}
-        {renderPasswordInput()}
-        <View
-          style={[
-            Style.Space.MarginTop.large_16,
-            Style.Size.FlexRow,
-            { justifyContent: 'space-between' },
-          ]}>
-          {renderSignupButton()}
-          {renderForgetPasswordButton()}
-        </View>
-        {renderLoginButton()}
-      </ShadowView>
-    </KeyboardAvoidingView>
+    <View style={styles.container}>
+      <ImageHeader />
+
+      <KeyboardAvoidingView
+        keyboardVerticalOffset={height + 45}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.body}
+      >
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <Image source={Images.logo_lkk_login} style={styles.logo} />
+          {renderNumberInput()}
+          {renderPasswordInput()}
+          {renderLoginButton()}
+          <View
+            style={[
+              Style.Space.MarginTop.large_16,
+              Style.Size.FlexRow,
+              { justifyContent: 'space-between', paddingHorizontal: 4 },
+            ]}>
+            {renderForgetPasswordButton()}
+            {renderSignupButton()}
+          </View>
+        </ScrollView>
+
+      </KeyboardAvoidingView>
+
+    </View>
   );
 });
 
 export const LoginScreen = LoginWidget;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: Color.white
+  },
+  body: {
+    flex: 1, padding: 16
+  },
+  logo: {
+    width: '100%', height: 98
+  },
+  signupTxt: { fontStyle: 'italic', fontWeight: 'bold', color: Color.blue }
+})

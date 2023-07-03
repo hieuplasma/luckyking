@@ -2,17 +2,29 @@
 import {StyleSheet} from 'react-native'
 import Dimension from './dimens'
 
+// const FontFamily = {
+//   italic: {
+//     fontFamily: 'Bebeboo-Italic',
+//   },
+//   regular: {
+//     fontFamily: 'Bebeboo-Regular',
+//   },
+//   bold: {
+//     fontFamily: 'Bebeboo-SemiBold',
+//   }
+// } 
+
 const FontFamily = {
   italic: {
-    fontFamily: 'Bebeboo-Italic',
+    fontFamily: 'myriadpro-it',
   },
   regular: {
-    fontFamily: 'Bebeboo-Regular',
+    fontFamily: 'myriadpro-regular',
   },
   bold: {
-    fontFamily: 'Bebeboo-SemiBold',
+    fontFamily: 'myriadpro-bold',
   }
-}
+} 
 
 const Button = {
   ...FontFamily.bold,

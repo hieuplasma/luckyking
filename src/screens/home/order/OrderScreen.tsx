@@ -1,4 +1,4 @@
-import { lotteryApi } from '@api';
+import { lotteryApi, userApi } from '@api';
 import { Icon, Images, Image } from '@assets';
 import { LotteryType, OrderMethod, SUCCESS_MES } from '@common';
 import { BasicHeader, ImageHeader, IText } from '@components';
@@ -37,6 +37,17 @@ export const OrderScreen = React.memo(() => {
         console.log("bodyPay", bodyPay)
         setSurcharge(calSurcharge(bodyPay.amount))
     }, [bodyPay])
+
+    const syncBalance = useCallback(async () => {
+        const resBalance = await userApi.getBalance()
+        if (resBalance) {
+            dispatch(updateUser(resBalance.data))
+        }
+    }, [])
+
+    useEffect(() => {
+        syncBalance()
+    }, [navigation])
 
     const [payment, setPayment] = useState("Tài khoản đặt vé LuckyKing")
 

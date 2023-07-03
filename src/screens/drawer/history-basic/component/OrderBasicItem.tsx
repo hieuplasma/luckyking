@@ -48,7 +48,7 @@ export const OrderBasicItem = React.memo(({ order, onPress, bgColor }: OrderItem
         })
         setType(Array.from(tmpType))
         setPrintedCount(totalPrinted)
-        setBonusCount(bonusCount)
+        setBonusCount(totalBonus)
     }, [order])
 
     return (

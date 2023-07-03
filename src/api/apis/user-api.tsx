@@ -25,6 +25,11 @@ class UserApi {
     let fullUrl = API_URI.UPDATE_FCM_TOKEN;
     return await window.connection.POST(fullUrl, body)
   }
+
+  getBalance =  async () => {
+    let fullUrl = API_URI.GET_BALANCE;
+    return await window.connection.GET(fullUrl)
+  }
 }
 
 const userApi = new UserApi

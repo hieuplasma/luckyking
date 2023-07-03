@@ -1,9 +1,8 @@
-import { Label} from '@shared';
-import {Color, Dimension, Style} from '@styles';
+import { Color, Dimension, Style } from '@styles';
 import * as React from 'react';
-import {useMemo} from 'react';
-import {useCallback, useState} from 'react';
-import {StyleProp, TextInput, TextInputProps, View, ViewStyle, StyleSheet} from 'react-native';
+import { useCallback, useState } from 'react';
+import { StyleProp, TextInput, TextInputProps, View, ViewStyle, StyleSheet } from 'react-native';
+import { IText } from '../texts';
 
 export interface InputComponentProps extends TextInputProps {
   label?: string;
@@ -45,10 +44,10 @@ export function InputComponent(props: InputComponentProps) {
   return (
     <View style={containerStyle}>
       {label && (
-        <Label.Widget
-          style={[Style.Label.Regular.TextSecondaryContentL_14, Style.Space.MarginBottom.small_8]}>
+        <IText
+          style={[Style.Label.Regular.TextSecondaryContentL_14, Style.Space.MarginBottom.small_8, {marginLeft: 4}]}>
           {label}
-        </Label.Widget>
+        </IText>
       )}
       <View
         style={[
@@ -65,14 +64,15 @@ export function InputComponent(props: InputComponentProps) {
           keyboardType={keyboardType}
           secureTextEntry={secureTextEntry}
           placeholderTextColor={Color.textHint}
-          style={[Style.Label.Regular.PrimaryContentXL_16, Style.Size.MatchParent,props?.style]}
+          style={[Style.Label.Regular.PrimaryContentXL_16, Style.Size.MatchParent, props?.style, { fontFamily: 'myriadpro-regular' }]}
           multiline={false}
           onFocus={onFocus}
           onBlur={onBlur}
         />
       </View>
       {errorMessage ? (
-        <Label.Widget style={[Style.Label.Regular.RedContentXL_16]}>{errorMessage}</Label.Widget>
+        <IText style={[Style.Label.Regular.RedContent_13, 
+          {marginLeft: 4, marginTop: 6, fontSize: 14}]}>{errorMessage}</IText>
       ) : null}
     </View>
   );
@@ -81,7 +81,7 @@ export function InputComponent(props: InputComponentProps) {
 const styles = StyleSheet.create({
   container: {
     height: 46,
-    borderRadius: 5,
+    borderRadius: 10,
     paddingHorizontal: Dimension.mediumMargin,
     alignItems: 'center',
     flexDirection: 'row',

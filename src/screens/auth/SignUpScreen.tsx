@@ -2,18 +2,17 @@ import { useSignup } from '@hooks';
 import { AuthenticationStackParamList, ScreenName } from '@navigation';
 import { RouteProp, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { InputComponent, Label, ShadowView, translate, useBase } from '@shared';
+import {  Label, ShadowView, translate, useBase } from '@shared';
 import { Color, Style } from '@styles';
 import { Button } from '@widgets';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Alert, KeyboardAvoidingView, Platform, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import auth from '@react-native-firebase/auth';
-import DeviceInfo from 'react-native-device-info';
 import { NavigationUtils, doNotExits, isVietnamesePhoneNumber } from '@utils';
 import { Icon } from '@assets';
 import { useHeaderHeight } from '@react-navigation/elements';
 import { authApi } from '@api';
+import { InputComponent } from '@components';
 
 type NavigationProp = StackNavigationProp<
   AuthenticationStackParamList,

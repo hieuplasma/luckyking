@@ -37,12 +37,12 @@ export const OrderItem = React.memo(({ order, onPress, bgColor }: OrderItemProps
                 tmpDraw.push({ drawCode: it.drawCode, drawTime: it.drawTime })
             }
             if (LIST_STATUS.PRINTED.includes(it.status)) totalPrinted++
-            if (it.result) totalBonus++
+            if (it.result) totalBonus ++
         })
 
         setListDraw(tmpDraw)
         setPrintedCount(totalPrinted)
-        setBonusCount(bonusCount)
+        setBonusCount(totalBonus)
     }, [order])
 
     return (

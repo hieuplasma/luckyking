@@ -74,4 +74,5 @@ export const Images = {
   scanner: require('./scanner.png'),
   luckyking_banner: require('./luckyking_banner.jpg'),
   money: require('./money.png'),
+  logo_lkk_login: require('./logo_lkk_login.png'),
 };

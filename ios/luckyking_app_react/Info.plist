@@ -1,101 +1,118 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict>
-	<key>CFBundleDevelopmentRegion</key>
-	<string>en</string>
-	<key>CFBundleDisplayName</key>
-	<string>LuckyKing</string>
-	<key>CFBundleExecutable</key>
-	<string>$(EXECUTABLE_NAME)</string>
-	<key>CFBundleIdentifier</key>
-	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
-	<key>CFBundleInfoDictionaryVersion</key>
-	<string>6.0</string>
-	<key>CFBundleName</key>
-	<string>$(PRODUCT_NAME)</string>
-	<key>CFBundlePackageType</key>
-	<string>APPL</string>
-	<key>CFBundleShortVersionString</key>
-	<string>$(MARKETING_VERSION)</string>
-	<key>CFBundleSignature</key>
-	<string>????</string>
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>com.googleusercontent.apps.854352751535-k5j16orgoe6kqrffrjfbu8i4e38a1289</string>
-			</array>
-		</dict>
-	</array>
-	<key>CFBundleVersion</key>
-	<string>$(CURRENT_PROJECT_VERSION)</string>
-	<key>LSRequiresIPhoneOS</key>
-	<true/>
-	<key>NSAppTransportSecurity</key>
 	<dict>
-		<key>NSExceptionDomains</key>
-		<dict>
-			<key>New Exception Domain</key>
+		<key>CFBundleDevelopmentRegion</key>
+		<string>en</string>
+		<key>CFBundleDisplayName</key>
+		<string>LuckyKing</string>
+		<key>CFBundleExecutable</key>
+		<string>$(EXECUTABLE_NAME)</string>
+		<key>CFBundleIdentifier</key>
+		<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+		<key>CFBundleInfoDictionaryVersion</key>
+		<string>6.0</string>
+		<key>CFBundleName</key>
+		<string>$(PRODUCT_NAME)</string>
+		<key>CFBundlePackageType</key>
+		<string>APPL</string>
+		<key>CFBundleShortVersionString</key>
+		<string>$(MARKETING_VERSION)</string>
+		<key>CFBundleSignature</key>
+		<string>????</string>
+		<key>CFBundleURLTypes</key>
+		<array>
 			<dict>
-				<key>NSExceptionAllowsInsecureHTTPLoads</key>
-				<true/>
-				<key>NSIncludesSubdomains</key>
-				<true/>
+				<key>CFBundleTypeRole</key>
+				<string>Editor</string>
+				<key>CFBundleURLSchemes</key>
+				<array>
+					<string>com.googleusercontent.apps.854352751535-k5j16orgoe6kqrffrjfbu8i4e38a1289</string>
+				</array>
 			</dict>
-			<key>localhost</key>
+		</array>
+		<key>CFBundleVersion</key>
+		<string>$(CURRENT_PROJECT_VERSION)</string>
+		<key>LSRequiresIPhoneOS</key>
+		<true />
+		<key>NSAppTransportSecurity</key>
+		<dict>
+			<key>NSExceptionDomains</key>
 			<dict>
-				<key>NSExceptionAllowsInsecureHTTPLoads</key>
-				<true/>
+				<key>New Exception Domain</key>
+				<dict>
+					<key>NSExceptionAllowsInsecureHTTPLoads</key>
+					<true />
+					<key>NSIncludesSubdomains</key>
+					<true />
+				</dict>
+				<key>localhost</key>
+				<dict>
+					<key>NSExceptionAllowsInsecureHTTPLoads</key>
+					<true />
+				</dict>
 			</dict>
 		</dict>
+		<key>NSCameraUsageDescription</key>
+		<string>Allow $(PRODUCT_NAME) to use the camera</string>
+		<key>NSLocationWhenInUseUsageDescription</key>
+		<string></string>
+		<key>UIAppFonts</key>
+		<array>
+			<string>Bebeboo-Italic.ttf</string>
+			<string>Bebeboo-Regular.ttf</string>
+			<string>Bebeboo-SemiBold.ttf</string>
+			<string>LuckyKingIcon.ttf</string>
+			<string>myriadpro-bold.ttf</string>
+			<string>myriadpro-boldcond.ttf</string>
+			<string>myriadpro-boldcondit.ttf</string>
+			<string>myriadpro-boldit.ttf</string>
+			<string>myriadpro-cond.ttf</string>
+			<string>myriadpro-condit.ttf</string>
+			<string>myriadpro-light.ttf</string>
+			<string>myriadpro-regular.ttf</string>
+			<string>myriadpro-semibold.ttf</string>
+			<string>myriadpro-semiboldit.ttf</string>
+			<string>consolas.ttf</string>
+			<string>digital-7.ttf</string>
+			<string>myriadpro-it.ttf</string>
+			<string>consolab.ttf</string>
+		</array>
+		<key>UIBackgroundModes</key>
+		<array>
+			<string>fetch</string>
+			<string>remote-notification</string>
+		</array>
+		<key>UILaunchStoryboardName</key>
+		<string>LaunchScreen</string>
+		<key>UIRequiredDeviceCapabilities</key>
+		<array>
+			<string>armv7</string>
+		</array>
+		<key>UISupportedInterfaceOrientations</key>
+		<array>
+			<string>UIInterfaceOrientationPortrait</string>
+			<string>UIInterfaceOrientationLandscapeLeft</string>
+			<string>UIInterfaceOrientationLandscapeRight</string>
+		</array>
+		<key>UIViewControllerBasedStatusBarAppearance</key>
+		<false />
+
+		<!-- <key>NSAppTransportSecurity</key>
+		<dict>
+			<key>NSAllowsArbitraryLoads</key>
+			<true />
+			<key>NSExceptionDomains</key>
+			<dict>
+				<key>yourdomain.com</key>
+				<dict>
+					<key>NSIncludesSubdomains</key>
+					<true />
+					<key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
+					<false />
+				</dict>
+			</dict>
+		</dict> -->
+
 	</dict>
-	<key>NSCameraUsageDescription</key>
-	<string>Allow $(PRODUCT_NAME) to use the camera</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
-	<key>UIAppFonts</key>
-	<array>
-		<string>Bebeboo-Italic.ttf</string>
-		<string>Bebeboo-Regular.ttf</string>
-		<string>Bebeboo-SemiBold.ttf</string>
-		<string>LuckyKingIcon.ttf</string>
-		<string>myriadpro-bold.ttf</string>
-		<string>myriadpro-boldcond.ttf</string>
-		<string>myriadpro-boldcondit.ttf</string>
-		<string>myriadpro-boldit.ttf</string>
-		<string>myriadpro-cond.ttf</string>
-		<string>myriadpro-condit.ttf</string>
-		<string>myriadpro-light.ttf</string>
-		<string>myriadpro-regular.ttf</string>
-		<string>myriadpro-semibold.ttf</string>
-		<string>myriadpro-semiboldit.ttf</string>
-		<string>consolas.ttf</string>
-		<string>digital-7.ttf</string>
-		<string>myriadpro-it.ttf</string>
-		<string>consolab.ttf</string>
-	</array>
-	<key>UIBackgroundModes</key>
-	<array>
-		<string>fetch</string>
-		<string>remote-notification</string>
-	</array>
-	<key>UILaunchStoryboardName</key>
-	<string>LaunchScreen</string>
-	<key>UIRequiredDeviceCapabilities</key>
-	<array>
-		<string>armv7</string>
-	</array>
-	<key>UISupportedInterfaceOrientations</key>
-	<array>
-		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
-	</array>
-	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<false/>
-</dict>
 </plist>

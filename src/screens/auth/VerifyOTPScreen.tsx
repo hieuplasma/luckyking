@@ -3,7 +3,6 @@ import { AuthenticationStackParamList, ScreenName } from '@navigation';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import {
-  InputComponent,
   Label,
   translate,
   ShadowView
@@ -20,6 +19,7 @@ import { API_URI } from '../../api/config';
 import { NavigationUtils, ScreenUtils } from '@utils';
 import { Icon } from '@assets';
 import { useHeaderHeight } from '@react-navigation/elements'
+import { InputComponent } from '@components';
 
 
 type NavigationProp = StackNavigationProp<AuthenticationStackParamList, 'VerifyOTP'>;
@@ -55,33 +55,6 @@ export const VerifyOTPScreen = React.memo((props?: any) => {
     } catch (error) {
       Alert.alert("Lỗi", "Mã OTP không đúng")
       verifyOtpHooks.setLoading(false)
-      // verifyOtpHooks.setLoading(true)
-      // const type = route.params.type
-      // let uri: string = API_URI.CHEATE_REGISTER
-      // if (type == 'forgetPassword') uri = API_URI.CHEATE_FORGET_PASSWORD
-      // let body = {
-      //   phoneNumber: route.params.phoneNumber,
-      //   password: route.params.password,
-      //   deviceId: DeviceInfo.getDeviceId(),
-      // }
-      // if (type == 'forgetPassword') body = {
-      //   phoneNumber: route.params.phoneNumber,
-      //   //@ts-ignore
-      //   newPassword: route.params.password
-      // }
-      // const res = await window.connection.requestApi("POST", uri, body, null, null, '')
-      // // console.log(res)
-      // if (res) {
-      //   if (type == 'signUp') {
-      //     dispatch(updateToken(res.data.accessToken))
-      //     NavigationUtils.resetGlobalStackWithScreen(navigation, ScreenName.SplashScreen);
-      //   }
-      //   else {
-      //     Alert.alert("Thông báo", "Đã đổi mật khẩu thành công!")
-      //     NavigationUtils.navigate(navigation, ScreenName.Authentications.Login)
-      //   }
-      // }
-      // verifyOtpHooks.setLoading(false)
     }
   }, [verifyOtpHooks.otp, confirm, navigation, route.params]);
 
@@ -117,7 +90,7 @@ export const VerifyOTPScreen = React.memo((props?: any) => {
     let body = {
       phoneNumber: route.params.phoneNumber,
       password: route.params.password,
-      deviceId: DeviceInfo.getDeviceId(),
+      deviceId: await DeviceInfo.getUniqueId(),
     }
     if (type == 'forgetPassword') body = {
       phoneNumber: route.params.phoneNumber,
@@ -128,6 +101,7 @@ export const VerifyOTPScreen = React.memo((props?: any) => {
     const token = await user.getIdToken()
     const res = await window.connection.requestApi("POST", uri, body, null, null, token)
     if (res) {
+      await auth().signOut()
       if (type == 'signUp') {
         dispatch(updateToken(res.data.accessToken))
         NavigationUtils.resetGlobalStackWithScreen(navigation, ScreenName.SplashScreen);

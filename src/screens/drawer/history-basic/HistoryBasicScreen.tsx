@@ -39,7 +39,7 @@ export const HistoryBasicScreen = React.memo(() => {
     const [status, setStatus] = useState<Status>('pending')
 
     const check = useCallback((param: any) => {
-        if (status == 'complete') return LIST_STATUS.BOOKED.includes(param.status)
+        if (status == 'complete') return LIST_STATUS.PRINTED.includes(param.status)
         if (status == 'pending') return LIST_STATUS.PENDING.includes(param.status)
         if (status == 'returned') return LIST_STATUS.ERROR.includes(param.status)
     }, [status])

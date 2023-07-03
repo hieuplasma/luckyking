@@ -6,17 +6,20 @@ import { UserNavigation } from "./drawer/UserNavigation";
 import { WithDrawNavigation } from "./drawer/WithDrawNavigation";
 import { HistoryKenoNavigation } from "./drawer/HistoryKenoNavigation";
 import { HistoryBasicNavigation } from "./drawer/HistoryBasicNavigation";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { userApi } from "@api";
 import messaging from '@react-native-firebase/messaging'
 import auth from '@react-native-firebase/auth'
 import DeviceInfo from 'react-native-device-info';
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { NavigationUtils, doNotExits } from "@utils";
 import { ScreenName } from "./ScreenName";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamsList } from "@navigation";
+
+import { AppState, PermissionsAndroid, Platform } from 'react-native';
+import { updateUser } from "@redux";
 
 export type MainDrawerParamList = {
     BottomTab: {}
@@ -35,18 +38,25 @@ export function MainNavigation(props: any) {
 
     const navigation = useNavigation<NavigationProp>();
 
+    const dispatch = useDispatch()
+
     const token = useSelector((state: any) => state.authReducer.accessToken)
 
     const checkApplicationPermission = async () => {
-        const authorizationStatus = await messaging().requestPermission();
+        if (Platform.OS == 'android') {
+            const authorizationStatus = PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
+            console.log(authorizationStatus)
+        }
+        else {
+            const authorizationStatus = await messaging().requestPermission();
+            if (authorizationStatus === messaging.AuthorizationStatus.AUTHORIZED) {
+                console.log('User has notification permissions enabled.');
 
-        if (authorizationStatus === messaging.AuthorizationStatus.AUTHORIZED) {
-            console.log('User has notification permissions enabled.');
-
-        } else if (authorizationStatus === messaging.AuthorizationStatus.PROVISIONAL) {
-            console.log('User has provisional notification permissions.');
-        } else {
-            console.log('User has notification permissions disabled');
+            } else if (authorizationStatus === messaging.AuthorizationStatus.PROVISIONAL) {
+                console.log('User has provisional notification permissions.');
+            } else {
+                console.log('User has notification permissions disabled');
+            }
         }
     }
 
@@ -65,7 +75,7 @@ export function MainNavigation(props: any) {
                     if (enabled) {
                         const fcmToken = await messaging().getToken()
                         const resFCM = await userApi.updateFCMToken({
-                            deviceId: DeviceInfo.getDeviceId(),
+                            deviceId: await DeviceInfo.getUniqueId(),
                             deviceToken: fcmToken
                         })
                         if (resFCM) {
@@ -82,6 +92,44 @@ export function MainNavigation(props: any) {
         if (!doNotExits(token)) registerFCM()
         else NavigationUtils.resetGlobalStackWithScreen(navigation, ScreenName.Authentication)
     }, [token])
+
+    const syncBalance = useCallback(async () => {
+        const resBalance = await userApi.getBalance()
+        if (resBalance) {
+            dispatch(updateUser(resBalance.data))
+        }
+    }, [])
+
+    useEffect(() => {
+        const unsubscribe = messaging().onMessage(async remoteMessage => {
+            console.log("remoteMessage", remoteMessage)
+            const resBalance = await userApi.getBalance()
+            if (resBalance) {
+                dispatch(updateUser(resBalance.data))
+            }
+        });
+
+        return unsubscribe
+    }, [])
+
+    const appState = useRef(AppState.currentState);
+    useEffect(() => {
+        const subscription = AppState.addEventListener('change', nextAppState => {
+            if (
+                appState.current.match(/inactive|background/) &&
+                nextAppState === 'active'
+            ) {
+                console.log('App has come to the foreground!');
+                syncBalance()
+            }
+
+            appState.current = nextAppState;
+        });
+
+        return () => {
+            subscription.remove();
+        };
+    }, []);
 
     const renderCustom = useCallback((props: any) => {
         return (<DrawerCustom {...props} />)

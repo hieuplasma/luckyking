@@ -3,7 +3,6 @@ import { AuthenticationStackParamList, ScreenName } from '@navigation';
 import { RouteProp, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import {
-  InputComponent,
   Label,
   ShadowView,
   translate,
@@ -15,6 +14,7 @@ import React, { useCallback, useState } from 'react';
 import { Alert, Platform, View ,KeyboardAvoidingView} from 'react-native';
 import { Icon } from '@assets';
 import { useHeaderHeight } from '@react-navigation/elements'
+import { InputComponent } from '@components';
 
 
 type NavigationProp = StackNavigationProp<
