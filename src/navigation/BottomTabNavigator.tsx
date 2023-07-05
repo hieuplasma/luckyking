@@ -189,7 +189,7 @@ export function BottomTabNavigator() {
           ...Style.Content.CenterInVertical,
         }
       }}>
-      <BottomTab.Screen
+      {/* <BottomTab.Screen
         name='LiveStack'
         component={LiveNavigation}
         options={{
@@ -201,7 +201,7 @@ export function BottomTabNavigator() {
               focused,
             }),
         }}
-      />
+      /> */}
       <BottomTab.Screen
         name='ResultStack'
         component={ResultNavigation}
@@ -241,7 +241,7 @@ export function BottomTabNavigator() {
             }),
         }}
       />
-      <BottomTab.Screen
+      {/* <BottomTab.Screen
         name='StatisticalStack'
         component={StatisticalScreen}
         options={{
@@ -253,7 +253,7 @@ export function BottomTabNavigator() {
               focused,
             }),
         }}
-      />
+      /> */}
     </BottomTab.Navigator>
   );
 }

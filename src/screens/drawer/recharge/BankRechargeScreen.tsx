@@ -85,7 +85,7 @@ export const BankRechargeScreen = () => {
 
                 <View style={{ marginTop: 4, flexDirection: 'row', alignItems: 'center' }}>
                     <Image source={Images.phone} style={{ width: 30, height: 30 }} />
-                    <IText style={{ fontWeight: '600', marginLeft: 12 }}> {"Hotline: 0912.345.678"}</IText>
+                    <IText style={{ fontWeight: '600', marginLeft: 12 }}> {"Hotline: 0866.79.88.79"}</IText>
                 </View>
                 <View style={{ marginTop: 4, flexDirection: 'row', alignItems: 'center' }}>
                     <Image source={Images.zalo} style={{ width: 30, height: 30 }} />

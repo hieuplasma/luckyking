@@ -1,8 +1,9 @@
 import { Color, Dimension, Style } from '@styles';
 import * as React from 'react';
 import { useCallback, useState } from 'react';
-import { StyleProp, TextInput, TextInputProps, View, ViewStyle, StyleSheet } from 'react-native';
+import { StyleProp, TextInput, TextInputProps, View, ViewStyle, StyleSheet, TouchableOpacity } from 'react-native';
 import { IText } from '../texts';
+import { Image, Images } from '@assets';
 
 export interface InputComponentProps extends TextInputProps {
   label?: string;
@@ -12,6 +13,7 @@ export interface InputComponentProps extends TextInputProps {
   onPressIconRight?: () => void;
   isTyping?: boolean;
   renderLeftView?: JSX.Element;
+  force?: boolean
 }
 
 export function InputComponent(props: InputComponentProps) {
@@ -25,31 +27,37 @@ export function InputComponent(props: InputComponentProps) {
     secureTextEntry,
     onPressIconRight,
     renderLeftView,
+    force,
     ...rest
   } = props;
   const [isTyping, setIsTyping] = useState(false);
+
+  const textInputRef = React.useRef<any>(null)
+
+  const focus = useCallback(() => {
+    textInputRef.current?.focus()
+  }, [textInputRef])
 
   const onFocus = useCallback(() => {
     setIsTyping(true);
   }, []);
 
-  const onBlur = useCallback(
-    (e?: any) => {
-      setIsTyping(false);
-      rest?.onBlur?.(e);
-    },
-    [rest?.onBlur],
-  );
+  const onBlur = useCallback((e?: any) => {
+    setIsTyping(false);
+    rest?.onBlur?.(e);
+  }, [rest?.onBlur],);
 
   return (
     <View style={containerStyle}>
       {label && (
         <IText
-          style={[Style.Label.Regular.TextSecondaryContentL_14, Style.Space.MarginBottom.small_8, {marginLeft: 4}]}>
+          style={[Style.Label.Regular.TextSecondaryContentL_14, Style.Space.MarginBottom.small_8, { marginLeft: 4 }]}>
           {label}
         </IText>
       )}
-      <View
+      <TouchableOpacity
+        onPress={focus}
+        activeOpacity={1}
         style={[
           styles.container,
           props.errorMessage ? styles.error : undefined,
@@ -57,6 +65,7 @@ export function InputComponent(props: InputComponentProps) {
         ]}>
         {renderLeftView}
         <TextInput
+          ref={textInputRef}
           allowFontScaling={false}
           {...rest}
           onChangeText={(value?: string) => onChangeText && onChangeText(value ?? '')}
@@ -69,10 +78,17 @@ export function InputComponent(props: InputComponentProps) {
           onFocus={onFocus}
           onBlur={onBlur}
         />
-      </View>
+        {
+          force ?
+            <Image
+              source={Images.star}
+              style={{ width: 8, height: 8, marginTop: -9, marginLeft: 2 }} />
+            : <></>
+        }
+      </TouchableOpacity>
       {errorMessage ? (
-        <IText style={[Style.Label.Regular.RedContent_13, 
-          {marginLeft: 4, marginTop: 6, fontSize: 14}]}>{errorMessage}</IText>
+        <IText style={[Style.Label.Regular.RedContent_13,
+        { marginLeft: 4, marginTop: 6, fontSize: 14 }]}>{errorMessage}</IText>
       ) : null}
     </View>
   );

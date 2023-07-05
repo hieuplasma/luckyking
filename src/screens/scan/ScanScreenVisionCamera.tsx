@@ -1,3 +1,4 @@
+import 'react-native-reanimated'
 import { runOnJS } from 'react-native-reanimated';
 import { ScanStackParamList, ScreenName } from '@navigation';
 import { RouteProp, useNavigation, useIsFocused } from '@react-navigation/native';
@@ -46,23 +47,6 @@ export const ScanScreenVisionCamera = React.memo(() => {
     const device = devices.back;
     const [scanned, setScanned] = useState(false);
 
-    const frameProcessor = useFrameProcessor((frame) => {
-        "worklet";
-        const detectedBarcodes = scanBarcodes(frame, [BarcodeFormat.PDF417], {
-            checkInverted: true,
-        });
-        if (detectedBarcodes?.length !== 0) {
-            runOnJS(handleBarCodeScanned)({ data: detectedBarcodes[0].displayValue })
-        }
-    }, [])
-
-    React.useEffect(() => {
-        (async () => {
-            const status = await Camera.requestCameraPermission();
-            setHasPermission(status === 'authorized');
-        })();
-    }, []);
-
     const handleBarCodeScanned = ({ data }: any) => {
         let tmp = scanBarCode(data)
         if (tmp.message == "success") {
@@ -73,6 +57,23 @@ export const ScanScreenVisionCamera = React.memo(() => {
             alert(tmp.message)
         }
     }
+
+    const frameProcessor = useFrameProcessor((frame) => {
+        "worklet";
+        const detectedBarcodes = scanBarcodes(frame, [BarcodeFormat.PDF417], {
+            checkInverted: true,
+        });
+        if (detectedBarcodes?.length !== 0) {
+            runOnJS(handleBarCodeScanned)({ data: detectedBarcodes[0].displayValue })
+        }
+    }, [handleBarCodeScanned])
+
+    React.useEffect(() => {
+        (async () => {
+            const status = await Camera.requestCameraPermission();
+            setHasPermission(status === 'authorized');
+        })();
+    }, []);
 
     const touchableTest = useCallback(() => {
         handleBarCodeScanned({ data: TEST })

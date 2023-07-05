@@ -32,7 +32,7 @@ export const ModalConfirm = React.memo(({ visible, message, onConfirm, onCancel,
         <Modal
             animationType="fade"
             transparent={true}
-            visible={visible}
+            visible={isVisible}
             onRequestClose={handleCancel}
         >
             <View style={styles.modalContainer}>

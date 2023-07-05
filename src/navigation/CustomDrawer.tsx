@@ -258,44 +258,44 @@ const listItem2 = [
     subTitle: "(Power, Mega, Max3D/3D+, Max3DPro)",
     screen: ScreenName.Drawer.HistoryBasicStack
   },
-  {
-    screenId: undefined,
-    icon: Images.history_note,
-    icStyle: styles.icon_history,
-    title: "Lịch sử chơi nhóm",
-    subTitle: "(Power, Mega, Max3D/3D+nhóm)",
-    screen: undefined
-  },
-  {
-    screenId: undefined,
-    icon: Images.contact,
-    icStyle: styles.icon_default,
-    title: "Liên hệ",
-    subTitle: undefined,
-    screen: undefined
-  },
-  {
-    screenId: undefined,
-    icon: Images.dieu_khoan,
-    icStyle: styles.icon_default,
-    title: "Điều khoản sử dụng",
-    subTitle: undefined,
-    screen: undefined
-  },
-  {
-    screenId: undefined,
-    icon: Images.chia_se,
-    icStyle: styles.icon_default,
-    title: "Giới thiệu bạn bè",
-    subTitle: undefined,
-    screen: undefined
-  },
-  {
-    screenId: undefined,
-    icon: Images.setting,
-    icStyle: styles.icon_default,
-    title: "Cài đặt",
-    subTitle: undefined,
-    screen: undefined
-  }
+  // {
+  //   screenId: undefined,
+  //   icon: Images.history_note,
+  //   icStyle: styles.icon_history,
+  //   title: "Lịch sử chơi nhóm",
+  //   subTitle: "(Power, Mega, Max3D/3D+nhóm)",
+  //   screen: undefined
+  // },
+  // {
+  //   screenId: undefined,
+  //   icon: Images.contact,
+  //   icStyle: styles.icon_default,
+  //   title: "Liên hệ",
+  //   subTitle: undefined,
+  //   screen: undefined
+  // },
+  // {
+  //   screenId: undefined,
+  //   icon: Images.dieu_khoan,
+  //   icStyle: styles.icon_default,
+  //   title: "Điều khoản sử dụng",
+  //   subTitle: undefined,
+  //   screen: undefined
+  // },
+  // {
+  //   screenId: undefined,
+  //   icon: Images.chia_se,
+  //   icStyle: styles.icon_default,
+  //   title: "Giới thiệu bạn bè",
+  //   subTitle: undefined,
+  //   screen: undefined
+  // },
+  // {
+  //   screenId: undefined,
+  //   icon: Images.setting,
+  //   icStyle: styles.icon_default,
+  //   title: "Cài đặt",
+  //   subTitle: undefined,
+  //   screen: undefined
+  // }
 ]

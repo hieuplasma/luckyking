@@ -66,7 +66,7 @@ export function isVietnamesePhoneNumber(number?: string) {
     return /((^(\+84|84|0|0084){1})(3|5|7|8|9))+([0-9]{8})$/.test(number);
 }
 
-export function isValidPassword(param: string) {
+export function isValidPassword(param?: string) {
     if (!param) return false
     const password = param.trim()
 
@@ -77,4 +77,10 @@ export function isValidPassword(param: string) {
     if (password.length < 8 || password.length > 16) return false
 
     return true
+}
+
+export function checkIdentify(val: string) {
+    if (val.trim().length != 12) return false;
+    if (!/^\d+$/.test(val.trim())) return false;
+    return true;
 }

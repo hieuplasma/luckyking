@@ -12,23 +12,28 @@ import { Button } from '@widgets';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Alert, KeyboardAvoidingView, Platform, TouchableOpacity, View } from 'react-native';
 import auth from '@react-native-firebase/auth';
-import DeviceInfo from 'react-native-device-info';
 import { useDispatch } from 'react-redux';
 import { updateToken } from '../../redux/reducer/auth';
-import { API_URI } from '../../api/config';
 import { NavigationUtils, ScreenUtils } from '@utils';
 import { Icon } from '@assets';
 import { useHeaderHeight } from '@react-navigation/elements'
 import { InputComponent } from '@components';
+import { authApi } from '@api';
 
 
 type NavigationProp = StackNavigationProp<AuthenticationStackParamList, 'VerifyOTP'>;
 type NavigationRoute = RouteProp<AuthenticationStackParamList, 'VerifyOTP'>;
 
+export enum RequestType {
+  singup = 'singup',
+  changepass = 'changepass',
+  login = 'login'
+}
+
 export interface VerifyOTPScreenRouteParams {
-  type?: string;
-  phoneNumber: string,
-  password: string
+  body?: any,
+  uri?: string,
+  type: RequestType
 }
 
 export interface VerifyOTPScreenProps { }
@@ -60,16 +65,17 @@ export const VerifyOTPScreen = React.memo((props?: any) => {
 
   const signInWithPhoneNumber = useCallback(async () => {
     try {
-      let tmp = route.params.phoneNumber.trim()
+      let tmp = route.params.body.phoneNumber
+      console.log(tmp)
       if (tmp.charAt(0) == '0') tmp = tmp.replace('0', '+84')
-      // Alert.alert("sdt", tmp)
       const confirm = await auth().signInWithPhoneNumber(tmp)
       setConfirm(confirm)
       verifyOtpHooks.onResendOtp()
     } catch (error) {
-      Alert.alert("Lỗi", JSON.stringify(error))
+      console.log(error?.toString())
+      Alert.alert("Lỗi", error?.toString())
     }
-  }, [verifyOtpHooks.onResendOtp, setConfirm, route.params.phoneNumber])
+  }, [verifyOtpHooks.onResendOtp, setConfirm, route.params.body.phoneNumber])
 
   useEffect(() => {
     signInWithPhoneNumber()
@@ -84,29 +90,19 @@ export const VerifyOTPScreen = React.memo((props?: any) => {
     verifyOtpHooks.setLoading(true)
     const type = route.params.type
 
-    let uri: string = API_URI.REGISTER
-    if (type == 'forgetPassword') uri = API_URI.FORGET_PASSWORD
-
-    let body = {
-      phoneNumber: route.params.phoneNumber,
-      password: route.params.password,
-      deviceId: await DeviceInfo.getUniqueId(),
-    }
-    if (type == 'forgetPassword') body = {
-      phoneNumber: route.params.phoneNumber,
-      //@ts-ignore
-      newPassword: route.params.password
-    }
-
     const token = await user.getIdToken()
-    const res = await window.connection.requestApi("POST", uri, body, null, null, token)
-    if (res) {
-      await auth().signOut()
-      if (type == 'signUp') {
+    if (route.params.type == RequestType.singup) {
+      const res = await authApi.register(route.params.body, token)
+      if (res) {
+        await auth().signOut()
         dispatch(updateToken(res.data.accessToken))
         NavigationUtils.resetGlobalStackWithScreen(navigation, ScreenName.SplashScreen);
       }
-      else {
+    }
+    else {
+      const res = await authApi.forgetPass(route.params.body, token)
+      if (res) {
+        await auth().signOut()
         Alert.alert("Thông báo", "Đã đổi mật khẩu thành công!")
         NavigationUtils.navigate(navigation, ScreenName.Authentications.Login)
       }
@@ -223,7 +219,7 @@ export const VerifyOTPScreen = React.memo((props?: any) => {
               Style.Label.Regular.WhiteContentXL_16,
               Style.Label.Align.Center,
               Style.Space.MarginRight.largeMargin_16,
-              { color: Color.black },
+              { color: Color.black, lineHeight: 20 },
             ]}>
             {translate('label.otp')}
           </Label.Widget>

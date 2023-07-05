@@ -10,6 +10,16 @@ class AuthApi {
     let fullUrl = API_URI.CHECK_PHONENUMBER;
     return await window.connection.POST(fullUrl, body);
   };
+
+  register = async (body: any, firebaseToken: string) => {
+    let fullUrl = API_URI.REGISTER;
+    return await window.connection.requestApi("POST", fullUrl, body, null, null, firebaseToken)
+  }
+
+  forgetPass = async (body: any, firebaseToken: string) => {
+    let fullUrl = API_URI.FORGET_PASSWORD;
+    return await window.connection.requestApi("POST", fullUrl, body, null, null, firebaseToken)
+  }
 }
 
 const authApi = new AuthApi();

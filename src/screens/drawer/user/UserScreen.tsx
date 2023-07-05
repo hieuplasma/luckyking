@@ -2,7 +2,7 @@ import { Images, Image } from '@assets';
 import { ScreenName, UserStackParamList } from '@navigation';
 import { RouteProp, useNavigation } from '@react-navigation/native';
 import { Color } from '@styles';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
     StyleSheet,
     View,
@@ -210,9 +210,27 @@ export const UserScreen = React.memo(() => {
     );
 });
 
-const ItemView = ({ label, value, setValue, force, disable }: any) => {
+const ItemView = ({ label, value, setValue, force, disable, ...rest }: any) => {
+
+    const [isTyping, setIsTyping] = useState(false);
+    const textInputRef = React.useRef<any>(null)
+
+    const focus = useCallback(() => {
+        textInputRef.current?.focus()
+    }, [textInputRef])
+
+    const onFocus = useCallback(() => {
+        setIsTyping(true);
+    }, []);
+
+    const onBlur = useCallback((e?: any) => {
+        setIsTyping(false);
+        rest?.onBlur?.(e);
+    }, [rest?.onBlur]);
+
     return (
-        <View style={[styles.borderItem, { opacity: disable ? 0.6 : 1 }]}>
+        <TouchableOpacity style={[styles.borderItem, { opacity: disable ? 0.6 : 1, borderColor: isTyping ? Color.primary : '#E7E3E3' }]}
+            onPress={focus} activeOpacity={1} disabled={disable}>
             <IText style={styles.textItem}>{label}</IText>
             {force ? (
                 <Image
@@ -223,6 +241,7 @@ const ItemView = ({ label, value, setValue, force, disable }: any) => {
             )}
             <View style={{ flex: 1 }} />
             <TextInput
+                ref={textInputRef}
                 style={{
                     backgroundColor: Color.white,
                     height: 43,
@@ -235,8 +254,10 @@ const ItemView = ({ label, value, setValue, force, disable }: any) => {
                 placeholderTextColor={'#A19C9C'}
                 autoCorrect={false}
                 editable={disable ? false : true}
+                onFocus={onFocus}
+                onBlur={onBlur}
             />
-        </View>
+        </TouchableOpacity>
     );
 };
 

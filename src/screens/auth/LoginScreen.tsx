@@ -17,6 +17,7 @@ import { updateToken } from '../../redux/reducer/auth';
 import { useHeaderHeight } from '@react-navigation/elements'
 import { IText, ImageHeader, InputComponent } from '@components';
 import { Image, Images } from '@assets';
+import { FORM_ERROR } from '@common';
 
 
 type NavigationProp = StackNavigationProp<AuthenticationStackParamList, 'Login'>;
@@ -43,17 +44,17 @@ export const LoginWidget = React.memo((props: any) => {
 
   const onLoginPress = useCallback(async () => {
     if (doNotExits(phoneNumber)) {
-      setErrorMessage({ phonenumber: 'Bạn chưa nhập số điện thoại' })
+      setErrorMessage({ phonenumber: FORM_ERROR.EMPTY_PHONE })
       return 0;
     }
 
     if (!isVietnamesePhoneNumber(phoneNumber)) {
-      setErrorMessage({ phonenumber: 'Số điện thoại không hợp lệ' })
+      setErrorMessage({ phonenumber: FORM_ERROR.INVALID_PHONE })
       return 0;
     }
 
     if (doNotExits(password)) {
-      setErrorMessage({ password: 'Bạn chưa nhập mật khẩu' })
+      setErrorMessage({ password: FORM_ERROR.EMPTY_PASS })
       return 0;
     }
 
@@ -159,7 +160,6 @@ export const LoginWidget = React.memo((props: any) => {
   return (
     <View style={styles.container}>
       <ImageHeader />
-
       <KeyboardAvoidingView
         keyboardVerticalOffset={height + 45}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -180,9 +180,7 @@ export const LoginWidget = React.memo((props: any) => {
             {renderSignupButton()}
           </View>
         </ScrollView>
-
       </KeyboardAvoidingView>
-
     </View>
   );
 });

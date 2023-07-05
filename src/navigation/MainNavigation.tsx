@@ -9,7 +9,6 @@ import { HistoryBasicNavigation } from "./drawer/HistoryBasicNavigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { userApi } from "@api";
 import messaging from '@react-native-firebase/messaging'
-import auth from '@react-native-firebase/auth'
 import DeviceInfo from 'react-native-device-info';
 import { useDispatch, useSelector } from "react-redux";
 import { NavigationUtils, doNotExits } from "@utils";
@@ -94,18 +93,22 @@ export function MainNavigation(props: any) {
     }, [token])
 
     const syncBalance = useCallback(async () => {
-        const resBalance = await userApi.getBalance()
-        if (resBalance) {
-            dispatch(updateUser(resBalance.data))
+        if (!doNotExits(token)) {
+            const resBalance = await userApi.getBalance()
+            if (resBalance) {
+                dispatch(updateUser(resBalance.data))
+            }
         }
-    }, [])
+    }, [token])
 
     useEffect(() => {
         const unsubscribe = messaging().onMessage(async remoteMessage => {
             console.log("remoteMessage", remoteMessage)
-            const resBalance = await userApi.getBalance()
-            if (resBalance) {
-                dispatch(updateUser(resBalance.data))
+            if (!doNotExits(token)) {
+                const resBalance = await userApi.getBalance()
+                if (resBalance) {
+                    dispatch(updateUser(resBalance.data))
+                }
             }
         });
 

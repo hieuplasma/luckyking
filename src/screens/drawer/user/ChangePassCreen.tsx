@@ -2,7 +2,7 @@ import { Images, Image } from '@assets';
 import { RouteProp, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Color } from '@styles';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
     StyleSheet, View, Dimensions, ScrollView,
     KeyboardAvoidingView, TextInput, TouchableOpacity, ActivityIndicator, Alert, Platform
@@ -54,8 +54,8 @@ export const ChangePassScreen = React.memo(() => {
         setLoading(true)
         const body = {
             phoneNumber: user.phoneNumber,
-            oldPassword: oldPass,
-            newPassword: newPass
+            oldPassword: oldPass.trim(),
+            newPassword: newPass.trim()
         }
 
         let res = await userApi.updatePassword(body)
@@ -121,13 +121,31 @@ export const ChangePassScreen = React.memo(() => {
     )
 });
 
-const ItemView = ({ label, value, setValue, sercure, setSercure }: any) => {
+const ItemView = ({ label, value, setValue, sercure, setSercure, ...rest }: any) => {
+
+    const [isTyping, setIsTyping] = useState(false);
+    const textInputRef = React.useRef<any>(null)
+
+    const focus = useCallback(() => {
+        textInputRef.current?.focus()
+    }, [textInputRef])
+
+    const onFocus = useCallback(() => {
+        setIsTyping(true);
+    }, []);
+
+    const onBlur = useCallback((e?: any) => {
+        setIsTyping(false);
+        rest?.onBlur?.(e);
+    }, [rest?.onBlur]);
     return (
         <>
             <IText style={{ marginLeft: 12, fontSize: 12, fontStyle: 'italic', marginTop: 16 }}>{doNotExits(value) ? "" : label}</IText>
-            <View style={styles.borderItem}>
+            <TouchableOpacity style={[styles.borderItem, { borderColor: isTyping ? Color.primary : '#E7E3E3' }]}
+                onPress={focus} activeOpacity={1}>
                 <Image style={{ width: 25, height: 30 }} source={Images.small_lock}></Image>
                 <TextInput
+                    ref={textInputRef}
                     style={{
                         backgroundColor: Color.white,
                         height: 43, marginLeft: 4,
@@ -140,11 +158,14 @@ const ItemView = ({ label, value, setValue, sercure, setSercure }: any) => {
                     placeholderTextColor={'#A19C9C'}
                     autoCorrect={false}
                     secureTextEntry={sercure}
+                    onFocus={onFocus}
+                    onBlur={onBlur}
                 />
                 <TouchableOpacity onPress={setSercure}>
                     <Image source={sercure ? Images.eye_close : Images.eye_open} style={{ width: 35, height: 35 }}></Image>
                 </TouchableOpacity>
-            </View></>
+            </TouchableOpacity>
+        </>
     )
 }
 

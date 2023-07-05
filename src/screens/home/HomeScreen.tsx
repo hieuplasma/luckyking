@@ -67,12 +67,12 @@ export const HomeScreen = React.memo((props?: HomeScreenProps) => {
   const renderHeaderRightView = useCallback(() => {
     return (
       <View style={[Style.Size.FlexRow, { alignItems: 'center' }]}>
-        <Icon.Button
+        {/* <Icon.Button
           name="ic_notification"
           size={'large'}
           color={Color.white}
           style={[Style.Space.PaddingHorizontal.Medium_12]}
-        />
+        /> */}
         <CartIcon navigation={navigation} badgeStyle={{ backgroundColor: "#FDB703" }} tintColor={Color.white} />
       </View>
     );

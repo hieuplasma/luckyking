@@ -1,63 +1,96 @@
-import { useForgetPassword } from '@hooks';
 import { AuthenticationStackParamList, ScreenName } from '@navigation';
 import { RouteProp, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import {
-  Label,
-  ShadowView,
   translate,
 } from '@shared';
-import { NavigationUtils } from '@utils';
+import { NavigationUtils, doNotExits, isValidPassword, isVietnamesePhoneNumber } from '@utils';
 import { Color, Style } from '@styles';
 import { Button } from '@widgets';
 import React, { useCallback, useState } from 'react';
-import { Alert, Platform, View ,KeyboardAvoidingView} from 'react-native';
-import { Icon } from '@assets';
+import { Alert, Platform, View, KeyboardAvoidingView, StyleSheet, ScrollView } from 'react-native';
+import { Icon, Image, Images } from '@assets';
 import { useHeaderHeight } from '@react-navigation/elements'
-import { InputComponent } from '@components';
+import { ImageHeader, InputComponent } from '@components';
+import { FORM_ERROR, RES_MES } from '@common';
+import { API_URI } from 'src/api/config';
+import { RequestType } from './VerifyOTPScreen';
+import { ModalConfirmSendOTP } from './component/ModalConfirmSendOTP';
+import { authApi } from '@api';
 
 
-type NavigationProp = StackNavigationProp<
-  AuthenticationStackParamList,
-  'Forget'
->;
+type NavigationProp = StackNavigationProp<AuthenticationStackParamList, 'Forget'>;
 type NavigationRoute = RouteProp<AuthenticationStackParamList, 'Forget'>;
 
 export interface ForgetScreenRouteParams { }
-
 export interface ForgetScreenProps { }
+
+interface ErrorBody {
+  phonenumber?: string;
+  password?: string;
+  repeatpassword?: string;
+}
 
 export const ForgetPassword = React.memo(() => {
   const height = useHeaderHeight()
   const navigation = useNavigation<NavigationProp>();
-  const forgetPasswordHooks = useForgetPassword();
-
-  const onGoBack = useCallback(() => {
-    navigation.goBack();
-  }, []);
 
   const [phoneNumber, setPhoneNumber] = useState<string | undefined>(undefined);
   const [password, setPassword] = useState<string | undefined>(undefined);
-  const [repeatPassword, setRepeatPassword] = useState<string | undefined>(
-    undefined,
-  );
+  const [repeatPassword, setRepeatPassword] = useState<string | undefined>(undefined);
 
-  const [errorMessage, setErrorMessage] = useState<| { phonenumber?: string; password?: string; } | undefined>(undefined);
+  const [errorMessage, setErrorMessage] = useState<| ErrorBody | undefined>(undefined);
 
+  const [visible, setIsVisible] = useState(false)
 
-  const onSubmit = useCallback(() => {
-    if (phoneNumber == "" || phoneNumber == undefined)
-      return (Alert.alert("Lỗi", "Bạn chưa nhập số điện thoại"))
-    if (password == "")
-      return (Alert.alert("Lỗi", "Bạn chưa nhập mật khẩu"))
-    if (password != repeatPassword)
-      return (Alert.alert("Lỗi", "Mật khẩu và mật khẩu xác nhận phải giống nhau"))
-    NavigationUtils.navigate(navigation, ScreenName.Authentications.VerifyOTP, {
-      type: 'forgetPassword',
-      phoneNumber: phoneNumber,
-      password: password
-    });
+  const onSubmit = useCallback(async () => {
+    if (doNotExits(phoneNumber)) {
+      setErrorMessage({ phonenumber: FORM_ERROR.EMPTY_PHONE })
+      return 0;
+    }
+    if (!isVietnamesePhoneNumber(phoneNumber)) {
+      setErrorMessage({ phonenumber: FORM_ERROR.INVALID_PHONE })
+      return 0;
+    }
+    if (doNotExits(password)) {
+      setErrorMessage({ password: FORM_ERROR.EMPTY_PASS })
+      return 0;
+    }
+    if (password != repeatPassword) {
+      setErrorMessage({ repeatpassword: FORM_ERROR.NOT_MATCH_REPEATE_PASS })
+      return 0;
+    }
+    if (!isValidPassword(password)) {
+      setErrorMessage({ password: FORM_ERROR.INVALID_PASS })
+      return 0;
+    }
+    setErrorMessage(undefined)
+
+    window.loadingIndicator.show()
+    const res = await authApi.checkPhoneNumber({ phoneNumber: phoneNumber })
+    window.loadingIndicator.hide()
+    if (res) {
+      if (!res.data.registered) {
+        return Alert.alert('Thông báo', RES_MES.NOT_EXIST_PHONE);
+      }
+      else setIsVisible(true)
+    }
   }, [navigation, phoneNumber, password, repeatPassword]);
+
+  const onConfirm = useCallback(() => {
+    setIsVisible(false)
+    NavigationUtils.navigate(navigation, ScreenName.Authentications.VerifyOTP, {
+      body: {
+        phoneNumber: phoneNumber,
+        newPassword: password
+      },
+      type: RequestType.changepass
+    });
+  }, [navigation, phoneNumber, password])
+
+  const onCancel = useCallback(() => {
+    setIsVisible(false)
+  }, [])
 
   const onChangePhoneNumber = useCallback((phoneNumber?: string) => {
     setPhoneNumber(phoneNumber);
@@ -69,23 +102,20 @@ export const ForgetPassword = React.memo(() => {
     setRepeatPassword(password);
   }, []);
 
-  const renderPhoneNumberInput = useCallback(() => {
+  const renderNumberInput = useCallback(() => {
     return (
       <InputComponent
         editable={true}
-        keyboardType="default"
-        value={forgetPasswordHooks.phoneNumber}
-        placeholder={translate('input.phoneNumber')}
-        label={translate('input.phoneNumber')}
+        keyboardType="phone-pad"
+        value={phoneNumber}
+        placeholder={'Nhập số điện thoại của quý khách'}
+        label={"Số điện thoại"}
         onChangeText={onChangePhoneNumber}
         containerStyle={[Style.Space.MarginTop.xLarge_24]}
-        errorMessage={forgetPasswordHooks.errorMessage?.phonenumber}
+        errorMessage={errorMessage?.phonenumber}
       />
     );
-  }, [
-    forgetPasswordHooks.phoneNumber,
-    forgetPasswordHooks.errorMessage?.phonenumber,
-  ]);
+  }, [phoneNumber, errorMessage?.phonenumber]);
 
   const renderPasswordInput = useCallback(() => {
     return (
@@ -114,63 +144,63 @@ export const ForgetPassword = React.memo(() => {
         label={translate('input.repeatPassword')}
         onChangeText={onChangeRepeatPassword}
         containerStyle={[Style.Space.MarginTop.xLarge_24]}
-        errorMessage={errorMessage?.password}
+        errorMessage={errorMessage?.repeatpassword}
         secureTextEntry={true}
         textContentType="oneTimeCode"
       />
     );
-  }, [repeatPassword, errorMessage?.password]);
+  }, [repeatPassword, errorMessage?.repeatpassword]);
 
-  const renderSubmitButton = useCallback(() => {
+  const renderConfirmButton = useCallback(() => {
     return (
       <Button.Widget
-        text={'button.submit'}
+        disableTranslate={true}
+        text={'Cập nhật mật khẩu'}
         type="primary"
         style={[
           Style.Self.Center,
-          Style.Space.MarginTop.large_16,
-          { backgroundColor: Color.vietlott },
+          { backgroundColor: Color.vietlott, width: '100%', marginTop: 50 },
         ]}
         onClicked={onSubmit}
-        isLoading={forgetPasswordHooks.isLoading}
       />
     );
-  }, [onSubmit, forgetPasswordHooks.isLoading]);
+  }, [onSubmit]);
 
   return (
-    <KeyboardAvoidingView keyboardVerticalOffset={height} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={[
-        Style.Size.MatchParent,
-        Style.Background.Red,
-        Style.Space.PaddingHorizontal.large_16,
-        Style.Content.CenterInVertical,
-      ]}>
-      <ShadowView>
-        <View style={[Style.Size.FlexRow]}>
-          <Icon.Button
-            size={'small'}
-            color={Color.gray}
-            name="ic_back"
-            style={[Style.Space.Padding.Zero]}
-            onPressed={onGoBack}
-          />
-          <Label.Widget
-            uppercase
-            style={[
-              Style.Size.MatchParent,
-              Style.Label.Regular.WhiteContentXL_16,
-              Style.Label.Align.Center,
-              Style.Space.MarginRight.largeMargin_16,
-              { color: Color.black },
-            ]}>
-            {translate('label.forget')}
-          </Label.Widget>
-        </View>
-        {renderPhoneNumberInput()}
-        {renderPasswordInput()}
-        {renderRepeatPasswordInput()}
-        {renderSubmitButton()}
-      </ShadowView>
-    </KeyboardAvoidingView>
+    <View style={styles.container}>
+      <ImageHeader navigation={navigation} title='Thiết lập lại mật khẩu' />
+      <KeyboardAvoidingView
+        keyboardVerticalOffset={height}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.body}
+      >
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View style={{ width: '100%', marginTop: 37, alignItems: 'center' }}>
+            <Image source={Images.big_lock} style={{ width: 65, height: 65 }}></Image>
+          </View>
+          {renderNumberInput()}
+          {renderPasswordInput()}
+          {renderRepeatPasswordInput()}
+          {renderConfirmButton()}
+        </ScrollView>
+      </KeyboardAvoidingView>
+      <ModalConfirmSendOTP
+        visible={visible}
+        phoneNumber={phoneNumber}
+        onConfirm={onConfirm}
+        onCancel={onCancel}
+      />
+    </View>
   );
 });
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: Color.white
+  },
+  body: {
+    flex: 1, padding: 16
+  },
+  signupTxt: { fontStyle: 'italic', fontWeight: 'bold', color: Color.blue }
+})
