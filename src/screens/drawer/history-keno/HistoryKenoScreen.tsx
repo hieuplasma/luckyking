@@ -1,5 +1,5 @@
 import { lotteryApi } from '@api';
-import { LIST_STATUS, OrderStatus } from '@common';
+import { ERR_MES, LIST_STATUS, OrderStatus } from '@common';
 import { ImageHeader, IText } from '@components';
 import { HistoryKenoStackParamList, ScreenName } from '@navigation';
 import { RouteProp, useIsFocused, useNavigation } from '@react-navigation/native';
@@ -99,6 +99,11 @@ export const HistoryKenoScreen = React.memo(() => {
                         <RefreshControl refreshing={isLoading} onRefresh={onRefresh} />
                     }
                     ListFooterComponent={<View style={{ height: 100 }}></View>}
+                    ListEmptyComponent={
+                        <View style={{ marginTop: 50, justifyContent: 'center', alignItems: 'center' }}>
+                            <IText style={{ fontSize: 20, color: Color.luckyKing, fontWeight: 'bold' }}>{ERR_MES.NO_LOTTERY}</IText>
+                        </View>
+                    }
                 />
             </View>
         </View >

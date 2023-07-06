@@ -1,5 +1,5 @@
 import { lotteryApi } from '@api';
-import { LIST_STATUS, OrderStatus } from '@common';
+import { ERR_MES, LIST_STATUS, OrderStatus } from '@common';
 import { ImageHeader, IText } from '@components';
 import { HistoryBasicStackParamList, ScreenName } from '@navigation';
 import { RouteProp, useIsFocused, useNavigation, useRoute } from '@react-navigation/native';
@@ -99,13 +99,18 @@ export const HistoryBasicScreen = React.memo(() => {
                     renderItem={({ item, index }: any) => {
                         return <OrderBasicItem order={item}
                             onPress={() => NavigationUtils.navigate(navigation, ScreenName.Drawer.OrderBasicScreen, { order: item, status: status })}
-                            bgColor={index % 2 == 0 ? Color.white :Color.transparent} />
+                            bgColor={index % 2 == 0 ? Color.white : Color.transparent} />
                     }}
                     keyExtractor={(item: any, index) => String(item.id)}
                     refreshControl={
                         <RefreshControl refreshing={isLoading} onRefresh={onRefresh} />
                     }
                     ListFooterComponent={<View style={{ height: 100 }}></View>}
+                    ListEmptyComponent={
+                        <View style={{ marginTop: 50, justifyContent: 'center', alignItems: 'center' }}>
+                            <IText style={{ fontSize: 20, color: Color.luckyKing, fontWeight: 'bold' }}>{ERR_MES.NO_LOTTERY}</IText>
+                        </View>
+                    }
                 />
             </View>
         </View >

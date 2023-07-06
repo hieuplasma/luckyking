@@ -107,7 +107,7 @@ export const SignUpScreen = React.memo((props?: SignUpScreenProps) => {
       error.identify = FORM_ERROR.INVALID_IDENTIFY
       check = false
     }
-    
+
     if (!check) {
       setErrorMessage(error)
       return 0
@@ -129,7 +129,7 @@ export const SignUpScreen = React.memo((props?: SignUpScreenProps) => {
     const deviceId = await DeviceInfo.getUniqueId()
     NavigationUtils.navigate(navigation, ScreenName.Authentications.VerifyOTP, {
       body: {
-        phonenumber: phoneNumber,
+        phoneNumber: phoneNumber,
         password: password,
         fullName: fullName,
         identify: identify,
@@ -137,9 +137,9 @@ export const SignUpScreen = React.memo((props?: SignUpScreenProps) => {
         address: address,
         deviceId: deviceId
       },
-      type: RequestType.changepass
+      type: RequestType.singup
     });
-  }, [navigation, phoneNumber, password])
+  }, [navigation, phoneNumber, password, fullName, identify, address, email])
 
   const onCancel = useCallback(() => {
     setIsVisible(false)
