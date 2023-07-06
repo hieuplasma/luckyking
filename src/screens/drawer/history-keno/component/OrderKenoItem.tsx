@@ -52,7 +52,7 @@ export const OrderItem = React.memo(({ order, onPress, bgColor }: OrderItemProps
             </IText>
             <View style={styles.lineItem}>
                 <IText>{`Nhận: ${user.fullName}`}</IText>
-                <IText>{printDisplayId(order.displayId)}</IText>
+                <IText style={{fontWeight:'bold'}}>{printDisplayId(order.displayId)}</IText>
             </View>
 
             <View style={styles.lineItem}>

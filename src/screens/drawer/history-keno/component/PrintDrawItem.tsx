@@ -1,6 +1,6 @@
 import { API_HOST } from "@api";
 import { Image, Images } from "@assets";
-import { OrderStatus, getNameStatus } from "@common";
+import { OrderStatus, getLotteyNameStatus } from "@common";
 import { IText } from "@components";
 import { ScreenName } from "@navigation";
 import { Color } from "@styles";
@@ -84,23 +84,36 @@ export const PrintDrawItem = React.memo(({ lottery, expand, toggle, lottColor, n
     }, [result, navigation])
 
     return (
-        <TouchableOpacity style={[styles.container, { borderColor: expand ? lottColor : '#A0A0A0' }]}
-            activeOpacity={1} onPress={toggle}>
-            <IText style={{ marginTop: 8, marginBottom: -8 }}>
-                <IText style={{ fontWeight: 'bold' }}>{"Vé Keno: "}</IText>
-                {printDisplayId(lottery.displayId)}
-            </IText>
-            <View style={styles.topContainer}>
-                <IText>
-                    <IText style={{ fontWeight: 'bold' }}>{"Kỳ: "}</IText>
-                    {printDraw2({ drawCode: lottery.drawCode, drawTime: lottery.drawTime })}
-                </IText>
-                <TouchableOpacity style={[styles.btn, { borderColor: getColorStatus(lottery.status, lottColor) }]} onPress={navigate}>
-                    <IText style={{ color: getColorStatus(lottery.status, lottColor) }}>
-                        {getNameStatus(lottery.status)}
+        <View style={[styles.container, { borderColor: expand ? lottColor : '#A0A0A0' }]}>
+
+            <TouchableOpacity
+                style={styles.topContainer}
+                activeOpacity={1}
+                onPress={toggle}>
+                <View>
+                    <IText style={{ marginTop: 8, marginBottom: -8 }}>
+                        <IText style={{ fontWeight: 'bold' }}>{"Vé Keno: "}</IText>
+                        {printDisplayId(lottery.displayId)}
                     </IText>
-                </TouchableOpacity>
-            </View>
+                    <IText>
+                        <IText style={{ fontWeight: 'bold' }}>{"Kỳ: "}</IText>
+                        {printDraw2({ drawCode: lottery.drawCode, drawTime: lottery.drawTime })}
+                    </IText>
+                </View>
+
+                <View style={{ flex: 1 }} />
+                <IText style={{
+                    color: getColorStatus(lottery.status, lottColor),
+                    marginRight: 4,
+                    fontWeight: 'bold'
+                }}>
+                    {getLotteyNameStatus(lottery.status)}
+                </IText>
+                <Image
+                    source={Images.triangle}
+                    style={{ width: 15, height: 15, transform: [{ rotate: expand ? '90deg' : '0deg' }] }}
+                    tintColor={getColorStatus(lottery.status, lottColor)} />
+            </TouchableOpacity>
             {
                 expand ?
                     <View>
@@ -113,10 +126,18 @@ export const PrintDrawItem = React.memo(({ lottery, expand, toggle, lottColor, n
                                 <Image source={lottery.imageBack ? { uri: API_HOST + lottery.imageBack } : Images.no_picture} style={styles.img} resizeMode="contain" />
                             </TouchableWithoutFeedback> */}
                         </View>
+                        <View style={{ alignItems: 'center' }}>
+                            <TouchableOpacity onPress={navigate}
+                                style={styles.btnViewResult}>
+                                <IText style={{ color: Color.white }}>
+                                    {'Xem kết quả kỳ quay'}
+                                </IText>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                     : <></>
             }
-        </TouchableOpacity>
+        </View>
     )
 })
 
@@ -130,7 +151,7 @@ const styles = StyleSheet.create({
     },
     topContainer: {
         flexDirection: 'row', justifyContent: 'space-between',
-        height: 35, alignItems: 'center'
+        height: 50, alignItems: 'center',
     },
     btn: {
         height: 26, borderRadius: 10,
@@ -147,5 +168,12 @@ const styles = StyleSheet.create({
         width: '100%', alignSelf: 'center',
         height: 100, borderRadius: 10,
         borderWidth: 1, borderColor: 'rgba(160, 160, 160, 0.6)'
+    },
+    btnViewResult: {
+        height: 30,
+        justifyContent: 'center', alignItems: 'center',
+        paddingHorizontal: 10, backgroundColor: Color.keno,
+        borderRadius: 10,
+        marginVertical: 4
     }
 })

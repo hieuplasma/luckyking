@@ -1,8 +1,8 @@
 import { Image, Images } from "@assets";
-import { LIST_STATUS, OrderStatus } from "@common";
+import { LIST_STATUS, LotteryType, OrderStatus } from "@common";
 import { IText } from "@components";
 import { Color } from "@styles";
-import { dateConvert, printDisplayId, printMoney } from "@utils";
+import { dateConvert, getColorLott, printDisplayId, printMoney } from "@utils";
 import React, { useEffect, useState } from "react";
 import { ColorValue, Dimensions, StyleSheet, TouchableOpacity, View } from "react-native";
 import { useSelector } from "react-redux";
@@ -52,21 +52,23 @@ export const OrderBasicItem = React.memo(({ order, onPress, bgColor }: OrderItem
     }, [order])
 
     return (
-        <TouchableOpacity style={[styles.itemContainer, {backgroundColor: bgColor}]} onPress={onPress}>
+        <TouchableOpacity style={[styles.itemContainer, { backgroundColor: bgColor }]} onPress={onPress}>
             <IText style={{ fontWeight: 'bold', }}>
                 {dateConvert(createdAt)}
             </IText>
             <View style={styles.lineItem}>
                 <IText>{`Nhận: ${user.fullName}`}</IText>
-                <IText>{printDisplayId(order.displayId)}</IText>
+                <IText style={{ fontWeight: 'bold' }}>{printDisplayId(order.displayId)}</IText>
             </View>
 
             <View style={styles.lineItem}>
                 <IText>
                     {"Giữ hộ: "}
                     {
-                        listType.map((type: string, index: number) => {
-                            return (<IText key={type}>{type + (index == listType.length - 1 ? "" : ",")}</IText>)
+                        listType.map((type: LotteryType, index: number) => {
+                            return (<IText
+                                style={{ fontWeight: 'bold', color: getColorLott(type) }}
+                                key={type}>{type + (index == listType.length - 1 ? "" : ",")}</IText>)
                         })
                     }
                 </IText>

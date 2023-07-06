@@ -66,35 +66,6 @@ export const BankRechargeScreen = () => {
                     {" hỗ trợ nạp số dư tài khoản mua vé qua hình thức chuyển khoản Ngân hàng với nội dung như sau:"}
                 </IText>
 
-                <IText style={{ fontStyle: 'italic' }}>
-                    {"Nội dung chuyển khoản:"}
-                </IText>
-                <View style={styles.contentBlock}>
-                    <View style={styles.boxInside}>
-                        <IText uppercase style={styles.textInside}>{`NAP${user.phoneNumber}`}</IText>
-                    </View>
-                    <TouchableOpacity style={[styles.boxInside, { paddingHorizontal: 4 }]} onPress={copyContent}>
-                        <IText style={styles.textInside}>{"Sao chép"}</IText>
-                    </TouchableOpacity>
-                </View>
-
-                <IText style={{ fontStyle: 'italic', marginTop: 8 }}>
-                    <IText style={{ fontWeight: 'bold' }}>{"Lưu ý:"}</IText>
-                    {" Nếu Quý khách ghi sai hoặc quên ghi nội dung Chuyển khoản vui lòng liên hệ với bộ phận CSKH của LuckyKing "}
-                </IText>
-
-                <View style={{ marginTop: 4, flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={Images.phone} style={{ width: 30, height: 30 }} />
-                    <IText style={{ fontWeight: '600', marginLeft: 12 }}> {"Hotline: 0866.79.88.79"}</IText>
-                </View>
-                <View style={{ marginTop: 4, flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={Images.zalo} style={{ width: 30, height: 30 }} />
-                    <View style={{ marginLeft: 12, justifyContent: 'center' }}>
-                        <IText style={{ fontWeight: '600' }}> {"Zalo: LuckyKing"}</IText>
-                        <IText style={{ fontStyle: 'italic' }}> {"(Vui lòng gửi kèm hình ảnh chuyển khoản thành công)"}</IText>
-                    </View>
-                </View>
-
                 <View style={styles.line} />
 
                 <IText style={{ fontStyle: 'italic', marginTop: 8 }}>
@@ -144,6 +115,35 @@ export const BankRechargeScreen = () => {
                     })
                 }
 
+                <IText style={{ fontStyle: 'italic', marginTop: 8 }}>
+                    {"Nội dung chuyển khoản:"}
+                </IText>
+                <View style={styles.contentBlock}>
+                    <View style={styles.boxInside}>
+                        <IText uppercase style={styles.textInside}>{`NAP${user.phoneNumber}`}</IText>
+                    </View>
+                    <TouchableOpacity style={[styles.boxInside, { paddingHorizontal: 4 }]} onPress={copyContent}>
+                        <IText style={styles.textInside}>{"Sao chép"}</IText>
+                    </TouchableOpacity>
+                </View>
+
+                <IText style={{ fontStyle: 'italic', marginTop: 8 }}>
+                    <IText style={{ fontWeight: 'bold' }}>{"Lưu ý:"}</IText>
+                    {" Nếu Quý khách ghi sai hoặc quên ghi nội dung Chuyển khoản vui lòng liên hệ với bộ phận CSKH của LuckyKing "}
+                </IText>
+
+                <View style={{ marginTop: 4, flexDirection: 'row', alignItems: 'center' }}>
+                    <Image source={Images.phone} style={{ width: 30, height: 30 }} />
+                    <IText style={{ fontWeight: '600', marginLeft: 12 }}> {"Hotline: 0866.79.88.79"}</IText>
+                </View>
+                <View style={{ marginTop: 4, flexDirection: 'row', alignItems: 'center' }}>
+                    <Image source={Images.zalo} style={{ width: 30, height: 30 }} />
+                    <View style={{ marginLeft: 12, justifyContent: 'center' }}>
+                        <IText style={{ fontWeight: '600' }}> {"Zalo: LuckyKing"}</IText>
+                        <IText style={{ fontStyle: 'italic' }}> {"(Vui lòng gửi kèm hình ảnh chuyển khoản thành công)"}</IText>
+                    </View>
+                </View>
+
                 <IText style={{ fontStyle: 'italic', marginTop: 8, color: Color.luckyKing }}>
                     {"(*) Lưu ý: Nếu sau 4h tài khoản vẫn chưa được nạp vui lòng liên hệ với bộ phận CSKH của LuckyKing như trên."}
                 </IText>
@@ -174,7 +174,7 @@ const styles = StyleSheet.create({
     line: {
         width: windowWidth - 16, marginLeft: -8,
         backgroundColor: '#A0A0A0', opacity: 0.2,
-        marginTop: 12, height: 1
+        marginTop: 8, height: 1
     },
     boxBankAccount: {
         height: 70, borderColor: '#DADADA',

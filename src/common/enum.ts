@@ -43,17 +43,17 @@ export enum TransactionDestination {
     REWARD = "Ví nhận thưởng"
 }
 
-export function getNameStatus(param: OrderStatus) {
+export function getLotteyNameStatus(param: OrderStatus) {
     switch (param) {
         case OrderStatus.PENDING:
         case OrderStatus.LOCK:
             return "Đợi in vé"
         case OrderStatus.PRINTED:
             return "Đang in vé"
-        case OrderStatus.CONFIRMED: return "Đã in vé"
-        case OrderStatus.ERROR: return "Bị lỗi"
-        case OrderStatus.RETURNED: return "Đã huỷ"
-        case OrderStatus.WON: return "Trúng thưởng"
+        case OrderStatus.CONFIRMED: return "Chờ kết qủa"
+        case OrderStatus.ERROR: return "Vé bị lỗi"
+        case OrderStatus.RETURNED: return "Vé đã huỷ"
+        case OrderStatus.WON: return "Vé trúng thưởng"
         case OrderStatus.PAID: return "Đã trả thưởng"
         case OrderStatus.NO_PRIZE: return "Không trúng"
         case OrderStatus.CART: return "Trong giỏ hàng"
