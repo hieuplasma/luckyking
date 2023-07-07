@@ -20,9 +20,13 @@ export const LIST_STATUS = {
     OrderStatus.CONFIRMED, OrderStatus.PRINTED,
     OrderStatus.WON, OrderStatus.PAID, OrderStatus.NO_PRIZE],
 
-    ERROR: [OrderStatus.ERROR, OrderStatus.RETURNED],
+    PENDING: [OrderStatus.PENDING, OrderStatus.LOCK, OrderStatus.PRINTED],
 
-    PENDING: [OrderStatus.PENDING, OrderStatus.LOCK, OrderStatus.PRINTED]
+    WAITING: [OrderStatus.PENDING, OrderStatus.LOCK, OrderStatus.PRINTED, OrderStatus.CONFIRMED],
+
+    DONE: [OrderStatus.WON, OrderStatus.PAID, OrderStatus.NO_PRIZE],
+
+    ERROR: [OrderStatus.ERROR, OrderStatus.RETURNED]
 }
 
 export const LOTTRERY_COLOR_STATUS = {

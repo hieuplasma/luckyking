@@ -91,7 +91,7 @@ export const PrintDrawItem = React.memo(({ lottery, expand, toggle, lottColor, n
                 activeOpacity={1}
                 onPress={toggle}>
                 <View>
-                    <IText style={{ marginTop: 8, marginBottom: -8 }}>
+                    <IText>
                         <IText style={{ fontWeight: 'bold' }}>{"Vé Keno: "}</IText>
                         {printDisplayId(lottery.displayId)}
                     </IText>
@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
     },
     topContainer: {
         flexDirection: 'row', justifyContent: 'space-between',
-        height: 50, alignItems: 'center',
+        height: 58, alignItems: 'center',
     },
     btn: {
         height: 26, borderRadius: 10,

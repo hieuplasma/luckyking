@@ -15,7 +15,7 @@ type NavigationRoute = RouteProp<HistoryKenoStackParamList, 'HistoryKenoScreen'>
 
 export interface HistoryKenocreenParamsList { }
 
-type Status = 'booked' | 'returned'
+type Status = 'pending' | 'complete' | 'returned'
 
 export const HistoryKenoScreen = React.memo(() => {
 
@@ -36,10 +36,11 @@ export const HistoryKenoScreen = React.memo(() => {
         window.loadingIndicator.hide()
     }, [])
 
-    const [status, setStatus] = useState<Status>('booked')
+    const [status, setStatus] = useState<Status>('pending')
 
     const check = useCallback((param: any) => {
-        if (status == 'booked') return LIST_STATUS.BOOKED.includes(param.status)
+        if (status == 'pending') return LIST_STATUS.PENDING.includes(param.status)
+        if (status == 'complete') return LIST_STATUS.PRINTED.includes(param.status)
         if (status == 'returned') return LIST_STATUS.ERROR.includes(param.status)
     }, [status])
 
@@ -63,13 +64,22 @@ export const HistoryKenoScreen = React.memo(() => {
             <ImageHeader navigation={navigation} title={"LỊCH SỬ ĐẶT VÉ KENO"} />
 
             <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', marginTop: 11 }}>
-                <TouchableOpacity onPress={() => setStatus('booked')}>
+                <TouchableOpacity onPress={() => setStatus('pending')}>
                     <IText style={{
                         fontSize: 18,
-                        color: status == 'booked' ? Color.luckyKing : Color.black,
-                        textDecorationLine: status == 'booked' ? 'underline' : 'none'
+                        color: status == 'pending' ? Color.luckyKing : Color.black,
+                        textDecorationLine: status == 'pending' ? 'underline' : 'none'
                     }}>
-                        {"Đã đặt"}
+                        {"Đợi in vé"}
+                    </IText>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => setStatus('complete')}>
+                    <IText style={{
+                        fontSize: 18,
+                        color: status == 'complete' ? Color.luckyKing : Color.black,
+                        textDecorationLine: status == 'complete' ? 'underline' : 'none'
+                    }}>
+                        {"Đã in xong"}
                     </IText>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => setStatus('returned')}>

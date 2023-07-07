@@ -1,5 +1,5 @@
 import { Image, Images } from "@assets";
-import { LIST_STATUS } from "@common";
+import { LIST_STATUS, OrderStatus } from "@common";
 import { IText } from "@components";
 import { Color } from "@styles";
 import { dateConvert, printDisplayId, printDraw2, printMoney } from "@utils";
@@ -23,12 +23,14 @@ export const OrderItem = React.memo(({ order, onPress, bgColor }: OrderItemProps
     const [listDraw, setListDraw] = useState<any>([])
     const [printedCount, setPrintedCount] = useState(0)
     const [bonusCount, setBonusCount] = useState(0)
+    const [errorCount, setErrorCount] = useState(0)
 
     useEffect(() => {
         let tmp = new Set()
         let tmpDraw: any = []
         let totalPrinted = 0;
-        let totalBonus = 0
+        let totalBonus = 0;
+        let totalError = 0;
 
         order.Lottery.map((it: any) => {
             if (tmp.has(it.drawCode)) { }
@@ -37,12 +39,14 @@ export const OrderItem = React.memo(({ order, onPress, bgColor }: OrderItemProps
                 tmpDraw.push({ drawCode: it.drawCode, drawTime: it.drawTime })
             }
             if (LIST_STATUS.PRINTED.includes(it.status)) totalPrinted++
-            if (it.result) totalBonus ++
+            if (it.result) totalBonus++
+            if (it.status == OrderStatus.ERROR || it.status == OrderStatus.RETURNED) totalError++
         })
 
         setListDraw(tmpDraw)
         setPrintedCount(totalPrinted)
         setBonusCount(totalBonus)
+        setErrorCount(totalError)
     }, [order])
 
     return (
@@ -52,7 +56,7 @@ export const OrderItem = React.memo(({ order, onPress, bgColor }: OrderItemProps
             </IText>
             <View style={styles.lineItem}>
                 <IText>{`Nhận: ${user.fullName}`}</IText>
-                <IText style={{fontWeight:'bold'}}>{printDisplayId(order.displayId)}</IText>
+                <IText style={{ fontWeight: 'bold' }}>{printDisplayId(order.displayId)}</IText>
             </View>
 
             <View style={styles.lineItem}>
@@ -77,6 +81,7 @@ export const OrderItem = React.memo(({ order, onPress, bgColor }: OrderItemProps
                 totalLottery={order.Lottery.length}
                 benefits={order.benefits}
                 bonusCount={bonusCount}
+                errorCount={errorCount}
             />
 
         </TouchableOpacity>

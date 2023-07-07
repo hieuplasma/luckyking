@@ -31,19 +31,23 @@ export const OrderBasicItem = React.memo(({ order, onPress, bgColor }: OrderItem
     const [listType, setType] = useState<any>([])
     const [printedCount, setPrintedCount] = useState(0)
     const [bonusCount, setBonusCount] = useState(0)
+    const [errorCount, setErrorCount] = useState(0)
 
     useEffect(() => {
-        let totalPrinted = 0
-        let totalBonus = 0
+        let totalPrinted = 0;
+        let totalBonus = 0;
+        let totalError = 0;
         let tmpType: any = new Set()
         order.Lottery.map((it: any) => {
             tmpType.add(it.type)
             if (LIST_STATUS.PRINTED.includes(it.status)) totalPrinted++
             if (it.result) totalBonus++
+            if (it.status == OrderStatus.ERROR || it.status == OrderStatus.RETURNED) totalError++
         })
         setType(Array.from(tmpType))
         setPrintedCount(totalPrinted)
         setBonusCount(totalBonus)
+        setErrorCount(totalError)
     }, [order])
 
     return (
@@ -81,6 +85,7 @@ export const OrderBasicItem = React.memo(({ order, onPress, bgColor }: OrderItem
                 totalLottery={order.Lottery.length}
                 benefits={order.benefits}
                 bonusCount={bonusCount}
+                errorCount={errorCount}
             />
         </TouchableOpacity>
     )
