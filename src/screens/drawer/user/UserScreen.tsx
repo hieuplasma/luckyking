@@ -139,7 +139,7 @@ export const UserScreen = React.memo(() => {
                         force={true}
                         disable={true}
                     />
-                    <ItemView
+                    {/* <ItemView
                         label={'Mã số cá nhân'}
                         value={personNumber}
                         setValue={(text: string) => setPeronNumber(text)}
@@ -153,7 +153,7 @@ export const UserScreen = React.memo(() => {
                             fontStyle: 'italic',
                         }}>
                         {'(Gồm 8 số như 12345678, 66666666, 88888888....)'}
-                    </IText>
+                    </IText> */}
                     <ItemView
                         label={'CMND/CCCD'}
                         value={identify}

@@ -102,7 +102,7 @@ const HeaderDrawer = React.memo(({ navigateTo }: any) => {
       <TouchableOpacity style={{ flexDirection: 'row' }} activeOpacity={0.7} onPress={() => navigateTo(ScreenName.Drawer.UserStack)}>
         <View style={{ marginLeft: 8, justifyContent: 'center' }}>
           <IText style={{ fontSize: 18, fontWeight: 'bold', color: Color.white }}>{user.fullName}</IText>
-          <IText style={{ fontSize: 15, fontWeight: 'bold', color: Color.white, marginTop: 7 }}>{user.personNumber}</IText>
+          <IText style={{ fontSize: 15, fontWeight: 'bold', color: Color.white, marginTop: 7 }}>{user.phoneNumber}</IText>
         </View>
         <View style={{ marginLeft: 16, justifyContent: 'center' }}>
           <Image style={{ width: 12, height: 24 }} source={Images.right_arrow}></Image>

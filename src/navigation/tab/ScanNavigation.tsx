@@ -15,8 +15,8 @@ export type ScanStackParamList = {
 
 const HomeStack = createStackNavigator<ScanStackParamList>();
 
-const ScanScreen = Platform.OS == 'ios' ? ScanScreenExpo : ScanScreenVisionCamera
-// const ScanScreen = ScanScreenVisionCamera
+// const ScanScreen = Platform.OS == 'ios' ? ScanScreenExpo : ScanScreenVisionCamera
+const ScanScreen = ScanScreenVisionCamera
 
 export function ScanNavigation() {
   return (

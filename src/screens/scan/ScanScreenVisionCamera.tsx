@@ -49,6 +49,7 @@ export const ScanScreenVisionCamera = React.memo(() => {
 
     const handleBarCodeScanned = ({ data }: any) => {
         let tmp = scanBarCode(data)
+        console.log(tmp)
         if (tmp.message == "success") {
             setScanned(true);
             NavigationUtils.navigate(navigation, ScreenName.ScanChild.ScanResult, { data: tmp })
@@ -64,6 +65,7 @@ export const ScanScreenVisionCamera = React.memo(() => {
             checkInverted: true,
         });
         if (detectedBarcodes?.length !== 0) {
+            console.log(detectedBarcodes[0])
             runOnJS(handleBarCodeScanned)({ data: detectedBarcodes[0].displayValue })
         }
     }, [handleBarCodeScanned])
@@ -124,6 +126,8 @@ export const ScanScreenVisionCamera = React.memo(() => {
                             isActive={isFocused}
                             frameProcessor={frameProcessor}
                             frameProcessorFps={3}
+                            // enableHighQualityPhotos={true}
+                            zoom={2}
                         />
                         : <></>
                 }

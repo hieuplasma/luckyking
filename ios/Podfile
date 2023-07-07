@@ -41,7 +41,7 @@ target 'luckyking_app_react' do
 
   pre_install do |installer|
     installer.pod_targets.each do |pod|
-      if pod.name.eql?('vision-camera-code-scanner') || pod.name.eql?('VisionCamera')
+      if pod.name.eql?('vision-camera-code-scanner') || pod.name.eql?('VisionCamera') || pod.name.eql?('RNReanimated') 
         def pod.build_type
           Pod::BuildType.static_library
         end
