@@ -1,10 +1,10 @@
 import { Images } from "@assets";
-import { LIST_STATUS, LOTTRERY_COLOR_STATUS, OrderStatus } from "@common";
+import { OrderStatus } from "@common";
 import { IText } from "@components";
 import { Color } from "@styles";
 import { printMoney } from "@utils";
 import React from "react";
-import { Image, StyleSheet, View, Dimensions } from "react-native";
+import { Image, StyleSheet, View } from "react-native";
 
 interface StatusLineProps {
     status: OrderStatus,

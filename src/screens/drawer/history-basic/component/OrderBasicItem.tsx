@@ -33,16 +33,11 @@ export const OrderBasicItem = React.memo(({ order, onPress, bgColor }: OrderItem
     const [bonusCount, setBonusCount] = useState(0)
 
     useEffect(() => {
-        let tmp = new Set()
         let totalPrinted = 0
         let totalBonus = 0
         let tmpType: any = new Set()
         order.Lottery.map((it: any) => {
-            if (tmp.has(it.drawCode)) { }
-            else {
-                tmp.add(it.drawCode)
-                tmpType.add(list[it.type])
-            }
+            tmpType.add(it.type)
             if (LIST_STATUS.PRINTED.includes(it.status)) totalPrinted++
             if (it.result) totalBonus++
         })
@@ -53,7 +48,7 @@ export const OrderBasicItem = React.memo(({ order, onPress, bgColor }: OrderItem
 
     return (
         <TouchableOpacity style={[styles.itemContainer, { backgroundColor: bgColor }]} onPress={onPress}>
-            <IText style={{ fontWeight: 'bold', }}>
+            <IText style={{ fontWeight: 'bold' }}>
                 {dateConvert(createdAt)}
             </IText>
             <View style={styles.lineItem}>
@@ -68,7 +63,7 @@ export const OrderBasicItem = React.memo(({ order, onPress, bgColor }: OrderItem
                         listType.map((type: LotteryType, index: number) => {
                             return (<IText
                                 style={{ fontWeight: 'bold', color: getColorLott(type) }}
-                                key={type}>{type + (index == listType.length - 1 ? "" : ",")}</IText>)
+                                key={type}>{list[type] + (index == listType.length - 1 ? "" : ", ")}</IText>)
                         })
                     }
                 </IText>

@@ -88,7 +88,6 @@ export const VerifyOTPScreen = React.memo((props?: any) => {
 
   const confirmOTPSuccess = async (user: any) => {
     verifyOtpHooks.setLoading(true)
-    const type = route.params.type
 
     const token = await user.getIdToken()
     if (route.params.type == RequestType.singup) {

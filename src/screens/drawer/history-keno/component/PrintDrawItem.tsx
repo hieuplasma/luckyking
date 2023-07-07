@@ -126,14 +126,20 @@ export const PrintDrawItem = React.memo(({ lottery, expand, toggle, lottColor, n
                                 <Image source={lottery.imageBack ? { uri: API_HOST + lottery.imageBack } : Images.no_picture} style={styles.img} resizeMode="contain" />
                             </TouchableWithoutFeedback> */}
                         </View>
-                        <View style={{ alignItems: 'center' }}>
-                            <TouchableOpacity onPress={navigate}
-                                style={styles.btnViewResult}>
-                                <IText style={{ color: Color.white }}>
-                                    {'Xem kết quả kỳ quay'}
+                        {
+                            lottery.result ?
+                                <View style={{ alignItems: 'center' }}>
+                                    <TouchableOpacity onPress={navigate}
+                                        style={styles.btnViewResult}>
+                                        <IText style={{ color: Color.white }}>
+                                            {'Xem kết quả kỳ quay'}
+                                        </IText>
+                                    </TouchableOpacity>
+                                </View>
+                                : <IText style={{ marginVertical: 4, textAlign:'center' }}>
+                                    {'Chưa có kết quả kỳ quay này'}
                                 </IText>
-                            </TouchableOpacity>
-                        </View>
+                        }
                     </View>
                     : <></>
             }
