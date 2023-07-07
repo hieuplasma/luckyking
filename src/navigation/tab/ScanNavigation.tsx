@@ -1,12 +1,12 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import {
   ScanResultScreen, ScanResultScreenParamsList,
-  ScanScreenExpo,
+  // ScanScreenExpo,
   ScanScreenVisionCamera,
   ScanScreenParamsList
 } from '@screen';
 import React from 'react';
-import { Platform } from 'react-native';
+// import { Platform } from 'react-native';
 
 export type ScanStackParamList = {
   Scan: ScanScreenParamsList;
