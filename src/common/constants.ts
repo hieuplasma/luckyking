@@ -13,6 +13,8 @@ export const MAX_SET_MAX3D = 3
 export const DELAY_TAB = 100 // miliseconds
 export const DELAY_SCREEN = 100 // miliseconds
 
+export const HOT_LINE = '0866.79.88.79'
+
 export const LIST_STATUS = {
     PRINTED: [OrderStatus.CONFIRMED, OrderStatus.WON, OrderStatus.PAID, OrderStatus.NO_PRIZE],
 

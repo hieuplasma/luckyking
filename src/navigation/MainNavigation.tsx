@@ -15,7 +15,7 @@ import { NavigationUtils, doNotExits } from "@utils";
 import { ScreenName } from "./ScreenName";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamsList } from "@navigation";
+import { RootStackParamsList, SupportNavigation, TermsNavigation } from "@navigation";
 
 import { AppState, PermissionsAndroid, Platform } from 'react-native';
 import { updateUser } from "@redux";
@@ -26,7 +26,9 @@ export type MainDrawerParamList = {
     RechargeStack: {},
     WithdrawStack: {},
     HistoryKenoStack: {},
-    HistoryBasicStack: {}
+    HistoryBasicStack: {},
+    SupportStack: {},
+    TermsStack: {}
 };
 
 type NavigationProp = StackNavigationProp<RootStackParamsList, 'Main'>;
@@ -148,6 +150,8 @@ export function MainNavigation(props: any) {
             <Drawer.Screen name={'WithdrawStack'} component={WithDrawNavigation} />
             <Drawer.Screen name={'HistoryKenoStack'} component={HistoryKenoNavigation} />
             <Drawer.Screen name={'HistoryBasicStack'} component={HistoryBasicNavigation} />
+            <Drawer.Screen name={'SupportStack'} component={SupportNavigation} />
+            <Drawer.Screen name={'TermsStack'} component={TermsNavigation} />
         </Drawer.Navigator>
     )
 }

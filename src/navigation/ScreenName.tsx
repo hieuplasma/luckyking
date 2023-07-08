@@ -31,7 +31,13 @@ export const ScreenName = {
 
     HistoryBasicStack: "HistoryBasicStack",
     HistoryBasicScreen: "HistoryBasicScreen",
-    OrderBasicScreen: "OrderBasicScreen"
+    OrderBasicScreen: "OrderBasicScreen",
+
+    SupportStack: "SupportStack",
+    SupportScreen: "SupportScreen",
+
+    TermsStack: "TermsStack",
+    TermsScreen: "TermsScreen"
   },
 
   BottomTab: "BottomTab",

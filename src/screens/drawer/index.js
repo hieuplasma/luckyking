@@ -13,3 +13,7 @@ export * from './history-keno/OrderKenoScreen'
 
 export * from './history-basic/HistoryBasicScreen'
 export * from './history-basic/OrderBasicScreen'
+
+export * from './support/SupportScreen'
+
+export * from './terms/TermsScreen'

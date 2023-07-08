@@ -1,14 +1,11 @@
 import { lotteryApi } from "@api";
-import { Image, Images } from "@assets";
 import { BasicHeader, IText } from "@components";
-import { WINDOW_WIDTH } from "@gorhom/bottom-sheet";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Color } from "@styles";
 import { printDisplayId, printMoney } from "@utils";
 import React, { useCallback, useEffect, useRef, useState } from "react"
 import { FlatList, RefreshControl, StyleSheet, TouchableOpacity, View } from "react-native";
-import { useSelector } from "react-redux";
 import { HistoryKenoStackParamList } from "src/navigation/drawer/HistoryKenoNavigation";
 import { DetailOrderSheet } from "../component/DetailOrderSheet";
 import { LotteryKenoItem } from "./component/LotteryKenoItem";

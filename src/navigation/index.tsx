@@ -111,6 +111,9 @@ export * from './drawer/WithDrawNavigation'
 export * from './drawer/HistoryKenoNavigation'
 export * from './drawer/HistoryBasicNavigation'
 
+export * from './drawer/SupportNavigation'
+export * from './drawer/TermsNaviagation'
+
 
 export { AuthenticationStackParamList };
 export { ScreenName }

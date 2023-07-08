@@ -163,7 +163,6 @@ const LineItem2 = React.memo(({ navigateTo, icon, icStyle, title, subTitle, scre
 })
 
 const LogOut = React.memo(({ logOut }: any) => {
-
   return (
     <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: 16, }}
       onPress={logOut}>
@@ -266,22 +265,22 @@ const listItem2 = [
   //   subTitle: "(Power, Mega, Max3D/3D+nhóm)",
   //   screen: undefined
   // },
-  // {
-  //   screenId: undefined,
-  //   icon: Images.contact,
-  //   icStyle: styles.icon_default,
-  //   title: "Liên hệ",
-  //   subTitle: undefined,
-  //   screen: undefined
-  // },
-  // {
-  //   screenId: undefined,
-  //   icon: Images.dieu_khoan,
-  //   icStyle: styles.icon_default,
-  //   title: "Điều khoản sử dụng",
-  //   subTitle: undefined,
-  //   screen: undefined
-  // },
+  {
+    screenId: 6,
+    icon: Images.contact,
+    icStyle: styles.icon_default,
+    title: "Trung tâm hỗ trợ",
+    // subTitle: '(Liên hệ với chúng tôi)',
+    screen: ScreenName.Drawer.SupportStack
+  },
+  {
+    screenId: 7,
+    icon: Images.dieu_khoan,
+    icStyle: styles.icon_default,
+    title: "Điều khoản sử dụng",
+    subTitle: undefined,
+    screen: ScreenName.Drawer.TermsStack
+  },
   // {
   //   screenId: undefined,
   //   icon: Images.chia_se,
