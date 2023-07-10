@@ -131,14 +131,14 @@ export const BagNumberSheet = forwardRef(({ onChoose, numberSet, type, bagPositi
                         <View style={styles.half}>
                             {
                                 bagPosition == 2 ?
-                                    <View style={[styles.boxNumber, { borderColor: lottColor }]}>
+                                    <View style={[styles.boxNumber, { borderColor: lottColor, width: 100 }]}>
                                         <ConsolasText style={{ color: lottColor, fontSize: 16 }}>{"Bộ bao số"}</ConsolasText>
                                     </View>
                                     : [3, 4, 5].map((columnId: number, index: number) => {
                                         return (
                                             <ItemView
                                                 key={index}
-                                                columnId={index}
+                                                columnId={columnId}
                                                 currentNumbers={currentNumbers}
                                                 lottColor={lottColor}
                                                 changeNumber={changeNumber}
