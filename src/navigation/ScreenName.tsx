@@ -7,6 +7,7 @@ export const ScreenName = {
     SignUp: 'SignUp',
     VerifyOTP: 'VerifyOTP',
     Forget: 'Forget',
+    AgreeTerms: 'AgreeTerms'
   },
 
   Main: 'Main',

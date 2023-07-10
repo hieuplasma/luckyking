@@ -3,25 +3,23 @@ export enum TYPE_API {
   GET = 'GET'
 }
 
-export const RESPONSE_TIMEOUT = 15000;
+export const RESPONSE_TIMEOUT = 5000;
 export const TIMEOUT_MESSAGE = "request timeout"
 
 /** config for debug */
 // const config = {
-// host: 'http://192.168.246.43:3001',
-// host: 'http://192.168.246.45:3001'
-// host: 'http://192.168.246.46:3001'
+//   host: 'http://192.168.246.43:3001',
 // };
 
 /** config for VPS */
-const config = {
-  host: 'http://103.162.31.84:3003',
-};
+// const config = {
+//   host: 'http://103.162.31.84:3003',
+// };
 
 /** config for Production */
-// const config = {
-//   host: 'http://42.96.40.239',
-// };
+const config = {
+  host: 'http://42.96.40.239',
+};
 
 export const API_HOST = config.host;
 
@@ -48,6 +46,7 @@ export const API_URI = {
   BOOK_LOTTERY_MAX3D: "/order/add-max3d",
   BOOK_LOTTERY_CART: "/order/add-multi",
   GET_ALL_ORDER: "/order/get-all",
+  GET_ALL_ORDER2: "/order/get-all-group",
   GET_ORDER_DRAW: "/order/get-by-draw",
   GET_ORDER_BY_ID: "/order/get-by-id",
 

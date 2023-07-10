@@ -6,7 +6,8 @@ export const ERR_MES = {
     INVALID_DRAW: "Kỳ quay không hợp lệ!",
     NONE_NUMBER: "Bạn chưa chọn bộ số nào!",
     EMPTY_CART: "Giỏ hàng hiện đang trống rỗng!",
-    NO_LOTTERY:"Không có vé nào!"
+    NO_LOTTERY:"Không có vé nào!",
+    NO_ORDER:"Không có đơn nào!"
 }
 
 export const SUCCESS_MES = {

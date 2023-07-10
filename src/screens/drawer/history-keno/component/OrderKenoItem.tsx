@@ -11,14 +11,9 @@ import { StatusOrderLine } from "../../component/StatusOrderLine";
 interface OrderItemProps {
     order: any,
     onPress: () => void,
-    bgColor?: ColorValue
 }
 
-export const OrderItem = React.memo(({ order, onPress, bgColor }: OrderItemProps) => {
-
-    const user = useSelector((state: any) => state.userReducer)
-
-    const createdAt = new Date(order.createdAt)
+export const OrderItem = React.memo(({ order, onPress }: OrderItemProps) => {
 
     const [listDraw, setListDraw] = useState<any>([])
     const [printedCount, setPrintedCount] = useState(0)
@@ -43,20 +38,20 @@ export const OrderItem = React.memo(({ order, onPress, bgColor }: OrderItemProps
             if (it.status == OrderStatus.ERROR || it.status == OrderStatus.RETURNED) totalError++
         })
 
-        setListDraw(tmpDraw)
+        setListDraw(tmpDraw.sort((a: any, b: any) => a.drawCode - b.drawCode))
         setPrintedCount(totalPrinted)
         setBonusCount(totalBonus)
         setErrorCount(totalError)
     }, [order])
 
     return (
-        <TouchableOpacity style={[styles.itemContainer, { backgroundColor: bgColor }]} onPress={onPress}>
-            <IText style={{ fontWeight: 'bold', }}>
-                {dateConvert(createdAt)}
-            </IText>
+        <TouchableOpacity style={[styles.itemContainer]} onPress={onPress}>
             <View style={styles.lineItem}>
-                <IText>{`Nhận: ${user.fullName}`}</IText>
-                <IText style={{ fontWeight: 'bold' }}>{printDisplayId(order.displayId)}</IText>
+                <IText style={{ fontWeight: 'normal' }}>{"Mã đơn hàng: "}
+                    <IText style={{ fontWeight: 'bold' }}>
+                        {printDisplayId(order.displayId)}
+                    </IText>
+                </IText>
             </View>
 
             <View style={styles.lineItem}>
@@ -93,11 +88,12 @@ const windowHeight = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
     itemContainer: {
-        width: windowWidth, paddingVertical: 12, paddingHorizontal: 16,
-        // borderBottomColor: 'rgba(160, 160, 160, 0.2)', borderBottomWidth: 1
+        width: windowWidth, paddingTop: 4, paddingHorizontal: 16,
+        paddingBottom: 8,
+        borderBottomColor: 'rgba(160, 160, 160, 0.4)', borderBottomWidth: 1,
     },
     lineItem: {
-        marginTop: 12,
+        marginTop: 4,
         flexDirection: 'row', justifyContent: 'space-between'
     },
     txItem: {

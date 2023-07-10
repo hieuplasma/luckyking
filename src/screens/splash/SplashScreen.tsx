@@ -1,15 +1,21 @@
-import { lotteryApi, userApi } from '@api';
+import { authApi, lotteryApi, userApi } from '@api';
 import { LotteryType } from '@common';
 import { IText } from '@components';
 import { useBackButtonWithNavigation } from '@hooks';
 import { RootStackParamsList, ScreenName } from '@navigation';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { RouteProp, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { getCart, getJackpot, getKenoDraw, getMax3dDraw, getMax3dProDraw, getMegaDraw, getPowerDraw, updateUser } from '@redux';
+import {
+  getCart, getJackpot,
+  getKenoDraw, getMax3dDraw,
+  getMax3dProDraw, getMegaDraw,
+  getPowerDraw, updateToken, updateUser
+} from '@redux';
 import { Color } from '@styles';
 import { doNotExits, NavigationUtils } from '@utils';
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { ActivityIndicator, View } from 'react-native';
+import DeviceInfo from 'react-native-device-info';
 import { useDispatch, useSelector } from 'react-redux';
 
 type NavigationProp = StackNavigationProp<RootStackParamsList, 'SplashScreen'>;
@@ -27,11 +33,14 @@ export const SplashScreen = React.memo(() => {
   );
 
   const token = useSelector((state: any) => state.authReducer.accessToken);
+  const phoneNumber = useSelector((state: any) => state.authReducer.phoneNumber)
+  const password = useSelector((state: any) => state.authReducer.password)
+
   const navigation = useNavigation<NavigationProp>();
 
   const dispatch = useDispatch()
-
   async function intiApp() {
+
     if (doNotExits(token))
       NavigationUtils.resetGlobalStackWithScreen(navigation, ScreenName.Authentication);
     else {
@@ -63,7 +72,7 @@ export const SplashScreen = React.memo(() => {
 
   useEffect(() => {
     intiApp()
-  }, [token])
+  }, [doNotExits(token)])
 
   return <View
     style={{

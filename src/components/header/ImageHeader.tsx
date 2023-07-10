@@ -26,7 +26,7 @@ export const ImageHeader = React.memo(({ navigation, title }: ImageHeaderProps) 
             <Image source={Images.bg_header} style={[styles.headerContainer, { paddingTop: safeAreaInsets.top }]}>
                 {title ?
                     <>
-                        <TouchableOpacity style={{ flex: 1 }} onPress={onGoBack}>
+                        <TouchableOpacity style={{ flex: 1, paddingVertical: 15 }} onPress={onGoBack}>
                             {
                                 navigation ?
                                     <Icon.Button
@@ -38,8 +38,8 @@ export const ImageHeader = React.memo(({ navigation, title }: ImageHeaderProps) 
                                     /> : <></>
                             }
                         </TouchableOpacity>
-                        <IText uppercase style={styles.textTitle}>{title}</IText>
-                        <View style={{ flex: 1 }} />
+                        <IText uppercase style={[styles.textTitle]}>{title}</IText>
+                        <View style={{ flex: 1, marginTop: safeAreaInsets.top }} />
                     </>
                     : <></>}
             </Image>

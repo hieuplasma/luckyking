@@ -1,11 +1,11 @@
-import { ImageHeader } from "@components";
+import { termResource } from "@assets";
+import { IText, ImageHeader } from "@components";
 import { TermsStackParamList } from "@navigation";
 import { RouteProp, useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Color } from "@styles";
 import React from "react";
-import { StyleSheet, View } from "react-native";
-import { Dimensions } from "react-native";
+import { StyleSheet, View, Dimensions, ScrollView } from "react-native";
 
 type NavigationProp = StackNavigationProp<TermsStackParamList, 'TermsScreen'>;
 type NavigationRoute = RouteProp<TermsStackParamList, 'TermsScreen'>;
@@ -17,12 +17,11 @@ export const TermScreen = React.memo(() => {
     return (
         <View style={styles.container}>
             <ImageHeader navigation={navigation} title={'ĐIỀU KHOẢN SỬ DỤNG'} />
-            <View style={{flex: 1}}>
-                <webview src="./terms.html">
-
-                </webview>
-
-            </View>
+            <ScrollView style={{ flex: 1, paddingHorizontal: 6 }}>
+                <IText style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 18 }} children={termResource.bigTitle} />
+                <IText style={{ textAlign: 'justify' }} children={termResource.content} />
+                <View style={{ height: 30 }} />
+            </ScrollView>
         </View>
 
     )
@@ -37,3 +36,4 @@ const styles = StyleSheet.create({
         backgroundColor: Color.white,
     }
 })
+

@@ -15,6 +15,8 @@ export interface SupportScreenParamsList { }
 
 //@ts-ignore
 const phoneNumber = HOT_LINE.replaceAll('.', '')
+const EMAIL = 'luckyking8879@LuckyKing.vn'
+const ADDRESS = 'Tầng 4, Tòa Nhà Mỹ Đình Plaza 2, Số 2 Nguyễn Hoàng, Phường Mỹ Đình 2, Quận Nam Từ Liêm, Thành Phố Hà Nội, Việt Nam'
 
 export const SupportScreen = React.memo(() => {
     const navigation = useNavigation<NavigationProp>();
@@ -50,28 +52,60 @@ export const SupportScreen = React.memo(() => {
             })
             .catch(err => console.log(err));
     }, [])
-    
+
+    const sendEmail = useCallback(() => {
+        const url = `mailto:${EMAIL}`
+        Linking.canOpenURL(url)
+            .then(supported => {
+                if (!supported) {
+                    Alert.alert('Email không hợp lệ!');
+                } else {
+                    return Linking.openURL(url);
+                }
+            })
+            .catch(err => console.log(err));
+    }, [EMAIL])
+
     return (
         <View style={styles.container}>
             <ImageHeader navigation={navigation} title={'TRUNG TÂM HỖ TRỢ'} />
             <View style={styles.body}>
+                <IText style={{ fontStyle: 'italic' }}>
+                    {"Nếu Quý khách có vấn đề cần giải quyết, vui lòng liên hệ với bộ phận CSKH của LuckyKing:"}
+                </IText>
+
                 <TouchableOpacity
-                    style={{ flexDirection: 'row', alignItems: 'center' }}
+                    style={styles.item}
                     onPress={call}
                     activeOpacity={1}>
                     <Image source={Images.phone} style={{ width: 30, height: 30 }} />
                     <IText style={{ fontWeight: '600', marginLeft: 12 }}> {`Hotline: ${HOT_LINE}`}</IText>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    style={{ marginTop: 8, flexDirection: 'row', alignItems: 'center' }}
+                    style={styles.item}
                     onPress={openZalo}
                     activeOpacity={1}>
                     <Image source={Images.zalo} style={{ width: 30, height: 30 }} />
                     <IText style={{ fontWeight: '600', marginLeft: 12 }}> {"Zalo: LuckyKing"}</IText>
                 </TouchableOpacity>
+                <TouchableOpacity
+                    style={styles.item}
+                    onPress={sendEmail}
+                    activeOpacity={1}>
+                    <Image source={Images.email} style={{ width: 30, height: 30 }} tintColor={Color.keno} />
+                    <IText style={{ fontWeight: '600', marginLeft: 12 }}> {`Email: ${EMAIL}`}</IText>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={styles.item}
+                    // onPress={}
+                    activeOpacity={1}>
+                    <Image source={Images.address} style={{ width: 30, height: 30 }} />
+                    <IText style={{ fontWeight: '600', marginLeft: 12, textAlign: 'justify', width: windowWidth - 74 }}>
+                        {`Địa chỉ: ${ADDRESS}`}
+                    </IText>
+                </TouchableOpacity>
             </View>
         </View >
-
     )
 })
 
@@ -85,5 +119,6 @@ const styles = StyleSheet.create({
     },
     body: {
         flex: 1, padding: 16
-    }
+    },
+    item: { flexDirection: 'row', alignItems: 'center', marginTop: 16 }
 })

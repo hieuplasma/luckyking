@@ -52,8 +52,8 @@ export const HeaderBuyLottery = React.memo(({ navigation, lotteryType }: HeaderB
         <>
             <StatusBar translucent={true} barStyle={'dark-content'} backgroundColor={"transparent"} />
             {/* //Header */}
-            <View style={[styles.headerContainer, { marginTop: 0 }]}>
-                <TouchableOpacity style={{ flex: 1 }} onPress={onGoBack}>
+            <View style={[styles.headerContainer]}>
+                <TouchableOpacity style={{ flex: 1 , backgroundColor:'yellow', paddingVertical: 20}} onPress={onGoBack}>
                     <Icon.Button
                         size={'small'}
                         color={Color.gray}

@@ -1,4 +1,4 @@
-import { INumberDetail, LOTTRERY_COLOR_STATUS, LotteryType, OrderStatus } from "@common"
+import { INumberDetail, LIST_STATUS, LOTTRERY_COLOR_STATUS, LotteryType, OrderStatus } from "@common"
 import { IText } from "@components"
 import { Color } from "@styles"
 import { NavigationUtils, caculateLotteryBenefits, doNotExits, getLogoHeader, printDisplayId, printDrawCode, printMoney, printNumber, printWeekDate } from "@utils"
@@ -132,14 +132,15 @@ export const LotteryBasicItem = React.memo(({ lottery, tab, navigation }: Lotter
     }, [lottery.result])
 
     const navigateToResult = useCallback((lottery: any) => {
+        if (LIST_STATUS.ERROR.includes(lottery.status)) {
+            window.myalert.show({ title: "Vé đã bị huỷ!" })
+            return;
+        }
         if (!lottery.result) {
-            window.myalert.show({ title: "Chưa có kết quả cho vé số này hoặc vé đã bị huỷ!" })
+            window.myalert.show({ title: "Chưa có kết quả cho vé số này!" })
             return;
         }
-        if (!lottery.result.drawn) {
-            window.myalert.show({ title: "Chưa có kết quả cho vé số này hoặc vé đã bị huỷ!" })
-            return;
-        }
+
         let screenName = ScreenName.ResultChild.DetailMega
         switch (lottery.type) {
             case LotteryType.Power:

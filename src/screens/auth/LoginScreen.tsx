@@ -6,14 +6,12 @@ import {
 } from '@shared';
 import { NavigationUtils, doNotExits, isVietnamesePhoneNumber } from '@utils'
 import { Color, Style } from '@styles';
-import React, { useCallback, useEffect, useState } from 'react';
-import { View, Button as ButtonRN, Alert, Platform, KeyboardAvoidingView, ScrollView, StyleSheet } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import React, { useCallback, useState } from 'react';
+import { View, Platform, KeyboardAvoidingView, ScrollView, StyleSheet } from 'react-native';
 import { Button } from '@widgets';
 import DeviceInfo from 'react-native-device-info';
-import { authApi, userApi } from '@api';
+import { authApi } from '@api';
 import { useDispatch } from 'react-redux';
-import { updateToken } from '../../redux/reducer/auth';
 import { useHeaderHeight } from '@react-navigation/elements'
 import { IText, ImageHeader, InputComponent } from '@components';
 import { Image, Images } from '@assets';
@@ -32,7 +30,6 @@ export interface LoginScreenProps { }
 export const LoginWidget = React.memo((props: any) => {
   const navigation = useNavigation<NavigationProp>();
   const route = useRoute<NavigationRoute>();
-  const safeAreaInsets = useSafeAreaInsets();
   const dispatch = useDispatch()
   const height = useHeaderHeight()
 
@@ -68,8 +65,16 @@ export const LoginWidget = React.memo((props: any) => {
     }
     const res = await authApi.login(body)
     if (res?.data?.accessToken) {
-      dispatch(updateToken(res.data.accessToken))
-      NavigationUtils.resetGlobalStackWithScreen(navigation, ScreenName.SplashScreen);
+      // dispatch(updateToken(res.data.accessToken))
+      // NavigationUtils.resetGlobalStackWithScreen(navigation, ScreenName.SplashScreen);
+      NavigationUtils.navigate(navigation, ScreenName.Authentications.AgreeTerms,
+        {
+          authInfo: {
+            token: res.data.accessToken,
+            phoneNumber: phoneNumber,
+            password: password
+          }
+        })
     }
     setLoading(false)
   }, [phoneNumber, password])

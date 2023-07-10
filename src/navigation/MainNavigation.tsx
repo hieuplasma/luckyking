@@ -6,8 +6,8 @@ import { UserNavigation } from "./drawer/UserNavigation";
 import { WithDrawNavigation } from "./drawer/WithDrawNavigation";
 import { HistoryKenoNavigation } from "./drawer/HistoryKenoNavigation";
 import { HistoryBasicNavigation } from "./drawer/HistoryBasicNavigation";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { userApi } from "@api";
+import { useCallback, useEffect, useRef } from "react";
+import { authApi, userApi } from "@api";
 import messaging from '@react-native-firebase/messaging'
 import DeviceInfo from 'react-native-device-info';
 import { useDispatch, useSelector } from "react-redux";
@@ -18,7 +18,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamsList, SupportNavigation, TermsNavigation } from "@navigation";
 
 import { AppState, PermissionsAndroid, Platform } from 'react-native';
-import { updateUser } from "@redux";
+import { updateToken, updateUser } from "@redux";
 
 export type MainDrawerParamList = {
     BottomTab: {}
@@ -42,6 +42,8 @@ export function MainNavigation(props: any) {
     const dispatch = useDispatch()
 
     const token = useSelector((state: any) => state.authReducer.accessToken)
+    const phoneNumber = useSelector((state: any) => state.authReducer.phoneNumber)
+    const password = useSelector((state: any) => state.authReducer.password)
 
     const checkApplicationPermission = async () => {
         if (Platform.OS == 'android') {
@@ -61,38 +63,53 @@ export function MainNavigation(props: any) {
         }
     }
 
-    useEffect(() => {
-        const registerFCM = async () => {
-            if (!messaging().isDeviceRegisteredForRemoteMessages) {
-                await messaging().registerDeviceForRemoteMessages();
+    const getNewToken = useCallback(async () => {
+        if (!doNotExits(token)) {
+            const res = await authApi.login({
+                phoneNumber: phoneNumber,
+                password: password,
+                deviceId: await DeviceInfo.getUniqueId()
+            })
+
+            if (res?.data?.accessToken) {
+                dispatch(updateToken({ token: res.data.accessToken }))
             }
-            // const firebaseToken = await userApi.getFirebaseToken()
-            // if (firebaseToken) {
-            // await auth().signInWithCustomToken(firebaseToken.data).then(async (res) => {
-            await checkApplicationPermission()
-            await messaging()
-                .hasPermission()
-                .then(async (enabled) => {
-                    if (enabled) {
-                        const fcmToken = await messaging().getToken()
-                        const resFCM = await userApi.updateFCMToken({
-                            deviceId: await DeviceInfo.getUniqueId(),
-                            deviceToken: fcmToken
-                        })
-                        if (resFCM) {
-                            console.log("regist FCM token success", fcmToken)
-                        }
-                    }
-                })
-            // })
         }
-        //     else {
-        //         // Alert.alert("Lỗi không xác định!")
-        //     }
-        // }
-        if (!doNotExits(token)) registerFCM()
+    }, [doNotExits(token), phoneNumber, password])
+
+
+    const registerFCM = useCallback(async () => {
+        if (!messaging().isDeviceRegisteredForRemoteMessages) {
+            await messaging().registerDeviceForRemoteMessages();
+        }
+        // const firebaseToken = await userApi.getFirebaseToken()
+        // if (firebaseToken) {
+        // await auth().signInWithCustomToken(firebaseToken.data).then(async (res) => {
+        await checkApplicationPermission()
+        await messaging()
+            .hasPermission()
+            .then(async (enabled) => {
+                if (enabled) {
+                    const fcmToken = await messaging().getToken()
+                    const resFCM = await userApi.updateFCMToken({
+                        deviceId: await DeviceInfo.getUniqueId(),
+                        deviceToken: fcmToken
+                    })
+                    if (resFCM) {
+                        console.log("regist FCM token success", fcmToken)
+                    }
+                }
+            })
+        // })
+    }, [])
+
+    useEffect(() => {
+        if (!doNotExits(token)) {
+            registerFCM()
+            getNewToken()
+        }
         else NavigationUtils.resetGlobalStackWithScreen(navigation, ScreenName.Authentication)
-    }, [token])
+    }, [doNotExits(token)])
 
     const syncBalance = useCallback(async () => {
         if (!doNotExits(token)) {
@@ -101,7 +118,7 @@ export function MainNavigation(props: any) {
                 dispatch(updateUser(resBalance.data))
             }
         }
-    }, [token])
+    }, [doNotExits(token)])
 
     useEffect(() => {
         const unsubscribe = messaging().onMessage(async remoteMessage => {

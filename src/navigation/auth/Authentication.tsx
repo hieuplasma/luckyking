@@ -1,5 +1,7 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import {
+  AgreeTermScreenParamsList,
+  AgreeTermsScreen,
   ForgetPassword,
   ForgetScreenRouteParams,
   LoginScreen,
@@ -17,6 +19,7 @@ export type AuthenticationStackParamList = {
   SignUp: SignUpScreenRouteParams;
   VerifyOTP: VerifyOTPScreenRouteParams;
   Forget: ForgetScreenRouteParams;
+  AgreeTerms: AgreeTermScreenParamsList
 };
 
 const AuthenticationStack = createStackNavigator<AuthenticationStackParamList>();
@@ -56,6 +59,15 @@ export function AuthenticationNavigation() {
       <AuthenticationStack.Screen
         name={'Forget'}
         component={ForgetPassword}
+        options={{
+          headerShown: false,
+          title: '',
+          animationEnabled: true,
+        }}
+      />
+       <AuthenticationStack.Screen
+        name={'AgreeTerms'}
+        component={AgreeTermsScreen}
         options={{
           headerShown: false,
           title: '',

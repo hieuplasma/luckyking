@@ -11,7 +11,7 @@ import React, { useCallback, useState } from 'react';
 import { Alert, Platform, View, KeyboardAvoidingView, StyleSheet, ScrollView } from 'react-native';
 import { Icon, Image, Images } from '@assets';
 import { useHeaderHeight } from '@react-navigation/elements'
-import { ImageHeader, InputComponent } from '@components';
+import { IText, ImageHeader, InputComponent } from '@components';
 import { FORM_ERROR, RES_MES } from '@common';
 import { API_URI } from 'src/api/config';
 import { RequestType } from './VerifyOTPScreen';
@@ -181,6 +181,9 @@ export const ForgetPassword = React.memo(() => {
           {renderNumberInput()}
           {renderPasswordInput()}
           {renderRepeatPasswordInput()}
+          <IText style={{ fontSize: 14, color: Color.luckyKing, marginTop: 16, marginLeft: 8 }}>
+            {"Chú ý: Độ dài mật khẩu phải từ 8 - 16 kí tự"}
+          </IText>
           {renderConfirmButton()}
         </ScrollView>
       </KeyboardAvoidingView>

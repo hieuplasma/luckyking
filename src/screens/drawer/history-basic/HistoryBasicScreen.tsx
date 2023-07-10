@@ -1,13 +1,13 @@
 import { lotteryApi } from '@api';
-import { ERR_MES, LIST_STATUS, OrderStatus } from '@common';
+import { ERR_MES } from '@common';
 import { ImageHeader, IText } from '@components';
 import { HistoryBasicStackParamList, ScreenName } from '@navigation';
 import { RouteProp, useIsFocused, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Color } from '@styles';
-import { NavigationUtils, printMoney } from '@utils';
+import { NavigationUtils } from '@utils';
 import React, { useCallback, useEffect, useState } from 'react';
-import { StyleSheet, View, Dimensions, TouchableOpacity, FlatList, RefreshControl } from 'react-native';
+import { StyleSheet, View, Dimensions, TouchableOpacity, FlatList, RefreshControl, SectionList } from 'react-native';
 import { OrderBasicItem } from './component/OrderBasicItem';
 
 type NavigationProp = StackNavigationProp<HistoryBasicStackParamList, 'HistoryBasicScreen'>;
@@ -24,35 +24,22 @@ export const HistoryBasicScreen = React.memo(() => {
 
     const [listOrder, setListOrder] = useState([])
     const [isLoading, setLoading] = useState(false)
+    const [status, setStatus] = useState<Status>('pending')
 
     const onRefresh = useCallback(async () => {
         setLoading(true)
         window.loadingIndicator.show()
-        const res = await lotteryApi.getAllOrder({ ticketType: 'basic' })
+        const res = await lotteryApi.getAllOrder2({ ticketType: 'basic', status: status })
         if (res) {
-            setListOrder(res.data.sort(compare))
+            setListOrder(res.data)
         }
         setLoading(false)
         window.loadingIndicator.hide()
-    }, [])
-
-    const [status, setStatus] = useState<Status>('pending')
-
-    const check = useCallback((param: any) => {
-        if (status == 'complete') return LIST_STATUS.PRINTED.includes(param.status)
-        if (status == 'pending') return LIST_STATUS.PENDING.includes(param.status)
-        if (status == 'returned') return LIST_STATUS.ERROR.includes(param.status)
     }, [status])
 
-    function compare(a: any, b: any) {
-        if (a.createdAt < b.createdAt) {
-            return 1;
-        }
-        if (a.createdAt > b.createdAt) {
-            return -1;
-        }
-        return 0;
-    }
+    useEffect(() => {
+        onRefresh()
+    }, [status])
 
     useEffect(() => {
         if (isFocused)
@@ -92,23 +79,31 @@ export const HistoryBasicScreen = React.memo(() => {
             </View>
 
             <View style={styles.body}>
-                <FlatList
-                    style={{ marginTop: 16 }}
-                    data={listOrder.filter(check)}
-                    extraData={listOrder.filter(check)}
-                    renderItem={({ item, index }: any) => {
-                        return <OrderBasicItem order={item}
-                            onPress={() => NavigationUtils.navigate(navigation, ScreenName.Drawer.OrderBasicScreen, { order: item, status: status })}
-                            bgColor={index % 2 == 0 ? Color.white : Color.transparent} />
-                    }}
-                    keyExtractor={(item: any, index) => String(item.id)}
+                <SectionList
+                    style={{ marginTop: 8 }}
+                    sections={listOrder}
+                    keyExtractor={(item, index) => item.id}
+                    renderItem={({ item }) => (
+                        <OrderBasicItem order={item}
+                            onPress={() =>
+                                NavigationUtils.navigate(navigation, ScreenName.Drawer.OrderBasicScreen,
+                                    { order: item, status: status })}
+                        />
+                    )}
+                    renderSectionHeader={({ section: { key } }) => (
+                        <View style={styles.itemHeader}>
+                            <IText style={{ fontWeight: 'bold', marginLeft: 16 }}>
+                                {key}
+                            </IText>
+                        </View>
+                    )}
                     refreshControl={
                         <RefreshControl refreshing={isLoading} onRefresh={onRefresh} />
                     }
                     ListFooterComponent={<View style={{ height: 100 }}></View>}
                     ListEmptyComponent={
                         <View style={{ marginTop: 50, justifyContent: 'center', alignItems: 'center' }}>
-                            <IText style={{ fontSize: 20, color: Color.luckyKing, fontWeight: 'bold' }}>{ERR_MES.NO_LOTTERY}</IText>
+                            <IText style={{ fontSize: 20, color: Color.luckyKing, fontWeight: 'bold' }}>{ERR_MES.NO_ORDER}</IText>
                         </View>
                     }
                 />
@@ -117,22 +112,14 @@ export const HistoryBasicScreen = React.memo(() => {
     )
 });
 
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: Color.buyLotteryBackGround
+        // backgroundColor: Color.historyBackground,
+        backgroundColor: Color.white
     },
     body: {
         flex: 1
     },
-    lineItem: {
-        marginTop: 12,
-        flexDirection: 'row', justifyContent: 'space-between'
-    },
-    txItem: {
-        color: '#4F4D4D'
-    }
+    itemHeader: { height: 40, justifyContent: 'center', backgroundColor: Color.historyBackground }
 })

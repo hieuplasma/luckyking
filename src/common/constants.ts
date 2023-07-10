@@ -17,17 +17,12 @@ export const HOT_LINE = '0866.79.88.79'
 
 export const LIST_STATUS = {
     PRINTED: [OrderStatus.CONFIRMED, OrderStatus.WON, OrderStatus.PAID, OrderStatus.NO_PRIZE],
-
     BOOKED: [OrderStatus.PENDING, OrderStatus.LOCK,
     OrderStatus.CONFIRMED, OrderStatus.PRINTED,
     OrderStatus.WON, OrderStatus.PAID, OrderStatus.NO_PRIZE],
-
     PENDING: [OrderStatus.PENDING, OrderStatus.LOCK, OrderStatus.PRINTED],
-
     WAITING: [OrderStatus.PENDING, OrderStatus.LOCK, OrderStatus.PRINTED, OrderStatus.CONFIRMED],
-
     DONE: [OrderStatus.WON, OrderStatus.PAID, OrderStatus.NO_PRIZE],
-
     ERROR: [OrderStatus.ERROR, OrderStatus.RETURNED]
 }
 

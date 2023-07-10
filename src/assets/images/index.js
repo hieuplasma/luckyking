@@ -76,4 +76,6 @@ export const Images = {
   money: require('./money.png'),
   logo_lkk_login: require('./logo_lkk_login.png'),
   triangle: require('./triangle.png'),
+  email: require('./email.png'),
+  address: require('./address.png')
 };

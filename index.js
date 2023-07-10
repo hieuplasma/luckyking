@@ -20,6 +20,7 @@ messaging().setBackgroundMessageHandler(async remoteMessage => {
 if (Text.defaultProps == null) {
     Text.defaultProps = {};
     Text.defaultProps.allowFontScaling = false;
+    Text.defaultProps.selectable = true
 }
 
 if (TextInput.defaultProps == null) {

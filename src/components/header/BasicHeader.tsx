@@ -25,7 +25,7 @@ export const BasicHeader = React.memo(({ navigation, title, rightAction }: Image
         <>
             <StatusBar translucent={true} barStyle={'dark-content'} backgroundColor={"transparent"} />
             <View style={[styles.headerContainer, { paddingTop: safeAreaInsets.top }]}>
-                <TouchableOpacity style={{ flex: 1 }} onPress={onGoBack}>
+                <TouchableOpacity style={{ flex: 1, paddingVertical: 15 }} onPress={onGoBack}>
                     <Icon.Button
                         size={'small'}
                         color={Color.black}

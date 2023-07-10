@@ -104,5 +104,6 @@ export default {
   buyLotteryBackGround: '#FAFAFA',
   luckyKing: '#FC000C',
   luckyPayment: "#1B07FF",
-  momoPayment: "#B93186"
+  momoPayment: "#B93186",
+  historyBackground: '#e6e6e6'
 };

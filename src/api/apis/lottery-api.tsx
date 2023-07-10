@@ -132,6 +132,11 @@ class LotteryApi {
         return await window.connection.GET(fullUrl, params)
     }
 
+    getAllOrder2 = async (params: { ticketType?: TicketType, status?: any }) => {
+        let fullUrl = API_URI.GET_ALL_ORDER2;
+        return await window.connection.GET(fullUrl, params)
+    }
+
     //View JackPot
     getJackpot = async () => {
         let fullUrl = API_URI.VIEW_JACKPOT;

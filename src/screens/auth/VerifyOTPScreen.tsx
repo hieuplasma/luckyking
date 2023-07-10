@@ -12,13 +12,13 @@ import { Button } from '@widgets';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Alert, KeyboardAvoidingView, Platform, TouchableOpacity, View } from 'react-native';
 import auth from '@react-native-firebase/auth';
-import { useDispatch } from 'react-redux';
-import { updateToken } from '../../redux/reducer/auth';
 import { NavigationUtils, ScreenUtils } from '@utils';
 import { Icon } from '@assets';
 import { useHeaderHeight } from '@react-navigation/elements'
-import { InputComponent } from '@components';
+import { IText, InputComponent } from '@components';
 import { authApi } from '@api';
+import { HOT_LINE } from '@common';
+import { Linking } from 'react-native';
 
 
 type NavigationProp = StackNavigationProp<AuthenticationStackParamList, 'VerifyOTP'>;
@@ -38,9 +38,11 @@ export interface VerifyOTPScreenRouteParams {
 
 export interface VerifyOTPScreenProps { }
 
+//@ts-ignore
+const phoneNumber = HOT_LINE.replaceAll('.', '')
+
 export const VerifyOTPScreen = React.memo((props?: any) => {
   const height = useHeaderHeight()
-  const dispatch = useDispatch()
   const navigation = useNavigation<NavigationProp>();
   const route = useRoute<NavigationRoute>();
   const verifyOtpHooks = useVerifyOtp();
@@ -94,8 +96,16 @@ export const VerifyOTPScreen = React.memo((props?: any) => {
       const res = await authApi.register(route.params.body, token)
       if (res) {
         await auth().signOut()
-        dispatch(updateToken(res.data.accessToken))
-        NavigationUtils.resetGlobalStackWithScreen(navigation, ScreenName.SplashScreen);
+        // dispatch(updateToken(res.data.accessToken))
+        // NavigationUtils.resetGlobalStackWithScreen(navigation, ScreenName.SplashScreen);
+        NavigationUtils.navigate(navigation, ScreenName.Authentications.AgreeTerms,
+          {
+            authInfo: {
+              token: res.data.accessToken,
+              phoneNumber: route.params.body.phoneNumber,
+              password: route.params.body.password
+            }
+          })
       }
     }
     else {
@@ -194,6 +204,25 @@ export const VerifyOTPScreen = React.memo((props?: any) => {
     );
   }, [onSubmit, verifyOtpHooks.isLoading, confirm, verifyOtpHooks.otp]);
 
+  const call = useCallback(() => {
+    let url = phoneNumber
+    if (Platform.OS !== 'android') {
+      url = `telprompt:${phoneNumber}`;
+    }
+    else {
+      url = `tel:${phoneNumber}`;
+    }
+    Linking.canOpenURL(url)
+      .then(supported => {
+        if (!supported) {
+          Alert.alert('Số điện thoại không tồn tại!');
+        } else {
+          return Linking.openURL(url);
+        }
+      })
+      .catch(err => console.log(err));
+  }, [])
+
   return (
     <KeyboardAvoidingView keyboardVerticalOffset={height + 45} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={[
@@ -226,6 +255,14 @@ export const VerifyOTPScreen = React.memo((props?: any) => {
         {renderOtpInput()}
         {renderTimer()}
         {renderSubmitButton()}
+        <IText style={{ marginTop: 8, textAlign: 'center' }}>
+          {"Vui lòng gọi Hotline "}
+          <IText style={{ color: Color.blue, textDecorationLine: 'underline' }}
+            onPress={call}>
+            {HOT_LINE}
+          </IText>
+          <IText>{" để được hỗ trợ"}</IText>
+        </IText>
       </ShadowView>
     </KeyboardAvoidingView>
   );

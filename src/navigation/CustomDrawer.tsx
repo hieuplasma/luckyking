@@ -11,6 +11,8 @@ import { Color } from '@styles';
 import { userApi } from '@api';
 import { IText } from '@components';
 
+const VERSION = '1.0.1'
+
 const DrawerCustom = React.memo((props: any) => {
 
   const navigation = props.navigation
@@ -88,6 +90,7 @@ const DrawerCustom = React.memo((props: any) => {
         <LogOut logOut={logOut} />
         <View style={{ height: 40 }} />
       </ScrollView>
+      <IText style={{ textAlign: 'center',marginBottom: 15, fontWeight:'bold' }}>{'Phiên bản: ' + VERSION}</IText>
     </View>
   )
 })
