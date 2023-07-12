@@ -4,8 +4,9 @@ import React, { useCallback, useState } from "react"
 import { StyleSheet, TouchableOpacity, View } from "react-native"
 
 interface ChooseLevelKenoProps {
-    onChoose?: (value: number[]) => void,
-    onChooseForAll?: (value: any) => void
+    onChoose?: (value: any[]) => void,
+    onChooseForAll?: (value: any) => void,
+    pickingType?: 'selfpick' | 'fastpick' | 'default'
 }
 
 const lottColor = Color.keno
@@ -13,28 +14,42 @@ const MAX_KENO = 80
 
 // COMPONENT HEIGHT = 66
 
-export const ChooseLevelKeno = React.memo(({ onChoose, onChooseForAll }: ChooseLevelKenoProps) => {
+export const ChooseLevelKeno = React.memo(({ onChoose, onChooseForAll, pickingType }: ChooseLevelKenoProps) => {
 
     const [current, setCurrent] = useState(0)
 
     const random1Row = useCallback((len: number) => {
-        const randomNumbers = new Set();
-        while (randomNumbers.size < len) {
-            const randomNumber = Math.floor(Math.random() * MAX_KENO) + 1;
-            randomNumbers.add(randomNumber);
+        if (pickingType == 'selfpick') {
+            return Array(len).fill('TC')
         }
-        const resultArray = Array.from(randomNumbers).map(Number).sort((a, b) => a - b);
-        return resultArray
-    }, [])
+        else {
+            const randomNumbers = new Set();
+            while (randomNumbers.size < len) {
+                const randomNumber = Math.floor(Math.random() * MAX_KENO) + 1;
+                randomNumbers.add(randomNumber);
+            }
+            const resultArray = Array.from(randomNumbers).map(Number).sort((a, b) => a - b);
+            return resultArray
+        }
+    }, [pickingType])
 
     const random6Row = useCallback((len: number) => {
-        const random: number[][] = []
-        while (random.length < 6) {
-            random.push(random1Row(len))
+        if (pickingType == 'selfpick') {
+            const random: any[][] = []
+            while (random.length < 6) {
+                random.push(random1Row(len))
+            }
+            return random
         }
-        const resultArray = random.sort((a, b) => a[0] - b[0]);
-        return resultArray
-    }, [])
+        else {
+            const random: any[][] = []
+            while (random.length < 6) {
+                random.push(random1Row(len))
+            }
+            const resultArray = random.sort((a, b) => a[0] - b[0]);
+            return resultArray
+        }
+    }, [pickingType])
 
     const randomNumber = useCallback((value: number) => {
         setCurrent(value)

@@ -13,7 +13,7 @@ import { IText } from '@components';
 
 const VERSION = '1.0.1'
 
-const DrawerCustom = React.memo((props: any) => {
+const DrawerCustom = React.memo((props: any, subscription: any) => {
 
   const navigation = props.navigation
   const dispatch = useDispatch();
@@ -46,7 +46,12 @@ const DrawerCustom = React.memo((props: any) => {
     await auth()
       .signOut()
       .then(() => console.log('User signed out!'));
-  }, [auth, removeToken, removeCart, removeUser])
+    try {
+      subscription?.remove()
+    } catch(error) {
+      console.log("co loi xay ra")
+    }
+  }, [auth, removeToken, removeCart, removeUser, subscription])
 
   return (
     <View style={{ flex: 1 }}>
@@ -90,7 +95,7 @@ const DrawerCustom = React.memo((props: any) => {
         <LogOut logOut={logOut} />
         <View style={{ height: 40 }} />
       </ScrollView>
-      <IText style={{ textAlign: 'center',marginBottom: 15, fontWeight:'bold' }}>{'Phiên bản: ' + VERSION}</IText>
+      <IText style={{ textAlign: 'center', marginBottom: 15, fontWeight: 'bold' }}>{'Phiên bản: ' + VERSION}</IText>
     </View>
   )
 })

@@ -135,8 +135,9 @@ export function MainNavigation(props: any) {
     }, [])
 
     const appState = useRef(AppState.currentState);
+    let subscription: any
     useEffect(() => {
-        const subscription = AppState.addEventListener('change', nextAppState => {
+        subscription = AppState.addEventListener('change', nextAppState => {
             if (
                 appState.current.match(/inactive|background/) &&
                 nextAppState === 'active'
@@ -149,13 +150,14 @@ export function MainNavigation(props: any) {
         });
 
         return () => {
+            console.log("main navigation unmount")
             subscription.remove();
         };
     }, []);
 
     const renderCustom = useCallback((props: any) => {
-        return (<DrawerCustom {...props} />)
-    }, [])
+        return (<DrawerCustom {...props} subscription={subscription} />)
+    }, [subscription])
     return (
         <Drawer.Navigator
             drawerContent={renderCustom}

@@ -133,7 +133,7 @@ export const LotteryBasicItem = React.memo(({ lottery, tab, navigation }: Lotter
 
     const navigateToResult = useCallback((lottery: any) => {
         if (LIST_STATUS.ERROR.includes(lottery.status)) {
-            window.myalert.show({ title: "Vé đã bị huỷ!" })
+            window.myalert.show({ title: "Vé đã bị hoàn huỷ!" })
             return;
         }
         if (!lottery.result) {

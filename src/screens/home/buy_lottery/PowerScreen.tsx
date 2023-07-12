@@ -250,7 +250,7 @@ export const PowerScreen = React.memo((props: PowerScreenProps) => {
             {/* //Body */}
             <ViewAbove typePlay={typePlay.label} drawSelected={drawSelected} openTypeSheet={openTypeSheet} openDrawSheet={openDrawSheet} />
             {/* //Chon so */}
-            <Image source={Images.bg_ticket_1} style={{ flex: 1 }} resizeMode="contain">
+            <Image source={Images.bg_ticket_1} style={{ flex: 1 }} resizeMode="cover">
                 <ScrollView style={{ flex: 1 }}>
                     <View style={{ paddingHorizontal: 16, paddingVertical: 8 }}>
                         {numberSet.map((item: any, index: number) =>

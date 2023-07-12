@@ -8,7 +8,7 @@ import { StyleSheet, TouchableOpacity, View } from "react-native"
 interface TitleSimpleKenoNumberSheetProps {
     indexPage: number,
     swiperRef: any,
-    selected: number[],
+    selected: any[],
 }
 
 export const TitleSimpleKenoNumberSheet = React.memo(({ indexPage, swiperRef, selected }: TitleSimpleKenoNumberSheetProps) => {
@@ -65,17 +65,25 @@ export const TitleSimpleKenoNumberSheet = React.memo(({ indexPage, swiperRef, se
                 {
                     selected.length == 0 ?
                         <View style={{ width: 20, height: 1, alignSelf: 'center', backgroundColor: Color.keno, marginTop: 20, marginBottom: 1 }} />
-                        : selected[0] <= 80 ?
+                        : (selected[0] == 'TC') ?
                             selected.map((item: any, index: number) => {
                                 return (
                                     <IText key={"" + index} style={{ textDecorationLine: 'underline', marginHorizontal: 3, fontSize: 18, color: Color.keno }}>
-                                        {printNumber(item)}
+                                        {'TC'}
                                     </IText>
                                 )
                             })
-                            : <IText style={{ fontSize: 18, color: Color.keno }}>
-                                {getName()}
-                            </IText>
+                            : selected[0] <= 80 ?
+                                selected.map((item: any, index: number) => {
+                                    return (
+                                        <IText key={"" + index} style={{ textDecorationLine: 'underline', marginHorizontal: 3, fontSize: 18, color: Color.keno }}>
+                                            {printNumber(item)}
+                                        </IText>
+                                    )
+                                })
+                                : <IText style={{ fontSize: 18, color: Color.keno }}>
+                                    {getName()}
+                                </IText>
                 }
             </View>
         </View>

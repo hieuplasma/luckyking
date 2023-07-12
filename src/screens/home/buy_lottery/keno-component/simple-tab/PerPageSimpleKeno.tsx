@@ -54,12 +54,12 @@ export const PerPageSimpleKeno = React.memo(({ listNumber, bet, onChangeNumber, 
     }, [pickingType])
 
     const selfPick = useCallback(() => {
-        return window.myalert.show({ title: 'Tính năng đang phát triển' })
+        // return window.myalert.show({ title: 'Tính năng đang phát triển' })
         if (pickingType == 'selfpick') setPickingType('default')
         else setPickingType('selfpick')
     }, [pickingType])
 
-    const randomFastPick = useCallback((value: number[]) => {
+    const randomFastPick = useCallback((value: any[]) => {
         setList(value)
         onChangeNumber(value)
     }, [])
@@ -168,7 +168,7 @@ export const PerPageSimpleKeno = React.memo(({ listNumber, bet, onChangeNumber, 
 
             {
                 pickingType == 'default' ? <></>
-                    : <ChooseLevelKeno onChoose={randomFastPick} />
+                    : <ChooseLevelKeno onChoose={randomFastPick} pickingType={pickingType} />
             }
         </View>
     )
@@ -283,10 +283,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center', alignItems: 'center'
     },
     buttonRightUp: {
-        width: (windowWidth - 150) / 3
+        width: (windowWidth - 140) / 3,
     },
     buttonRightDown: {
-        width: (windowWidth - 150) / 2
+        width: (windowWidth - 140) / 2
     },
     textButton: { fontSize: 15 },
     buttonFooterUp: {

@@ -65,7 +65,7 @@ export const Max3dProScreen = () => {
     const [numberSet, setNumbers]: any = useState(initNumber)
     const [numberFake, setNumberFake]: any = useState(initNumber)
     const [bets, setBets] = useState(initBets)
-    const [generated, setGenrated] = useState([])
+    const [generated, setGenrated] = useState<string[]>([])
     const [bagGenerated, setBagGenerated] = useState([])
     const [generatedBets, setGeneratedBets] = useState([])
     const [totalCost, setTotalCost] = useState(0)
@@ -277,6 +277,17 @@ export const Max3dProScreen = () => {
             drawTimes.push(item.drawTime)
         })
         const total = (typePlay.value != 7 && typePlay.value != 8 && typePlay.value != 10) ? totalCost : totalCostBag
+        let pushGenerated: any[] = []
+        if (typePlay.value == 1) {
+            for (const element of generated) {
+                const split = element.split(" ")
+                if (split[0] == 'TCTCTC') split[0] = 'TC'
+                if (split[1] == 'TCTCTC') split[1] = 'TC'
+                pushGenerated.push(split[0] + ' ' + split[1])
+            }
+        }
+        else if (typePlay.value == 10) pushGenerated = bagGenerated
+        else pushGenerated = generated
         let body: any = {
             lotteryType: LotteryType.Max3DPro,
             amount: total,
@@ -284,7 +295,7 @@ export const Max3dProScreen = () => {
             level: typePlay.value,
             drawCode: drawCodes,
             drawTime: drawTimes,
-            numbers: (typePlay.value == 10) ? bagGenerated : generated,
+            numbers: pushGenerated,
             bets: generatedBets
         }
 
@@ -323,77 +334,78 @@ export const Max3dProScreen = () => {
         <SafeAreaView style={styles.container}>
             <HeaderBuyLottery navigation={navigation} lotteryType={LotteryType.Max3DPro} />
             <ViewAbove typePlay={typePlay.label} drawSelected={drawSelected} openTypeSheet={openTypeSheet} openDrawSheet={openDrawSheet} />
-
-            {
-                (typePlay.value == 5 || typePlay.value == 6) ?
-                    <Max3dHuge
-                        hugeCount={typePlay.value == 5 ? 1 : 2}
-                        hugePosition={hugePosition}
-                        onChangeHugePositon={onChangeHugePositon}
-                        lotteryType={LotteryType.Max3DPlus}
-                    />
-                    : <></>
-            }
-            {
-                typePlay.value == 7 || typePlay.value == 8 ?
-                    <Max3dProBagView
-                        ref={typeBagRef}
-                        changeCost={(data: number) => setTotalCostBag(data)}
-                        changeBets={(data: any) => setGeneratedBets(data)}
-                        changeGenerated={(data: any) => setGenrated(data)}
-                        typePlay={typePlay}
-                    />
-                    : typePlay.value == 10 ?
-                        <MultiBagView
-                            ref={multiBagRef}
+            <Image source={Images.bg_ticket_1} style={{ flex: 1 }} resizeMode="cover">
+                {
+                    (typePlay.value == 5 || typePlay.value == 6) ?
+                        <Max3dHuge
+                            hugeCount={typePlay.value == 5 ? 1 : 2}
+                            hugePosition={hugePosition}
+                            onChangeHugePositon={onChangeHugePositon}
+                            lotteryType={LotteryType.Max3DPlus}
+                        />
+                        : <></>
+                }
+                {
+                    typePlay.value == 7 || typePlay.value == 8 ?
+                        <Max3dProBagView
+                            ref={typeBagRef}
                             changeCost={(data: number) => setTotalCostBag(data)}
                             changeBets={(data: any) => setGeneratedBets(data)}
                             changeGenerated={(data: any) => setGenrated(data)}
-                            changeNumber={(data: any) => setBagGenerated(data)}
                             typePlay={typePlay}
                         />
-                        : <ScrollView style={{ flex: 1 }}>
-                            <View style={{ paddingHorizontal: 16, paddingVertical: 8 }}>
-                                {numberSet.map((item: any, index: number) => {
-                                    return (
-                                        <View style={styles.lineNumber} key={String.fromCharCode(65 + index)}>
-                                            <IText style={{ fontSize: 18, fontWeight: 'bold' }}>{String.fromCharCode(65 + index)}</IText>
-                                            <TouchableOpacity style={{ flex: 1, flexDirection: 'row', marginHorizontal: 18, justifyContent: 'space-evenly' }} onPress={() => openNumberSheet(index)}>
-                                                <View style={styles.boxNumber}>
-                                                    {item.slice(0, 3).map((number: any, index2: number) => {
-                                                        return (
-                                                            <ConsolasText key={index2 + "::" + index} style={{ color: lottColor, fontSize: 16 }}>{numberMax3d(number)}</ConsolasText>
-                                                        )
-                                                    })}
+                        : typePlay.value == 10 ?
+                            <MultiBagView
+                                ref={multiBagRef}
+                                changeCost={(data: number) => setTotalCostBag(data)}
+                                changeBets={(data: any) => setGeneratedBets(data)}
+                                changeGenerated={(data: any) => setGenrated(data)}
+                                changeNumber={(data: any) => setBagGenerated(data)}
+                                typePlay={typePlay}
+                            />
+                            : <ScrollView style={{ flex: 1 }}>
+                                <View style={{ paddingHorizontal: 16, paddingVertical: 8 }}>
+                                    {numberSet.map((item: any, index: number) => {
+                                        return (
+                                            <View style={styles.lineNumber} key={String.fromCharCode(65 + index)}>
+                                                <IText style={{ fontSize: 18, fontWeight: 'bold' }}>{String.fromCharCode(65 + index)}</IText>
+                                                <TouchableOpacity style={{ flex: 1, flexDirection: 'row', marginHorizontal: 18, justifyContent: 'space-evenly' }} onPress={() => openNumberSheet(index)}>
+                                                    <View style={styles.boxNumber}>
+                                                        {item.slice(0, 3).map((number: any, index2: number) => {
+                                                            return (
+                                                                <ConsolasText key={index2 + "::" + index} style={{ color: lottColor, fontSize: 16 }}>{numberMax3d(number)}</ConsolasText>
+                                                            )
+                                                        })}
+                                                    </View>
+                                                    <View style={styles.boxNumber}>
+                                                        {item.slice(3, 6).map((number: any, index2: number) => {
+                                                            return (
+                                                                <ConsolasText key={index2 + "::" + index} style={{ color: lottColor, fontSize: 16 }}>{numberMax3d(number)}</ConsolasText>
+                                                            )
+                                                        })}
+                                                    </View>
+                                                </TouchableOpacity>
+                                                <TouchableOpacity style={styles.buttonBets} onPress={() => openNumberSheet(index)}>
+                                                    <IText style={{ fontSize: 16, color: Color.blue }}>{printMoneyK(bets[index])}</IText>
+                                                </TouchableOpacity>
+                                                <View style={{ flexDirection: 'row', alignItems: 'center', width: 60, justifyContent: 'space-between' }}>
+                                                    <Image source={Images.nofilled_heart} style={{ width: 22, height: 22, }}></Image>
+                                                    {(item[0] !== false && item[1] !== false) ?
+                                                        <TouchableOpacity onPress={() => deleteNumber(index)}>
+                                                            <Image source={Images.trash} style={{ width: 26, height: 26 }}></Image>
+                                                        </TouchableOpacity>
+                                                        : <TouchableOpacity onPress={() => randomNumber(index)}>
+                                                            <Image source={Images.refresh} style={{ width: 26, height: 26 }}></Image>
+                                                        </TouchableOpacity>
+                                                    }
                                                 </View>
-                                                <View style={styles.boxNumber}>
-                                                    {item.slice(3, 6).map((number: any, index2: number) => {
-                                                        return (
-                                                            <ConsolasText key={index2 + "::" + index} style={{ color: lottColor, fontSize: 16 }}>{numberMax3d(number)}</ConsolasText>
-                                                        )
-                                                    })}
-                                                </View>
-                                            </TouchableOpacity>
-                                            <TouchableOpacity style={styles.buttonBets} onPress={() => openNumberSheet(index)}>
-                                                <IText style={{ fontSize: 16, color: Color.blue }}>{printMoneyK(bets[index])}</IText>
-                                            </TouchableOpacity>
-                                            <View style={{ flexDirection: 'row', alignItems: 'center', width: 60, justifyContent: 'space-between' }}>
-                                                <Image source={Images.nofilled_heart} style={{ width: 22, height: 22, }}></Image>
-                                                {(item[0] !== false && item[1] !== false) ?
-                                                    <TouchableOpacity onPress={() => deleteNumber(index)}>
-                                                        <Image source={Images.trash} style={{ width: 26, height: 26 }}></Image>
-                                                    </TouchableOpacity>
-                                                    : <TouchableOpacity onPress={() => randomNumber(index)}>
-                                                        <Image source={Images.refresh} style={{ width: 26, height: 26 }}></Image>
-                                                    </TouchableOpacity>
-                                                }
                                             </View>
-                                        </View>
-                                    )
-                                })}
-                            </View>
-                        </ScrollView>
-            }
+                                        )
+                                    })}
+                                </View>
+                            </ScrollView>
+                }
+            </Image>
 
             {/* Footer */}
             <View style={{ paddingHorizontal: 16, marginBottom: 5, zIndex: -1 }}>

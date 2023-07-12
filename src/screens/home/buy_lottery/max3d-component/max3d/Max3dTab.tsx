@@ -2,7 +2,7 @@ import { Image, Images } from "@assets";
 import { BTN_LABEL, ERR_MES, LotteryType, MAX3D_NUMBER, MAX_SET, MAX_SET_MAX3D, OrderMethod, OrderStatus, SUCCESS_MES } from "@common";
 import { ConsolasText, IText } from "@components";
 import { Color } from "@styles";
-import { NavigationUtils, calSurcharge, printMoneyK, printNumber } from "@utils";
+import { NavigationUtils, printMoneyK } from "@utils";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { StyleSheet, TouchableOpacity, ScrollView, View, Dimensions, Alert } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
@@ -48,7 +48,7 @@ export const Max3dTab = React.memo((props: Props) => {
     const [numberSet, setNumbers]: any = useState(initNumber)
     const [numberFake, setNumberFake]: any = useState(initNumber)
     const [bets, setBets] = useState(initBets)
-    const [generated, setGenrated] = useState([])
+    const [generated, setGenrated] = useState<string[]>([])
     const [generatedBets, setGeneratedBets] = useState([])
     const [totalCost, setTotalCost] = useState(0)
     const [hugePosition, setHugePosition] = useState([-1])
@@ -206,6 +206,14 @@ export const Max3dTab = React.memo((props: Props) => {
             drawTimes.push(item.drawTime)
         })
         const total = typePlay.value != 4 ? totalCost : totalCostBag
+        let pushGenerated: any[] = []
+        if (typePlay.value == 1) {
+            for (const element of generated) {
+                if (element.trim() == 'TCTCTC') pushGenerated.push('TC')
+                else pushGenerated.push(element.trim())
+            }
+        }
+        else pushGenerated = generated
         let body: any = {
             lotteryType: LotteryType.Max3D,
             amount: total,
@@ -213,7 +221,7 @@ export const Max3dTab = React.memo((props: Props) => {
             level: typePlay.value,
             drawCode: drawCodes,
             drawTime: drawTimes,
-            numbers: generated,
+            numbers: pushGenerated,
             bets: generatedBets
         }
         return body
@@ -262,51 +270,53 @@ export const Max3dTab = React.memo((props: Props) => {
             }
 
             {/* //Chon so */}
-            {
-                typePlay.value == 4 ?
-                    <Max3dBagView
-                        ref={typeBagRef}
-                        changeCost={(data: number) => setTotalCostBag(data)}
-                        changeBets={(data: any) => setGeneratedBets(data)}
-                        changeGenerated={(data: any) => setGenrated(data)}
-                    />
-                    : <ScrollView style={{ flex: 1 }}>
-                        <View style={{ paddingHorizontal: 16, paddingVertical: 8 }}>
-                            {numberSet.map((item: any, index: number) => {
-                                return (
-                                    <View style={styles.lineNumber} key={index}>
-                                        <IText style={{ fontSize: 18, fontWeight: 'bold' }}>{String.fromCharCode(65 + index)}</IText>
-                                        <TouchableOpacity style={{ flex: 1, flexDirection: 'row', marginHorizontal: 18, justifyContent: 'center' }} onPress={() => openNumberSheet(index)}>
-                                            {item.map((number: any, index2: number) => {
-                                                return (
-                                                    <View style={styles.ballContainer} key={index2}>
-                                                        <Image source={number !== false ? Images.ball_max3d : Images.ball_grey} style={styles.ballStyle}>
-                                                            <ConsolasText style={{ color: Color.white, fontSize: 16, marginTop: number == 10 ? -2 : 2 }}>{numberMax3d(number)}</ConsolasText>
-                                                        </Image>
-                                                    </View>
-                                                )
-                                            })}
-                                        </TouchableOpacity>
-                                        <TouchableOpacity style={styles.buttonBets} onPress={() => openNumberSheet(index)}>
-                                            <IText style={{ fontSize: 16, color: Color.blue }}>{printMoneyK(bets[index])}</IText>
-                                        </TouchableOpacity>
-                                        <View style={{ flexDirection: 'row', alignItems: 'center', width: 60, justifyContent: 'space-between' }}>
-                                            <Image source={Images.nofilled_heart} style={{ width: 22, height: 22, }}></Image>
-                                            {(item[0] !== false && item[1] !== false) ?
-                                                <TouchableOpacity onPress={() => deleteNumber(index)}>
-                                                    <Image source={Images.trash} style={{ width: 26, height: 26 }}></Image>
-                                                </TouchableOpacity>
-                                                : <TouchableOpacity onPress={() => randomNumber(index)}>
-                                                    <Image source={Images.refresh} style={{ width: 26, height: 26 }}></Image>
-                                                </TouchableOpacity>
-                                            }
+            <Image source={Images.bg_ticket_1} style={{ flex: 1 }} resizeMode="cover">
+                {
+                    typePlay.value == 4 ?
+                        <Max3dBagView
+                            ref={typeBagRef}
+                            changeCost={(data: number) => setTotalCostBag(data)}
+                            changeBets={(data: any) => setGeneratedBets(data)}
+                            changeGenerated={(data: any) => setGenrated(data)}
+                        />
+                        : <ScrollView style={{ flex: 1 }}>
+                            <View style={{ paddingHorizontal: 16, paddingVertical: 8 }}>
+                                {numberSet.map((item: any, index: number) => {
+                                    return (
+                                        <View style={styles.lineNumber} key={index}>
+                                            <IText style={{ fontSize: 18, fontWeight: 'bold' }}>{String.fromCharCode(65 + index)}</IText>
+                                            <TouchableOpacity style={{ flex: 1, flexDirection: 'row', marginHorizontal: 18, justifyContent: 'center' }} onPress={() => openNumberSheet(index)}>
+                                                {item.map((number: any, index2: number) => {
+                                                    return (
+                                                        <View style={styles.ballContainer} key={index2}>
+                                                            <Image source={number !== false ? Images.ball_max3d : Images.ball_grey} style={styles.ballStyle}>
+                                                                <ConsolasText style={{ color: Color.white, fontSize: 16, marginTop: number == 10 ? -2 : 2 }}>{numberMax3d(number)}</ConsolasText>
+                                                            </Image>
+                                                        </View>
+                                                    )
+                                                })}
+                                            </TouchableOpacity>
+                                            <TouchableOpacity style={styles.buttonBets} onPress={() => openNumberSheet(index)}>
+                                                <IText style={{ fontSize: 16, color: Color.blue }}>{printMoneyK(bets[index])}</IText>
+                                            </TouchableOpacity>
+                                            <View style={{ flexDirection: 'row', alignItems: 'center', width: 60, justifyContent: 'space-between' }}>
+                                                <Image source={Images.nofilled_heart} style={{ width: 22, height: 22, }}></Image>
+                                                {(item[0] !== false && item[1] !== false) ?
+                                                    <TouchableOpacity onPress={() => deleteNumber(index)}>
+                                                        <Image source={Images.trash} style={{ width: 26, height: 26 }}></Image>
+                                                    </TouchableOpacity>
+                                                    : <TouchableOpacity onPress={() => randomNumber(index)}>
+                                                        <Image source={Images.refresh} style={{ width: 26, height: 26 }}></Image>
+                                                    </TouchableOpacity>
+                                                }
+                                            </View>
                                         </View>
-                                    </View>
-                                )
-                            })}
-                        </View>
-                    </ScrollView>
-            }
+                                    )
+                                })}
+                            </View>
+                        </ScrollView>
+                }
+            </Image>
 
             <View style={{ paddingHorizontal: 16, marginBottom: 5 }}>
                 {

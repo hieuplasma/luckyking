@@ -44,19 +44,29 @@ export const RenderLineKeno = React.memo(({ item, title, openNumberSheet, delete
                         <View style={styles.borderButton}>
                             <IText>{"Chọn số"}</IText>
                         </View>
-                        : (item[0] <= 80 || item[0] === false) ?
+                        : (item[0] == 'TC') ?
                             item.map((number: any, index2: number) => {
                                 return (
                                     <View style={styles.ballContainer} key={index2}>
                                         <Image source={number !== false ? Images.ball_keno : Images.ball_grey} style={styles.ballStyle}>
-                                            <ConsolasText style={{ color: Color.white, fontSize: 16 }}>{printNumber(number)}</ConsolasText>
+                                            <ConsolasText style={{ color: Color.white, fontSize: 16 }}>{'TC'}</ConsolasText>
                                         </Image>
                                     </View>
                                 )
                             })
-                            : <View style={[styles.borderButton, { borderColor: lottColor, height: 30, paddingHorizontal: 15 }]}>
-                                <IText style={{ color: lottColor, fontWeight: 'bold' }}>{getName(item[0])}</IText>
-                            </View>}
+                            : (item[0] <= 80 || item[0] === false) ?
+                                item.map((number: any, index2: number) => {
+                                    return (
+                                        <View style={styles.ballContainer} key={index2}>
+                                            <Image source={number !== false ? Images.ball_keno : Images.ball_grey} style={styles.ballStyle}>
+                                                <ConsolasText style={{ color: Color.white, fontSize: 16 }}>{printNumber(number)}</ConsolasText>
+                                            </Image>
+                                        </View>
+                                    )
+                                })
+                                : <View style={[styles.borderButton, { borderColor: lottColor, height: 30, paddingHorizontal: 15 }]}>
+                                    <IText style={{ color: lottColor, fontWeight: 'bold' }}>{getName(item[0])}</IText>
+                                </View>}
             </TouchableOpacity>
             <TouchableOpacity style={styles.buttonBets} onPress={openNumberSheet}>
                 <IText style={{ fontSize: 16, color: Color.blue }}>{printMoneyK(bet)}</IText>

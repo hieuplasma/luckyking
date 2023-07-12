@@ -11,6 +11,7 @@ import { ViewFooter1 } from "../component/ViewFoooter1";
 import { ChooseLevelKeno } from "./simple-tab/ChooseLevelKeno";
 import { NavigationUtils } from "@utils";
 import { ScreenName } from "@navigation";
+import { Image, Images } from "@assets";
 
 interface Props {
     showBottomSheet: boolean,
@@ -39,10 +40,6 @@ export const SimpleKenoTab = React.memo(({ showBottomSheet, navigation }: Props)
         if (tmp.length == 0) tmp = [listDraw[0]]
         setDraw(tmp)
     }, [listDraw])
-
-    useEffect(() => {
-        console.log("rerender")
-    })
 
     const [numberSet, setNumbers] = useState<any>(initNumber)
     const [numberFake, setNumbersFake] = useState(initNumber)
@@ -79,7 +76,8 @@ export const SimpleKenoTab = React.memo(({ showBottomSheet, navigation }: Props)
         setNumbers(newNumbers)
     }, [numberSet])
 
-    const randomFastPick = useCallback((value: number[]) => {
+    const randomFastPick = useCallback((value: any[]) => {
+        console.log(value)
         setNumbers(value)
     }, [])
 
@@ -97,7 +95,11 @@ export const SimpleKenoTab = React.memo(({ showBottomSheet, navigation }: Props)
         else setPickingType('fastpick')
     }, [pickingType])
 
-    const selfPick = useCallback(() => { }, [])
+    const selfPick = useCallback(() => {
+        // return window.myalert.show({ title: 'Tính năng đang phát triển' })
+        if (pickingType == 'selfpick') setPickingType('default')
+        else setPickingType('selfpick')
+    }, [pickingType])
 
     // ref
     const chooseTypeRef: any = useRef(null);
@@ -190,24 +192,26 @@ export const SimpleKenoTab = React.memo(({ showBottomSheet, navigation }: Props)
                 disableChooseType={true}
             />
 
-            <ScrollView style={{ flex: 1 }}>
-                <View style={{ paddingHorizontal: 16, paddingVertical: 8 }}>
-                    {numberSet.map((item: any, index: number) => {
-                        return (
-                            <RenderLineKeno
-                                key={index}
-                                title={String.fromCharCode(65 + index)}
-                                item={item}
-                                openNumberSheet={() => openNumberSheet(index)}
-                                deleteNumber={() => deleteNumber(index)}
-                                randomNumber={() => randomNumberDefault(index)}
-                                randoming={randomLine == index ? true : false}
-                                bet={bets[index]}
-                            />
-                        )
-                    })}
-                </View>
-            </ScrollView>
+            <Image source={Images.bg_ticket_1} style={{ flex: 1 }} resizeMode="cover">
+                <ScrollView style={{ flex: 1 }}>
+                    <View style={{ paddingHorizontal: 16, paddingVertical: 8 }}>
+                        {numberSet.map((item: any, index: number) => {
+                            return (
+                                <RenderLineKeno
+                                    key={index}
+                                    title={String.fromCharCode(65 + index)}
+                                    item={item}
+                                    openNumberSheet={() => openNumberSheet(index)}
+                                    deleteNumber={() => deleteNumber(index)}
+                                    randomNumber={() => randomNumberDefault(index)}
+                                    randoming={randomLine == index ? true : false}
+                                    bet={bets[index]}
+                                />
+                            )
+                        })}
+                    </View>
+                </ScrollView>
+            </Image>
 
             <View style={{ paddingHorizontal: 16, marginBottom: 5, zIndex: -1 }}>
                 <ViewFooter1
@@ -216,9 +220,10 @@ export const SimpleKenoTab = React.memo(({ showBottomSheet, navigation }: Props)
                     pickingType={pickingType}
                 />
                 {
-                    pickingType == 'fastpick' ? <ChooseLevelKeno onChooseForAll={randomFastPick} />
+                    (pickingType == 'fastpick' || pickingType == 'selfpick') ?
+                        <ChooseLevelKeno onChooseForAll={randomFastPick} pickingType={pickingType} />
                         : randomLine != -1 ?
-                            <ChooseLevelKeno onChoose={randomNumber} />
+                            <ChooseLevelKeno onChoose={randomNumber} pickingType={pickingType} />
                             : <View style={{ height: 66 }} />
                 }
                 <ViewFooterKeno totalCost={totalCost} bookLottery={bookLottery} />
