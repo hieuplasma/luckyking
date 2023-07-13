@@ -1,6 +1,7 @@
 import { EVEN_ODD, LotteryType, SMALL_BIG } from "@common";
 import { dateConvert, dateTimeConvert, fullDateTimeConvert, getWeekDate } from "./time-utils";
 import { Images } from "@assets";
+import { doNotExits } from "./other-utils";
 
 export function convolutions(a: number, b: number, lotteryType?: LotteryType) {
     let big = a, small = b
@@ -24,6 +25,7 @@ export function convolutions(a: number, b: number, lotteryType?: LotteryType) {
 }
 
 export function printMoney(param: any) {
+    if (doNotExits(param)) return 'Invalid'
     let amount = parseInt(param.toString())
     //@ts-ignore
     return amount.toLocaleString().replaceAll(",", ".")

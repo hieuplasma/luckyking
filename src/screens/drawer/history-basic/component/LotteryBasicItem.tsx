@@ -171,6 +171,9 @@ export const LotteryBasicItem = React.memo(({ lottery, tab, navigation }: Lotter
                                 <View style={styles.lineNumber} key={'' + it.boSo + id}>
                                     <IText style={{ fontSize: 14, color: Color.blue }}>
                                         {String.fromCharCode(65 + id)}
+                                        <IText style={{ fontSize: 10 }}>
+                                            {(it.tuChon ? ' (TC)' : '')}
+                                        </IText>
                                     </IText>
                                     <View style={{ marginLeft: 5, flexDirection: 'row', flexWrap: 'wrap', marginVertical: 8 }}>
                                         {

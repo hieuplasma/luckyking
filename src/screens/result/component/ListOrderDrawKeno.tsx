@@ -116,6 +116,9 @@ export const ListOrderDrawKeno = React.memo(({ listOrder, navigation, lotteryTyp
                                 <View style={styles.lineNumber} key={'' + it.boSo + id}>
                                     <IText style={{ fontSize: 16, color: Color.blue, fontWeight: 'bold' }}>
                                         {String.fromCharCode(65 + id)}
+                                        <IText style={{ fontSize: 10 }}>
+                                            {(it.tuChon ? ' (TC)' : '')}
+                                        </IText>
                                     </IText>
                                     <View style={{ marginLeft: 5, flexDirection: 'row', flexWrap: 'wrap', marginVertical: 8, flex: 1 }}>
                                         {

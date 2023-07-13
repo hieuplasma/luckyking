@@ -1,5 +1,5 @@
 import { Image, Images } from "@assets";
-import { BTN_LABEL, ERR_MES, LotteryType, MAX3D_NUMBER, MAX_SET, MAX_SET_MAX3D, OrderMethod, OrderStatus, SUCCESS_MES } from "@common";
+import { BTN_LABEL, ERR_MES, LotteryType, MAX3D_NUMBER, MAX_SET, MAX_SET_MAX3D, OrderStatus, SUCCESS_MES } from "@common";
 import { ConsolasText, IText } from "@components";
 import { Color } from "@styles";
 import { NavigationUtils, printMoneyK } from "@utils";
@@ -323,7 +323,7 @@ export const Max3dTab = React.memo((props: Props) => {
                     typePlay.value == 4 ?
                         <></>
                         : <>
-                            <ViewFooter1 fastPick={fastPick} selfPick={selfPick} />
+                            <ViewFooter1 fastPick={fastPick} selfPick={selfPick} hideSelfPick={typePlay.value != 1} />
                             <GeneratedNumber generated={generated} lottColor={lottColor} />
                         </>
                 }

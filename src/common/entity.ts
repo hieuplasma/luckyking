@@ -5,10 +5,12 @@ export type INumberDetail = {
 
 export class NumberDetail {
     boSo: string = ""
-    tienCuoc: string = "0"
-    constructor(boSo: string, tienCuoc: string) {
+    tienCuoc: number = 0
+    tuChon: boolean | undefined = false
+    constructor(boSo: string, tienCuoc: number, tuChon: boolean = false) {
         this.boSo = boSo
         this.tienCuoc = tienCuoc
+        this.tuChon = tuChon
     }
 }
 

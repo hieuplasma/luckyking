@@ -1,16 +1,17 @@
-import { lotteryApi } from '@api';
-import { Icon, Images, Image } from '@assets';
-import { TransactionType } from '@common';
+import { lotteryApi, userApi } from '@api';
+import { Images, Image } from '@assets';
 import { ImageHeader, IText } from '@components';
 import { RechargeStackParamList, ScreenName } from '@navigation';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { Color, Style } from '@styles';
-import { NavigationUtils, printMoney, ScreenUtils } from '@utils';
-import { useCallback, useEffect, useState } from 'react';
-import { StyleSheet, View, Dimensions, StatusBar, TouchableOpacity, FlatList, RefreshControl } from 'react-native';
+import { Color } from '@styles';
+import { NavigationUtils, printMoney } from '@utils';
+import React, { useCallback, useEffect, useState } from 'react';
+import { StyleSheet, View, Dimensions, TouchableOpacity, FlatList, RefreshControl, ActivityIndicator, SectionList } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
+import { ItemTransaction } from '../component/ItemTransaction';
+import { groupBySortedFlucs } from '../component/groupData';
 
 type NavigationProp = StackNavigationProp<RechargeStackParamList, 'RechargeScreen'>;
 type NavigationRoute = RouteProp<RechargeStackParamList, 'RechargeScreen'>;
@@ -19,43 +20,41 @@ export interface RechargeScreenParamsList { }
 
 export const RechargeScreen = () => {
     const navigation = useNavigation<NavigationProp>();
-    const route = useRoute<NavigationRoute>();
-    const safeAreaInsets = useSafeAreaInsets();
 
     const luckykingBalance = useSelector((state: any) => state.userReducer.luckykingBalance)
 
-    const [listTransaction, setListTransaction] = useState([])
+    const [listTransaction, setListTransaction] = useState<any[]>([])
+    const [sectionData, setSectionData] = useState<any[]>([])
     const [isLoading, setLoading] = useState(false)
+    const [loadingBottom, setLoadingBottom] = useState(false)
 
     const onRefresh = async () => {
         setLoading(true)
         window.loadingIndicator.show()
-        const res = await lotteryApi.getTransactionHistory()
+        const res = await userApi.getHistoryMoneyAccount({ skip: 0, take: 20 })
         if (res) {
-            setListTransaction(res.data.filter(check).sort(compare))
+            setListTransaction(res.data)
         }
         setLoading(false)
         window.loadingIndicator.hide()
     }
 
-    function check(param: any) {
-        if (param.type == TransactionType.WithDraw && param.destination == 'Ví LuckyKing') return true
-        return (param.type == TransactionType.Recharge || param.type == TransactionType.BuyLottery)
-    }
-
-    function compare(a: any, b: any) {
-        if (a.createdAt < b.createdAt) {
-            return 1;
-        }
-        if (a.createdAt > b.createdAt) {
-            return -1;
-        }
-        return 0;
-    }
-
     useEffect(() => {
         onRefresh()
     }, [])
+
+    const loadMore = useCallback(async () => {
+        setLoadingBottom(true)
+        const res = await userApi.getHistoryMoneyAccount({ skip: listTransaction.length, take: 20 })
+        setLoadingBottom(false)
+        if (res) {
+            setListTransaction([...listTransaction, ...res.data])
+        }
+    }, [listTransaction])
+
+    useEffect(() => {
+        setSectionData(groupBySortedFlucs(listTransaction))
+    }, [listTransaction])
 
     return (
         <View style={styles.container}>
@@ -72,8 +71,7 @@ export const RechargeScreen = () => {
 
                 <View style={styles.line} />
 
-                <IText style={{ marginTop: 16, marginLeft: 8 }}>{"Các hình thức nạp tiền:"}</IText>
-                <View style={{ height: 8 }} />
+                <IText style={{ marginTop: 10, marginLeft: 16, fontWeight: 'bold' }}>{"Các hình thức nạp tiền:"}</IText>
 
                 <TouchableOpacity style={styles.borderItem} onPress={() => NavigationUtils.navigate(navigation, ScreenName.Drawer.BankRechargeScreen)}>
                     <Image source={Images.bank_center} style={{ width: 28, height: 28 }} />
@@ -99,43 +97,41 @@ export const RechargeScreen = () => {
                     <Image source={Images.right_arrow} style={styles.rightArrow} tintColor={Color.black} />
                 </TouchableOpacity> */}
 
-                <IText style={{ marginTop: 20, marginLeft: 8 }}>
+                <IText style={{ marginTop: 10, marginLeft: 16, fontWeight: 'bold' }}>
                     {"Lịch sử  Ví LuckyKing:"}
                 </IText>
 
-                <FlatList
-                    style={{ marginTop: 16 }}
-                    data={listTransaction.sort()}
+                <SectionList
+                    style={{ marginTop: 8 }}
+                    sections={sectionData}
                     renderItem={({ item, index }: any) => {
                         return (
-                            <View style={{
-                                height: 50, width: '100%',
-                                paddingHorizontal: 8, alignItems: 'center',
-                                backgroundColor: index % 2 == 0 ? Color.white : "#EFEEEC",
-                                flexDirection: 'row',
-                            }}>
-                                <Image style={{ width: 36, height: 36 }} source={Images.transaction} />
-                                <View style={{ marginLeft: 8, justifyContent: 'center' }}>
-                                    <IText style={{ fontWeight: 'bold' }}>{item.description}</IText>
-                                    <IText>{new Date(item.createdAt).toLocaleString()}</IText>
-                                </View>
-                                <View style={{ flex: 1 }} />
-                                <IText style={{ fontWeight: 'bold' }}>
-                                    {`${item.type == TransactionType.BuyLottery ? '-' : '+'} ${printMoney(item.amount)}đ`}
-                                </IText>
-                            </View>
+                            <ItemTransaction item={item} />
                         )
                     }}
+                    renderSectionHeader={({ section: { key } }) => (
+                        <View style={styles.itemHeader}>
+                            <IText style={{ fontWeight: 'bold' }}>
+                                {key}
+                            </IText>
+                        </View>
+                    )}
                     keyExtractor={(item: any, index) => String(item.id)}
                     refreshControl={
                         <RefreshControl refreshing={isLoading} onRefresh={onRefresh} />
                     }
-                    ListFooterComponent={<View style={{ height: 100 }}></View>}
+                    ListFooterComponent={<View style={{ height: 100, justifyContent: 'center', alignItems: 'center' }}>
+                        {loadingBottom ?
+                            <ActivityIndicator size={"large"} color={Color.gray} />
+                            : <></>}
+                    </View>}
+                    onEndReached={loadMore}
                 />
             </View>
         </View>
     )
 };
+
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -160,5 +156,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row', paddingHorizontal: 10,
         marginVertical: 4, paddingVertical: 8,
     },
-    rightArrow: { width: 10, height: 20 }
+    rightArrow: { width: 10, height: 20 },
+    itemHeader: { height: 40, justifyContent: 'center', backgroundColor: Color.historyBackground, paddingLeft: 8 }
 })

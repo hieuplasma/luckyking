@@ -3,18 +3,18 @@ export enum TYPE_API {
   GET = 'GET'
 }
 
-export const RESPONSE_TIMEOUT = 5000;
+export const RESPONSE_TIMEOUT = 10000;
 export const TIMEOUT_MESSAGE = "request timeout"
 
 /** config for debug */
-// const config = {
-//   host: 'http://192.168.246.43:3001',
-// };
+const config = {
+  host: 'http://192.168.246.47:3001',
+};
 
 /** config for VPS */
-const config = {
-  host: 'http://103.162.31.84:3003',
-};
+// const config = {
+//   host: 'http://103.162.31.84:3003',
+// };
 
 /** config for Production */
 // const config = {
@@ -75,4 +75,6 @@ export const API_URI = {
   TRANSACTION_HISTORY: "/transaction/list",
   WITHDRAW_TO_LUCKYKING: "/transaction/withdraw-luckyking",
   WITHDRAW_TO_BANK: "/transaction/withdraw-bank-acount",
+  MONEY_ACCOUNT_HISTORY: "/transaction/money-account",
+  REWARD_WALLET_HISTORY: "/transaction/reward-wallet"
 }

@@ -8,10 +8,11 @@ import { Dimensions, StyleSheet, TouchableOpacity, View } from "react-native";
 interface ViewFooterProps {
     fastPick: () => void,
     selfPick: () => void,
-    pickingType?: PickingType
+    pickingType?: PickingType,
+    hideSelfPick?: boolean
 }
 
-export const ViewFooter1 = React.memo(({ fastPick, selfPick, pickingType }: ViewFooterProps) => {
+export const ViewFooter1 = React.memo(({ fastPick, selfPick, pickingType, hideSelfPick }: ViewFooterProps) => {
 
     useEffect(() => {
         "View Footer 1 rerender"
@@ -38,16 +39,19 @@ export const ViewFooter1 = React.memo(({ fastPick, selfPick, pickingType }: View
                 <Image source={Images.fast_pick} style={{ width: 19, height: 19 }}></Image>
                 <IText style={styles.textFooterUp}>{"Chọn nhanh"}</IText>
             </TouchableOpacity>
-            <TouchableOpacity
-                style={[styles.buttonFooterUp, { backgroundColor: pickingType == 'selfpick' ? "#FFC42C" : Color.white }]}
-                activeOpacity={0.6}
-                onPress={selfPick}
-            >
-                <View style={{ width: 21, height: 21, borderRadius: 99, backgroundColor: Color.luckyKing, justifyContent: 'center', alignItems: 'center' }}>
-                    <IText style={{ fontSize: 14, color: Color.white, fontWeight: 'bold' }}>TC</IText>
-                </View>
-                <IText style={styles.textFooterUp}>{"Tự chọn"}</IText>
-            </TouchableOpacity>
+            {
+                hideSelfPick ? <></> :
+                    <TouchableOpacity
+                        style={[styles.buttonFooterUp, { backgroundColor: pickingType == 'selfpick' ? "#FFC42C" : Color.white }]}
+                        activeOpacity={0.6}
+                        onPress={selfPick}
+                    >
+                        <View style={{ width: 21, height: 21, borderRadius: 99, backgroundColor: Color.luckyKing, justifyContent: 'center', alignItems: 'center' }}>
+                            <IText style={{ fontSize: 14, color: Color.white, fontWeight: 'bold' }}>TC</IText>
+                        </View>
+                        <IText style={styles.textFooterUp}>{"Tự chọn"}</IText>
+                    </TouchableOpacity>
+            }
         </View>
     )
 })

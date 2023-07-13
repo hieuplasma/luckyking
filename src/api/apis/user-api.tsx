@@ -26,9 +26,19 @@ class UserApi {
     return await window.connection.POST(fullUrl, body)
   }
 
-  getBalance =  async () => {
+  getBalance = async () => {
     let fullUrl = API_URI.GET_BALANCE;
     return await window.connection.GET(fullUrl)
+  }
+
+  getHistoryMoneyAccount = async (body: any) => {
+    let fullUrl = API_URI.MONEY_ACCOUNT_HISTORY;
+    return await window.connection.GET(fullUrl, body)
+  }
+
+  getHistoryRewardWallet = async (body: any) => {
+    let fullUrl = API_URI.REWARD_WALLET_HISTORY;
+    return await window.connection.GET(fullUrl, body)
   }
 }
 

@@ -29,6 +29,9 @@ export const RenderPowerMegaItem = React.memo(({ item, openModalDeleteLottery }:
                                 <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 8 }}>
                                     <IText style={{ fontSize: 18, fontWeight: '600', color: Color.black }}>
                                         {String.fromCharCode(65 + id)}
+                                        <IText style={{ fontSize: 10 }}>
+                                            {(it.tuChon ? ' (TC)' : '')}
+                                        </IText>
                                     </IText>
                                     <View style={{ marginLeft: 5, flexDirection: 'row', flexWrap: 'wrap', flex: 1 }}>
                                         {

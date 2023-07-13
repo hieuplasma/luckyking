@@ -6,7 +6,7 @@ import { RESPONSE_TIMEOUT, TIMEOUT_MESSAGE, TYPE_API, API_HOST } from './config'
 import jwtDecode from 'jwt-decode';
 import { Alert } from 'react-native';
 import { removeToken, removeUser } from '@redux';
-import NetInfo from '@react-native-community/netinfo';
+// import NetInfo from '@react-native-community/netinfo';
 
 const axios = require('axios').default;
 

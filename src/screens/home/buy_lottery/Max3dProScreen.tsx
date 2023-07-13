@@ -413,7 +413,7 @@ export const Max3dProScreen = () => {
                     typePlay.value == 7 || typePlay.value == 8 ?
                         <></>
                         : <>
-                            <ViewFooter1 fastPick={fastPick} selfPick={selfPick} />
+                            <ViewFooter1 fastPick={fastPick} selfPick={selfPick} hideSelfPick={typePlay.value != 1} />
                             <GeneratedNumber generated={generated} lottColor={lottColor} />
                         </>
                 }

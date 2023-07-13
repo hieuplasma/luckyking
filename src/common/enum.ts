@@ -50,7 +50,7 @@ export function getLotteyNameStatus(param: OrderStatus) {
             return "Đợi in vé"
         case OrderStatus.PRINTED:
             return "Đang in vé"
-        case OrderStatus.CONFIRMED: return "Chờ kết qủa"
+        case OrderStatus.CONFIRMED: return "Chờ kết quả"
         case OrderStatus.ERROR: return "Vé bị lỗi"
         case OrderStatus.RETURNED: return "Vé đã huỷ"
         case OrderStatus.WON: return "Vé trúng thưởng"
