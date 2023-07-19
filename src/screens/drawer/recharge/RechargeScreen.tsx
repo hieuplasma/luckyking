@@ -1,17 +1,17 @@
-import { lotteryApi, userApi } from '@api';
+import {  userApi } from '@api';
 import { Images, Image } from '@assets';
 import { ImageHeader, IText } from '@components';
 import { RechargeStackParamList, ScreenName } from '@navigation';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { RouteProp, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Color } from '@styles';
 import { NavigationUtils, printMoney } from '@utils';
 import React, { useCallback, useEffect, useState } from 'react';
-import { StyleSheet, View, Dimensions, TouchableOpacity, FlatList, RefreshControl, ActivityIndicator, SectionList } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { StyleSheet, View, Dimensions, TouchableOpacity, RefreshControl, ActivityIndicator, SectionList } from 'react-native';
 import { useSelector } from 'react-redux';
 import { ItemTransaction } from '../component/ItemTransaction';
 import { groupBySortedFlucs } from '../component/groupData';
+import { ERR_MES } from '@common';
 
 type NavigationProp = StackNavigationProp<RechargeStackParamList, 'RechargeScreen'>;
 type NavigationRoute = RouteProp<RechargeStackParamList, 'RechargeScreen'>;
@@ -125,6 +125,10 @@ export const RechargeScreen = () => {
                             <ActivityIndicator size={"large"} color={Color.gray} />
                             : <></>}
                     </View>}
+                      ListEmptyComponent={
+                        <View style={{ marginTop: 16, justifyContent: 'center', alignItems: 'center' }}>
+                            <IText style={{ fontSize: 16, color: Color.luckyKing, fontWeight: 'bold' }}>{ERR_MES.NO_TRANSACTION}</IText>
+                        </View>}
                     onEndReached={loadMore}
                 />
             </View>

@@ -10,8 +10,7 @@ import { Image, Images } from '@assets';
 import { Color } from '@styles';
 import { userApi } from '@api';
 import { IText } from '@components';
-
-const VERSION = '1.0.1'
+import { VERSION } from '@common';
 
 const DrawerCustom = React.memo((props: any, subscription: any) => {
 

@@ -1,4 +1,4 @@
-import { HomeCountdownClockComponent } from '@components';
+import { HomeCountdownClockComponent, IText } from '@components';
 import { BorderComponent, Label } from '@shared';
 import { Image, Icon } from '@assets'
 import { Color, Style } from '@styles';
@@ -49,6 +49,33 @@ export const HomeTicketLongFormComponent = React.memo((props?: HomeTicketLongFor
     }
   }, [props?.type]);
 
+  const today = useMemo(() => {
+    const now = new Date()
+    const day = now.getDay()
+    const hour = now.getHours()
+    switch (props?.type) {
+
+      case LotteryType.Keno:
+        if (hour >= 6 && hour < 22) return true
+        else return false
+
+      case LotteryType.Power:
+      case LotteryType.Max3DPro:
+        if ((day == 2 || day == 4 || day == 6) && (hour <= 17)) return true
+        else return false
+
+      case LotteryType.Mega:
+        if ((day == 3 || day == 5 || day == 7) && (hour <= 17)) return true
+        else return false
+
+      case LotteryType.Max3D:
+        if ((day == 1 || day == 3 || day == 5) && (hour <= 17)) return true
+        else return false
+
+      default: return false
+    }
+  }, [props?.type, props?.targetTime])
+
   const renderImage = useCallback(() => {
     return (
       <View
@@ -62,6 +89,20 @@ export const HomeTicketLongFormComponent = React.memo((props?: HomeTicketLongFor
             borderBottomLeftRadius: 10,
           },
         ]}>
+        {
+          today ?
+            <View style={{
+              position: 'absolute', top: 0, left: 10, right: 10,
+              height: 20, backgroundColor: Color.luckyKing,
+              borderBottomLeftRadius: 5, borderBottomRightRadius: 5,
+              justifyContent: 'center', alignItems: 'center'
+            }}>
+              <IText style={{ color: Color.white, fontSize: 10, fontWeight: 'bold' }}>
+                {props?.type == LotteryType.Keno ? "XỔ NGAY" : "HÔM NAY XỔ"}
+              </IText>
+            </View>
+            : <></>
+        }
         <Image
           source={{
             uri: props?.image,
@@ -69,30 +110,6 @@ export const HomeTicketLongFormComponent = React.memo((props?: HomeTicketLongFor
           style={[Style.Size.WidthMatchParent, Style.Size.HeightMatchParent]}
           resizeMode="contain"
         />
-        {/* <BorderComponent
-          width={20}
-          height={20}
-          borderStyle={[{ backgroundColor: Color.red, borderColor: Color.red }]}
-          style={[
-            Style.AbsolutePosition.LeftTop,
-            {
-              transform: [{ rotate: '0deg' }],
-            },
-          ]}
-        />
-        <BorderComponent
-          width={20}
-          height={20}
-          borderStyle={[{ backgroundColor: Color.red, borderColor: Color.red }]}
-          style={[
-            {
-              position: 'absolute',
-              left: 0,
-              bottom: 0,
-              transform: [{ rotate: '270deg' }],
-            },
-          ]}
-        /> */}
       </View>
     );
   }, [props?.image]);
@@ -131,7 +148,7 @@ export const HomeTicketLongFormComponent = React.memo((props?: HomeTicketLongFor
           {props?.jackpot}
         </Label.Widget>
         <HomeCountdownClockComponent
-          targetTime={props?.targetTime ? props.targetTime : new Date('2023-04-15T18:00:00Z')}
+          targetTime={props?.targetTime ? props.targetTime : new Date('2023-30-12T18:00:00Z')}
           type={props?.type}
         />
       </View>
@@ -177,28 +194,6 @@ export const HomeTicketLongFormComponent = React.memo((props?: HomeTicketLongFor
         ]}>
         {props?.centerView ? props?.centerView() : renderDescription()}
         {props?.rightView ? props?.rightView() : renderRightView()}
-        {/* <BorderComponent
-          width={20}
-          height={20}
-          borderStyle={[{ backgroundColor: Color.red, borderColor: Color.red }]}
-          style={[
-            Style.AbsolutePosition.RightTop,
-            {
-              transform: [{ rotate: '90deg' }],
-            },
-          ]}
-        />
-        <BorderComponent
-          width={20}
-          height={20}
-          borderStyle={[{ backgroundColor: Color.red, borderColor: Color.red }]}
-          style={[
-            Style.AbsolutePosition.BottomRight,
-            {
-              transform: [{ rotate: '180deg' }],
-            },
-          ]}
-        /> */}
       </View>
     </TouchableOpacity>
   );

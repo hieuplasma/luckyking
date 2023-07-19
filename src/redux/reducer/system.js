@@ -3,7 +3,8 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
     expandKeno: true,
     expandBasic: true,
-    alertKeno: true
+    alertKeno: true,
+    alertTesting: true
 }
 
 // Create Redux state slice
@@ -20,8 +21,11 @@ const systemSlice = createSlice({
         saveAlertKeno: (state, action) => {
             state.alertKeno = action.payload.expand
         },
+        saveAlertTesting: (state, action) => {
+            state.alertTesting = action.payload.expand
+        },
     },
 })
 
-export const { saveExpandKeno, saveExpandBasic, saveAlertKeno } = systemSlice.actions
+export const { saveExpandKeno, saveExpandBasic, saveAlertKeno, saveAlertTesting } = systemSlice.actions
 export default systemReducer = systemSlice.reducer

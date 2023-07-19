@@ -7,9 +7,9 @@ export const RESPONSE_TIMEOUT = 10000;
 export const TIMEOUT_MESSAGE = "request timeout"
 
 /** config for debug */
-const config = {
-  host: 'http://192.168.246.47:3001',
-};
+// const config = {
+//   host: 'http://192.168.246.47:3001',
+// };
 
 /** config for VPS */
 // const config = {
@@ -17,9 +17,9 @@ const config = {
 // };
 
 /** config for Production */
-// const config = {
-//   host: 'http://42.96.40.239',
-// };
+const config = {
+  host: 'http://42.96.40.239',
+};
 
 export const API_HOST = config.host;
 

@@ -7,7 +7,8 @@ export const ERR_MES = {
     NONE_NUMBER: "Bạn chưa chọn bộ số nào!",
     EMPTY_CART: "Giỏ hàng hiện đang trống rỗng!",
     NO_LOTTERY:"Không có vé nào!",
-    NO_ORDER:"Không có đơn nào!"
+    NO_ORDER:"Không có đơn nào!",
+    NO_TRANSACTION:"Không có giao dịch nào!"
 }
 
 export const SUCCESS_MES = {

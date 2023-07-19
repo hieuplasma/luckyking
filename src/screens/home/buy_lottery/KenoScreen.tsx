@@ -1,16 +1,18 @@
 import { DELAY_SCREEN, DELAY_TAB, LotteryType } from '@common';
-import { HeaderBuyLottery, IText } from '@components';
+import { HeaderBuyLottery, IText, ModalAlert } from '@components';
 import { HomeStackParamList } from '@navigation';
-import { RouteProp, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Color } from '@styles';
 import { useCallback, useEffect, useState } from 'react';
-import { StyleSheet, View, Dimensions, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Dimensions, TouchableOpacity, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { getColorLott } from '@utils';
 import { SimpleKenoTab } from './keno-component/SimpleKenoTab';
 import { BagKenoTab } from './keno-component/BagKenoTab';
 import { NurturingKenoTab } from './keno-component/NurturingKenoTab';
+import { useDispatch, useSelector } from 'react-redux';
+import { saveAlertKeno } from '@redux';
 
 type NavigationProp = StackNavigationProp<HomeStackParamList, 'KenoScreen'>;
 // type NavigationRoute = RouteProp<HomeStackParamList, 'KenoScreen'>;
@@ -24,8 +26,14 @@ const types = [
     { label: "Nuôi Keno", value: 2 }
 ]
 
+const alertContentKeno = 'Do đặc thù thời gian quay số Keno rất ngắn, nên trong các trường hợp bất khả kháng như lỗi đường truyền, lỗi máy in vé của Viẹtlott..., kỳ QSMT thực tế in trên vé có thể khác so với kỳ QSMT mà Quý khách lựa chọn. Vé Keno mà Quý khách nhận được sẽ được in ở kỳ QSMT gần nhất mà hệ thống có thể đáp ứng sau khi Quý khách thanh toán thành công.'
+
 export const KenoScreen = () => {
+
     const navigation = useNavigation<NavigationProp>();
+    const dispatch = useDispatch()
+
+    const alertKeno = useSelector((state: any) => state.systemReducer.alertKeno)
 
     const [type, setType] = useState(types[0])
 
@@ -48,6 +56,20 @@ export const KenoScreen = () => {
         }, DELAY_SCREEN); // change delay as needed
         return () => clearTimeout(timer);
     }, []);
+
+    // useEffect(() => {
+    //     if (alertKeno) {
+    //         Alert.alert("Lưu ý", alertContent,
+    //             [{
+    //                 text: 'Không hiển thị lần sau',
+    //                 onPress: () => dispatch(saveAlertKeno({ expand: false }))
+    //             },
+    //             {
+    //                 text: 'Đã hiểu',
+    //                 onPress: () => console.log('cancel')
+    //             }])
+    //     }
+    // }, [])
 
     return (
         <SafeAreaView style={styles.container}>
@@ -91,11 +113,12 @@ export const KenoScreen = () => {
                 {type.value == 0 ?
                     <SimpleKenoTab showBottomSheet={showBottomSheet} navigation={navigation} />
                     : type.value == 1 ?
-                        <BagKenoTab showBottomSheet={showBottomSheet} navigation={navigation}/>
+                        <BagKenoTab showBottomSheet={showBottomSheet} navigation={navigation} />
                         : <NurturingKenoTab showBottomSheet={showBottomSheet} />
                 }
             </>
 
+            <ModalAlert visible={alertKeno} alertContent={alertContentKeno} typeAlert='keno' />
         </SafeAreaView>
     )
 };

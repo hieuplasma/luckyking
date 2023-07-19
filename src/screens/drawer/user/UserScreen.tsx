@@ -2,7 +2,7 @@ import { Images, Image } from '@assets';
 import { ScreenName, UserStackParamList } from '@navigation';
 import { RouteProp, useNavigation } from '@react-navigation/native';
 import { Color } from '@styles';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
     StyleSheet,
     View,
@@ -23,11 +23,18 @@ import { updateUser } from '@redux';
 import { doNotExits, NavigationUtils } from '@utils';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { ImageHeader, IText } from '@components';
+import { MarginLeft } from 'src/styles/SpaceStyles';
 
 type NavigationProp = StackNavigationProp<UserStackParamList, 'UserScreen'>;
 type NavigationRoute = RouteProp<UserStackParamList, 'UserScreen'>;
 
 export interface UserScreenParamsList { }
+
+const contentDelete = `Sau khi xóa tài khoản, Quý khách sẽ không thể tiếp tục sử dụng tài khoản này với ứng dụng LuckyKing.
+
+Số dư còn lại trong tài khoản mua vé và tài khoản thưởng sẽ bị vô hiệu và không thể sử dụng ngay sau khi Quý khách thực hiện việc xóa tài khoản này (Vui lòng sử dụng hết số dự trong các tài khoản trước khi xóa tài khoản).
+
+Sau khi xóa tài khoản, các vé mà Quý khách đã mua nhưng chưa đến kì quay thưởng sẽ không thuộc quyền sở hữu của Quý khách nữa và trong trường hợp các vé này trúng thưởng thì số tiền trúng thưởng cũng không thuộc về Quý khách; đồng thời tiền mua vé của những vé này cũng sẽ không được hoàn lại cho Quý khách  (Vui lòng chờ các vé mà Quý khách đã mua được quay thưởng hết trước khi khóa tài khoản).`
 
 export const UserScreen = React.memo(() => {
     const navigation = useNavigation<NavigationProp>();
@@ -71,6 +78,7 @@ export const UserScreen = React.memo(() => {
     const [address, setAddress] = useState(user.address);
 
     const [isLoading, setLoading] = useState(false);
+    const [isLoading2, setLoading2] = useState(false);
 
     const checkIdentify = useCallback((val: string) => {
         if (val.trim().length != 12) return false;
@@ -105,6 +113,17 @@ export const UserScreen = React.memo(() => {
         }
         setLoading(false);
     };
+
+    const deleteAccount = useCallback(() => {
+        Alert.alert("Lưu ý", contentDelete, [
+            {
+                text: 'Huỷ xoá',
+                onPress: () => console.log('Cancel Pressed'),
+                style: 'cancel',
+            },
+            { text: 'Xoá tài khoản', onPress: () => console.log('OK Pressed') },
+        ])
+    }, [])
 
     return (
         <View style={styles.container}>
@@ -190,22 +209,42 @@ export const UserScreen = React.memo(() => {
                 </ScrollView>
             </KeyboardAvoidingView>
 
-            <TouchableOpacity
-                style={styles.buttonUpdate}
-                activeOpacity={0.8}
-                disabled={isLoading}
-                onPress={updateUserInfo}>
-                <IText style={styles.textTitle}>{'CẬP NHẬT'}</IText>
-                {isLoading ? (
-                    <ActivityIndicator
-                        size="small"
-                        color={Color.white}
-                        style={{ marginLeft: 8 }}
-                    />
-                ) : (
-                    <></>
-                )}
-            </TouchableOpacity>
+            <View style={styles.btmView}>
+                <TouchableOpacity
+                    style={styles.buttonUpdate}
+                    activeOpacity={0.8}
+                    disabled={isLoading}
+                    onPress={updateUserInfo}>
+                    <IText style={styles.textTitle}>{'CẬP NHẬT'}</IText>
+                    {isLoading ? (
+                        <ActivityIndicator
+                            size="small"
+                            color={Color.white}
+                            style={{ marginLeft: 8 }}
+                        />
+                    ) : (
+                        <></>
+                    )}
+                </TouchableOpacity>
+                <View style={{ width: 12 }}></View>
+                <TouchableOpacity
+                    style={styles.btnDelete}
+                    activeOpacity={0.8}
+                    disabled={isLoading2}
+                    onPress={deleteAccount}>
+                    <Image source={Images.empty_trash} tintColor={Color.white} style={{ width: 20, height: 20 }} resizeMode='contain' />
+                    <IText style={[styles.textTitle, { marginLeft: 4 }]}>{'Xoá tài khoản'}</IText>
+                    {isLoading2 ? (
+                        <ActivityIndicator
+                            size="small"
+                            color={Color.white}
+                            style={{ marginLeft: 8 }}
+                        />
+                    ) : (
+                        <></>
+                    )}
+                </TouchableOpacity>
+            </View>
         </View>
     );
 });
@@ -287,15 +326,29 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     textItem: {},
+    btmView: {
+        flexDirection: 'row', height: 45,
+        marginBottom: 24, width: windowWidth - 32,
+        marginHorizontal: 16,
+        justifyContent: 'space-between'
+    },
     buttonUpdate: {
-        width: windowWidth - 32,
-        height: 45,
+        flex: 1,
         borderRadius: 10,
         flexDirection: 'row',
         backgroundColor: Color.luckyKing,
         alignItems: 'center',
         justifyContent: 'center',
-        margin: 24,
-        marginHorizontal: 16,
     },
+    btnDelete: {
+        // width: 150,
+        flex: 1,
+        height: 45,
+        borderRadius: 10,
+        flexDirection: 'row',
+        backgroundColor: Color.gray,
+        alignItems: 'center',
+        justifyContent: 'center',
+        alignSelf: 'flex-end',
+    }
 });

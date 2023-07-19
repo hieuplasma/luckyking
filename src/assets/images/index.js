@@ -78,5 +78,7 @@ export const Images = {
   triangle: require('./triangle.png'),
   email: require('./email.png'),
   address: require('./address.png'),
-  cash_flow: require('./cash_flow.png')
+  cash_flow: require('./cash_flow.png'),
+  cskh: require('./cskh.png'),
+  exit: require('./exit.png')
 };

@@ -1,15 +1,14 @@
-import { lotteryApi, userApi } from '@api';
-import { Icon, Images, Image } from '@assets';
-import { TransactionType } from '@common';
+import { userApi } from '@api';
+import { Images, Image } from '@assets';
+import { ERR_MES } from '@common';
 import { ImageHeader, IText } from '@components';
 import { ScreenName, WithdrawStackParamList } from '@navigation';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { RouteProp, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { Color, Style } from '@styles';
-import { fullDateTimeConvert2, NavigationUtils, printMoney, ScreenUtils } from '@utils';
+import { Color } from '@styles';
+import { NavigationUtils, printMoney } from '@utils';
 import { useCallback, useEffect, useState } from 'react';
-import { StyleSheet, View, Dimensions, StatusBar, TouchableOpacity, FlatList, RefreshControl, SectionList, ActivityIndicator } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { StyleSheet, View, Dimensions, TouchableOpacity, RefreshControl, SectionList, ActivityIndicator } from 'react-native';
 import { useSelector } from 'react-redux';
 import { ItemTransaction } from '../component/ItemTransaction';
 import { groupBySortedFlucs } from '../component/groupData';
@@ -21,8 +20,6 @@ export interface WithdrawScreenParamsList { }
 
 export const WithdrawScreen = () => {
     const navigation = useNavigation<NavigationProp>();
-    const route = useRoute<NavigationRoute>();
-    const safeAreaInsets = useSafeAreaInsets();
 
     const rewardWalletBalance = useSelector((state: any) => state.userReducer.rewardWalletBalance)
 
@@ -129,6 +126,10 @@ export const WithdrawScreen = () => {
                             <ActivityIndicator size={"large"} color={Color.gray} />
                             : <></>}
                     </View>}
+                    ListEmptyComponent={
+                        <View style={{ marginTop: 16, justifyContent: 'center', alignItems: 'center' }}>
+                            <IText style={{ fontSize: 16, color: Color.luckyKing, fontWeight: 'bold' }}>{ERR_MES.NO_TRANSACTION}</IText>
+                        </View>}
                     onEndReached={loadMore}
                 />
             </View>

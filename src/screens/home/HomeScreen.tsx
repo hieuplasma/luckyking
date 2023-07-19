@@ -1,4 +1,4 @@
-import { CartIcon, HomeTicketLongFormComponent } from '@components';
+import { CartIcon, HomeTicketLongFormComponent, ModalAlert, ModalContact } from '@components';
 import { useBackButtonWithNavigation } from '@hooks';
 import { HomeStackParamList, ScreenName } from '@navigation';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
@@ -7,11 +7,12 @@ import { SimpleHeaderView, translate } from '@shared';
 import { Icon, Image, Images } from '@assets'
 import { Color, Style } from '@styles';
 import { dateConvert, NavigationUtils, printMoney, ScreenUtils } from '@utils';
-import React, { useCallback, useEffect } from 'react';
-import { ScrollView, View } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Alert, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 import { LotteryType } from '@common';
+import { saveAlertTesting } from '@redux';
 
 type NavigationProp = StackNavigationProp<HomeStackParamList, 'HomeScreen'>;
 type NavigationRoute = RouteProp<HomeStackParamList, 'HomeScreen'>;
@@ -19,6 +20,8 @@ type NavigationRoute = RouteProp<HomeStackParamList, 'HomeScreen'>;
 export interface HomeScreenParamsList { navToKenoStack?: any, navToBasicStack?: any }
 
 export interface HomeScreenProps { }
+
+const alertContentTesting = 'Hiện sản phẩm đang trong giai đoạn thử nghiệm nên sẽ chỉ mở bán trong khoảng thời gian từ 8h - 17h hàng ngày, mong Quý khách thông cảm.'
 
 export const HomeScreen = React.memo((props?: HomeScreenProps) => {
   const navigation = useNavigation<NavigationProp>();
@@ -34,11 +37,29 @@ export const HomeScreen = React.memo((props?: HomeScreenProps) => {
 
   const jackpots = useSelector((state: any) => state.drawReducer.jackpots)
 
+  const alertTesting = useSelector((state: any) => state.systemReducer.alertTesting)
+
+  const [contactVisible, setContactVisible] = useState(false)
+
   useBackButtonWithNavigation(
     React.useCallback(() => {
       return true;
     }, []),
   );
+
+  // useEffect(() => {
+  //   if (alertTesting) {
+  //     Alert.alert("Lưu ý", "Hiện sản phẩm đang trong giai đoạn thử nghiệm nên sẽ chỉ mở bán trong khoảng thời gian từ 8h - 17h hàng ngày, mong Quý khách thông cảm.",
+  //       [{
+  //         text: 'Không hiển thị lần sau',
+  //         onPress: () => dispatch(saveAlertTesting({ expand: false }))
+  //       },
+  //       {
+  //         text: 'Đã hiểu',
+  //         onPress: () => console.log('cancel')
+  //       }])
+  //   }
+  // }, [])
 
   useEffect(() => {
     if (route?.params?.navToKenoStack) {
@@ -196,7 +217,24 @@ export const HomeScreen = React.memo((props?: HomeScreenProps) => {
           {renderMaxTicket()}
           {renderMax3dProTicket()}
         </ScrollView>
+
+        <TouchableOpacity style={styles.btnContact} onPress={() => setContactVisible(!contactVisible)} activeOpacity={1}>
+          <Image source={Images.cskh} style={{ width: 50, height: 50 }} />
+        </TouchableOpacity>
+
+        <ModalContact visible={contactVisible} onCancel={() => setContactVisible(false)} />
+        <ModalAlert visible={alertTesting} alertContent={alertContentTesting} typeAlert='testing' />
       </Image>
     </>
   );
 });
+
+const styles = StyleSheet.create({
+  btnContact: {
+    width: 50, height: 50,
+    backgroundColor: Color.white,
+    borderRadius: 99,
+    position: 'absolute',
+    right: 25, bottom: 75
+  }
+})
