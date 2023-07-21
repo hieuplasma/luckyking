@@ -17,8 +17,12 @@ export const TIMEOUT_MESSAGE = "request timeout"
 // };
 
 /** config for Production */
+// const config = {
+//   host: 'http://42.96.40.239',
+// };
+
 const config = {
-  host: 'http://42.96.40.239',
+  host: 'http://api.luckyking.vn',
 };
 
 export const API_HOST = config.host;
@@ -29,6 +33,7 @@ export const API_URI = {
   CHEATE_FORGET_PASSWORD: "/auth/forgot-password",
   FORGET_PASSWORD: "/auth/sercure/forgot-password",
   LOGIN: "/auth/login",
+  DELETE_ACCOUNT: "/auth/delete-account",
 
   CHECK_PHONENUMBER: "/auth/check",
 

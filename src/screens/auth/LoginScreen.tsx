@@ -166,7 +166,7 @@ export const LoginWidget = React.memo((props: any) => {
     <View style={styles.container}>
       <ImageHeader />
       <KeyboardAvoidingView
-        keyboardVerticalOffset={height + 45}
+        keyboardVerticalOffset={height}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.body}
       >
@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
     backgroundColor: Color.white
   },
   body: {
-    flex: 1, padding: 16
+    padding: 16
   },
   logo: {
     width: '100%', height: 98

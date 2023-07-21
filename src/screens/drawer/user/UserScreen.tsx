@@ -22,7 +22,7 @@ import { userApi } from '@api';
 import { updateUser } from '@redux';
 import { doNotExits, NavigationUtils } from '@utils';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { ImageHeader, IText } from '@components';
+import { ImageHeader, IText, ModalDelAcc } from '@components';
 import { MarginLeft } from 'src/styles/SpaceStyles';
 
 type NavigationProp = StackNavigationProp<UserStackParamList, 'UserScreen'>;
@@ -78,7 +78,8 @@ export const UserScreen = React.memo(() => {
     const [address, setAddress] = useState(user.address);
 
     const [isLoading, setLoading] = useState(false);
-    const [isLoading2, setLoading2] = useState(false);
+
+    const [delAccVisible, setDelAccVisible] = useState(false)
 
     const checkIdentify = useCallback((val: string) => {
         if (val.trim().length != 12) return false;
@@ -121,7 +122,7 @@ export const UserScreen = React.memo(() => {
                 onPress: () => console.log('Cancel Pressed'),
                 style: 'cancel',
             },
-            { text: 'Xoá tài khoản', onPress: () => console.log('OK Pressed') },
+            { text: 'Xoá tài khoản', onPress: () => setDelAccVisible(true) },
         ])
     }, [])
 
@@ -230,21 +231,14 @@ export const UserScreen = React.memo(() => {
                 <TouchableOpacity
                     style={styles.btnDelete}
                     activeOpacity={0.8}
-                    disabled={isLoading2}
+                    disabled={isLoading}
                     onPress={deleteAccount}>
                     <Image source={Images.empty_trash} tintColor={Color.white} style={{ width: 20, height: 20 }} resizeMode='contain' />
                     <IText style={[styles.textTitle, { marginLeft: 4 }]}>{'Xoá tài khoản'}</IText>
-                    {isLoading2 ? (
-                        <ActivityIndicator
-                            size="small"
-                            color={Color.white}
-                            style={{ marginLeft: 8 }}
-                        />
-                    ) : (
-                        <></>
-                    )}
                 </TouchableOpacity>
             </View>
+
+            <ModalDelAcc visible={delAccVisible} navigation={navigation} onCancel={() => setDelAccVisible(false)} />
         </View>
     );
 });

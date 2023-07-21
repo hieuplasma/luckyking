@@ -1,39 +1,73 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Dimensions, Modal, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Alert, Dimensions, Modal, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { IText } from '../texts';
-import { Image, Images } from '@assets';
-import { Color } from '@styles';
-import { useDispatch } from 'react-redux';
-import { saveAlertKeno, saveAlertTesting } from '@redux';
+import { Color, Style } from '@styles';
+import { useDispatch, useSelector } from 'react-redux';
+import { InputComponent } from '../input';
+import { authApi } from '@api';
+import { removeCart, removeToken, removeUser } from '@redux';
+import { NavigationUtils } from '@utils';
+import { ScreenName } from '@navigation';
 
 interface ModalContact {
     visible: boolean,
-    alertContent: string
-    typeAlert: string
+    navigation: any,
+    onCancel: () => void,
+    textCancel?: string,
+    textConfirm?: string
 }
 
-export const ModalDelAcc = React.memo(({ visible, alertContent, typeAlert }: ModalContact) => {
+export const ModalDelAcc = React.memo(({ visible, navigation, onCancel, textCancel, textConfirm }: ModalContact) => {
 
     const dispatch = useDispatch()
 
-    const [isVisible, setIsVisible] = useState(visible);
-    const [save, setSave] = useState(false)
+    const phoneNumber = useSelector((state: any) => state.userReducer.phoneNumber);
 
-    const toggleSave = useCallback(() => {
-        setSave(!save)
-    }, [save])
+    const [isVisible, setIsVisible] = useState(visible);
+    const [loading, setLoading] = useState(false)
+
+    const [password, setPassword] = useState<string | undefined>("")
+    const onChangePassword = useCallback((password?: string) => {
+        setPassword(password);
+    }, []);
 
     useEffect(() => {
         setIsVisible(visible)
     }, [visible])
 
     const handleCancel = useCallback(() => {
-        if (save) {
-            if (typeAlert == 'testing') dispatch(saveAlertTesting({ expand: false }))
-            else if (typeAlert == 'keno') dispatch(saveAlertKeno({ expand: false }))
-        }
         setIsVisible(false)
-    }, [save, typeAlert])
+        setPassword("")
+        onCancel()
+    }, [onCancel])
+
+    const handleConfirm = useCallback(async () => {
+        setLoading(true)
+        const res = await authApi.deleteAccount({
+            phoneNumber: phoneNumber,
+            password: password?.trim()
+        })
+        setLoading(false)
+        if (res.data) {
+            if (res.data.message) {
+                Alert.alert("Thông báo", res.data.message)
+            }
+            else {
+                Alert.alert("Thông báo", "Tài khoản của Quý khách sẽ bị khóa cho đến khi quá trình xóa tài khoản kết thúc. Cảm ơn quý khách đã sử dụng dịch vụ của LuckyKing.", [
+                    {
+                        text: 'Ok', onPress: () => {
+                            handleCancel()
+                            dispatch(removeToken())
+                            dispatch(removeUser())
+                            dispatch(removeCart())
+                            navigation?.closeDrawer();
+                            NavigationUtils.resetGlobalStackWithScreen(navigation, ScreenName.Authentication);
+                        }
+                    },
+                ])
+            }
+        }
+    }, [navigation, phoneNumber, password, handleCancel])
 
     return (
         <Modal
@@ -42,29 +76,40 @@ export const ModalDelAcc = React.memo(({ visible, alertContent, typeAlert }: Mod
             visible={isVisible}
             onRequestClose={handleCancel}
         >
-            <TouchableOpacity style={styles.modalContainer} activeOpacity={1}>
+            <View style={styles.modalContainer}>
                 <View style={styles.container}>
-                    <View style={styles.header}>
-                        <IText uppercase style={{ fontWeight: 'bold', color: Color.white }}>{"Thông báo"}</IText>
-                    </View>
-                    <View style={styles.body}>
-                        <IText style={{ textAlign: 'justify', fontWeight: 'bold' }}>
-                            {alertContent}
-                        </IText>
+                    <IText style={{ fontSize: 14, fontWeight: 'bold', lineHeight: 22 }}>{"Quý khách vui lòng nhập mật khẩu để khoá tài khoản"}</IText>
 
-                        <TouchableOpacity style={{ flexDirection: 'row', marginTop: 12 }} activeOpacity={1} onPress={toggleSave}>
-                            <Image source={save ? Images.checked_box : Images.check_box} style={{ width: 20, height: 20 }} />
-                            <IText style={{ marginLeft: 4 }}>{"Tôi đã hiểu, không hiển thị lần sau"}</IText>
+                    <InputComponent
+                        editable={true}
+                        keyboardType="default"
+                        value={password}
+                        placeholder={'Nhập mật khẩu'}
+                        // label={"Mật khẩu"}
+                        onChangeText={onChangePassword}
+                        containerStyle={{ width: '100%', marginTop: 8 }}
+                        secureTextEntry={true}
+                    />
+
+                    <View style={styles.buttonContainer}>
+                        <TouchableOpacity onPress={handleCancel} style={[styles.button, { backgroundColor: Color.white }]}>
+                            <IText style={[{ color: Color.luckyKing }, styles.textButton]}>{textCancel ?? "Huỷ"}</IText>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={handleConfirm} style={[styles.button, { backgroundColor: Color.luckyKing, width: 150 }]}>
+                            <IText style={[{ color: Color.white }, styles.textButton]}>{textConfirm ?? "Xoá tài khoản"}</IText>
+                            {loading ? (
+                                <ActivityIndicator
+                                    size="small"
+                                    color={Color.white}
+                                    style={{ marginLeft: 8 }}
+                                />
+                            ) : (
+                                <></>
+                            )}
                         </TouchableOpacity>
                     </View>
-
-                    <TouchableOpacity style={styles.footer} activeOpacity={1} onPress={handleCancel}>
-                        <IText uppercase style={{ textAlign: 'center', color: Color.luckyKing, fontWeight: 'bold' }}>
-                            {"ĐÃ HIỂU"}
-                        </IText>
-                    </TouchableOpacity>
                 </View>
-            </TouchableOpacity>
+            </View>
         </Modal>
     );
 });
@@ -81,22 +126,26 @@ const styles = StyleSheet.create({
     },
     container: {
         backgroundColor: 'white',
-        margin: 30,
-        width: windowWidth - 60,
+        margin: 32,
         borderRadius: 10,
+        alignItems: 'center',
+        padding: 20,
+        width: windowWidth - 64
     },
-    header: {
-        height: 35, backgroundColor: Color.luckyKing,
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginTop: 15,
+    },
+    button: {
+        width: 120, height: 44,
         justifyContent: 'center', alignItems: 'center',
-        borderTopLeftRadius: 10, borderTopRightRadius: 10
+        borderRadius: 10, borderWidth: 1,
+        borderColor: Color.luckyKing, marginHorizontal: 10,
+        flexDirection: 'row'
     },
-    body: {
-        paddingHorizontal: 20, paddingVertical: 10
-    },
-    footer: {
-        width: '100%',
-        height: 35,
-        justifyContent: 'center', alignItems: 'center',
-        marginBottom: 10
+    textButton: {
+        fontWeight: '700',
+        fontSize: 16
     }
 })

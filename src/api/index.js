@@ -170,7 +170,7 @@ export class Connection {
                     if (error.response?.data?.statusCode == 401) {
                         if (token)
                             this._showErrorAlert(
-                                'Phiên đăng nhập hết hạn hoặc mật khẩu đã bị đổi ở thiết bị khác!',
+                                'Phiên đăng nhập hiện không còn khả dụng!',
                             );
                         else this._showErrorAlert(error.response?.data?.message);
                         this._dispatch(removeUser());
