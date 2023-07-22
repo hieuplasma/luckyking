@@ -29,41 +29,51 @@ export const SupportScreen = React.memo(() => {
         else {
             url = `tel:${phoneNumber}`;
         }
-        Linking.canOpenURL(url)
-            .then(supported => {
-                if (!supported) {
-                    Alert.alert('Số điện thoại không tồn tại!');
-                } else {
-                    return Linking.openURL(url);
-                }
-            })
-            .catch(err => console.log(err));
+        if (Platform.OS !== 'android') {
+            Linking.canOpenURL(url)
+                .then(supported => {
+                    if (!supported) {
+                        Alert.alert('Thông báo', 'Số điện thoại CSKH của chúng tôi hiện đang bảo trì!');
+                    } else {
+                        return Linking.openURL(url);
+                    }
+                })
+                .catch(err => console.log(err));
+        }
+        else Linking.openURL(url);
     }, [])
 
     const openZalo = useCallback(() => {
         const url = `https://zalo.me/${phoneNumber}`
-        Linking.canOpenURL(url)
-            .then(supported => {
-                if (!supported) {
-                    Alert.alert('Tài khoản không tồn tại!');
-                } else {
-                    return Linking.openURL(url);
-                }
-            })
-            .catch(err => console.log(err));
+        if (Platform.OS !== 'android') {
+            Linking.canOpenURL(url)
+                .then(supported => {
+                    if (!supported) {
+                        Alert.alert('Thông báo', 'Tài khoản Zalo của chúng tôi hiện đang bảo trì!');
+                    } else {
+                        return Linking.openURL(url);
+                    }
+                })
+                .catch(err => console.log(err));
+        }
+        else Linking.openURL(url);
+        Linking.openURL(url);
     }, [])
 
     const sendEmail = useCallback(() => {
         const url = `mailto:${EMAIL}`
-        Linking.canOpenURL(url)
-            .then(supported => {
-                if (!supported) {
-                    Alert.alert('Email không hợp lệ!');
-                } else {
-                    return Linking.openURL(url);
-                }
-            })
-            .catch(err => console.log(err));
+        if (Platform.OS !== 'android') {
+            Linking.canOpenURL(url)
+                .then(supported => {
+                    if (!supported) {
+                        Alert.alert('Email không hợp lệ!');
+                    } else {
+                        return Linking.openURL(url);
+                    }
+                })
+                .catch(err => console.log(err));
+        }
+        else Linking.openURL(url)
     }, [EMAIL])
 
     return (
