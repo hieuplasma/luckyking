@@ -24,7 +24,7 @@ const ErrorList = [OrderStatus.ERROR, OrderStatus.RETURNED]
 export const ListOrderDrawKeno = React.memo(({ listOrder, navigation, lotteryType, drawResult }: any) => {
 
     if (listOrder.length == 0) return (
-        <IText style={{ marginTop: 8, fontWeight: '600', fontSize: 15 }}>
+        <IText style={{ marginTop: 8, fontWeight: 'bold', fontSize: 15 }}>
             {"Quý khách đã không mua vé nào cho kỳ này"}
         </IText>
     )
@@ -177,7 +177,7 @@ export const ListOrderDrawKeno = React.memo(({ listOrder, navigation, lotteryTyp
 
     return (
         <View>
-            <IText style={{ marginTop: 8, fontWeight: '600', fontSize: 15, marginBottom: 8 }}>
+            <IText style={{ marginTop: 8, fontWeight: 'bold', fontSize: 15, marginBottom: 8 }}>
                 {"Quý khách đã mua vé cho kỳ này:"}
             </IText>
             <View style={{ width: windowWidth, marginHorizontal: - 10, paddingHorizontal: 10 }}>

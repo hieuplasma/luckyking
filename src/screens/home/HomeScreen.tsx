@@ -21,7 +21,7 @@ export interface HomeScreenParamsList { navToKenoStack?: any, navToBasicStack?: 
 
 export interface HomeScreenProps { }
 
-const alertContentTesting = 'Hiện sản phẩm đang trong giai đoạn thử nghiệm nên sẽ chỉ mở bán trong khoảng thời gian từ 8h - 17h hàng ngày, mong Quý khách thông cảm.'
+const alertContentTesting = 'Hiện sản phẩm đang trong giai đoạn thử nghiệm nên sẽ chỉ mở bán trong khoảng thời gian từ 8h - 17h từ thứ 2 đến thứ 6, mong Quý khách thông cảm.'
 
 export const HomeScreen = React.memo((props?: HomeScreenProps) => {
   const navigation = useNavigation<NavigationProp>();

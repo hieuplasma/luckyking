@@ -68,6 +68,7 @@ export const API_URI = {
   GET_RESULT_BY_DRAWCODE: "/result/get-by-draw",
 
   VIEW_JACKPOT: "/result/jackpot",
+  GET_CONFIG: "/system/config",
 
   GET_LIST_ITEM_CART: "/cart/list",
   ADD_POWER_MEGA_CART: "/cart/add-power-mega",

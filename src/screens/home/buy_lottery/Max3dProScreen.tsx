@@ -431,6 +431,15 @@ export const Max3dProScreen = () => {
                     {renderTypeSheet()}
                     {renderDrawSheet()}
                     {renderNumberSheet()}
+                    {/* {
+                        typeBagRef.current?.renderNumberSheet()
+                    }
+                    {
+                        multiBagRef.current?.renderTypeSheet()
+                    }
+                    {
+                        multiBagRef.current?.renderNumberSheet()
+                    } */}
                 </> : <></>}
         </SafeAreaView>
     )

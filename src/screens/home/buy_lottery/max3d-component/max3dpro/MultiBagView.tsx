@@ -28,44 +28,16 @@ const Wiget = forwardRef(({ changeCost, changeGenerated, changeBets, changeNumbe
 
     const chooseTypeRef: any = useRef(null)
     const chooseNumberRef: any = useRef(null)
-    const [pageNumber, setPageNumber] = useState(0)
+    const [pageNumber, setPageNumber]: any = useState(0)
 
     const [bagType, setBagType] = useState({ label: "Bao 3 bộ 3 số", value: 3 })
-    const [numberSet, setNumbers] = useState<any[]>(initNumber)
-    const [numberFake, setNumberFake] = useState<any[]>(initNumber)
+    const [numberSet, setNumbers]: any = useState<any[]>(initNumber)
+    const [numberFake, setNumberFake]: any = useState<any[]>(initNumber)
 
-    useImperativeHandle(ref, () => ({
-        random: random,
-    }));
-
-    const random = useCallback(() => {
-        let arr: any = []
-        let arrForGenerate: any = []
-
-        for (let i = 0; i < bagType.value; i++) {
-            arr[i] = []
-            arrForGenerate[i] = ''
-            for (let j = 0; j < 3; j++) {
-                let randomNumber = Math.floor(Math.random() * 10);
-                arr[i].push(randomNumber);
-                arrForGenerate[i] = arrForGenerate[i] + randomNumber
-            }
-        }
-
-        const generated: any = []
-        for (let i = 0; i < arrForGenerate.length; i++) {
-            for (let j = i + 1; j < arrForGenerate.length; j++) {
-                var str1 = arrForGenerate[i] + ' ' + arrForGenerate[j];
-                var str2 = arrForGenerate[j] + ' ' + arrForGenerate[i];
-                generated.push(str1);
-                generated.push(str2);
-            }
-        }
-        changeGenerated(generated)
-        changeNumber([arrForGenerate.join(" ")])
-        setNumbers(arr)
-        // changeBets([bagType.value * (bagType.value - 1) * currentBet])
-    }, [bagType.value, changeBets])
+    // useImperativeHandle(ref, () => ({
+    //     renderNumberSheet: () => { return renderNumberSheet() },
+    //     renderTypeSheet: () => { return renderTypeSheet() }
+    // }));
 
     const onChangeType = useCallback((type: any) => {
         setBagType(type)
@@ -106,11 +78,13 @@ const Wiget = forwardRef(({ changeCost, changeGenerated, changeBets, changeNumbe
         changeNumber([arrForGenerate.join(" ")])
         setNumbers(set)
     }, [changeNumber, changeGenerated])
+
     const openNumberSheet = useCallback(async (page: number) => {
         await setNumberFake(numberSet)
-        setPageNumber(page)
+        await setPageNumber(page)
         chooseNumberRef.current?.openSheet()
     }, [chooseNumberRef, numberSet])
+
     const renderNumberSheet = useCallback(() => {
         return (
             <NumberMultiBagSheet

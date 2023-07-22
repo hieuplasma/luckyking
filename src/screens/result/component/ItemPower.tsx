@@ -101,7 +101,7 @@ export const FirstItemPower = React.memo(({ data, navigation, hideBtm }: FirstIt
 
             {
                 hideBtm ? <></> :
-                    <IText style={{ marginTop: 8, fontWeight: '600', fontSize: 15 }}>{"Kết quả các kì quay trước:"}</IText>
+                    <IText style={{ marginTop: 8, fontWeight: 'bold', fontSize: 15 }}>{"Kết quả các kì quay trước:"}</IText>
             }
         </TouchableOpacity>
     )

@@ -1,5 +1,5 @@
 import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
-import { StyleSheet, View, TouchableOpacity, Dimensions, Animated } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Dimensions, Animated, ScrollView } from 'react-native';
 import BottomSheet from '@gorhom/bottom-sheet';
 import { Color } from '@styles';
 import { SwiperFlatList } from 'react-native-swiper-flatlist';
@@ -31,7 +31,11 @@ const Wiget = forwardRef(({ onChoose, numberSet, page }: Props, ref) => {
         setIndexPage(index.index)
     }
     useEffect(() => {
-        (page || page === 0) ? swiperRef.current?.scrollToIndex({ animated: false, index: page }) : {}
+        try {
+            (page || page === 0) ? swiperRef.current?.scrollToIndex({ animated: false, index: page }) : {}
+        } catch (error) {
+
+        }
     }, [page])
 
     const [currentNumbers, setCurrentNumbers] = useState([...numberSet])
@@ -124,7 +128,7 @@ const Wiget = forwardRef(({ onChoose, numberSet, page }: Props, ref) => {
                     indexPage={indexPage}
                     swiperRef={swiperRef}
                     maxIndex={currentNumbers.length - 1} />
-                <View style={{ flex: 1, marginTop: 12 }}>
+                <ScrollView style={{ flex: 1, marginTop: 12 }}>
                     <SwiperFlatList
                         index={0}
                         ref={swiperRef}
@@ -141,7 +145,7 @@ const Wiget = forwardRef(({ onChoose, numberSet, page }: Props, ref) => {
                         keyExtractor={(item, index) => "" + index}
                         onChangeIndex={index => onChangeIndex(index)}
                     />
-                </View>
+                </ScrollView>
                 <TouchableOpacity disabled={!checkIsOk()} style={[styles.confirmButton, { backgroundColor: lottColor, opacity: checkIsOk() ? 1 : 0.4 }]} onPress={choosing}>
                     <IText style={styles.textConfirm}>{`Xác nhận`.toUpperCase()}</IText>
                 </TouchableOpacity>

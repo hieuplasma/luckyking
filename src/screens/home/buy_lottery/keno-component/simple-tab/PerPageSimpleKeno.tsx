@@ -32,10 +32,6 @@ const ChanLe = [
 
 export const PerPageSimpleKeno = React.memo(({ listNumber, bet, onChangeNumber, onChangeBet }: any) => {
 
-    useEffect(() => {
-        console.log("PerPageView rerender:::", toggleObj)
-    })
-
     const [currentBet, setBet] = useState(bet)
     const [listChoose, setList]: any = useState([])
     const [pickingType, setPickingType] = useState<PickingType>('default')
@@ -93,7 +89,7 @@ export const PerPageSimpleKeno = React.memo(({ listNumber, bet, onChangeNumber, 
     return (
         <View style={{ marginHorizontal: 8, width: windowWidth - 16 }}>
             <View style={styles.line} />
-            <View style={{ width: '100%', flexDirection: 'row', flexWrap: 'wrap', flexShrink: 2, justifyContent: 'space-between' }}>
+            <View style={{ width: '100%', flexDirection: 'row', flexWrap: 'wrap', flexShrink: 2, justifyContent: 'space-between', paddingHorizontal: -1.6 }}>
                 {fullNumber.map((item: number) => {
                     return (
                         <MemoizedBallNumber
@@ -167,7 +163,7 @@ export const PerPageSimpleKeno = React.memo(({ listNumber, bet, onChangeNumber, 
             </View>
 
             {
-                pickingType == 'default' ? <></>
+                pickingType == 'default' ? <View style={{ height: 66 }} />
                     : <ChooseLevelKeno onChoose={randomFastPick} pickingType={pickingType} />
             }
         </View>
@@ -231,7 +227,8 @@ const windowHeight = Dimensions.get('window').height;
 const styles = StyleSheet.create({
     ballContainer: {
         width: (windowWidth - 48) / 10, height: 36,
-        justifyContent: 'center', alignItems: 'center'
+        justifyContent: 'center', alignItems: 'center',
+        marginHorizontal: 1.6
     },
     ball: {
         width: 30, height: 30,
@@ -274,7 +271,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'space-between',
-        flex: 1, marginLeft: 4
+        flex: 1, marginLeft: 0
     },
     borderButton: {
         borderWidth: 1, borderColor: Color.black,
@@ -283,10 +280,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center', alignItems: 'center'
     },
     buttonRightUp: {
-        width: (windowWidth - 140) / 3,
+        width: (windowWidth - 130) / 3, paddingHorizontal: 0
     },
     buttonRightDown: {
-        width: (windowWidth - 140) / 2
+        width: (windowWidth - 130) / 2
     },
     textButton: { fontSize: 15 },
     buttonFooterUp: {

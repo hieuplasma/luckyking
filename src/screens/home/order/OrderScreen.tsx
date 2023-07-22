@@ -6,11 +6,10 @@ import { HomeStackParamList, ScreenName, WithdrawStackParamList } from '@navigat
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { removeCart, updateUser } from '@redux';
-import { Color, Style } from '@styles';
+import { Color } from '@styles';
 import { calSurcharge, doNotExits, NavigationUtils, printMoney, ScreenUtils } from '@utils';
 import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, View, Dimensions, TouchableOpacity } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 
 type NavigationProp = StackNavigationProp<HomeStackParamList, 'OrderScreen'>;
@@ -23,19 +22,17 @@ export interface OrderScreenParamsList {
 export const OrderScreen = React.memo(() => {
     const navigation = useNavigation<NavigationProp>();
     const route = useRoute<NavigationRoute>();
-    const safeAreaInsets = useSafeAreaInsets();
     const dispatch = useDispatch()
 
     const user = useSelector((state: any) => state.userReducer)
-    const rewardWalletBalance = useSelector((state: any) => state.userReducer.rewardWalletBalance)
     const luckykingBalance = useSelector((state: any) => state.userReducer.luckykingBalance)
+    const surchargeLKK = useSelector((state: any) => state.systemReducer.surchargeLKK)
 
     const [bodyPay, setBody] = useState(route.params.body)
     const [surcharge, setSurcharge] = useState(0)
 
     useEffect(() => {
-        console.log("bodyPay", bodyPay)
-        setSurcharge(calSurcharge(bodyPay.amount))
+        setSurcharge(calSurcharge(bodyPay.amount, surchargeLKK))
     }, [bodyPay])
 
     const syncBalance = useCallback(async () => {
@@ -57,7 +54,7 @@ export const OrderScreen = React.memo(() => {
 
     const handlePay = useCallback(async () => {
         let tmp = { ...bodyPay }
-        tmp.surcharge = calSurcharge(bodyPay.amount)
+        tmp.surcharge = calSurcharge(bodyPay.amount, surchargeLKK)
         tmp.method = OrderMethod.Keep
         window.loadingIndicator.show()
         let res = null
@@ -119,15 +116,15 @@ export const OrderScreen = React.memo(() => {
                 </IText>
 
                 <View style={styles.borderItem}>
-                    <IText style={{ fontWeight: '600' }}>{"Tên người nhận vé"}</IText>
+                    <IText style={{ fontWeight: 'bold' }}>{"Tên người nhận vé"}</IText>
                     <IText>{user.fullName}</IText>
                 </View>
                 <View style={styles.borderItem}>
-                    <IText style={{ fontWeight: '600' }}>{"Số điện thoại"}</IText>
+                    <IText style={{ fontWeight: 'bold' }}>{"Số điện thoại"}</IText>
                     <IText>{user.phoneNumber}</IText>
                 </View>
                 <View style={styles.borderItem}>
-                    <IText style={{ fontWeight: '600' }}>{"Số CMND/CCCD"}</IText>
+                    <IText style={{ fontWeight: 'bold' }}>{"Số CMND/CCCD"}</IText>
                     <IText>{user.identify}</IText>
                 </View>
 
@@ -164,15 +161,15 @@ export const OrderScreen = React.memo(() => {
                     <Image source={Images.right_arrow} style={styles.icon_arrow} tintColor={Color.luckyKing}></Image>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={[styles.lineItem2]} activeOpacity={.6} onPress={() => { }}>
+                {/* <TouchableOpacity style={[styles.lineItem2]} activeOpacity={.6} onPress={() => { }}>
                     <Image source={Images.momo} style={styles.icon_default}></Image>
                     <View style={{ marginLeft: 8, justifyContent: 'center' }}>
                         <IText style={{ fontWeight: 'bold' }}>{"Ví MoMo"}</IText>
-                        <IText style={{ fontStyle: 'italic' }}>{`Phí dịch vụ: 2%`}</IText>
+                        <IText style={{ fontStyle: 'italic' }}>{`Phí dịch vụ: 2}%`}</IText>
                     </View>
                     <View style={{ flex: 1 }} />
                     <Image source={Images.right_arrow} style={styles.icon_arrow}></Image>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
                 <View style={{ flex: 1 }} />
 
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>

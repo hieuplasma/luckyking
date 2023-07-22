@@ -49,13 +49,13 @@ export const ChooseLevelKeno = React.memo(({ onChoose, onChooseForAll, pickingTy
             const resultArray = random.sort((a, b) => a[0] - b[0]);
             return resultArray
         }
-    }, [pickingType])
+    }, [pickingType, random1Row])
 
     const randomNumber = useCallback((value: number) => {
         setCurrent(value)
         if (onChoose) onChoose(random1Row(value))
         if (onChooseForAll) onChooseForAll(random6Row(value))
-    }, [onChoose, onChooseForAll])
+    }, [onChoose, onChooseForAll, pickingType])
     return (
         <>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 8 }}>

@@ -28,7 +28,7 @@ export const RenderMax3dItem = React.memo(({ item, openModalDeleteLottery }: Pro
                         return (
                             <View key={'' + it.boSo + id}>
                                 <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 8 }}>
-                                    <IText style={{ fontSize: 18, fontWeight: '600', color: Color.black }}>
+                                    <IText style={{ fontSize: 18, fontWeight: 'bold', color: Color.black }}>
                                         {String.fromCharCode(65 + id)}
                                         <IText style={{ fontSize: 10 }}>
                                             {(it.tuChon ? ' (TC)' : '')}
@@ -45,7 +45,7 @@ export const RenderMax3dItem = React.memo(({ item, openModalDeleteLottery }: Pro
                                             })
                                         }
                                     </View>
-                                    <IText style={{ fontSize: 16, fontWeight: '600', color: Color.black }}>
+                                    <IText style={{ fontSize: 16, fontWeight: 'bold', color: Color.black }}>
                                         {`${printMoney(it.tienCuoc)}đ`}
                                     </IText>
                                 </View>
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     textType: {
         color: '#1E2022',
         fontSize: 16,
-        fontWeight: '600',
+        fontWeight: 'bold',
         textAlign: 'center',
         marginTop: 7
     },

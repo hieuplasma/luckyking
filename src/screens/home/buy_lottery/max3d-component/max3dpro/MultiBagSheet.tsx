@@ -108,16 +108,18 @@ const Wiget = forwardRef(({ currentChoose, onChoose, type }: Props, ref) => {
         >
             <View style={{ flex: 1 }}>
                 <IText style={{ fontSize: 18, color: Color.black, alignSelf: 'center', fontWeight: 'bold' }}>{"Chọn cách chơi"}</IText>
-                <View style={{ paddingHorizontal: 32, paddingVertical: 6, flex: 1, flexDirection:'row', flexWrap:'wrap', justifyContent:'space-between' }}>
-                    {types.map((item: any, index: number) => {
-                        return (
-                            <TouchableOpacity activeOpacity={0.4} key={index} style={styles.item} onPress={() => setCurrentType(item)}>
-                                <Image source={currentType.value == item.value ? getBallLott(type) : Images.ball_grey} style={styles.ball}></Image>
-                                <IText style={{ marginLeft: 12 }}>{`${item.label}`}</IText>
-                            </TouchableOpacity>
-                        )
-                    })}
-                </View>
+                <ScrollView>
+                    <View style={{ paddingHorizontal: 32, paddingVertical: 6, flex: 1, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' }}>
+                        {types.map((item: any, index: number) => {
+                            return (
+                                <TouchableOpacity activeOpacity={0.4} key={index} style={styles.item} onPress={() => setCurrentType(item)}>
+                                    <Image source={currentType.value == item.value ? getBallLott(type) : Images.ball_grey} style={styles.ball}></Image>
+                                    <IText style={{ marginLeft: 12 }}>{`${item.label}`}</IText>
+                                </TouchableOpacity>
+                            )
+                        })}
+                    </View>
+                </ScrollView>
                 <TouchableOpacity style={[styles.confirmButton, { backgroundColor: lottColor }]} onPress={() => choosing(currentType)}>
                     <IText style={styles.textConfirm}>{`Xác nhận`.toUpperCase()}</IText>
                 </TouchableOpacity>

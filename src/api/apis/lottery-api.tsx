@@ -142,6 +142,12 @@ class LotteryApi {
         let fullUrl = API_URI.VIEW_JACKPOT;
         return await window.connection.GET(fullUrl)
     }
+
+    //Get Config
+    getConfig = async () => {
+        let fullUrl = API_URI.GET_CONFIG;
+        return await window.connection.GET(fullUrl)
+    }
 }
 
 const lotteryApi = new LotteryApi

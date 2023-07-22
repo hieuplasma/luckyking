@@ -394,6 +394,7 @@ export const Max3dPlusTab = React.memo((props: Props) => {
                     {renderTypeSheet()}
                     {renderDrawSheet()}
                     {renderNumberSheet()}
+                    {typeBagRef.current?.renderNumberSheet()}
                 </> : <></>}
         </View>
     )

@@ -2,7 +2,7 @@ import { LotteryType } from "@common";
 import { ConsolasText, IText } from "@components";
 import { Color } from "@styles";
 import { generateStringsFromArray } from "@utils";
-import React, { forwardRef, useCallback, useEffect, useRef, useState } from "react";
+import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from "react";
 import { Dimensions, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import { ChangeBetButton } from "../../component/ChangeBetButton";
 import { BagNumberSheet } from "../../component/BagNumberSheet";
@@ -24,10 +24,9 @@ export const Max3dProBagView = forwardRef(({ changeCost, changeGenerated, change
     const [currentNumbers, setNumbers]: any = useState([])
     const [fixedNumbers, setFixedNumbers]: any = useState([false, false, false])
 
-    // useImperativeHandle(ref, () => ({
-    //     totalCost: () => { return total },
-    //     generated: () => { return generated }
-    // }));
+    useImperativeHandle(ref, () => ({
+        renderNumberSheet: () => { return renderNumberSheet() },
+    }));
 
     useEffect(() => {
         setCurrentBet(10000)
@@ -167,7 +166,7 @@ export const Max3dProBagView = forwardRef(({ changeCost, changeGenerated, change
                 />
             </View>
 
-            {renderNumberSheet()}
+            {/* {renderNumberSheet()} */}
         </>
     )
 })

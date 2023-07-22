@@ -4,7 +4,9 @@ const initialState = {
     expandKeno: true,
     expandBasic: true,
     alertKeno: true,
-    alertTesting: true
+    alertTesting: true,
+
+    surchargeLKK: 0
 }
 
 // Create Redux state slice
@@ -24,8 +26,11 @@ const systemSlice = createSlice({
         saveAlertTesting: (state, action) => {
             state.alertTesting = action.payload.expand
         },
+        saveSurchargeLKK: (state, action) => {
+            state.surchargeLKK = action.payload.surcharge
+        }
     },
 })
 
-export const { saveExpandKeno, saveExpandBasic, saveAlertKeno, saveAlertTesting } = systemSlice.actions
+export const { saveExpandKeno, saveExpandBasic, saveAlertKeno, saveAlertTesting, saveSurchargeLKK } = systemSlice.actions
 export default systemReducer = systemSlice.reducer

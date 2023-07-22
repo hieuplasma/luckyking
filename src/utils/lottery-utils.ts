@@ -77,8 +77,8 @@ export function printDisplayId(number: any) {
     return "#" + number.toString().padStart(9, "0");
 }
 
-export function calSurcharge(cost: number) {
-    return Math.floor(cost * 2 / 100)
+export function calSurcharge(cost: number, percent = 0) {
+    return Math.floor(cost * percent / 100)
 }
 
 export function printTypePlay(value: number, type: string) {

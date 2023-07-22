@@ -9,7 +9,7 @@ import {
   getCart, getJackpot,
   getKenoDraw, getMax3dDraw,
   getMax3dProDraw, getMegaDraw,
-  getPowerDraw, updateToken, updateUser
+  getPowerDraw, saveSurchargeLKK, updateToken, updateUser
 } from '@redux';
 import { Color } from '@styles';
 import { doNotExits, NavigationUtils } from '@utils';
@@ -63,7 +63,9 @@ export const SplashScreen = React.memo(() => {
         lotteryApi.getScheduleKeno({ type: LotteryType.Keno, take: FIRST_TAKE_KENO, skip: 0 })
           .then(listKeno => { if (listKeno?.data?.length > 0) dispatch(getKenoDraw(listKeno.data)) }),
 
-        lotteryApi.getJackpot().then(jackpots => { if (jackpots) dispatch(getJackpot(jackpots.data)) })
+        lotteryApi.getJackpot().then(jackpots => { if (jackpots) dispatch(getJackpot(jackpots.data)) }),
+
+        lotteryApi.getConfig().then(config => { if (config) dispatch(saveSurchargeLKK({ surcharge: config.data.surcharge })) })
       ])
 
       NavigationUtils.resetGlobalStackWithScreen(navigation, ScreenName.Main);

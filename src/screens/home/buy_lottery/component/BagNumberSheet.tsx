@@ -105,7 +105,7 @@ export const BagNumberSheet = forwardRef(({ onChoose, numberSet, type, bagPositi
             onAnimate={handleSheetAnimate}
             backgroundStyle={styles.sheetContainer}
         >
-            <View style={{ flex: 1, paddingTop: 12, justifyContent: 'space-between' }}>
+            <View style={{ flex: 1, paddingTop: 12, justifyContent: 'space-between'}}>
                 <View style={{ marginHorizontal: 16, width: windowWidth - 32 }}>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }} >
                         <View style={styles.half}>
@@ -134,7 +134,7 @@ export const BagNumberSheet = forwardRef(({ onChoose, numberSet, type, bagPositi
                                     <View style={[styles.boxNumber, { borderColor: lottColor, width: 100 }]}>
                                         <ConsolasText style={{ color: lottColor, fontSize: 16 }}>{"Bộ bao số"}</ConsolasText>
                                     </View>
-                                    : [3, 4, 5].map((columnId: number, index: number) => {
+                                    : [0, 1, 2].map((columnId: number, index: number) => {
                                         return (
                                             <ItemView
                                                 key={index}
@@ -188,14 +188,14 @@ const SHEET_HEIGHT = 590
 const BACKGROUND_OPACITY = 0.85
 
 const styles = StyleSheet.create({
-    sheetContainer: { backgroundColor: '#F4F4F4', borderTopLeftRadius: 20, borderTopRightRadius: 20 },
+    sheetContainer: { backgroundColor: '#F4F4F4', borderTopLeftRadius: 20, borderTopRightRadius: 20},
     background: {
         backgroundColor: '#000',
         position: 'absolute',
         top: -1000,
         left: 0,
         right: 0,
-        bottom: 0,
+        bottom: -100,
     },
     ballContainer: {
         width: (windowWidth - 48) / 8, height: 44,

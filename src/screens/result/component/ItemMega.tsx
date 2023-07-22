@@ -89,7 +89,7 @@ export const FirstItemMega = React.memo(({ data, navigation, hideBtm }: FirstIte
 
             {
                 hideBtm ? <></> :
-                    <IText style={{ marginTop: 8, fontWeight: '600', fontSize: 15 }}>{"Kết quả các kì quay trước:"}</IText>
+                    <IText style={{ marginTop: 8, fontWeight: 'bold', fontSize: 15 }}>{"Kết quả các kì quay trước:"}</IText>
 
             }
         </TouchableOpacity>

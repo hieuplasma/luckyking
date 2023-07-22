@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 36, marginVertical: 5
   },
-  textMoney: { fontSize: 16, fontWeight: '600', color: Color.luckyKing, marginLeft: 6, width: 100 },
+  textMoney: { fontSize: 16, fontWeight: 'bold', color: Color.luckyKing, marginLeft: 6, width: 100 },
   eye: { width: 32, height: 32, opacity: 0.8 },
   button: {
     width: 79, height: 36, justifyContent: 'center', alignItems: 'center',

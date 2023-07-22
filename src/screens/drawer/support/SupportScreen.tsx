@@ -89,28 +89,28 @@ export const SupportScreen = React.memo(() => {
                     onPress={call}
                     activeOpacity={1}>
                     <Image source={Images.phone} style={{ width: 30, height: 30 }} />
-                    <IText style={{ fontWeight: '600', marginLeft: 12 }}> {`Hotline: ${HOT_LINE}`}</IText>
+                    <IText style={{ fontWeight: 'bold', marginLeft: 12 }}>{`Hotline: ${HOT_LINE}`}</IText>
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.item}
                     onPress={openZalo}
                     activeOpacity={1}>
                     <Image source={Images.zalo} style={{ width: 30, height: 30 }} />
-                    <IText style={{ fontWeight: '600', marginLeft: 12 }}> {"Zalo: LuckyKing"}</IText>
+                    <IText style={{ fontWeight: 'bold', marginLeft: 12 }}>{"Zalo: LuckyKing"}</IText>
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.item}
                     onPress={sendEmail}
                     activeOpacity={1}>
                     <Image source={Images.email} style={{ width: 30, height: 30 }} tintColor={Color.keno} />
-                    <IText style={{ fontWeight: '600', marginLeft: 12 }}> {`Email: ${EMAIL}`}</IText>
+                    <IText style={{ fontWeight: 'bold', marginLeft: 12 }}>{`Email: ${EMAIL}`}</IText>
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.item}
                     // onPress={}
                     activeOpacity={1}>
                     <Image source={Images.address} style={{ width: 30, height: 30 }} />
-                    <IText style={{ fontWeight: '600', marginLeft: 12, textAlign: 'justify', width: windowWidth - 74 }}>
+                    <IText style={{ fontWeight: 'bold', marginLeft: 12, textAlign: 'justify', width: windowWidth - 60 }}>
                         {`Địa chỉ: ${ADDRESS}`}
                     </IText>
                 </TouchableOpacity>

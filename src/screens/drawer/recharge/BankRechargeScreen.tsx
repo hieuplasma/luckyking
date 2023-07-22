@@ -29,7 +29,21 @@ const listBank = [
         "swift_code": "MSCBVNVX",
         "STK": "586888879"
     },
-
+    {
+        "id": 39,
+        "name": "Ngân hàng TMCP Tiên Phong",
+        "code": "TPB",
+        "bin": "970423",
+        "shortName": "TPBank",
+        "logo": "https://api.vietqr.io/img/TPB.png",
+        "transferSupported": 1,
+        "lookupSupported": 1,
+        "short_name": "TPBank",
+        "support": 3,
+        "isTransfer": 1,
+        "swift_code": "TPBVVNVX",
+        "STK": "11133888879"
+    },
 ]
 
 export interface BankRechargeScreenParamsList { }
@@ -59,7 +73,7 @@ export const BankRechargeScreen = () => {
             <BasicHeader navigation={navigation} title={"Nạp tiền qua chuyển khoản ngân hàng"} />
 
             <View style={{ padding: 8 }}>
-                <IText style={{ fontWeight: '600' }}>
+                <IText style={{ fontWeight: 'bold' }}>
                     <IText style={{ color: Color.luckyKing }}>
                         {"LuckyKing"}
                     </IText>
@@ -128,19 +142,19 @@ export const BankRechargeScreen = () => {
                 </View>
 
                 <IText style={{ fontStyle: 'italic', marginTop: 8 }}>
-                    <IText style={{ fontWeight: 'bold' }}>{"Lưu ý:"}</IText>
+                    <IText style={{ fontWeight: 'bold', textAlign: 'justify' }}>{"Lưu ý:"}</IText>
                     {" Nếu Quý khách ghi sai hoặc quên ghi nội dung Chuyển khoản vui lòng liên hệ với bộ phận CSKH của LuckyKing "}
                 </IText>
 
                 <View style={{ marginTop: 4, flexDirection: 'row', alignItems: 'center' }}>
                     <Image source={Images.phone} style={{ width: 30, height: 30 }} />
-                    <IText style={{ fontWeight: '600', marginLeft: 12 }}> {"Hotline: 0866.79.88.79"}</IText>
+                    <IText style={{ fontWeight: 'bold', marginLeft: 12 }}>{"Hotline: 0866.79.88.79"}</IText>
                 </View>
                 <View style={{ marginTop: 4, flexDirection: 'row', alignItems: 'center' }}>
                     <Image source={Images.zalo} style={{ width: 30, height: 30 }} />
-                    <View style={{ marginLeft: 12, justifyContent: 'center' }}>
-                        <IText style={{ fontWeight: '600' }}> {"Zalo: LuckyKing"}</IText>
-                        <IText style={{ fontStyle: 'italic' }}> {"(Vui lòng gửi kèm hình ảnh chuyển khoản thành công)"}</IText>
+                    <View style={{ marginLeft: 12, justifyContent: 'center', width: windowWidth - 58 }}>
+                        <IText style={{ fontWeight: 'bold' }}>{"Zalo: LuckyKing"}</IText>
+                        <IText style={{ fontStyle: 'italic' }}>{"(Vui lòng gửi kèm hình ảnh chuyển khoản thành công)"}</IText>
                     </View>
                 </View>
 

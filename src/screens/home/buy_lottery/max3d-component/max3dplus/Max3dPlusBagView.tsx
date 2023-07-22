@@ -25,10 +25,9 @@ export const Max3dPlusBagView = forwardRef(({ changeCost, changeGenerated, chang
     const [currentNumbers, setNumbers]: any = useState([])
     const [fixedNumbers, setFixedNumbers]: any = useState([false, false, false])
 
-    // useImperativeHandle(ref, () => ({
-    //     totalCost: () => { return total },
-    //     generated: () => { return generated }
-    // }));
+    useImperativeHandle(ref, () => ({
+        renderNumberSheet: () => { return renderNumberSheet() },
+    }));
 
     useEffect(() => {
         setCurrentBet(10000)
@@ -185,7 +184,7 @@ export const Max3dPlusBagView = forwardRef(({ changeCost, changeGenerated, chang
                 />
             </View>
 
-            {renderNumberSheet()}
+            {/* {renderNumberSheet()} */}
         </>
     )
 })
