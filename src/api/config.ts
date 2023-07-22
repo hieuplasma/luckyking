@@ -22,7 +22,7 @@ export const TIMEOUT_MESSAGE = "request timeout"
 // };
 
 const config = {
-  host: 'http://api.luckyking.vn',
+  host: 'https://api.luckyking.vn',
 };
 
 export const API_HOST = config.host;
