@@ -103,7 +103,7 @@ function PowerMegaType(value: number) {
 
 function Max3dProType(value: number) {
     switch (value) {
-        // case 4: return "Bao bộ 3 số";
+        case 4: return "Bao bộ 3 số";
         case 10: return "Bao nhiều bộ 3 số";
         default: return "Max 3D Pro";
     }

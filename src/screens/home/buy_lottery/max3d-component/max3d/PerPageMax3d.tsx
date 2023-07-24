@@ -3,7 +3,7 @@ import { Color } from "@styles";
 import React, { useCallback, useEffect, useState } from "react";
 import { ColorValue, Dimensions, StyleSheet, TouchableOpacity, View } from "react-native";
 import { ChangeBetButton } from "../../component/ChangeBetButton";
-import { printMoneyK } from "@utils";
+import { nextBet, previousBet, printMoneyK } from "@utils";
 
 const betMilestones = [
     10000, 20000, 50000, 100000, 200000, 300000
@@ -95,8 +95,8 @@ export const PerPageMax3d = React.memo(({ hugePosition, listNumber, lottColor, b
                 <View style={{ flex: 1 }}></View>
                 <ChangeBetButton
                     currentBet={currentBet}
-                    increase={() => changeBet(currentBet + 10000)}
-                    decrease={() => changeBet(currentBet - 10000)}
+                    increase={() => changeBet(nextBet(currentBet))}
+                    decrease={() => changeBet(previousBet(currentBet))}
                     color={lottColor}
                     max={300000}
                     min={10000}

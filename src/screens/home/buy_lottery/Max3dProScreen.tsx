@@ -23,6 +23,7 @@ import { Max3dProBagView } from './max3d-component/max3dpro/Max3dProBagView';
 import { MultiBagView } from './max3d-component/max3dpro/MultiBagView';
 import { TypeSheetMax3DPro } from './max3d-component/max3dpro/TypeSheetMax3DPro';
 import { generateMax3DPlus, numberMax3d } from './max3d-component/utils';
+import { cntDistinct } from '@utils'
 
 type NavigationProp = StackNavigationProp<HomeStackParamList, 'Max3dScreen'>;
 type NavigationRoute = RouteProp<HomeStackParamList, 'Max3dScreen'>;
@@ -277,7 +278,10 @@ export const Max3dProScreen = () => {
             drawTimes.push(item.drawTime)
         })
         const total = (typePlay.value != 7 && typePlay.value != 8 && typePlay.value != 10) ? totalCost : totalCostBag
+
         let pushGenerated: any[] = []
+        let pushBets: any[] = []
+        let pushTienCuoc: any[] = []
         if (typePlay.value == 1) {
             for (const element of generated) {
                 const split = element.split(" ")
@@ -285,9 +289,31 @@ export const Max3dProScreen = () => {
                 if (split[1] == 'TCTCTC') split[1] = 'TC'
                 pushGenerated.push(split[0] + ' ' + split[1])
             }
+            pushBets = generatedBets
+            pushTienCuoc = generatedBets
         }
-        else if (typePlay.value == 10) pushGenerated = bagGenerated
-        else pushGenerated = generated
+        else if (typePlay.value == 10) {
+            pushGenerated = bagGenerated
+            pushBets = [totalCostBag / (generated.length)]
+            pushTienCuoc = [totalCostBag]
+        }
+        else if (typePlay.value == 4) {
+            for (let i = 0; i < numberSet.length; i++) {
+                const element = numberSet[i]
+                if (element[0] !== false && element[1] !== false) {
+                    const str = '' + element[0] + element[1] + element[2] + ' ' + element[3] + element[4] + element[5]
+                    pushGenerated.push(str)
+                    pushTienCuoc.push(cntDistinct('' + element[0] + element[1] + element[2]) * cntDistinct('' + element[3] + element[4] + element[5]) * bets[i])
+                    pushBets.push(bets[i])
+                }
+            }
+        }
+        else {
+            pushGenerated = generated
+            pushBets = generatedBets
+            pushTienCuoc = generatedBets
+        }
+
         let body: any = {
             lotteryType: LotteryType.Max3DPro,
             amount: total,
@@ -296,8 +322,8 @@ export const Max3dProScreen = () => {
             drawCode: drawCodes,
             drawTime: drawTimes,
             numbers: pushGenerated,
-            bets: typePlay.value !== 10 ? generatedBets : [totalCostBag / (generated.length)],
-            tienCuoc: typePlay.value !== 10 ? generatedBets : [totalCostBag]
+            bets: pushBets,
+            tienCuoc: pushTienCuoc
         }
 
         return body

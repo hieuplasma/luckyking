@@ -12,8 +12,7 @@ import { FirstItemKeno } from "../result/component/ItemKeno";
 import { FirstItemMega } from "../result/component/ItemMega";
 import { FirstItemPower } from "../result/component/ItemPower";
 import { FirstItemMax3d } from "../result/component/ItemMax3d";
-import { caculateLotteryBenefits, generateUniqueStrings, getLotteryName, getSpecialValueKeno, kenoAnalysis, printDraw, printDrawCode, printMoney, printNumber } from "@utils";
-import { cntDistinct } from "./barcode";
+import { caculateLotteryBenefits, cntDistinct, generateUniqueStrings, getLotteryName, getSpecialValueKeno, kenoAnalysis, printDraw, printDrawCode, printMoney, printNumber } from "@utils";
 
 type NavigationProp = StackNavigationProp<ScanStackParamList, 'ScanResult'>;
 type NavigationRoute = RouteProp<ScanStackParamList, 'ScanResult'>;

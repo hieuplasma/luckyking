@@ -238,7 +238,7 @@ export function scanBarCode(param) {
 	return tmp
 }
 
-export function cntDistinct(str) {
+function cntDistinct(str) {
 	let s = new Set();
 	for (let i = 0; i < str.length; i++) {
 		s.add(str[i]);

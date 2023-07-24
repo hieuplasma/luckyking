@@ -6,6 +6,7 @@ import { Color } from "@styles"
 import {
     NavigationUtils,
     caculateLotteryBenefits,
+    generateUniqueStrings,
     getSpecialValueKeno, getSplitCharater, kenoAnalysis, printDisplayId,
     printMoney, printNumber
 } from "@utils"
@@ -66,7 +67,7 @@ export const ListOrderDrawKeno = React.memo(({ listOrder, navigation, lotteryTyp
     if (lotteryType == LotteryType.Keno)
         analysis = useMemo(() => kenoAnalysis(drawResult.result.split("-")), [drawResult])
 
-    const checking = useCallback((number: number) => {
+    const checking = useCallback((number: number, level = 0) => {
         if (!drawResult) return false
         if (!drawResult.drawn) return false
 
@@ -88,10 +89,21 @@ export const ListOrderDrawKeno = React.memo(({ listOrder, navigation, lotteryTyp
             }
         }
         else {
-            if (drawResult.special.includes(number)) return true
-            if (drawResult.first.includes(number)) return true
-            if (drawResult.second.includes(number)) return true
-            if (drawResult.third.includes(number)) return true
+            if (lotteryType == LotteryType.Max3DPro && level == 4) {
+                const arrStr = generateUniqueStrings(Array.from(String(number), Number))
+                for (const element of arrStr) {
+                    if (drawResult.special.includes(element)) return true
+                    if (drawResult.first.includes(element)) return true
+                    if (drawResult.second.includes(element)) return true
+                    if (drawResult.third.includes(element)) return true
+                }
+            }
+            else {
+                if (drawResult.special.includes(number)) return true
+                if (drawResult.first.includes(number)) return true
+                if (drawResult.second.includes(number)) return true
+                if (drawResult.third.includes(number)) return true
+            }
         }
 
         return false
@@ -106,6 +118,7 @@ export const ListOrderDrawKeno = React.memo(({ listOrder, navigation, lotteryTyp
 
     const renderLottery = React.useCallback((lottery: any, addLine: boolean) => {
         const numberDetail = lottery.NumberLottery.numberDetail
+        const level = lottery.NumberLottery.level
         return (
             <View key={lottery.id}>
                 <View style={{ paddingHorizontal: 8 }}>
@@ -123,7 +136,7 @@ export const ListOrderDrawKeno = React.memo(({ listOrder, navigation, lotteryTyp
                                     <View style={{ marginLeft: 5, flexDirection: 'row', flexWrap: 'wrap', marginVertical: 8, flex: 1 }}>
                                         {
                                             numbers.map((number: any, id2: number) => {
-                                                const check = checking(number)
+                                                const check = checking(number, level)
                                                 return (
                                                     <IText style={[styles.textBall, { color: check ? Color.luckyKing : Color.black }]} key={id2}>
                                                         {`${printNumberScan(number)}`}

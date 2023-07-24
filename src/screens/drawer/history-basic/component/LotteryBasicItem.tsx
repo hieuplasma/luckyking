@@ -1,7 +1,7 @@
 import { INumberDetail, LIST_STATUS, LOTTRERY_COLOR_STATUS, LotteryType, OrderStatus } from "@common"
 import { IText } from "@components"
 import { Color } from "@styles"
-import { NavigationUtils, caculateLotteryBenefits, doNotExits, getLogoHeader, printDisplayId, printDrawCode, printMoney, printNumber, printWeekDate } from "@utils"
+import { NavigationUtils, caculateLotteryBenefits, doNotExits, generateUniqueStrings, getLogoHeader, printDisplayId, printDrawCode, printMoney, printNumber, printTypePlay, printWeekDate } from "@utils"
 import React, { useCallback } from "react"
 import { Dimensions, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native"
 import { Image, Images } from "@assets"
@@ -74,7 +74,7 @@ export const LotteryBasicItem = React.memo(({ lottery, tab, navigation }: Lotter
         else window.image.show(uri)
     }, [])
 
-    const checking = useCallback((number: number) => {
+    const checking = useCallback((number: number, level = 0) => {
         const lotteryType = lottery.type
         const drawResult = lottery.result
         if (!drawResult) return false
@@ -90,14 +90,25 @@ export const LotteryBasicItem = React.memo(({ lottery, tab, navigation }: Lotter
             if (result.includes(parseInt(number.toString()))) return true
         }
         else {
-            if (drawResult.special.includes(number)) return true
-            if (drawResult.first.includes(number)) return true
-            if (drawResult.second.includes(number)) return true
-            if (drawResult.third.includes(number)) return true
+            if (lottery.type == LotteryType.Max3DPro && lottery.NumberLottery.level == 4) {
+                const arrStr = generateUniqueStrings(Array.from(String(number), Number))
+                for (const element of arrStr) {
+                    if (drawResult.special.includes(element)) return true
+                    if (drawResult.first.includes(element)) return true
+                    if (drawResult.second.includes(element)) return true
+                    if (drawResult.third.includes(element)) return true
+                }
+            }
+            else {
+                if (drawResult.special.includes(number)) return true
+                if (drawResult.first.includes(number)) return true
+                if (drawResult.second.includes(number)) return true
+                if (drawResult.third.includes(number)) return true
+            }
         }
 
         return false
-    }, [lottery.result, lottery.type])
+    }, [lottery.result, lottery.type, lottery.NumberLottery.level])
 
     const renderWinning = useCallback(() => {
         const drawResult = lottery.result
@@ -161,6 +172,9 @@ export const LotteryBasicItem = React.memo(({ lottery, tab, navigation }: Lotter
         <View style={styles.container}>
             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                 <View style={{ flex: 1, paddingRight: 16 }}>
+                    <IText style={{fontWeight:'bold'}}>
+                        {printTypePlay(lottery.NumberLottery.level, lottery.type)}
+                    </IText>
                     {
                         numberDetail.map((it: any, id: number) => {
                             let numbers: number[] = []

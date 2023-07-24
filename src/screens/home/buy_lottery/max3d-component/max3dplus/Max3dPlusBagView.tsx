@@ -1,7 +1,7 @@
 import { LotteryType } from "@common";
 import { ConsolasText, IText } from "@components";
 import { Color } from "@styles";
-import { generateStringsFromArray, generateUniqueStrings } from "@utils";
+import { generateStringsFromArray, generateUniqueStrings, nextBet, previousBet } from "@utils";
 import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from "react";
 import { Dimensions, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import { ChangeBetButton } from "../../component/ChangeBetButton";
@@ -176,8 +176,8 @@ export const Max3dPlusBagView = forwardRef(({ changeCost, changeGenerated, chang
                 <IText style={{ fontSize: 16 }}>{"Chọn giá tiền mỗi bộ số"}</IText>
                 <ChangeBetButton
                     currentBet={currentBet}
-                    increase={() => setCurrentBet(currentBet + 10000)}
-                    decrease={() => setCurrentBet(currentBet - 10000)}
+                    increase={() => setCurrentBet(nextBet(currentBet))}
+                    decrease={() => setCurrentBet(previousBet(currentBet))}
                     color={lottColor}
                     max={300000}
                     min={10000}

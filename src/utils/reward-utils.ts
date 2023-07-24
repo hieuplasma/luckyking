@@ -914,7 +914,8 @@ export function serializeBigInt(obj: any) {
     return returned
 }
 
-function cntDistinct(str: string) {
+export function cntDistinct(param: any) {
+    const str = param.toString()
     let s = new Set();
     for (let i = 0; i < str.length; i++) {
         s.add(str[i]);

@@ -7,6 +7,7 @@ import { Dimensions, StyleSheet, TouchableOpacity, View } from "react-native";
 import { ChangeBetButton } from "../../component/ChangeBetButton";
 import { MultiBagSheet } from "./MultiBagSheet";
 import { NumberMultiBagSheet } from "./NumberMultiBagSheet";
+import { nextBet, previousBet } from "@utils";
 
 const lottColor = Color.max3dpro
 
@@ -116,8 +117,8 @@ const Wiget = forwardRef(({ changeCost, changeGenerated, changeBets, changeNumbe
                         <ChangeBetButton
                             style={styles.changeBet}
                             currentBet={currentBet}
-                            increase={() => setCurrentBet(currentBet + 10000)}
-                            decrease={() => setCurrentBet(currentBet - 10000)}
+                            increase={() => setCurrentBet(nextBet(currentBet))}
+                            decrease={() => setCurrentBet(previousBet(currentBet))}
                             color={lottColor}
                             max={300000}
                             min={10000}

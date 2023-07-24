@@ -84,3 +84,25 @@ export function checkIdentify(val: string) {
     if (!/^\d+$/.test(val.trim())) return false;
     return true;
 }
+
+export function nextBet(currentBet: number) {
+    switch (currentBet) {
+        case 10000: return 20000
+        case 20000: return 50000
+        case 50000: return 100000
+        case 100000: return 200000
+        case 200000: return 300000
+        default: return currentBet
+    }
+}
+
+export function previousBet(currentBet: number) {
+    switch (currentBet) {
+        case 20000: return 10000
+        case 50000: return 20000
+        case 100000: return 50000
+        case 200000: return 100000
+        case 300000: return 200000
+        default: return currentBet
+    }
+}

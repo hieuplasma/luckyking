@@ -7,7 +7,6 @@ import { SwiperFlatList } from 'react-native-swiper-flatlist';
 import { LotteryType } from '@common';
 import { getColorLott, printMoney, printMoneyK, printNumber } from '@utils';
 import { ConsolasText, IText } from '@components';
-import { ChangeBetButton } from '../../component/ChangeBetButton';
 import { TitleNumberSheet } from '../../component/TitleNumberSheet';
 import { PerPageMax3dPlus } from './PerPageMax3dPlus';
 
