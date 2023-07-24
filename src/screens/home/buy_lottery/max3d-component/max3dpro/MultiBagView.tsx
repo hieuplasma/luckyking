@@ -105,7 +105,7 @@ const Wiget = forwardRef(({ changeCost, changeGenerated, changeBets, changeNumbe
 
     return (
         <>
-            <View style={{ flex: 1 }}>
+            <Image source={Images.bg_ticket_1} style={{ flex: 1 }} resizeMode="cover">
                 <View style={styles.body}>
                     <View style={{ flexDirection: 'row', paddingTop: 5, justifyContent: 'space-between' }}>
                         <TouchableOpacity activeOpacity={0.6} style={styles.dropDown} onPress={openTypeSheet}>
@@ -150,8 +150,7 @@ const Wiget = forwardRef(({ changeCost, changeGenerated, changeBets, changeNumbe
                     </View>
 
                 </View>
-
-            </View>
+            </Image>
             {renderTypeSheet()}
             {renderNumberSheet()}
         </>

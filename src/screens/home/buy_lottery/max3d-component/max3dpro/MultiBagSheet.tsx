@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
         right: 0,
         bottom: 0,
     },
-    item: { alignItems: 'center', flexDirection: 'row', marginVertical: 6 },
+    item: { alignItems: 'center', flexDirection: 'row', marginVertical: 6, width: '50%' },
     ball: {
         width: 26, height: 26
     },

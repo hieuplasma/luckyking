@@ -297,7 +297,7 @@ export const Max3dProScreen = () => {
             drawTime: drawTimes,
             numbers: pushGenerated,
             bets: typePlay.value !== 10 ? generatedBets : [totalCostBag / (generated.length)],
-            tienCuoc: generatedBets
+            tienCuoc: typePlay.value !== 10 ? generatedBets : [totalCostBag]
         }
 
         return body
@@ -335,19 +335,20 @@ export const Max3dProScreen = () => {
         <SafeAreaView style={styles.container}>
             <HeaderBuyLottery navigation={navigation} lotteryType={LotteryType.Max3DPro} />
             <ViewAbove typePlay={typePlay.label} drawSelected={drawSelected} openTypeSheet={openTypeSheet} openDrawSheet={openDrawSheet} />
-            <Image source={Images.bg_ticket_1} style={{ flex: 1 }} resizeMode="cover">
-                {
-                    (typePlay.value == 5 || typePlay.value == 6) ?
-                        <Max3dHuge
-                            hugeCount={typePlay.value == 5 ? 1 : 2}
-                            hugePosition={hugePosition}
-                            onChangeHugePositon={onChangeHugePositon}
-                            lotteryType={LotteryType.Max3DPlus}
-                        />
-                        : <></>
-                }
-                {
-                    typePlay.value == 7 || typePlay.value == 8 ?
+
+            {
+                (typePlay.value == 5 || typePlay.value == 6) ?
+                    <Max3dHuge
+                        hugeCount={typePlay.value == 5 ? 1 : 2}
+                        hugePosition={hugePosition}
+                        onChangeHugePositon={onChangeHugePositon}
+                        lotteryType={LotteryType.Max3DPlus}
+                    />
+                    : <></>
+            }
+            {
+                typePlay.value == 7 || typePlay.value == 8 ?
+                    <Image source={Images.bg_ticket_1} style={{ flex: 1 }} resizeMode="cover">
                         <Max3dProBagView
                             ref={typeBagRef}
                             changeCost={(data: number) => setTotalCostBag(data)}
@@ -355,16 +356,19 @@ export const Max3dProScreen = () => {
                             changeGenerated={(data: any) => setGenrated(data)}
                             typePlay={typePlay}
                         />
-                        : typePlay.value == 10 ?
-                            <MultiBagView
-                                ref={multiBagRef}
-                                changeCost={(data: number) => setTotalCostBag(data)}
-                                changeBets={(data: any) => setGeneratedBets(data)}
-                                changeGenerated={(data: any) => setGenrated(data)}
-                                changeNumber={(data: any) => setBagGenerated(data)}
-                                typePlay={typePlay}
-                            />
-                            : <ScrollView style={{ flex: 1 }}>
+                    </Image>
+                    : typePlay.value == 10 ?
+                        <MultiBagView
+                            ref={multiBagRef}
+                            changeCost={(data: number) => setTotalCostBag(data)}
+                            changeBets={(data: any) => setGeneratedBets(data)}
+                            changeGenerated={(data: any) => setGenrated(data)}
+                            changeNumber={(data: any) => setBagGenerated(data)}
+                            typePlay={typePlay}
+                        />
+                        :
+                        <Image source={Images.bg_ticket_1} style={{ flex: 1 }} resizeMode="cover">
+                            <ScrollView style={{ flex: 1 }}>
                                 <View style={{ paddingHorizontal: 16, paddingVertical: 8 }}>
                                     {numberSet.map((item: any, index: number) => {
                                         return (
@@ -374,14 +378,14 @@ export const Max3dProScreen = () => {
                                                     <View style={styles.boxNumber}>
                                                         {item.slice(0, 3).map((number: any, index2: number) => {
                                                             return (
-                                                                <ConsolasText key={index2 + "::" + index} style={{ color: lottColor, fontSize: 16 }}>{numberMax3d(number)}</ConsolasText>
+                                                                <IText key={index2 + "::" + index} style={{ color: lottColor, fontSize: 16 }}>{numberMax3d(number)}</IText>
                                                             )
                                                         })}
                                                     </View>
                                                     <View style={styles.boxNumber}>
                                                         {item.slice(3, 6).map((number: any, index2: number) => {
                                                             return (
-                                                                <ConsolasText key={index2 + "::" + index} style={{ color: lottColor, fontSize: 16 }}>{numberMax3d(number)}</ConsolasText>
+                                                                <IText key={index2 + "::" + index} style={{ color: lottColor, fontSize: 16 }}>{numberMax3d(number)}</IText>
                                                             )
                                                         })}
                                                     </View>
@@ -405,8 +409,9 @@ export const Max3dProScreen = () => {
                                     })}
                                 </View>
                             </ScrollView>
-                }
-            </Image>
+                        </Image>
+
+            }
 
             {/* Footer */}
             <View style={{ paddingHorizontal: 16, marginBottom: 5, zIndex: -1 }}>
@@ -414,7 +419,7 @@ export const Max3dProScreen = () => {
                     typePlay.value == 7 || typePlay.value == 8 ?
                         <></>
                         : <>
-                            <ViewFooter1 fastPick={fastPick} selfPick={selfPick} hideSelfPick={typePlay.value != 1} />
+                            <ViewFooter1 fastPick={fastPick} selfPick={selfPick} />
                             <GeneratedNumber generated={generated} lottColor={lottColor} />
                         </>
                 }
@@ -432,15 +437,6 @@ export const Max3dProScreen = () => {
                     {renderTypeSheet()}
                     {renderDrawSheet()}
                     {renderNumberSheet()}
-                    {/* {
-                        typeBagRef.current?.renderNumberSheet()
-                    }
-                    {
-                        multiBagRef.current?.renderTypeSheet()
-                    }
-                    {
-                        multiBagRef.current?.renderNumberSheet()
-                    } */}
                 </> : <></>}
         </SafeAreaView>
     )

@@ -184,7 +184,7 @@ export const Max3dPlusBagView = forwardRef(({ changeCost, changeGenerated, chang
                 />
             </View>
 
-            {/* {renderNumberSheet()} */}
+            {renderNumberSheet()}
         </>
     )
 })

@@ -315,17 +315,18 @@ export const Max3dPlusTab = React.memo((props: Props) => {
                     : <></>
             }
 
-            <Image source={Images.bg_ticket_1} style={{ flex: 1 }} resizeMode="cover">
-                {
-                    typePlay.value == 7 || typePlay.value == 8 ?
-                        <Max3dPlusBagView
-                            ref={typeBagRef}
-                            changeCost={(data: number) => setTotalCostBag(data)}
-                            changeBets={(data: any) => setGeneratedBets(data)}
-                            changeGenerated={(data: any) => setGenrated(data)}
-                            typePlay={typePlay}
-                        />
-                        : <ScrollView style={{ flex: 1 }}>
+
+            {
+                typePlay.value == 7 || typePlay.value == 8 ?
+                    <Max3dPlusBagView
+                        ref={typeBagRef}
+                        changeCost={(data: number) => setTotalCostBag(data)}
+                        changeBets={(data: any) => setGeneratedBets(data)}
+                        changeGenerated={(data: any) => setGenrated(data)}
+                        typePlay={typePlay}
+                    />
+                    : <Image source={Images.bg_ticket_1} style={{ flex: 1 }} resizeMode="cover">
+                        <ScrollView style={{ flex: 1 }}>
                             <View style={{ paddingHorizontal: 16, paddingVertical: 8 }}>
                                 {numberSet.map((item: any, index: number) => {
                                     return (
@@ -366,8 +367,8 @@ export const Max3dPlusTab = React.memo((props: Props) => {
                                 })}
                             </View>
                         </ScrollView>
-                }
-            </Image>
+                    </Image>
+            }
 
             {/* Footer */}
             <View style={{ paddingHorizontal: 16, marginBottom: 5, zIndex: -1 }}>
@@ -394,7 +395,6 @@ export const Max3dPlusTab = React.memo((props: Props) => {
                     {renderTypeSheet()}
                     {renderDrawSheet()}
                     {renderNumberSheet()}
-                    {typeBagRef.current?.renderNumberSheet()}
                 </> : <></>}
         </View>
     )
