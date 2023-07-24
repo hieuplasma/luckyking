@@ -110,7 +110,7 @@ export const SupportScreen = React.memo(() => {
                     // onPress={}
                     activeOpacity={1}>
                     <Image source={Images.address} style={{ width: 30, height: 30 }} />
-                    <IText style={{ fontWeight: 'bold', marginLeft: 12, textAlign: 'justify', width: windowWidth - 60 }}>
+                    <IText style={{ fontWeight: 'bold', marginLeft: 12, textAlign: 'justify', width: windowWidth - 74 }}>
                         {`Địa chỉ: ${ADDRESS}`}
                     </IText>
                 </TouchableOpacity>

@@ -1,5 +1,5 @@
 import { INumberDetail, LotteryType, NumberDetail } from "@common";
-import { getLevelFromNumberKeno, kenoAnalysis } from "./lottery-utils";
+import { generateUniqueStrings, getLevelFromNumberKeno, kenoAnalysis } from "./lottery-utils";
 
 const MUOI_NGHIN = 10000
 const TRIEU = 1000000
@@ -596,22 +596,30 @@ function caculateMax3PlusdBenefits(lottery: any, result: any) {
     return { totalBenefits, detailBenefits }
 }
 
-
 function caculateMax3dProBenefits(lottery: any, result: any) {
+
+    if (lottery.NumberLottery.level == 10) {
+        return multibagMax3dPro(lottery, result)
+    }
+
+    console.log(lottery.NumberLottery.level)
+    if (lottery.NumberLottery.level == 4) {
+        return threebagMax3dPro(lottery, result)
+    }
+
     const { special, first, second, third } = result
     let totalBenefits = 0;
     let detailBenefits: any = []
     const numberDetail: NumberDetail[] = lottery.NumberLottery.numberDetail
 
-    if (lottery.NumberLottery.level == 10) {
-        return multibagMax3dPro(lottery, result)
-    }
     numberDetail.map((item: any, index: number) => {
         let benefits = 0
         const coefficient = Math.floor(parseInt(item.tienCuoc.toString()) / 10000)
         const numbers: string[] = item.boSo.split(" ")
+
         const number1 = numbers[0]
         const number2 = numbers[1]
+
         let duplicateSpecial = 0, duplicate1 = 0, duplicate2 = 0, duplicate3 = 0;
 
         if (number1 == special[0] && number2 == special[1]) duplicateSpecial = 3
@@ -689,6 +697,115 @@ function caculateMax3dProBenefits(lottery: any, result: any) {
 
         let tmp = Math.floor(parseInt(item.tienCuoc.toString()) / 10000) * benefits
         totalBenefits = totalBenefits + tmp
+    })
+    return { totalBenefits, detailBenefits }
+}
+
+function threebagMax3dPro(lottery: any, result: any) {
+    const { special, first, second, third } = result
+    let totalBenefits = 0;
+    let detailBenefits: any = []
+    const numberDetail: NumberDetail[] = lottery.NumberLottery.numberDetail
+    numberDetail.map((item: any, index: number) => {
+        const numbers: string[] = item.boSo.split(" ")
+        const multi = cntDistinct(numbers[0]) * cntDistinct(numbers[1])
+        const coefficient = Math.floor(parseInt(item.tienCuoc.toString()) / 10000 / multi)
+
+        const arrOfDigits1 = Array.from(String(numbers[0]), Number);
+        const arrOfDigits2 = Array.from(String(numbers[1]), Number);
+
+        let tmpGenerated: any[] = []
+
+        const generated2 = generateUniqueStrings(arrOfDigits2)
+        const abcc = generateUniqueStrings(arrOfDigits1).map(it => {
+            for (let i = 0; i < generated2.length; i++) {
+                tmpGenerated.push([it, generated2[i]])
+            }
+        })
+
+        tmpGenerated.map(numberGenerated => {
+            let benefits = 0
+            const number1 = numberGenerated[0]
+            const number2 = numberGenerated[1]
+
+            let duplicateSpecial = 0, duplicate1 = 0, duplicate2 = 0, duplicate3 = 0;
+
+            if (number1 == special[0] && number2 == special[1]) duplicateSpecial = 3
+            if (special.includes(number1)) duplicateSpecial++; if (special.includes(number2)) duplicateSpecial++;
+            if (first.includes(number1)) duplicate1++; if (first.includes(number2)) duplicate1++;
+            if (second.includes(number1)) duplicate2++; if (second.includes(number2)) duplicate2++;
+            if (third.includes(number1)) duplicate3++; if (third.includes(number2)) duplicate3++;
+
+            if (number1 == special[0] && number2 == special[1]) duplicateSpecial = 3
+
+            if (duplicateSpecial == 3) {
+                benefits = benefits + 2 * TY;
+                detailBenefits.push({
+                    row: String.fromCharCode(65 + index),
+                    detail: BasicPrize.SPECIAL,
+                    benefits: 2 * TY * coefficient
+                })
+            }
+            if (duplicateSpecial == 2) {
+                benefits = benefits + 400 * TRIEU;
+                detailBenefits.push({
+                    row: String.fromCharCode(65 + index),
+                    detail: BasicPrize.SUB_SPECIAL,
+                    benefits: 400 * TRIEU * coefficient
+                })
+            }
+            if (duplicate1 == 2) {
+                benefits = benefits + 30 * TRIEU;
+                detailBenefits.push({
+                    row: String.fromCharCode(65 + index),
+                    detail: BasicPrize.FIRST,
+                    benefits: 30 * TRIEU * coefficient
+                })
+            }
+            if (duplicate2 == 2) {
+                benefits = benefits + 10 * TRIEU;
+                detailBenefits.push({
+                    row: String.fromCharCode(65 + index),
+                    detail: BasicPrize.SECOND,
+                    benefits: 10 * TRIEU * coefficient
+                })
+            }
+            if (duplicate3 == 2) {
+                benefits = benefits + 4 * TRIEU;
+                detailBenefits.push({
+                    row: String.fromCharCode(65 + index),
+                    detail: BasicPrize.THIRD,
+                    benefits: 4 * TRIEU * coefficient
+                })
+            }
+            if ((duplicateSpecial + duplicate1 + duplicate2 + duplicate3) >= 2) {
+                benefits = benefits + TRIEU;
+                detailBenefits.push({
+                    row: String.fromCharCode(65 + index),
+                    detail: BasicPrize.FOURTH,
+                    benefits: TRIEU * coefficient
+                })
+            }
+            if (duplicateSpecial == 1) {
+                benefits = benefits + 10 * MUOI_NGHIN;
+                detailBenefits.push({
+                    row: String.fromCharCode(65 + index),
+                    detail: BasicPrize.FIVETH,
+                    benefits: 10 * MUOI_NGHIN * coefficient
+                })
+            }
+            if ((duplicate1 + duplicate2 + duplicate3) == 1) {
+                benefits = benefits + 4 * MUOI_NGHIN;
+                detailBenefits.push({
+                    row: String.fromCharCode(65 + index),
+                    detail: BasicPrize.SIXTH,
+                    benefits: 4 * MUOI_NGHIN * coefficient
+                })
+            }
+
+            let tmp = coefficient * benefits
+            totalBenefits = totalBenefits + tmp
+        })
     })
     return { totalBenefits, detailBenefits }
 }
@@ -789,11 +906,22 @@ function multibagMax3dPro(lottery: any, result: any) {
     return { totalBenefits, detailBenefits }
 }
 
-
 export function serializeBigInt(obj: any) {
     const returned = JSON.stringify(
         obj,
         (key, value) => (typeof value === 'bigint' ? value.toString() : value)
     )
     return returned
+}
+
+function cntDistinct(str: string) {
+    let s = new Set();
+    for (let i = 0; i < str.length; i++) {
+        s.add(str[i]);
+    }
+
+    if (s.size == 3) return 6
+    if (s.size == 2) return 3
+    if (s.size == 1) return 1
+    return s.size;
 }

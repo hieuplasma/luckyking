@@ -6,16 +6,20 @@ import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Color } from "@styles";
 import React, { useCallback, useEffect, useState } from "react";
-import { ActivityIndicator, Dimensions, ScrollView, StyleSheet, View } from "react-native";
+import { Dimensions, ScrollView, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { FirstItemKeno } from "../result/component/ItemKeno";
 import { FirstItemMega } from "../result/component/ItemMega";
 import { FirstItemPower } from "../result/component/ItemPower";
 import { FirstItemMax3d } from "../result/component/ItemMax3d";
-import { caculateLotteryBenefits, getLotteryName, getSpecialValueKeno, kenoAnalysis, printDraw, printDrawCode, printMoney, printNumber } from "@utils";
+import { caculateLotteryBenefits, generateUniqueStrings, getLotteryName, getSpecialValueKeno, kenoAnalysis, printDraw, printDrawCode, printMoney, printNumber } from "@utils";
+import { cntDistinct } from "./barcode";
 
 type NavigationProp = StackNavigationProp<ScanStackParamList, 'ScanResult'>;
 type NavigationRoute = RouteProp<ScanStackParamList, 'ScanResult'>;
+
+const proBag = " (Bao bộ số) "
+const proMultiBag = " (Bao nhiều bộ 3 số) "
 
 export interface ScanResultScreenParamsList { data: any }
 
@@ -27,10 +31,16 @@ export const ScanResultScreen = React.memo(() => {
 
     const scan_result = route.params.data
 
+    const [extraType, setExtraType] = useState('')
+
     useEffect(() => {
         const scan_result = route.params.data
-        console.log(scan_result)
         getResult(scan_result.KY_QUAY, scan_result.LOAI_VE)
+        if (scan_result.LOAI_VE == LotteryType.Max3DPro && scan_result.NumberLottery.level == 4) {
+            setExtraType(proBag)
+        }
+        if (scan_result.LOAI_VE == LotteryType.Max3DPro && scan_result.NumberLottery.level == 10)
+            setExtraType(proMultiBag)
     }, [route.params.data])
 
     const [drawResult, setDrawResult] = useState<any>(false)
@@ -92,10 +102,21 @@ export const ScanResultScreen = React.memo(() => {
             }
         }
         else {
-            if (drawResult.special.includes(number)) return true
-            if (drawResult.first.includes(number)) return true
-            if (drawResult.second.includes(number)) return true
-            if (drawResult.third.includes(number)) return true
+            if (scan_result.LOAI_VE == LotteryType.Max3DPro && scan_result.NumberLottery.level == 4) {
+                const arrStr = generateUniqueStrings(Array.from(String(number), Number))
+                for (const element of arrStr) {
+                    if (drawResult.special.includes(element)) return true
+                    if (drawResult.first.includes(element)) return true
+                    if (drawResult.second.includes(element)) return true
+                    if (drawResult.third.includes(element)) return true
+                }
+            }
+            else {
+                if (drawResult.special.includes(number)) return true
+                if (drawResult.first.includes(number)) return true
+                if (drawResult.second.includes(number)) return true
+                if (drawResult.third.includes(number)) return true
+            }
         }
 
         return false
@@ -126,9 +147,9 @@ export const ScanResultScreen = React.memo(() => {
                     <IText style={{ fontWeight: 'bold', color: Color.luckyKing }}>{`${printMoney(benefits.totalBenefits)}đ`}</IText>
                 </View>
                 {
-                    benefits.detailBenefits.map((item: any) => {
+                    benefits.detailBenefits.map((item: any, idx: number) => {
                         return (
-                            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }} key={item.row}>
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }} key={item.row + '' + idx}>
                                 <IText >
                                     <IText style={{ fontWeight: 'bold', color: Color.blue }}>
                                         {`${item.row}: `}
@@ -145,7 +166,7 @@ export const ScanResultScreen = React.memo(() => {
     }, [drawResult, benefits])
 
     return (
-        <View style={[styles.container, {zIndex: 100}]}>
+        <View style={[styles.container, { zIndex: 100 }]}>
             <BasicHeader
                 navigation={navigation}
                 title={"Quét vé so kết quả"}
@@ -161,7 +182,7 @@ export const ScanResultScreen = React.memo(() => {
                         {"Kết quả quét vé:"}
                     </IText>
                     <IText style={{ fontSize: 14, color: Color.blue }}>
-                        {`Loại vé: ${getLotteryName(scan_result.LOAI_VE)}  -  Ngày mua:  ${scan_result.NGAY_MUA}`}
+                        {`Loại vé: ${getLotteryName(scan_result.LOAI_VE)}${extraType} -  Ngày mua:  ${scan_result.NGAY_MUA}`}
                     </IText>
                     <IText style={{ fontSize: 14, color: Color.blue }}>
                         {`Kỳ quay: ${printDrawCode(scan_result.KY_QUAY)}`}
@@ -169,6 +190,10 @@ export const ScanResultScreen = React.memo(() => {
                     {
                         scan_result.DAY_SO_MUA.map((it: any, id: number) => {
                             let numbers: number[] = it.boSo
+                            let multi = 0
+                            if (scan_result.LOAI_VE == LotteryType.Max3DPro && scan_result.NumberLottery.level == 4) {
+                                multi = cntDistinct(numbers[0]) * cntDistinct(numbers[1])
+                            }
                             return (
                                 <View style={styles.lineNumber} key={'' + it.boSo + id}>
                                     <IText style={{ fontSize: 16, color: Color.blue, fontWeight: 'bold' }}>
@@ -184,6 +209,12 @@ export const ScanResultScreen = React.memo(() => {
                                                     </IText>
                                                 )
                                             })
+                                        }
+                                        {
+                                            multi ?
+                                                <IText>
+                                                    {`  x${multi}`}
+                                                </IText> : <></>
                                         }
                                     </View>
                                     <IText style={{ color: Color.blue, fontSize: 16, fontWeight: 'bold' }}>{`${printMoney(it.tienCuoc)}đ`}</IText>
@@ -206,7 +237,7 @@ export const ScanResultScreen = React.memo(() => {
 
                 {renderResult()}
 
-                <View style={{height: 100}}/>
+                <View style={{ height: 100 }} />
             </ScrollView>
         </View>
     )

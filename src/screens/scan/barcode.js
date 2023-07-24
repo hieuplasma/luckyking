@@ -93,11 +93,18 @@ function scan(param) {
 	let res = []
 	let index = 0
 	while (hex.length > 1) {
-		hex = hex.slice(2) // byte danh dau bat dau bo so
+
 		res[index] = {
 			boSo: [],
 			bac: 0,
 			tienCuoc: 0
+		}
+
+		let max3d_bac = hex.slice(0, 2) // byte danh dau bat dau bo so
+		hex = hex.slice(2)
+		if (LOTTERY_TYPE == LotteryType.Max3DPro) {
+			res[index].bac = parseInt('0x' + max3d_bac)
+			console.log(res[index].bac)
 		}
 		// Lay 11 byte
 		let data_so = hex.slice(0, LOTTERY_BYTE)
@@ -108,10 +115,15 @@ function scan(param) {
 			let count = parseInt('0x' + data_so.slice(0, 4).match(/../g).reverse().join(''))
 			let so1 = parseInt('0x' + data_so.slice(4, 8).match(/../g).reverse().join(''))
 			let so2 = parseInt('0x' + data_so.slice(8, 12).match(/../g).reverse().join(''))
-			if (so1 < 100) so1 = '0' + so1
-			if (so2 < 100) so2 = '0' + so2
+			so1 = so1.toString().padStart(3, "0")
+			so2 = so2.toString().padStart(3, "0")
 			res[index].boSo.push(so1)
-			if (count == 2) res[index].boSo.push(so2)
+			if (count == 2) {
+				res[index].boSo.push(so2)
+				if (LOTTERY_TYPE == LotteryType.Max3D) {
+					LOTTERY_TYPE = LotteryType.Max3DPlus
+				}
+			}
 		}
 		// Truong hop bo so KENO, POWER, MEGA
 		else {
@@ -135,9 +147,14 @@ function scan(param) {
 			}
 		}
 		if (LOTTERY_BYTE == KENO_BYTE || LOTTERY_BYTE == MAX3D_BYTE) {
+
+			let multi = 1
+			if (LOTTERY_TYPE == LotteryType.Max3DPro && res[index].bac == 2) {
+				multi = cntDistinct(res[index].boSo[0]) * cntDistinct(res[index].boSo[1])
+			}
 			let tien1 = hex.slice(0, 2)
 			hex = hex.slice(2)
-			res[index].tienCuoc = parseInt(tien1, 16) * 10000
+			res[index].tienCuoc = parseInt(tien1, 16) * 10000 * multi
 			if (LOTTERY_BYTE == KENO_BYTE) {
 				let bac1 = hex.slice(0, 2)
 				hex = hex.slice(2)
@@ -172,7 +189,7 @@ function scan(param) {
 		ID_MBH: machine_code.slice(2) + machine_code.slice(0, 2),
 		ID_VE: lottery_id,
 		LOAI_VE: LOTTERY_TYPE,
-		type:LOTTERY_TYPE,
+		type: LOTTERY_TYPE,
 		NGAY_MUA: printDate(buy_date_hex),
 		KY_QUAY: draw_code_number,
 		NGAY_QSMT: printDate(draw_date_hex),
@@ -181,9 +198,12 @@ function scan(param) {
 		message: "success",
 		NumberLottery: {
 			numberDetail: getNumberDetail(res, LOTTERY_TYPE),
-			level: res[0].boSo.length
+			level: (LOTTERY_TYPE !== LotteryType.Max3DPro ?
+				res[0].boSo.length :
+				(res[0].bac == 2 ? 4 : 1))
 		}
 	}
+
 	// return obj
 	// return JSON.stringify(obj)
 	// let str = ''
@@ -216,4 +236,16 @@ export function scanBarCode(param) {
 		}
 	}
 	return tmp
+}
+
+export function cntDistinct(str) {
+	let s = new Set();
+	for (let i = 0; i < str.length; i++) {
+		s.add(str[i]);
+	}
+
+	if (s.size == 3) return 6
+	if (s.size == 2) return 3
+	if (s.size == 1) return 1
+	return s.size;
 }
