@@ -150,14 +150,13 @@ export function MainNavigation(props: any) {
         });
 
         return () => {
-            console.log("main navigation unmount")
             subscription.remove();
         };
-    }, []);
+    }, [doNotExits(token)]);
 
     const renderCustom = useCallback((props: any) => {
-        return (<DrawerCustom {...props} subscription={subscription} />)
-    }, [subscription])
+        return (<DrawerCustom {...props} />)
+    }, [])
     return (
         <Drawer.Navigator
             drawerContent={renderCustom}

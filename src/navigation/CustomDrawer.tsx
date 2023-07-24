@@ -12,7 +12,7 @@ import { userApi } from '@api';
 import { IText } from '@components';
 import { VERSION } from '@common';
 
-const DrawerCustom = React.memo((props: any, subscription: any) => {
+const DrawerCustom = React.memo((props: any) => {
 
   const navigation = props.navigation
   const dispatch = useDispatch();
@@ -45,12 +45,7 @@ const DrawerCustom = React.memo((props: any, subscription: any) => {
     await auth()
       .signOut()
       .then(() => console.log('User signed out!'));
-    try {
-      subscription?.remove()
-    } catch(error) {
-      console.log("co loi xay ra")
-    }
-  }, [auth, removeToken, removeCart, removeUser, subscription])
+  }, [auth, removeToken, removeCart, removeUser])
 
   return (
     <View style={{ flex: 1 }}>
