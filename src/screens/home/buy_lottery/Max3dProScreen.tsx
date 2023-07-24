@@ -296,7 +296,8 @@ export const Max3dProScreen = () => {
             drawCode: drawCodes,
             drawTime: drawTimes,
             numbers: pushGenerated,
-            bets: generatedBets
+            bets: typePlay.value !== 10 ? generatedBets : [totalCostBag / (generated.length)],
+            tienCuoc: generatedBets
         }
 
         return body
