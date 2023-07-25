@@ -3,7 +3,7 @@ import { Alert, Modal, Platform, StyleSheet, TouchableOpacity, View } from 'reac
 import { IText } from '../texts';
 import { Image, Images } from '@assets';
 import { Linking } from 'react-native';
-import { HOT_LINE } from '@common';
+import { HOT_LINE, ZALO_LINK } from '@common';
 
 interface ModalContact {
     visible: boolean,
@@ -47,7 +47,7 @@ export const ModalContact = React.memo(({ visible, onCancel }: ModalContact) => 
     }, [])
 
     const openZalo = useCallback(() => {
-        const url = `https://zalo.me/${phoneNumber}`
+        const url = ZALO_LINK
         if (Platform.OS !== 'android') {
             Linking.canOpenURL(url)
                 .then(supported => {

@@ -98,7 +98,7 @@ export const FirstItemKeno = React.memo(({ data, navigation, hideBtm }: FirstIte
                 <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', marginTop: 8 }}>
                     {list_eo.map(it => {
                         return (
-                            <View style={[styles.btn_first, { width: it.value == 'draw' ? 40 : (it.value == 'even' || it.value == 'odd') ? 72 : 75 }]} key={it.value}>
+                            <View style={[styles.btn_first, { width: it.value == 'draw' ? 40 : (it.value == 'even' || it.value == 'odd') ? 72 : 80 }]} key={it.value}>
                                 <IText style={[styles.txt_btn, { color: analysis.even_odd == it.value ? Color.luckyKing : Color.black }]}>
                                     {it.title + (it.value == 'even' ? `(${analysis.even})` : it.value == 'odd' ? `(${analysis.odd})` : '')}
                                 </IText>
@@ -175,7 +175,7 @@ export const PerItemKeno = React.memo(({ data, navigation }: any) => {
             <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', marginTop: 8 }}>
                 {list_eo.map(it => {
                     return (
-                        <View style={[styles.btn_first, { width: it.value == 'draw' ? 40 : (it.value == 'even' || it.value == 'odd') ? 72 : 75, borderColor: lottColor, borderWidth: 1 }]} key={it.value}>
+                        <View style={[styles.btn_first, { width: it.value == 'draw' ? 40 : (it.value == 'even' || it.value == 'odd') ? 72 : 80, borderColor: lottColor, borderWidth: 1 }]} key={it.value}>
                             <IText style={[styles.txt_btn, { color: analysis.even_odd == it.value ? Color.luckyKing : Color.black }]}>
                                 {it.title + (it.value == 'even' ? `(${analysis.even})` : it.value == 'odd' ? `(${analysis.odd})` : '')}
                             </IText>

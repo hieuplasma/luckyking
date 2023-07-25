@@ -1,5 +1,5 @@
 import { Image, Images } from "@assets";
-import { HOT_LINE } from "@common";
+import { HOT_LINE, ZALO_LINK } from "@common";
 import { IText, ImageHeader } from "@components";
 import { SupportStackParamList } from "@navigation";
 import { RouteProp, useNavigation } from "@react-navigation/native";
@@ -44,7 +44,7 @@ export const SupportScreen = React.memo(() => {
     }, [])
 
     const openZalo = useCallback(() => {
-        const url = `https://zalo.me/${phoneNumber}`
+        const url = ZALO_LINK
         if (Platform.OS !== 'android') {
             Linking.canOpenURL(url)
                 .then(supported => {

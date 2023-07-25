@@ -170,7 +170,7 @@ export const LotteryBasicItem = React.memo(({ lottery, tab, navigation }: Lotter
         <View style={styles.container}>
             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                 <View style={{ flex: 1, paddingRight: 16 }}>
-                    <IText style={{fontWeight:'bold'}}>
+                    <IText style={{ fontWeight: 'bold' }}>
                         {printTypePlay(lottery.NumberLottery.level, lottery.type)}
                     </IText>
                     {
@@ -187,7 +187,7 @@ export const LotteryBasicItem = React.memo(({ lottery, tab, navigation }: Lotter
                                             {(it.tuChon ? ' (TC)' : '')}
                                         </IText>
                                     </IText>
-                                    <View style={{ marginLeft: 5, flexDirection: 'row', flexWrap: 'wrap', marginVertical: 8 }}>
+                                    <View style={{ marginLeft: 5, flexDirection: 'row', flexWrap: 'wrap', marginVertical: 8, flex: 1}}>
                                         {
                                             numbers.map((number: any, id2: number) => {
                                                 const check = checking(number)
@@ -199,7 +199,7 @@ export const LotteryBasicItem = React.memo(({ lottery, tab, navigation }: Lotter
                                             })
                                         }
                                     </View>
-                                    <View style={{ flex: 1 }} />
+                                    <View />
                                     {
                                         lottery.type == LotteryType.Power || lottery.type == LotteryType.Mega ?
                                             <></>
@@ -236,8 +236,8 @@ export const LotteryBasicItem = React.memo(({ lottery, tab, navigation }: Lotter
 
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                 <IText style={{ fontSize: 14, fontWeight: 'bold' }}>
-                    <IText>{"Vé " + printDisplayId(lottery.displayId) + ": "}</IText>
-                    <IText style={{ color: Color.luckyKing }}>{printMoney(lottery.amount) + "đ"}</IText>
+                    <IText style={{ fontWeight: 'bold' }}>{"Vé " + printDisplayId(lottery.displayId) + ": "}</IText>
+                    <IText style={{ color: Color.blue, fontWeight: 'bold' }}>{printMoney(lottery.amount) + "đ"}</IText>
                 </IText>
                 {
                     1 ?
@@ -279,7 +279,7 @@ const styles = StyleSheet.create({
     lineNumber: {
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
     },
     underLine: {
         width: windowWidth - 32, height: 1,

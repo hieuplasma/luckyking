@@ -978,7 +978,7 @@ function compare(a: any, b: any) {
     if (a.row < b.row) return -1;
     if (a.row > b.row) return 1;
 
-    if (a.benefits < b.benefits) return -1
-    if (a.benefits > b.benefits) return 1
+    if (a.benefits < b.benefits) return 1
+    if (a.benefits > b.benefits) return -1
     return 0;
 }

@@ -139,7 +139,7 @@ const Wiget = forwardRef(({ page, numberSet, listBets, onChoose }: any, ref) => 
                         ref={swiperRef}
                         data={currentNumbers}
                         extraData={currentNumbers}
-                        // useReactNativeGestureHandler
+                        // useReactNativeGestureHandler={true}
                         renderItem={({ item, index }) => {
                             return (
                                 <PerPageSimpleKeno
@@ -153,7 +153,6 @@ const Wiget = forwardRef(({ page, numberSet, listBets, onChoose }: any, ref) => 
                         keyExtractor={(item, index) => "" + index}
                         onChangeIndex={onChangeIndex}
                     />
-                    <View style={{ height: 300 }} />
                 </ScrollView>
                 <TouchableOpacity style={styles.confirmButton} onPress={choosing}>
                     <IText style={styles.textConfirm}>{`Xác nhận`.toUpperCase()}</IText>
