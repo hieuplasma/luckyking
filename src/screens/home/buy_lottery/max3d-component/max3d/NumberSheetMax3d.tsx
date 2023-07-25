@@ -35,9 +35,9 @@ export const NumberSheetMax3d = forwardRef(({ onChoose, numberSet, page, type, l
     const onChangeIndex = (index: any) => {
         setIndexPage(index.index)
     }
-    useEffect(() => {
-        (page || page === 0) ? swiperRef.current?.scrollToIndex({ animated: false, index: page }) : {}
-    }, [page])
+    // useEffect(() => {
+    //     (page || page === 0) ? swiperRef.current?.scrollToIndex({ animated: false, index: page }) : {}
+    // }, [page])
 
     const [currentNumbers, setCurrentNumbers] = useState([...numberSet])
     const [currentBets, setCurrentBets] = useState([...listBets])
@@ -92,6 +92,9 @@ export const NumberSheetMax3d = forwardRef(({ onChoose, numberSet, page, type, l
         setIsOpen(true)
         setCurrentNumbers([...numberSet])
         setCurrentBets([...listBets])
+        if (page || page === 0) {
+            swiperRef.current?.scrollToIndex({ animated: false, index: page })
+        }
         bottomSheetRef.current?.expand()
         Animated.timing(opacity, {
             toValue: BACKGROUND_OPACITY,

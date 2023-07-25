@@ -60,7 +60,7 @@ export const Max3dPlusTab = React.memo((props: Props) => {
     const randomNumber = (index: number) => {
         const currentNumber = [...numberSet]
         const randomNumbers = [];
-        while (randomNumbers.length < MAX_SET_MAX3D_PLUS * 2) {
+        while (randomNumbers.length < MAX_SET_MAX3D_PLUS) {
             const randomNumber = Math.floor(Math.random() * MAX3D_NUMBER);
             randomNumbers.push(randomNumber);
         }

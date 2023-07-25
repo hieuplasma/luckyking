@@ -1,5 +1,5 @@
 import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from "react";
-import { Animated, View, TouchableOpacity, Dimensions, StyleSheet } from "react-native";
+import { Animated, View, TouchableOpacity, Dimensions, StyleSheet, ScrollView } from "react-native";
 import BottomSheet from '@gorhom/bottom-sheet';
 import { SwiperFlatList } from 'react-native-swiper-flatlist';
 import { Color } from "@styles";
@@ -24,9 +24,14 @@ const Wiget = forwardRef(({ page, numberSet, listBets, onChoose }: any, ref) => 
     const onChangeIndex = useCallback((index: any) => {
         setIndexPage(index.index)
     }, [])
-    useEffect(() => {
-        (page || page === 0) ? swiperRef.current?.scrollToIndex({ animated: false, index: page }) : {}
-    }, [page])
+    // useEffect(() => {
+    //     if (page || page === 0) {
+    //         swiperRef.current?.scrollToIndex({ animated: false, index: page })
+    //     }
+    //     else {
+    //         console.log("khong scroll duoc")
+    //     }
+    // }, [page])
 
     const [currentNumbers, setCurrentNumbers] = useState([...numberSet])
     const [currentBets, setCurrentBets] = useState([...listBets])
@@ -66,6 +71,9 @@ const Wiget = forwardRef(({ page, numberSet, listBets, onChoose }: any, ref) => 
         setIsOpen(true)
         setCurrentNumbers([...numberSet])
         setCurrentBets([...listBets])
+        if (page || page === 0) {
+            swiperRef.current?.scrollToIndex({ animated: false, index: page })
+        }
         bottomSheetRef.current?.expand()
         Animated.timing(opacity, {
             toValue: BACKGROUND_OPACITY,
@@ -125,7 +133,7 @@ const Wiget = forwardRef(({ page, numberSet, listBets, onChoose }: any, ref) => 
                     selected={currentNumbers[indexPage]}
                     swiperRef={swiperRef}
                 />
-                <View style={{ flex: 1 }}>
+                <ScrollView style={{ flex: 1 }}>
                     <SwiperFlatList
                         index={0}
                         ref={swiperRef}
@@ -145,7 +153,8 @@ const Wiget = forwardRef(({ page, numberSet, listBets, onChoose }: any, ref) => 
                         keyExtractor={(item, index) => "" + index}
                         onChangeIndex={onChangeIndex}
                     />
-                </View>
+                    <View style={{ height: 300 }} />
+                </ScrollView>
                 <TouchableOpacity style={styles.confirmButton} onPress={choosing}>
                     <IText style={styles.textConfirm}>{`Xác nhận`.toUpperCase()}</IText>
                 </TouchableOpacity>
@@ -158,7 +167,7 @@ export const NumberSheetSimpleKeno = React.memo(Wiget)
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
-const SHEET_HEIGHT = 700
+const SHEET_HEIGHT = 1000
 const BACKGROUND_OPACITY = 0.85
 
 const styles = StyleSheet.create({

@@ -30,13 +30,14 @@ const Wiget = forwardRef(({ onChoose, numberSet, page }: Props, ref) => {
     const onChangeIndex = (index: any) => {
         setIndexPage(index.index)
     }
-    useEffect(() => {
-        try {
-            (page || page === 0) ? swiperRef.current?.scrollToIndex({ animated: false, index: page }) : {}
-        } catch (error) {
+    // useEffect(() => {
+    //     console.log(page)
+    //     try {
+    //         (page || page === 0) ? swiperRef.current?.scrollToIndex({ animated: false, index: page }) : console.log("khong scroll duoc")
+    //     } catch (error) {
 
-        }
-    }, [page])
+    //     }
+    // }, [page])
 
     const [currentNumbers, setCurrentNumbers] = useState([...numberSet])
 
@@ -78,6 +79,9 @@ const Wiget = forwardRef(({ onChoose, numberSet, page }: Props, ref) => {
     const onOpen = () => {
         setIsOpen(true)
         setCurrentNumbers([...numberSet])
+        if (page || page === 0) {
+            swiperRef.current?.scrollToIndex({ animated: false, index: page })
+        }
         bottomSheetRef.current?.expand()
         Animated.timing(opacity, {
             toValue: BACKGROUND_OPACITY,

@@ -81,6 +81,7 @@ const Wiget = forwardRef(({ changeCost, changeGenerated, changeBets, changeNumbe
     }, [changeNumber, changeGenerated])
 
     const openNumberSheet = useCallback(async (page: number) => {
+        console.log(page)
         await setNumberFake(numberSet)
         await setPageNumber(page)
         chooseNumberRef.current?.openSheet()

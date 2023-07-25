@@ -40,9 +40,14 @@ const Wiget = forwardRef(({ onChoose, numberSet, page, type, listBets, hugePosit
     const onChangeIndex = (index: any) => {
         setIndexPage(index.index)
     }
-    useEffect(() => {
-        (page || page === 0) ? swiperRef.current?.scrollToIndex({ animated: false, index: page }) : {}
-    }, [page])
+    // useEffect(() => {
+    //     if (page || page === 0) {
+    //         swiperRef.current?.scrollToIndex({ animated: false, index: page })
+    //     }
+    //     else {
+    //         console.log("khong scroll duoc")
+    //     }
+    // }, [page])
 
     const [currentNumbers, setCurrentNumbers] = useState([...numberSet])
     const [currentBets, setCurrentBets] = useState([...listBets])
@@ -56,6 +61,7 @@ const Wiget = forwardRef(({ onChoose, numberSet, page, type, listBets, hugePosit
         let curr = [...currentNumbers]
         curr[indexPage] = numbers
         setCurrentNumbers(curr)
+        console.log(curr)
     }, [currentNumbers, indexPage])
 
     const changeBet = useCallback((bet: number) => {
@@ -78,7 +84,7 @@ const Wiget = forwardRef(({ onChoose, numberSet, page, type, listBets, hugePosit
             if (count != 0 && count != len) return false
         }
         return true
-    }, [currentNumbers])
+    }, [currentNumbers, hugePosition])
 
     const [opacity, setOpacity] = useState(new Animated.Value(0))
     const [isOpen, setIsOpen] = useState(false)
@@ -98,6 +104,9 @@ const Wiget = forwardRef(({ onChoose, numberSet, page, type, listBets, hugePosit
         setIsOpen(true)
         setCurrentNumbers([...numberSet])
         setCurrentBets([...listBets])
+        if (page || page === 0) {
+            swiperRef.current?.scrollToIndex({ animated: false, index: page })
+        }
         bottomSheetRef.current?.expand()
         Animated.timing(opacity, {
             toValue: BACKGROUND_OPACITY,
