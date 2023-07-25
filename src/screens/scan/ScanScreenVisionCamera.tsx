@@ -4,7 +4,7 @@ import { ScanStackParamList, ScreenName } from '@navigation';
 import { RouteProp, useNavigation, useIsFocused } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, StyleSheet, Button, TouchableOpacity, Dimensions } from 'react-native';
+import { View, StyleSheet, Button, TouchableOpacity, Dimensions, Alert } from 'react-native';
 import { scanBarCode } from './barcode';
 import { IText, ImageHeader } from '@components';
 import { NavigationUtils } from '@utils';
@@ -45,17 +45,15 @@ export const ScanScreenVisionCamera = React.memo(() => {
     const [hasPermission, setHasPermission] = React.useState(false);
     const devices = useCameraDevices();
     const device = devices.back;
-    const [scanned, setScanned] = useState(false);
 
     const handleBarCodeScanned = ({ data }: any) => {
         let tmp = scanBarCode(data)
         console.log(tmp)
         if (tmp.message == "success") {
-            setScanned(true);
             NavigationUtils.navigate(navigation, ScreenName.ScanChild.ScanResult, { data: tmp })
         }
         else {
-            alert(tmp.message)
+            _showErrorAlert(tmp.message)
         }
     }
 
@@ -80,6 +78,22 @@ export const ScanScreenVisionCamera = React.memo(() => {
     const touchableTest = useCallback(() => {
         handleBarCodeScanned({ data: TEST })
     }, [])
+
+    const [showingAlert, setShowingAlert] = useState(false)
+
+    const _showErrorAlert = useCallback((message: string) => {
+        if (!showingAlert) {
+            setShowingAlert(true)
+            Alert.alert('Lỗi', message, [
+                {
+                    text: 'OK',
+                    onPress: () => {
+                        setShowingAlert(false)
+                    },
+                },
+            ]);
+        }
+    }, [showingAlert])
 
 
     return (
