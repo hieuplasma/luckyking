@@ -817,9 +817,10 @@ function multibagMax3dPro(lottery: any, result: any) {
     numberDetail.map((item: any, index: number) => {
         const numbers: string[] = item.boSo.split(" ")
         const coefficient = Math.floor(parseInt(item.tienCuoc.toString()) / (MUOI_NGHIN * numbers.length * (numbers.length - 1)))
-        let benefits = 0
         for (let i = 0; i < numbers.length; i++) {
-            for (let j = i + 1; j < numbers.length; j++) {
+            for (let j = 0; j < numbers.length; j++) {
+                if (i == j) continue
+                let benefits = 0
                 const number1 = numbers[i]
                 const number2 = numbers[j]
                 let duplicateSpecial = 0, duplicate1 = 0, duplicate2 = 0, duplicate3 = 0;
