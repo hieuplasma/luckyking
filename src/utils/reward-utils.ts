@@ -806,7 +806,7 @@ function threebagMax3dPro(lottery: any, result: any) {
             totalBenefits = totalBenefits + tmp
         })
     })
-    return { totalBenefits, detailBenefits }
+    return { totalBenefits, detailBenefits: minimizeDetailBenefits(detailBenefits) }
 }
 
 function multibagMax3dPro(lottery: any, result: any) {
@@ -903,7 +903,8 @@ function multibagMax3dPro(lottery: any, result: any) {
             }
         }
     })
-    return { totalBenefits, detailBenefits }
+    // console.log(minimizeDetailBenefits(detailBenefits))
+    return { totalBenefits, detailBenefits: minimizeDetailBenefits(detailBenefits) }
 }
 
 export function serializeBigInt(obj: any) {
@@ -925,4 +926,59 @@ export function cntDistinct(param: any) {
     if (s.size == 2) return 3
     if (s.size == 1) return 1
     return s.size;
+}
+
+// {
+//     row: String.fromCharCode(65 + index),
+//     detail: BasicPrize.SIXTH,
+//     benefits: 4 * MUOI_NGHIN * coefficient,
+//     count: 0
+// }
+
+function minimizeDetailBenefits(detailBenefits: any[]) {
+    detailBenefits.sort(compare)
+    console.log(detailBenefits)
+
+    let newDetailBenefits: any[] = []
+    let res: any[] = []
+
+    let currentRow = undefined
+    let currentPrize = undefined
+    let currentIndex = -1
+    for (const element of detailBenefits) {
+        if (element.row !== currentRow || element.detail != currentPrize) {
+            newDetailBenefits.push({
+                row: element.row,
+                detail: element.detail,
+                benefits: element.benefits,
+                count: 1
+            })
+            currentRow = element.row
+            currentPrize = element.detail
+            currentIndex++
+        }
+        else {
+            newDetailBenefits[currentIndex].count = newDetailBenefits[currentIndex].count + 1
+        }
+    }
+
+    for (const element of newDetailBenefits) {
+        res.push({
+            row: element.row,
+            detail: element.detail + '  x' + element.count,
+            benefits: element.benefits * element.count,
+        })
+    }
+
+    return res
+}
+
+function compare(a: any, b: any) {
+
+    if (a.row < b.row) return -1;
+    if (a.row > b.row) return 1;
+
+    if (a.benefits < b.benefits) return -1
+    if (a.benefits > b.benefits) return 1
+    return 0;
 }
