@@ -32,10 +32,6 @@ const Wiget = forwardRef(({ currentChoose, onChoose }: ChooseTypeSheetProps, ref
         closeSheet: onClose
     }));
 
-    useEffect(() => {
-        console.log('ChooseTypeSheet has been re-rendered ');
-    });
-
     const choosing = () => {
         onClose()
         onChoose({ bag: currentBag, level: currentLevel });

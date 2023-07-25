@@ -65,8 +65,6 @@ const getStatusName: any = {
 
 export const LotteryBasicItem = React.memo(({ lottery, tab, navigation }: LotteryItem) => {
 
-    console.log(lottery.status)
-
     const numberDetail = lottery.NumberLottery.numberDetail as INumberDetail[]
 
     const showImg = useCallback((uri: string) => {

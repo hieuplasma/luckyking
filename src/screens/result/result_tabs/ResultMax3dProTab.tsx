@@ -19,12 +19,7 @@ export default ResultMax3dProTab
 
 const ExpensiveRerender = React.memo(({ navigation }: any) => {
 
-    useEffect(() => {
-        console.log("expensive rerender max3dpro")
-    })
-
     const [list, setList] = useState<any>([])
-
     const [isLoading, setIsLoading] = useState(false)
 
     const onRefresh = useCallback(async () => {

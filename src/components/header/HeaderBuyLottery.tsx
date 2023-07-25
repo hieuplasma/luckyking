@@ -20,9 +20,6 @@ export const HeaderBuyLottery = React.memo(({ navigation, lotteryType }: HeaderB
             navigation.goBack()
             setBlock(true)
         }
-        else {
-            console.log("blocked navigate")
-        }
     }, [navigation, block]);
 
     const [logo, setLogo] = useState({ source: Images.power_logo, style: { height: 44.12, width: 60 } })

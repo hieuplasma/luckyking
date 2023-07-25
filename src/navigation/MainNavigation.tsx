@@ -48,13 +48,11 @@ export function MainNavigation(props: any) {
     const checkApplicationPermission = async () => {
         if (Platform.OS == 'android') {
             const authorizationStatus = PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
-            console.log(authorizationStatus)
         }
         else {
             const authorizationStatus = await messaging().requestPermission();
             if (authorizationStatus === messaging.AuthorizationStatus.AUTHORIZED) {
                 console.log('User has notification permissions enabled.');
-
             } else if (authorizationStatus === messaging.AuthorizationStatus.PROVISIONAL) {
                 console.log('User has provisional notification permissions.');
             } else {

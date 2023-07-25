@@ -16,12 +16,7 @@ export default ResultMegaTab
 
 const ExpensiveRerender = React.memo(({ navigation }: any) => {
 
-    useEffect(() => {
-        console.log("expensive rerender mega")
-    })
-
     const [list, setList] = useState<any>([])
-
     const [isLoading, setIsLoading] = useState(false)
 
     const onRefresh = useCallback(async () => {

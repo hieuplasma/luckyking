@@ -15,10 +15,6 @@ const fullNumber = Array.from({ length: 80 }, (_, index) => index + 1);
 
 export const PerPageBagKeno = React.memo(({ listNumber, bet, onChangeNumber, onChangeBet }: any) => {
 
-    useEffect(() => {
-        console.log("PerPageView rerender:::", toggleObj)
-    })
-
     const [currentBet, setBet] = useState(bet)
     const [listChoose, setList]: any = useState([])
 

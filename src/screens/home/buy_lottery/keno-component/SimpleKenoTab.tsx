@@ -77,7 +77,6 @@ export const SimpleKenoTab = React.memo(({ showBottomSheet, navigation }: Props)
     }, [numberSet])
 
     const randomFastPick = useCallback((value: any[]) => {
-        console.log(value)
         setNumbers(value)
     }, [])
 

@@ -24,7 +24,6 @@ export const RenderMax3dItem = React.memo(({ item, openModalDeleteLottery }: Pro
                 {
                     numberDetail.map((it: any, id: number) => {
                         const numbers: number[] = it.boSo.split(" ")
-                        console.log(numbers)
                         return (
                             <View key={'' + it.boSo + id}>
                                 <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 8 }}>

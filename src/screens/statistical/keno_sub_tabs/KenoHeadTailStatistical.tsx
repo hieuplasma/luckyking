@@ -13,10 +13,6 @@ export default KenoHeadTailStatistical
 
 const ExpensiveRerender = React.memo(({ navigation }: any) => {
 
-    useEffect(() => {
-        console.log("expensive rerender keno head tail")
-    })
-
     return (
         <View style={{ flex: 1 }}>
 

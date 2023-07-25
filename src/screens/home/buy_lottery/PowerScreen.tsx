@@ -41,10 +41,6 @@ export const PowerScreen = React.memo((props: PowerScreenProps) => {
     const route = useRoute<NavigationRoute>();
     const dispatch = useDispatch()
 
-    useEffect(() => {
-        // console.log("power screen re-render")
-    })
-
     const listDraw = useSelector((state: any) => state.drawReducer.powerListDraw)
     const luckykingBalance = useSelector((state: any) => state.userReducer.luckykingBalance);
 

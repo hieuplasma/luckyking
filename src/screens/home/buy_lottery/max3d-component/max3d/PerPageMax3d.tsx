@@ -22,11 +22,7 @@ interface PerPageMax3dProps {
 }
 
 export const PerPageMax3d = React.memo(({ hugePosition, listNumber, lottColor, bet, onChangeNumber, onChangeBet }: PerPageMax3dProps) => {
-
-    useEffect(() => {
-        console.log("PerPageView rerender:::")
-    })
-
+    
     const [currentBet, setBet] = useState(bet)
     const [listChoose, setList] = useState([...listNumber])
 

@@ -16,12 +16,7 @@ export default ResultPowerTab
 
 const ExpensiveRerender = React.memo(({ navigation }: any) => {
 
-    useEffect(() => {
-        console.log("expensive rerender power")
-    })
-
     const [list, setList] = useState<any>([])
-
     const [isLoading, setIsLoading] = useState(false)
 
     const onRefresh = useCallback(async () => {

@@ -26,10 +26,6 @@ export const CartScreen = React.memo(() => {
     const safeAreaInsets = useSafeAreaInsets();
     const dispatch = useDispatch()
 
-    useEffect(() => {
-        // console.log("cart screen re-render")
-    })
-
     const cart = useSelector((state: any) => state.cartReducer.cart)
 
     const [refreshing, setRefresing] = useState(false)

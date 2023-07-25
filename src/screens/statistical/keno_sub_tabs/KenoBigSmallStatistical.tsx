@@ -14,10 +14,6 @@ export default KenoBigSmallStatistical
 
 const ExpensiveRerender = React.memo(({ navigation }: any) => {
 
-    useEffect(() => {
-        console.log("expensive rerender keno big small")
-    })
-
     return (
         <View style={{ flex: 1 }}>
             <IText>

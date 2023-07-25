@@ -94,9 +94,6 @@ export const TableKenoNumber = React.memo(({ title, data, numbers, onChangeNumbe
 })
 
 const Element = React.memo(({ number, check, onToggle }: any) => {
-    useEffect(() => {
-        console.log("render checkbox")
-    })
 
     const handlePress = useCallback(() => {
         onToggle(number, !check);

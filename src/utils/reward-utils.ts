@@ -602,7 +602,6 @@ function caculateMax3dProBenefits(lottery: any, result: any) {
         return multibagMax3dPro(lottery, result)
     }
 
-    console.log(lottery.NumberLottery.level)
     if (lottery.NumberLottery.level == 4) {
         return threebagMax3dPro(lottery, result)
     }

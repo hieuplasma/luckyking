@@ -23,10 +23,6 @@ const Wiget = forwardRef(({ onChoose, numberSet, page, type, listBets, hugePosit
 
     const lottColor = getColorLott(type)
 
-    useEffect(() => {
-        // console.log("Number Sheet max3d rerender")
-    })
-
     // ref
     const bottomSheetRef = useRef<BottomSheet>(null);
     const swiperRef = useRef<SwiperFlatList>(null);
@@ -61,7 +57,6 @@ const Wiget = forwardRef(({ onChoose, numberSet, page, type, listBets, hugePosit
         let curr = [...currentNumbers]
         curr[indexPage] = numbers
         setCurrentNumbers(curr)
-        console.log(curr)
     }, [currentNumbers, indexPage])
 
     const changeBet = useCallback((bet: number) => {

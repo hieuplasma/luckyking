@@ -17,10 +17,6 @@ export default ResultMax3dTab
 
 const ExpensiveRerender = React.memo(({ navigation }: any) => {
 
-    useEffect(() => {
-        console.log("expensive rerender max3d")
-    })
-
     const [list, setList] = useState<any>([])
 
     const [isLoading, setIsLoading] = useState(false)

@@ -29,8 +29,6 @@ export const AgreeTermsScreen = React.memo(() => {
 
     const [agree, setAgree] = useState<Boolean>(false)
 
-    console.log(route.params.authInfo)
-
     const agreed = useCallback(() => {
         dispatch(updateToken(route.params.authInfo))
         NavigationUtils.resetGlobalStackWithScreen(navigation, ScreenName.SplashScreen);

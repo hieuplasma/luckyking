@@ -56,7 +56,6 @@ export const UserScreen = React.memo(() => {
 
     async function getUser() {
         const res = await userApi.getuserInfo();
-        // console.log(res.data)
         if (res?.data) {
             dispatch(updateUser(res.data));
             setFullName(res.data.fullName);

@@ -37,7 +37,6 @@ export class ImageFullScreen extends PureComponent {
 
     render() {
         const { showing, uri } = this.state;
-        console.log(API_HOST + uri)
 
         return (
             <>

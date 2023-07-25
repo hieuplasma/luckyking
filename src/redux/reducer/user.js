@@ -21,7 +21,6 @@ const userSlice = createSlice({
     initialState,
     reducers: {
         updateUser: (state, action) => {
-            // console.log(action)
             let newState = { ...state }
             state.id = action.payload.id || newState.id
             state.phoneNumber = action.payload.phoneNumber || newState.phoneNumber
@@ -39,7 +38,6 @@ const userSlice = createSlice({
             state.bankAccount = action.payload.BankAccount || newState.bankAccount
         },
         removeUser: (state) => {
-            // console.log("initialState", initialState)
             state.id = "",
                 state.phoneNumber = "",
                 state.fullName = "",

@@ -22,10 +22,6 @@ const Wiget = forwardRef(({ order }: Props, ref) => {
         closeSheet: onClose
     }));
 
-    useEffect(() => {
-        // console.log('ChooseDrawSheet has been re-rendered, ');
-    });
-
     const [opacity, setOpacity] = useState(new Animated.Value(0))
     const [isOpen, setIsOpen] = useState(false)
     const onClose = () => {

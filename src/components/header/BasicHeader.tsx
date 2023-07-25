@@ -25,9 +25,6 @@ export const BasicHeader = React.memo(({ navigation, title, rightAction }: Image
             navigation.goBack()
             setBlock(true)
         }
-        else {
-            console.log("blocked navigate")
-        }
     }, [navigation]);
 
     return (

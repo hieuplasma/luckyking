@@ -22,9 +22,6 @@ export const ImageHeader = React.memo(({ navigation, title }: ImageHeaderProps) 
             navigation.goBack()
             setBlock(true)
         }
-        else {
-            console.log("blocked navigate")
-        }
     }, [navigation]);
 
     return (

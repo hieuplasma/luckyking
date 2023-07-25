@@ -68,13 +68,11 @@ export const VerifyOTPScreen = React.memo((props?: any) => {
   const signInWithPhoneNumber = useCallback(async () => {
     try {
       let tmp = route.params.body.phoneNumber
-      console.log(tmp)
       if (tmp.charAt(0) == '0') tmp = tmp.replace('0', '+84')
       const confirm = await auth().signInWithPhoneNumber(tmp)
       setConfirm(confirm)
       verifyOtpHooks.onResendOtp()
     } catch (error) {
-      console.log(error?.toString())
       Alert.alert("Lỗi", error?.toString())
     }
   }, [verifyOtpHooks.onResendOtp, setConfirm, route.params.body.phoneNumber])

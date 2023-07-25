@@ -43,12 +43,7 @@ export const MegaScreen = React.memo((props: any) => {
 
     const navigation = useNavigation<NavigationProp>();
     const route = useRoute<NavigationRoute>();
-    const safeAreaInsets = useSafeAreaInsets();
     const dispatch = useDispatch()
-
-    useEffect(() => {
-        // console.log("mega screen re-render")
-    })
 
     const listDraw = useSelector((state: any) => state.drawReducer.megaListDraw)
 
