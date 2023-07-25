@@ -4,23 +4,26 @@ import { Color, Style } from "@styles";
 import { ScreenUtils } from "@utils";
 import React, { useCallback, useEffect, useState } from "react";
 import { StatusBar, StyleSheet, TouchableOpacity, View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { CartIcon } from "../icon-specials";
 
 interface HeaderBuyLotteryProps {
     navigation: any
     lotteryType: LotteryType
 }
+
 export const HeaderBuyLottery = React.memo(({ navigation, lotteryType }: HeaderBuyLotteryProps) => {
 
-    useEffect(() => {
-        // console.log("Header Buy Lottery rerender")
-    })
+    const [block, setBlock] = useState(false)
 
-    const safeAreaInsets = useSafeAreaInsets();
     const onGoBack = useCallback(() => {
-        navigation.goBack();
-    }, [navigation]);
+        if (!block) {
+            navigation.goBack()
+            setBlock(true)
+        }
+        else {
+            console.log("blocked navigate")
+        }
+    }, [navigation, block]);
 
     const [logo, setLogo] = useState({ source: Images.power_logo, style: { height: 44.12, width: 60 } })
     useEffect(() => {
@@ -53,7 +56,7 @@ export const HeaderBuyLottery = React.memo(({ navigation, lotteryType }: HeaderB
             <StatusBar translucent={true} barStyle={'dark-content'} backgroundColor={"transparent"} />
             {/* //Header */}
             <View style={[styles.headerContainer]}>
-                <TouchableOpacity style={{ flex: 1, paddingVertical: 20}} onPress={onGoBack}>
+                <TouchableOpacity style={{ flex: 1, paddingVertical: 20 }} onPress={onGoBack}>
                     <Icon.Button
                         size={'small'}
                         color={Color.gray}
