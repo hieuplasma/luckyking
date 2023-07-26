@@ -26,13 +26,24 @@ export const OrderScreen = React.memo(() => {
 
     const user = useSelector((state: any) => state.userReducer)
     const luckykingBalance = useSelector((state: any) => state.userReducer.luckykingBalance)
+
     const surchargeLKK = useSelector((state: any) => state.systemReducer.surchargeLKK)
+    const kenoSurchargeLKK = useSelector((state: any) => state.systemReducer.kenoSurchargeLKK)
 
     const [bodyPay, setBody] = useState(route.params.body)
     const [surcharge, setSurcharge] = useState(0)
+    const [percent, setPercent] = useState(surchargeLKK)
 
     useEffect(() => {
-        setSurcharge(calSurcharge(bodyPay.amount, surchargeLKK))
+        console.log(bodyPay)
+        if (bodyPay.lotteryType == LotteryType.Keno) {
+            setSurcharge(calSurcharge(bodyPay.amount, kenoSurchargeLKK))
+            setPercent(kenoSurchargeLKK)
+        }
+        else {
+            setSurcharge(calSurcharge(bodyPay.amount, surchargeLKK))
+            setPercent(surchargeLKK)
+        }
     }, [bodyPay])
 
     const syncBalance = useCallback(async () => {
@@ -54,7 +65,7 @@ export const OrderScreen = React.memo(() => {
 
     const handlePay = useCallback(async () => {
         let tmp = { ...bodyPay }
-        tmp.surcharge = calSurcharge(bodyPay.amount, surchargeLKK)
+        tmp.surcharge = surcharge
         tmp.method = OrderMethod.Keep
         window.loadingIndicator.show()
         let res = null
@@ -104,7 +115,7 @@ export const OrderScreen = React.memo(() => {
             })
         }
         window.loadingIndicator.hide()
-    }, [bodyPay])
+    }, [bodyPay, surcharge])
 
     return (
         <View style={styles.container}>
@@ -178,7 +189,7 @@ export const OrderScreen = React.memo(() => {
                 </View>
 
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 8 }}>
-                    <IText>{"Phí dịch vụ"}</IText>
+                    <IText>{`Phí dịch vụ (${percent}%)`}</IText>
                     <IText style={{ color: Color.luckyKing }}>{printMoney(surcharge) + "đ"}</IText>
                 </View>
 

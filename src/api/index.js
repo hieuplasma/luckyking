@@ -173,6 +173,7 @@ export class Connection {
                                 'Phiên đăng nhập hiện không còn khả dụng!',
                             );
                         else this._showErrorAlert(error.response?.data?.message);
+                        // this._showErrorAlert(error.response?.data?.message);
                         this._dispatch(removeUser());
                         this._dispatch(removeToken());
                         // NavigationUtils.resetGlobalStackWithScreen(undefined, ScreenName.Authentication)
@@ -185,7 +186,8 @@ export class Connection {
                         else this._showErrorAlert(error.response.data.message);
                     }
                 } else if (error.request) {
-                    this._showErrorAlert(error.request._response);
+                    // this._showErrorAlert(error.request._response);
+                    this._showErrorAlert("Không kết nối được với server, vui lòng kiểm tra Internet và thử lại");
                 } else {
                     // Something happened in setting up the request that triggered an Error
                     this._showErrorAlert('Lỗi không xác định');

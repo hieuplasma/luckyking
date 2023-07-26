@@ -65,7 +65,12 @@ export const SplashScreen = React.memo(() => {
 
         lotteryApi.getJackpot().then(jackpots => { if (jackpots) dispatch(getJackpot(jackpots.data)) }),
 
-        lotteryApi.getConfig().then(config => { if (config) dispatch(saveSurchargeLKK({ surcharge: config.data.surcharge })) })
+        lotteryApi.getConfig().then(config => {
+          if (config) dispatch(saveSurchargeLKK({
+            surcharge: config.data.surcharge,
+            kenoSurcharge: config.data.kenoSurcharge
+          }))
+        })
       ])
 
       NavigationUtils.resetGlobalStackWithScreen(navigation, ScreenName.Main);

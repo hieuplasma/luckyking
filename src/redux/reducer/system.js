@@ -6,7 +6,8 @@ const initialState = {
     alertKeno: true,
     alertTesting: true,
 
-    surchargeLKK: 0
+    surchargeLKK: 0,
+    kenoSurchargeLKK: 0
 }
 
 // Create Redux state slice
@@ -27,8 +28,9 @@ const systemSlice = createSlice({
             state.alertTesting = action.payload.expand
         },
         saveSurchargeLKK: (state, action) => {
-            state.surchargeLKK = action.payload.surcharge
-        }
+            state.surchargeLKK = action.payload.surcharge || 0
+            state.kenoSurchargeLKK = action.payload.kenoSurcharge || 0
+        },
     },
 })
 
