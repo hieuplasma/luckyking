@@ -11,7 +11,6 @@ import { Color, Style } from '@styles';
 import { Button } from '@widgets';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Alert, KeyboardAvoidingView, Platform, TouchableOpacity, View } from 'react-native';
-import auth from '@react-native-firebase/auth';
 import { NavigationUtils, ScreenUtils } from '@utils';
 import { Icon } from '@assets';
 import { useHeaderHeight } from '@react-navigation/elements'
@@ -19,7 +18,6 @@ import { IText, InputComponent } from '@components';
 import { authApi } from '@api';
 import { HOT_LINE } from '@common';
 import { Linking } from 'react-native';
-
 
 type NavigationProp = StackNavigationProp<AuthenticationStackParamList, 'VerifyOTP'>;
 type NavigationRoute = RouteProp<AuthenticationStackParamList, 'VerifyOTP'>;
@@ -39,14 +37,15 @@ export interface VerifyOTPScreenRouteParams {
 export interface VerifyOTPScreenProps { }
 
 //@ts-ignore
-const phoneNumber = HOT_LINE.replaceAll('.', '')
+const hotline = HOT_LINE.replaceAll('.', '')
 
 export const VerifyOTPScreen = React.memo((props?: any) => {
   const height = useHeaderHeight()
   const navigation = useNavigation<NavigationProp>();
   const route = useRoute<NavigationRoute>();
   const verifyOtpHooks = useVerifyOtp();
-  const [confirm, setConfirm]: any = useState(null)
+
+  const [keySession, setKeySession] = useState<any>(false)
 
   useEffect(verifyOtpHooks.countingTime, [
     verifyOtpHooks.incrementTimeSend,
@@ -55,47 +54,35 @@ export const VerifyOTPScreen = React.memo((props?: any) => {
   ]);
 
   const confirmCode = useCallback(async () => {
-    try {
-      verifyOtpHooks.setLoading(true)
-      await confirm.confirm(verifyOtpHooks.otp);
-      verifyOtpHooks.setLoading(false)
-    } catch (error) {
-      Alert.alert("Lỗi", "Mã OTP không đúng")
-      verifyOtpHooks.setLoading(false)
+    const res = await authApi.confirmOTP({
+      key: keySession,
+      otp: verifyOtpHooks.otp
+    })
+
+    if (res) {
+      confirmOTPSuccess(res.data.token)
     }
-  }, [verifyOtpHooks.otp, confirm, navigation, route.params]);
+  }, [verifyOtpHooks.otp, navigation, route.params]);
 
   const signInWithPhoneNumber = useCallback(async () => {
-    try {
-      let tmp = route.params.body.phoneNumber
-      if (tmp.charAt(0) == '0') tmp = tmp.replace('0', '+84')
-      const confirm = await auth().signInWithPhoneNumber(tmp)
-      setConfirm(confirm)
-      verifyOtpHooks.onResendOtp()
-    } catch (error) {
-      Alert.alert("Lỗi", error?.toString())
+    const res = await authApi.createOTP({ phoneNumber: route.params.body.phoneNumber })
+    if (res) {
+      setKeySession(res.data.id)
     }
-  }, [verifyOtpHooks.onResendOtp, setConfirm, route.params.body.phoneNumber])
+    verifyOtpHooks.onResendOtp()
+  }, [verifyOtpHooks.onResendOtp, route.params.body.phoneNumber])
 
   useEffect(() => {
     signInWithPhoneNumber()
   }, [])
 
-  useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber; // unsubscribe on unmount
-  }, []);
+  const confirmOTPSuccess = async (token: string) => {
 
-  const confirmOTPSuccess = async (user: any) => {
     verifyOtpHooks.setLoading(true)
 
-    const token = await user.getIdToken()
     if (route.params.type == RequestType.singup) {
-      const res = await authApi.register(route.params.body, token)
+      const res = await authApi.verifiedRegister(route.params.body, token)
       if (res) {
-        await auth().signOut()
-        // dispatch(updateToken(res.data.accessToken))
-        // NavigationUtils.resetGlobalStackWithScreen(navigation, ScreenName.SplashScreen);
         NavigationUtils.navigate(navigation, ScreenName.Authentications.AgreeTerms,
           {
             authInfo: {
@@ -106,25 +93,30 @@ export const VerifyOTPScreen = React.memo((props?: any) => {
           })
       }
     }
-    else {
-      const res = await authApi.forgetPass(route.params.body, token)
+
+    if (route.params.type == RequestType.changepass) {
+      const res = await authApi.verifiedForgotPass(route.params.body, token)
       if (res) {
-        await auth().signOut()
         Alert.alert("Thông báo", "Đã đổi mật khẩu thành công!")
         NavigationUtils.navigate(navigation, ScreenName.Authentications.Login)
       }
     }
-    verifyOtpHooks.setLoading(false)
-    // Some Android devices can automatically process the verification code (OTP) message, and the user would NOT need to enter the code.
-    // Actually, if he/she tries to enter it, he/she will get an error message because the code was already used in the background.
-    // In this function, make sure you hide the component(s) for entering the code and/or navigate away from this screen.
-    // It is also recommended to display a message to the user informing him/her that he/she has successfully logged in.
-  }
 
-  // Handle login
-  async function onAuthStateChanged(user: any) {
-    console.log('user', user);
-    if (user) await confirmOTPSuccess(user)
+    if (route.params.type == RequestType.login) {
+      const res = await authApi.verifiedLogin(route.params.body, token)
+      if (res) {
+        NavigationUtils.navigate(navigation, ScreenName.Authentications.AgreeTerms,
+          {
+            authInfo: {
+              token: res.data.accessToken,
+              phoneNumber: route.params.body.phoneNumber,
+              password: route.params.body.password
+            }
+          })
+      }
+    }
+
+    verifyOtpHooks.setLoading(false)
   }
 
   const onGoBack = useCallback(() => {
@@ -200,25 +192,32 @@ export const VerifyOTPScreen = React.memo((props?: any) => {
         isLoading={verifyOtpHooks.isLoading}
       />
     );
-  }, [onSubmit, verifyOtpHooks.isLoading, confirm, verifyOtpHooks.otp]);
+  }, [onSubmit, verifyOtpHooks.isLoading, verifyOtpHooks.otp, keySession]);
 
   const call = useCallback(() => {
-    let url = phoneNumber
+    let url = hotline
+
     if (Platform.OS !== 'android') {
-      url = `telprompt:${phoneNumber}`;
+      url = `telprompt:${hotline}`;
     }
     else {
-      url = `tel:${phoneNumber}`;
+      url = `tel:${hotline}`;
     }
-    Linking.canOpenURL(url)
-      .then(supported => {
-        if (!supported) {
-          Alert.alert('Số điện thoại không tồn tại!');
-        } else {
-          return Linking.openURL(url);
-        }
-      })
-      .catch(err => console.log(err));
+
+    if (Platform.OS == 'android') {
+      Linking.openURL(url);
+    }
+    else {
+      Linking.canOpenURL(url)
+        .then(supported => {
+          if (!supported) {
+            Alert.alert('Số điện thoại không tồn tại!');
+          } else {
+            return Linking.openURL(url);
+          }
+        })
+        .catch(err => console.log(err));
+    }
   }, [])
 
   return (

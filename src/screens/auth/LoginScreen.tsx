@@ -16,6 +16,7 @@ import { useHeaderHeight } from '@react-navigation/elements'
 import { IText, ImageHeader, InputComponent } from '@components';
 import { Image, Images } from '@assets';
 import { FORM_ERROR } from '@common';
+import { RequestType } from './VerifyOTPScreen';
 
 
 type NavigationProp = StackNavigationProp<AuthenticationStackParamList, 'Login'>;
@@ -58,23 +59,34 @@ export const LoginWidget = React.memo((props: any) => {
     setErrorMessage(undefined)
     setLoading(true);
 
+    const deviceId = await DeviceInfo.getUniqueId()
     const body = {
       phoneNumber: phoneNumber,
       password: password,
-      deviceId: await DeviceInfo.getUniqueId(),
+      deviceId: deviceId,
     }
     const res = await authApi.login(body)
-    if (res?.data?.accessToken) {
-      // dispatch(updateToken(res.data.accessToken))
-      // NavigationUtils.resetGlobalStackWithScreen(navigation, ScreenName.SplashScreen);
-      NavigationUtils.navigate(navigation, ScreenName.Authentications.AgreeTerms,
-        {
-          authInfo: {
-            token: res.data.accessToken,
+    if (res?.data) {
+      if (res.data.accessToken) {
+        NavigationUtils.navigate(navigation, ScreenName.Authentications.AgreeTerms,
+          {
+            authInfo: {
+              token: res.data.accessToken,
+              phoneNumber: phoneNumber,
+              password: password
+            }
+          })
+      }
+      else {
+        NavigationUtils.navigate(navigation, ScreenName.Authentications.VerifyOTP, {
+          body: {
             phoneNumber: phoneNumber,
-            password: password
-          }
-        })
+            password: password,
+            deviceId: deviceId,
+          },
+          type: RequestType.login
+        });
+      }
     }
     setLoading(false)
   }, [phoneNumber, password])

@@ -6,6 +6,11 @@ class AuthApi {
     return await window.connection.POST(fullUrl, body);
   };
 
+  sercureLogin = async (body: any, firebaseToken: string) => {
+    let fullUrl = API_URI.SERCURE_LOGIN;
+    return await window.connection.requestApi("POST", fullUrl, body, null, null, firebaseToken)
+  };
+
   checkPhoneNumber = async (body: any) => {
     let fullUrl = API_URI.CHECK_PHONENUMBER;
     return await window.connection.POST(fullUrl, body);
@@ -25,6 +30,31 @@ class AuthApi {
     let fullUrl = API_URI.DELETE_ACCOUNT;
     return await window.connection.POST(fullUrl, body);
   }
+
+  verifiedLogin = async (body: any, token: string) => {
+    let fullUrl = API_URI.VERIFIED_LOGIN;
+    return await window.connection.requestApi("POST", fullUrl, body, null, null, token)
+  };
+
+  verifiedRegister = async (body: any, token: string) => {
+    let fullUrl = API_URI.VERIFIED_REGISTER;
+    return await window.connection.requestApi("POST", fullUrl, body, null, null, token)
+  };
+
+  verifiedForgotPass = async (body: any, token: string) => {
+    let fullUrl = API_URI.VERIFIED_FORGET_PASSWORD;
+    return await window.connection.requestApi("POST", fullUrl, body, null, null, token)
+  };
+
+  createOTP = async (body: any) => {
+    let fullUrl = API_URI.CREATE_OTP;
+    return await window.connection.POST(fullUrl, body);
+  };
+
+  confirmOTP = async (body: any) => {
+    let fullUrl = API_URI.CONFIRM_OTP;
+    return await window.connection.POST(fullUrl, body);
+  };
 }
 
 const authApi = new AuthApi();

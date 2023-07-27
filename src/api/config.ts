@@ -7,16 +7,16 @@ export const RESPONSE_TIMEOUT = 10000;
 export const TIMEOUT_MESSAGE = "request timeout"
 
 /** config for debug */
-// const config = {
-//   // host: 'http://192.168.246.47:3001',
-//   // host: 'http://192.168.246.46:3001'
-//   host: 'http://192.168.246.47:3001'
-// };
+const config = {
+  // host: 'http://192.168.246.47:3001',
+  // host: 'http://192.168.246.46:3001'
+  host: 'http://192.168.246.47:3001'
+};
 
 /** config for VPS */
-const config = {
-  host: 'http://103.162.31.84:3003',
-};
+// const config = {
+//   host: 'http://103.162.31.84:3003',
+// };
 
 /** config for Production */
 // const config = {
@@ -35,7 +35,15 @@ export const API_URI = {
   CHEATE_FORGET_PASSWORD: "/auth/forgot-password",
   FORGET_PASSWORD: "/auth/sercure/forgot-password",
   LOGIN: "/auth/login",
+  SERCURE_LOGIN: "/sercure/auth/login",
   DELETE_ACCOUNT: "/auth/delete-account",
+
+  VERIFIED_LOGIN: '/auth/otp-verified/login',
+  VERIFIED_REGISTER: '/auth/otp-verified/register',
+  VERIFIED_FORGET_PASSWORD: '/auth/otp-verified/forgot-password',
+
+  CREATE_OTP: '/otp/create-otp',
+  CONFIRM_OTP: '/otp/confirm-otp',
 
   CHECK_PHONENUMBER: "/auth/check",
 
