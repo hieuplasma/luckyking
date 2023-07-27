@@ -7,7 +7,7 @@ import {
 import { NavigationUtils, doNotExits, isVietnamesePhoneNumber } from '@utils'
 import { Color, Style } from '@styles';
 import React, { useCallback, useState } from 'react';
-import { View, Platform, KeyboardAvoidingView, ScrollView, StyleSheet } from 'react-native';
+import { View, Platform, KeyboardAvoidingView, ScrollView, StyleSheet, Alert } from 'react-native';
 import { Button } from '@widgets';
 import DeviceInfo from 'react-native-device-info';
 import { authApi } from '@api';
@@ -17,7 +17,7 @@ import { IText, ImageHeader, InputComponent } from '@components';
 import { Image, Images } from '@assets';
 import { FORM_ERROR } from '@common';
 import { RequestType } from './VerifyOTPScreen';
-
+import { ModalConfirmSendOTP } from './component/ModalConfirmSendOTP';
 
 type NavigationProp = StackNavigationProp<AuthenticationStackParamList, 'Login'>;
 type NavigationRoute = RouteProp<AuthenticationStackParamList, 'Login'>;
@@ -34,11 +34,12 @@ export const LoginWidget = React.memo((props: any) => {
   const dispatch = useDispatch()
   const height = useHeaderHeight()
 
-
   const [password, setPassword] = useState<string | undefined>(undefined);
   const [phoneNumber, setPhoneNumber] = useState<string | undefined>(undefined);
   const [errorMessage, setErrorMessage] = useState<| { phonenumber?: string; password?: string; } | undefined>(undefined);
   const { isLoading, setLoading } = useBase();
+
+  const [visible, setIsVisible] = useState(false)
 
   const onLoginPress = useCallback(async () => {
     if (doNotExits(phoneNumber)) {
@@ -65,7 +66,7 @@ export const LoginWidget = React.memo((props: any) => {
       password: password,
       deviceId: deviceId,
     }
-    const res = await authApi.login(body)
+    const res = await authApi.unverifiedLogin(body)
     if (res?.data) {
       if (res.data.accessToken) {
         NavigationUtils.navigate(navigation, ScreenName.Authentications.AgreeTerms,
@@ -77,16 +78,7 @@ export const LoginWidget = React.memo((props: any) => {
             }
           })
       }
-      else {
-        NavigationUtils.navigate(navigation, ScreenName.Authentications.VerifyOTP, {
-          body: {
-            phoneNumber: phoneNumber,
-            password: password,
-            deviceId: deviceId,
-          },
-          type: RequestType.login
-        });
-      }
+      else setIsVisible(true)
     }
     setLoading(false)
   }, [phoneNumber, password])
@@ -106,6 +98,23 @@ export const LoginWidget = React.memo((props: any) => {
   const onViewForgetPassword = useCallback(() => {
     NavigationUtils.navigate(navigation, ScreenName.Authentications.Forget);
   }, [navigation]);
+
+  const onConfirm = useCallback(async () => {
+    setIsVisible(false)
+    const deviceId = await DeviceInfo.getUniqueId()
+    NavigationUtils.navigate(navigation, ScreenName.Authentications.VerifyOTP, {
+      body: {
+        phoneNumber: phoneNumber,
+        password: password,
+        deviceId: deviceId
+      },
+      type: RequestType.login
+    });
+  }, [navigation, phoneNumber, password])
+
+  const onCancel = useCallback(() => {
+    setIsVisible(false)
+  }, [])
 
   const renderNumberInput = useCallback(() => {
     return (
@@ -198,6 +207,13 @@ export const LoginWidget = React.memo((props: any) => {
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
+
+      <ModalConfirmSendOTP
+        visible={visible}
+        phoneNumber={phoneNumber}
+        onConfirm={onConfirm}
+        onCancel={onCancel}
+      />
     </View>
   );
 });

@@ -1,5 +1,4 @@
 import { IText } from '@components';
-import { WINDOW_WIDTH } from '@gorhom/bottom-sheet';
 import { Color } from '@styles';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Modal, StyleSheet, TouchableOpacity, View } from 'react-native';
@@ -40,7 +39,7 @@ export const ModalConfirmSendOTP = React.memo(({ visible, phoneNumber, onConfirm
                     <IText style={{ fontWeight: 'bold' }}>{phoneNumber}</IText>
                     <IText>{''}</IText>
                     <IText>
-                        {"LuckyKing sẽ gửi mã xác thực OTP qua tổng đài tự động đến số điện thoại trên."}
+                        {"LuckyKing sẽ gửi mã xác thực OTP đến Zalo của số điện thoại trên."}
                     </IText>
 
                     <View style={styles.line} />

@@ -251,7 +251,10 @@ export const VerifyOTPScreen = React.memo((props?: any) => {
         </View>
         {renderOtpInput()}
         {renderTimer()}
-        {renderSubmitButton()}
+        {
+          verifyOtpHooks.timeResend !== 0 ?
+            renderSubmitButton() : <></>
+        }
         <IText style={{ marginTop: 8, textAlign: 'center' }}>
           {"Vui lòng gọi Hotline "}
           <IText style={{ color: Color.blue, textDecorationLine: 'underline' }}

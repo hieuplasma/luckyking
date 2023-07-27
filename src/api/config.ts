@@ -38,6 +38,7 @@ export const API_URI = {
   SERCURE_LOGIN: "/sercure/auth/login",
   DELETE_ACCOUNT: "/auth/delete-account",
 
+  UNVERIFIED_LOGIN: '/auth/unverified-login',
   VERIFIED_LOGIN: '/auth/otp-verified/login',
   VERIFIED_REGISTER: '/auth/otp-verified/register',
   VERIFIED_FORGET_PASSWORD: '/auth/otp-verified/forgot-password',

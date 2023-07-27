@@ -31,6 +31,11 @@ class AuthApi {
     return await window.connection.POST(fullUrl, body);
   }
 
+  unverifiedLogin = async (body: any) => {
+    let fullUrl = API_URI.UNVERIFIED_LOGIN;
+    return await window.connection.POST(fullUrl, body);
+  };
+
   verifiedLogin = async (body: any, token: string) => {
     let fullUrl = API_URI.VERIFIED_LOGIN;
     return await window.connection.requestApi("POST", fullUrl, body, null, null, token)
