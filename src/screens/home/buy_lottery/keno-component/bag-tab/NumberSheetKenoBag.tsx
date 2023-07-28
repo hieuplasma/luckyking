@@ -5,6 +5,7 @@ import { Color } from "@styles";
 import { IText } from "@components";
 import { TitleBagKenoNumberSheet } from "./TitleBagKenoNumberSheet";
 import { PerPageBagKeno } from "./PerPageBagKeno";
+import { ScrollView } from "react-native-gesture-handler";
 
 const lottColor = Color.keno
 
@@ -96,14 +97,14 @@ const Wiget = forwardRef(({ numberSet, onChoose }: any, ref) => {
         >
             <View style={{ flex: 1 }}>
                 <TitleBagKenoNumberSheet selected={currentNumbers} />
-                <View style={{ flex: 1 }}>
+                <ScrollView style={{ flex: 1 }}>
                     <PerPageBagKeno
                         listNumber={currentNumbers}
                         bet={currentBet}
                         onChangeNumber={changeNumber}
                         onChangeBet={changeBet}
                     />
-                </View>
+                </ScrollView>
                 <TouchableOpacity style={[styles.confirmButton, { opacity: checkIsOk() ? 1 : 0.4 }]} onPress={choosing} disabled={!checkIsOk()}>
                     <IText style={styles.textConfirm}>{`Xác nhận`.toUpperCase()}</IText>
                 </TouchableOpacity>

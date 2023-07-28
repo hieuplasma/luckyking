@@ -8,6 +8,7 @@ import { getColorLott } from '@utils';
 import { ConsolasText, IText } from '@components';
 import { TitleNumberSheet } from '../../component/TitleNumberSheet';
 import { PerPageMax3d } from './PerPageMax3d';
+import { ScrollView } from 'react-native-gesture-handler';
 
 interface NumberSheetMax3dProps {
     onChoose: (data1: any, data2: any) => void,
@@ -153,12 +154,13 @@ export const NumberSheetMax3d = forwardRef(({ onChoose, numberSet, page, type, l
                 <TitleNumberSheet
                     indexPage={indexPage}
                     swiperRef={swiperRef} />
-                <View style={{ flex: 1, marginTop: 12 }}>
+                <ScrollView style={{ flex: 1, marginTop: 12 }}>
                     <SwiperFlatList
                         index={0}
                         ref={swiperRef}
                         data={currentNumbers}
                         extraData={currentNumbers}
+                        // useReactNativeGestureHandler={true} 
                         renderItem={({ item, index }) => {
                             return (
                                 <PerPageMax3d
@@ -174,7 +176,7 @@ export const NumberSheetMax3d = forwardRef(({ onChoose, numberSet, page, type, l
                         keyExtractor={(item, index) => "" + index}
                         onChangeIndex={index => onChangeIndex(index)}
                     />
-                </View>
+                </ScrollView>
                 <TouchableOpacity disabled={!checkIsOk()} style={[styles.confirmButton, { backgroundColor: lottColor, opacity: checkIsOk() ? 1 : 0.4 }]} onPress={choosing}>
                     <IText style={styles.textConfirm}>{`Xác nhận`.toUpperCase()}</IText>
                 </TouchableOpacity>

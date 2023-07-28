@@ -6,6 +6,7 @@ import React, { useCallback, useEffect, useState } from "react"
 import { Dimensions, StyleSheet, TouchableOpacity, View, ViewStyle } from "react-native"
 import { ChooseLevelKeno } from "./ChooseLevelKeno"
 import { PickingType } from "@common"
+import { ScrollView } from "react-native-gesture-handler"
 
 const betMilestones = [
     10000, 20000, 50000, 100000, 200000, 500000

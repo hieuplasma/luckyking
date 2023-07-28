@@ -39,7 +39,7 @@ export const ModalConfirmSendOTP = React.memo(({ visible, phoneNumber, onConfirm
                     <IText style={{ fontWeight: 'bold' }}>{phoneNumber}</IText>
                     <IText>{''}</IText>
                     <IText>
-                        {"LuckyKing sẽ gửi mã xác thực OTP đến Zalo của số điện thoại trên."}
+                        {"LuckyKing sẽ gửi mã xác thực OTP qua Zalo của số điện thoại trên, Quý khách vui lòng kiểm tra Zalo số điện thoại trên để nhận mã OTP!"}
                     </IText>
 
                     <View style={styles.line} />

@@ -9,6 +9,7 @@ import { getColorLott, printMoney, printMoneyK, printNumber } from '@utils';
 import { ConsolasText, IText } from '@components';
 import { TitleNumberSheet } from '../../component/TitleNumberSheet';
 import { PerPageMax3dPlus } from './PerPageMax3dPlus';
+import { ScrollView } from 'react-native-gesture-handler';
 
 interface NumberSheet3DPlusProps {
     onChoose: (data1: any, data2: any) => void,
@@ -160,7 +161,7 @@ const Wiget = forwardRef(({ onChoose, numberSet, page, type, listBets, hugePosit
                     indexPage={indexPage}
                     swiperRef={swiperRef}
                 />
-                <View style={{ flex: 1, marginTop: 12 }}>
+                <ScrollView style={{ flex: 1, marginTop: 12 }}>
                     <SwiperFlatList
                         index={0}
                         ref={swiperRef}
@@ -181,7 +182,7 @@ const Wiget = forwardRef(({ onChoose, numberSet, page, type, listBets, hugePosit
                         keyExtractor={(item, index) => "" + index}
                         onChangeIndex={index => onChangeIndex(index)}
                     />
-                </View>
+                </ScrollView>
                 <TouchableOpacity disabled={!checkIsOk()} style={[styles.confirmButton, { backgroundColor: lottColor, opacity: checkIsOk() ? 1 : 0.4 }]} onPress={choosing}>
                     <IText style={styles.textConfirm}>{`Xác nhận`.toUpperCase()}</IText>
                 </TouchableOpacity>

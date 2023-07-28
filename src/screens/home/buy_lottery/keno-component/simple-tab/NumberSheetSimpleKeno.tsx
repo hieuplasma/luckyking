@@ -1,11 +1,12 @@
 import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from "react";
-import { Animated, View, TouchableOpacity, Dimensions, StyleSheet, ScrollView } from "react-native";
+import { Animated, View, TouchableOpacity, Dimensions, StyleSheet } from "react-native";
 import BottomSheet from '@gorhom/bottom-sheet';
 import { SwiperFlatList } from 'react-native-swiper-flatlist';
 import { Color } from "@styles";
 import { TitleSimpleKenoNumberSheet } from "./TitleSimpleKenoNumberSheet";
 import { PerPageSimpleKeno } from "./PerPageSimpleKeno";
 import { IText } from "@components";
+import { ScrollView } from "react-native-gesture-handler";
 
 const lottColor = Color.keno
 
@@ -133,7 +134,7 @@ const Wiget = forwardRef(({ page, numberSet, listBets, onChoose }: any, ref) => 
                     selected={currentNumbers[indexPage]}
                     swiperRef={swiperRef}
                 />
-                <ScrollView style={{ flex: 1 }}>
+                <ScrollView>
                     <SwiperFlatList
                         index={0}
                         ref={swiperRef}

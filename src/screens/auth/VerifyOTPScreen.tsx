@@ -11,7 +11,7 @@ import { Color, Style } from '@styles';
 import { Button } from '@widgets';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Alert, KeyboardAvoidingView, Platform, TouchableOpacity, View } from 'react-native';
-import { NavigationUtils, ScreenUtils } from '@utils';
+import { NavigationUtils, ScreenUtils, doNotExits } from '@utils';
 import { Icon } from '@assets';
 import { useHeaderHeight } from '@react-navigation/elements'
 import { IText, InputComponent } from '@components';
@@ -53,17 +53,6 @@ export const VerifyOTPScreen = React.memo((props?: any) => {
     verifyOtpHooks.countingTime,
   ]);
 
-  const confirmCode = useCallback(async () => {
-    const res = await authApi.confirmOTP({
-      key: keySession,
-      otp: verifyOtpHooks.otp
-    })
-
-    if (res) {
-      confirmOTPSuccess(res.data.token)
-    }
-  }, [verifyOtpHooks.otp, navigation, route.params]);
-
   const signInWithPhoneNumber = useCallback(async () => {
     const res = await authApi.createOTP({ phoneNumber: route.params.body.phoneNumber })
     if (res) {
@@ -75,6 +64,20 @@ export const VerifyOTPScreen = React.memo((props?: any) => {
   useEffect(() => {
     signInWithPhoneNumber()
   }, [])
+
+  const confirmCode = useCallback(async () => {
+    if (doNotExits(verifyOtpHooks.otp)) {
+      return Alert.alert("Lỗi", "Bạn chưa nhập mã OTP!")
+    }
+    const res = await authApi.confirmOTP({
+      key: keySession,
+      otp: verifyOtpHooks.otp
+    })
+
+    if (res) {
+      confirmOTPSuccess(res.data.token)
+    }
+  }, [verifyOtpHooks.otp, navigation, route.params]);
 
   const confirmOTPSuccess = async (token: string) => {
 
