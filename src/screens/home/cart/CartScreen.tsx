@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { lotteryApi } from '@api';
 import { getCart, removeCart, removeLottery, updateLottery } from '@redux';
 import { NavigationUtils, getLotteryName, printMoney } from '@utils';
-import { ConsolasText, IText, LogoIcon, ModalConfirm } from '@components';
+import { ConsolasText, IText, LogoIcon, ModalAlert, ModalConfirm } from '@components';
 import { RenderPowerMegaItem } from './RenderPowerMegaItem';
 import { CONFIRM_MES, ERR_MES, LotteryType, OrderMethod, SUCCESS_MES } from '@common';
 import { RenderMax3dItem } from './RenderMax3dItem';
@@ -20,6 +20,8 @@ type NavigationRoute = RouteProp<HomeStackParamList, 'CartScreen'>;
 
 export interface CartScreenParamsList { }
 
+const alertContent = 'Trong trường hợp chưa được thanh toán, các vé trong giỏ hàng của Quý khách khi đã quá kì quay sẽ được chuyển sang kì quay vé tiếp theo. Mong Quý khách lưu ý!'
+
 export const CartScreen = React.memo(() => {
     const navigation = useNavigation<NavigationProp>();
     const route = useRoute<NavigationRoute>();
@@ -27,6 +29,7 @@ export const CartScreen = React.memo(() => {
     const dispatch = useDispatch()
 
     const cart = useSelector((state: any) => state.cartReducer.cart)
+    const alertCart = useSelector((state: any) => state.systemReducer.alertCart)
 
     const [refreshing, setRefresing] = useState(false)
     const onRefresh = async () => {
@@ -187,6 +190,7 @@ export const CartScreen = React.memo(() => {
                 onCancel={() => setModal3(false)}
             />
 
+            <ModalAlert visible={alertCart} alertContent={alertContent} typeAlert='cart' />
         </View>
     )
 });

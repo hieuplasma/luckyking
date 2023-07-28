@@ -4,7 +4,7 @@ import { IText } from '../texts';
 import { Image, Images } from '@assets';
 import { Color } from '@styles';
 import { useDispatch } from 'react-redux';
-import { saveAlertKeno, saveAlertTesting } from '@redux';
+import { saveAlertCart, saveAlertKeno, saveAlertTesting } from '@redux';
 
 interface ModalContact {
     visible: boolean,
@@ -28,11 +28,12 @@ export const ModalAlert = React.memo(({ visible, alertContent, typeAlert }: Moda
     }, [visible])
 
     const handleCancel = useCallback(() => {
+        setIsVisible(false)
         if (save) {
             if (typeAlert == 'testing') dispatch(saveAlertTesting({ expand: false }))
             else if (typeAlert == 'keno') dispatch(saveAlertKeno({ expand: false }))
+            else if (typeAlert == 'cart') dispatch(saveAlertCart({ expand: false }))
         }
-        setIsVisible(false)
     }, [save, typeAlert])
 
     return (
