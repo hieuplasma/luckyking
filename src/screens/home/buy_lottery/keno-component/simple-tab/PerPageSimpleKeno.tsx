@@ -227,9 +227,9 @@ const windowHeight = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
     ballContainer: {
-        width: (windowWidth - 48) / 10, height: 36,
+        width: (windowWidth - 32) / 10, height: 36,
         justifyContent: 'center', alignItems: 'center',
-        marginHorizontal: 1.6
+        // marginHorizontal: 1.6
     },
     ball: {
         width: 30, height: 30,

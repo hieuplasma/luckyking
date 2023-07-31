@@ -30,7 +30,7 @@ export const ImageHeader = React.memo(({ navigation, title }: ImageHeaderProps) 
             <Image source={Images.bg_header} style={[styles.headerContainer, { paddingTop: safeAreaInsets.top }]}>
                 {title ?
                     <>
-                        <TouchableOpacity style={{ flex: 1, paddingVertical: 15 }} onPress={_.throttle(onGoBack, 1000)}>
+                        <TouchableOpacity style={{ flex: 1, flexDirection:'row', alignItems:'center'}} onPress={onGoBack}>
                             {
                                 navigation ?
                                     <Icon.Button
@@ -38,7 +38,7 @@ export const ImageHeader = React.memo(({ navigation, title }: ImageHeaderProps) 
                                         color={Color.white}
                                         name="ic_back"
                                         style={[Style.Space.Padding.Zero]}
-                                        onPressed={_.throttle(onGoBack, 1000)}
+                                        onPressed={onGoBack}
                                     /> : <></>
                             }
                         </TouchableOpacity>
