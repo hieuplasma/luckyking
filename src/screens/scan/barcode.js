@@ -106,27 +106,37 @@ function scan(param) {
 			res[index].bac = parseInt('0x' + max3d_bac)
 			console.log(res[index].bac)
 		}
-		// Lay 11 byte
-		let data_so = hex.slice(0, LOTTERY_BYTE)
-		hex = hex.slice(LOTTERY_BYTE)
+
 		let so_array = ''
-		// TRUONG HOP BO SO MAX 3D, MAX 3D+, MAX 3D PRO
+
 		if (LOTTERY_BYTE == MAX3D_BYTE) {
+			// TRUONG HOP BO SO MAX 3D, MAX 3D+, MAX 3D PRO
+			let data_so = hex.slice(0, LOTTERY_BYTE)
+			hex = hex.slice(LOTTERY_BYTE)
+
 			let count = parseInt('0x' + data_so.slice(0, 4).match(/../g).reverse().join(''))
-			let so1 = parseInt('0x' + data_so.slice(4, 8).match(/../g).reverse().join(''))
-			let so2 = parseInt('0x' + data_so.slice(8, 12).match(/../g).reverse().join(''))
-			so1 = so1.toString().padStart(3, "0")
-			so2 = so2.toString().padStart(3, "0")
-			res[index].boSo.push(so1)
+
 			if (count == 2) {
-				res[index].boSo.push(so2)
 				if (LOTTERY_TYPE == LotteryType.Max3D) {
 					LOTTERY_TYPE = LotteryType.Max3DPlus
 				}
 			}
+
+			if (count > 2) {
+				data_so = data_so + hex.slice(0, 4 * (count - 2))
+				hex = hex.slice(4 * (count - 2))
+			}
+			for (let i = 0; i < count; i++) {
+				let so = parseInt('0x' + data_so.slice(4 + i * 4, 8 + i * 4).match(/../g).reverse().join(''))
+				res[index].boSo.push(so.toString().padStart(3, "0"))
+			}
 		}
-		// Truong hop bo so KENO, POWER, MEGA
+
 		else {
+			// Truong hop bo so KENO, POWER, MEGA
+			let data_so = hex.slice(0, LOTTERY_BYTE)
+			hex = hex.slice(LOTTERY_BYTE)
+
 			for (let i = 0; i < data_so.length; i++) {
 				if (i % 2 == 0) {
 					let so_hex = data_so[i] + data_so[i + 1] // lay so hex 
@@ -146,11 +156,13 @@ function scan(param) {
 				}
 			}
 		}
+
 		if (LOTTERY_BYTE == KENO_BYTE || LOTTERY_BYTE == MAX3D_BYTE) {
 
 			let multi = 1
-			if (LOTTERY_TYPE == LotteryType.Max3DPro && res[index].bac == 2) {
-				multi = cntDistinct(res[index].boSo[0]) * cntDistinct(res[index].boSo[1])
+			if (LOTTERY_TYPE == LotteryType.Max3DPro) {
+				if (res[index].bac == 2) multi = cntDistinct(res[index].boSo[0]) * cntDistinct(res[index].boSo[1])
+				if (res[index].boSo.length > 2) multi = res[index].boSo.length * (res[index].boSo.length - 1)
 			}
 			let tien1 = hex.slice(0, 2)
 			hex = hex.slice(2)
@@ -200,7 +212,8 @@ function scan(param) {
 			numberDetail: getNumberDetail(res, LOTTERY_TYPE),
 			level: (LOTTERY_TYPE !== LotteryType.Max3DPro ?
 				res[0].boSo.length :
-				(res[0].bac == 2 ? 4 : 1))
+				(res[0].bac == 2 ? 4 :
+					res[0].bac > 2 ? 10 : 1))
 		}
 	}
 

@@ -1,7 +1,7 @@
 import { Color } from "@styles"
 import { OrderStatus } from "./enum"
 
-export const VERSION = '1.0.2'
+export const VERSION = '1.0.3'
 
 export const constanst = 'CONSTANTS'
 export const MAX_SET = 6

@@ -1,11 +1,12 @@
 import React, { forwardRef, useCallback, useImperativeHandle, useRef, useState } from 'react';
-import { StyleSheet, View, TouchableOpacity, Dimensions, Animated, ScrollView, FlatList, TextInput } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Dimensions, Animated, TextInput } from 'react-native';
 import BottomSheet from '@gorhom/bottom-sheet';
 import { Color } from '@styles';
 import { Image, Images } from '@assets'
 import { IText } from '@components';
 import customData from './bank.json';
 import { doNotExits } from '@utils';
+import { FlatList } from 'react-native-gesture-handler';
 
 interface Props {
     onChoose: (data: any) => void,
@@ -95,13 +96,13 @@ const Wiget = forwardRef(({ onChoose }: Props, ref) => {
             backgroundStyle={styles.sheetContainer}
         >
             <View style={{ flex: 1 }}>
-                <View style={{ flexDirection: 'row', paddingHorizontal: 8 }}>
+                <View style={{ flexDirection: 'row', paddingHorizontal: 8, alignItems: 'center' }}>
                     <IText style={{ fontSize: 18, color: Color.black, fontWeight: 'bold' }}>
                         {"Chọn "}
 
                     </IText>
                     <TextInput
-                        style={{ fontSize: 18, color: Color.black, fontWeight: 'bold' }}
+                        style={{ fontSize: 18, color: Color.black, fontWeight: 'bold', flex: 1 }}
                         placeholder={"ngân hàng"}
                         value={filterText}
                         onChangeText={onChangeText}

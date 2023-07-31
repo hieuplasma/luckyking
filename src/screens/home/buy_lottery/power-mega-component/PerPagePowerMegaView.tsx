@@ -2,10 +2,12 @@ import { ConsolasText, IText } from "@components";
 import { TouchableOpacity } from "@gorhom/bottom-sheet";
 import { Color } from "@styles";
 import { printNumber } from "@utils";
-import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react";
+import React, { forwardRef, useCallback, useEffect, useState } from "react";
 import { ColorValue, Dimensions, StyleSheet, View } from "react-native";
 
-const fullNumber: number[] = Array.from({ length: 55 }, (_, index) => index + 1);
+const fullNumberPower: number[] = Array.from({ length: 55 }, (_, index) => index + 1);
+const fullNumberMega: number[] = Array.from({ length: 45 }, (_, index) => index + 1);
+
 
 interface ItemPageProps {
     listNumber: any,
@@ -17,6 +19,8 @@ const Wiget = forwardRef(({ listNumber, lottColor, onNumberChange }: ItemPagePro
 
     const [listChoose, setList]: any = useState([...listNumber])
     const [toggleObj, setToggleObj] = useState({ number: 0, value: false })
+
+    const fullNumer = (lottColor == Color.power) ? fullNumberPower : fullNumberMega
 
     useEffect(() => {
         setList(listNumber)
@@ -39,7 +43,7 @@ const Wiget = forwardRef(({ listNumber, lottColor, onNumberChange }: ItemPagePro
 
     return (
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginHorizontal: 24, width: windowWidth - 48 }}>
-            {fullNumber.map((number: number, index2: number) =>
+            {fullNumer.map((number: number, index2: number) =>
                 <MemoizedBallNumber
                     key={number}
                     number={number}

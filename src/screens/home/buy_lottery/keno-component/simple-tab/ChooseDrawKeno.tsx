@@ -1,5 +1,5 @@
 import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
-import { StyleSheet, View, TouchableOpacity, Dimensions, Animated, FlatList, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Dimensions, Animated, ActivityIndicator } from 'react-native';
 import BottomSheet from '@gorhom/bottom-sheet';
 import { Color } from '@styles';
 import { Image, Images } from '@assets'
@@ -8,6 +8,7 @@ import { IText } from '@components';
 import { useDispatch, useSelector } from 'react-redux';
 import { lotteryApi } from '@api';
 import { loadMoreKenoDraw } from '@redux';
+import { FlatList } from 'react-native-gesture-handler';
 
 interface ChooseTypeSheetProps {
     currentChoose: any,

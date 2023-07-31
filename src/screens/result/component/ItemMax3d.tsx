@@ -17,8 +17,10 @@ interface FirstItemProps {
 export const FirstItemMax3d = React.memo(({ data, type, navigation, hideBtm }: FirstItemProps) => {
 
     const lottColor = getColorLott(type)
-    const logo = type == LotteryType.Max3D ? Images.max3d_logo_stroke1
-        : type == LotteryType.Max3DPlus ? Images.max3dplus_logo : Images.max3dpro_logo
+    // const logo = type == LotteryType.Max3D ? Images.max3d_logo_stroke1
+    //     : type == LotteryType.Max3DPlus ? Images.max3dplus_logo : Images.max3dpro_logo
+    const logo = (type == LotteryType.Max3D || type == LotteryType.Max3DPlus) ? Images.max3d_logo_stroke1
+        : Images.max3dpro_logo
 
     if (!data.drawn) return (
         <View >
