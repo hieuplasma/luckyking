@@ -13,6 +13,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 import { LotteryType } from '@common';
 import { saveAlertTesting } from '@redux';
+import { lotteryApi } from '@api';
 
 type NavigationProp = StackNavigationProp<HomeStackParamList, 'HomeScreen'>;
 type NavigationRoute = RouteProp<HomeStackParamList, 'HomeScreen'>;
@@ -20,8 +21,6 @@ type NavigationRoute = RouteProp<HomeStackParamList, 'HomeScreen'>;
 export interface HomeScreenParamsList { navToKenoStack?: any, navToBasicStack?: any }
 
 export interface HomeScreenProps { }
-
-const alertContentTesting = 'Hiện sản phẩm đang trong giai đoạn thử nghiệm nên sẽ chỉ mở bán trong khoảng thời gian từ 8h - 17h từ thứ 2 đến thứ 6, mong Quý khách thông cảm.'
 
 export const HomeScreen = React.memo((props?: HomeScreenProps) => {
   const navigation = useNavigation<NavigationProp>();
@@ -37,9 +36,27 @@ export const HomeScreen = React.memo((props?: HomeScreenProps) => {
 
   const jackpots = useSelector((state: any) => state.drawReducer.jackpots)
 
-  const alertTesting = useSelector((state: any) => state.systemReducer.alertTesting)
+  const currentPopupId = useSelector((state: any) => state.systemReducer.popupId)
 
   const [contactVisible, setContactVisible] = useState(false)
+  const [popupVisisble, setPopupVisisble] = useState(false)
+  const [popupContent, setPopupContent] = useState('')
+  const [popupId, setPopupId] = useState(0)
+
+  const getCurrentPopup = useCallback(async () => {
+    const popup = await lotteryApi.getPopup()
+    if (popup) {
+      if (currentPopupId < popup.data.id) {
+        setPopupVisisble(popup.data.show)
+        setPopupContent(popup.data.content)
+        setPopupId(popup.data.id)
+      }
+    }
+  }, [currentPopupId])
+
+  useEffect(() => {
+    getCurrentPopup()
+  }, [])
 
   useBackButtonWithNavigation(
     React.useCallback(() => {
@@ -223,7 +240,11 @@ export const HomeScreen = React.memo((props?: HomeScreenProps) => {
         </TouchableOpacity>
 
         <ModalContact visible={contactVisible} onCancel={() => setContactVisible(false)} />
-        <ModalAlert visible={alertTesting} alertContent={alertContentTesting} typeAlert='testing' />
+        <ModalAlert
+          visible={popupVisisble}
+          alertContent={popupContent}
+          typeAlert='popup'
+          popupId={popupId} />
       </Image>
     </>
   );

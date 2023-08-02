@@ -103,9 +103,15 @@ export const ScanScreenVisionCamera = React.memo(() => {
                 }
                 {
                     (hasPermission === false)
-                    && <IText style={styles.noPermission}>
-                        {"Không có quyền truy cập Camera"}
-                    </IText>
+                    &&
+                    <>
+                        <IText style={styles.noPermission}>
+                            {"Không có quyền truy cập Camera"}
+                        </IText>
+                        <IText style={styles.noPermission}>
+                            {"LuckyKing cần quyền truy cập Camera của bạn để thực hiện tính năng quét vé xem kết quả."}
+                        </IText>
+                    </>
                 }
                 {
                     !device ?

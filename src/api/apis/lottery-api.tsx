@@ -148,6 +148,12 @@ class LotteryApi {
         let fullUrl = API_URI.GET_CONFIG;
         return await window.connection.GET(fullUrl)
     }
+
+    //Get Popup
+    getPopup = async () => {
+        let fullUrl = API_URI.GET_POPUP;
+        return await window.connection.GET(fullUrl)
+    }
 }
 
 const lotteryApi = new LotteryApi

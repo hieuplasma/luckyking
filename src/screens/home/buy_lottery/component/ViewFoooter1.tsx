@@ -23,10 +23,10 @@ export const ViewFooter1 = React.memo(({ fastPick, selfPick, pickingType, hideSe
     }, [])
     return (
         <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-            <TouchableOpacity style={[styles.buttonFooterUp, {opacity: 0.4}]} activeOpacity={0.6} onPress={doingLovePick}>
+            {/* <TouchableOpacity style={[styles.buttonFooterUp, {opacity: 0.4}]} activeOpacity={0.6} onPress={doingLovePick}>
                 <Image source={Images.filled_heart} style={{ width: 19, height: 19 }}></Image>
                 <IText style={styles.textFooterUp}>{"Yêu thích"}</IText>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <TouchableOpacity
                 style={[styles.buttonFooterUp, { backgroundColor: pickingType == 'fastpick' ? "#FFC42C" : Color.white }]}
                 activeOpacity={0.6}

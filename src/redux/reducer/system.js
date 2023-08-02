@@ -7,6 +7,8 @@ const initialState = {
     alertTesting: true,
     alertCart: true,
 
+    popupId: 0,
+
     surchargeLKK: 0,
     kenoSurchargeLKK: 0
 }
@@ -35,10 +37,14 @@ const systemSlice = createSlice({
             state.surchargeLKK = action.payload.surcharge || 0
             state.kenoSurchargeLKK = action.payload.kenoSurcharge || 0
         },
+        savePopupId: (state, action) => {
+            state.popupId = action.payload.popupId || state.popupId
+        },
     },
 })
 
 export const { saveExpandKeno, saveExpandBasic,
     saveAlertKeno, saveAlertTesting,
-    saveSurchargeLKK, saveAlertCart } = systemSlice.actions
+    saveSurchargeLKK, saveAlertCart,
+    savePopupId } = systemSlice.actions
 export default systemReducer = systemSlice.reducer

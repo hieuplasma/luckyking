@@ -4,15 +4,16 @@ import { IText } from '../texts';
 import { Image, Images } from '@assets';
 import { Color } from '@styles';
 import { useDispatch } from 'react-redux';
-import { saveAlertCart, saveAlertKeno, saveAlertTesting } from '@redux';
+import { saveAlertCart, saveAlertKeno, saveAlertTesting, savePopupId } from '@redux';
 
 interface ModalContact {
     visible: boolean,
-    alertContent: string
-    typeAlert: string
+    alertContent: string,
+    typeAlert: string,
+    popupId?: number
 }
 
-export const ModalAlert = React.memo(({ visible, alertContent, typeAlert }: ModalContact) => {
+export const ModalAlert = React.memo(({ visible, alertContent, typeAlert, popupId }: ModalContact) => {
 
     const dispatch = useDispatch()
 
@@ -30,7 +31,8 @@ export const ModalAlert = React.memo(({ visible, alertContent, typeAlert }: Moda
     const handleCancel = useCallback(() => {
         setIsVisible(false)
         if (save) {
-            if (typeAlert == 'testing') dispatch(saveAlertTesting({ expand: false }))
+            if (typeAlert == 'popup') dispatch(savePopupId({ popupId: popupId }))
+            else if (typeAlert == 'testing') dispatch(saveAlertTesting({ expand: false }))
             else if (typeAlert == 'keno') dispatch(saveAlertKeno({ expand: false }))
             else if (typeAlert == 'cart') dispatch(saveAlertCart({ expand: false }))
         }
