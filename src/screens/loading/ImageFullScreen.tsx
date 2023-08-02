@@ -6,8 +6,11 @@
 import { API_HOST } from '@api';
 import { Image, Images } from '@assets';
 import React, { PureComponent } from 'react';
-import { Dimensions, TouchableOpacity, View } from 'react-native';
+import { Dimensions, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { ReactNativeZoomableView } from '@openspacelabs/react-native-zoomable-view';
+import { Color } from '@styles';
+import { IText } from '@components';
+import { openZalo } from '@utils';
 
 export class ImageFullScreen extends PureComponent {
     state = {
@@ -69,21 +72,26 @@ export class ImageFullScreen extends PureComponent {
                             right: 15,
                             bottom: 150,
                             backgroundColor: 'orange',
-                            borderRadius: 20
+                            borderRadius: 20,
+                            borderTopLeftRadius: 5
                         }}>
                             <ReactNativeZoomableView
                                 maxZoom={10}
                                 minZoom={0.5}
                                 zoomStep={0.5}
                                 initialZoom={1}
-                                style={{ borderRadius: 20, }}
+                                style={{ borderRadius: 20 }}
                             >
                                 <Image source={uri ? { uri: API_HOST + uri } : Images.no_picture} style={{
                                     width: windowWidth - 30,
                                     height: windowHeight - 300
                                 }} resizeMode='contain' />
                             </ReactNativeZoomableView>
+                            <TouchableOpacity style={styles.btnErr} onPress={() => openZalo()}>
+                                <IText style={{ color: Color.white }}>{"Báo khi vé lỗi"}</IText>
+                            </TouchableOpacity>
                         </View>
+
                     </View>
                 )}
             </>
@@ -93,3 +101,12 @@ export class ImageFullScreen extends PureComponent {
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('screen').height;
+
+const styles = StyleSheet.create({
+    btnErr: {
+        paddingVertical: 5, paddingHorizontal: 10,
+        borderRadius: 5, backgroundColor: Color.luckyKing,
+        position: 'absolute',
+        top: 5, left: 5
+    }
+})

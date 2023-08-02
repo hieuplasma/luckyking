@@ -14,18 +14,18 @@ export const TIMEOUT_MESSAGE = "request timeout"
 // };
 
 /** config for VPS */
-const config = {
-  host: 'http://103.162.31.84:3003',
-};
+// const config = {
+//   host: 'http://103.162.31.84:3003',
+// };
 
 /** config for Production */
 // const config = {
 //   host: 'http://42.96.40.239',
 // };
 
-// const config = {
-//   host: 'https://api.luckyking.vn',
-// };
+const config = {
+  host: 'https://api.luckyking.vn',
+};
 
 export const API_HOST = config.host;
 

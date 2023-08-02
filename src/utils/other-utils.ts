@@ -1,6 +1,7 @@
 import { Images } from "@assets"
-import { LotteryType } from "@common"
+import { LotteryType, ZALO_LINK } from "@common"
 import { Color } from "@styles"
+import { Alert, Linking, Platform } from "react-native"
 
 export function doNotExits(param: any) {
     if (param == undefined || param == null) return true
@@ -105,4 +106,21 @@ export function previousBet(currentBet: number) {
         case 300000: return 200000
         default: return currentBet
     }
+}
+
+export function openZalo() {
+    const url = ZALO_LINK
+    if (Platform.OS !== 'android') {
+        Linking.canOpenURL(url)
+            .then(supported => {
+                if (!supported) {
+                    Alert.alert('Thông báo', 'Tài khoản Zalo của chúng tôi hiện đang bảo trì!');
+                } else {
+                    return Linking.openURL(url);
+                }
+            })
+            .catch(err => console.log(err));
+    }
+    else Linking.openURL(url);
+    Linking.openURL(url);
 }
