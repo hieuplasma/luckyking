@@ -96,7 +96,7 @@ export const KenoScreen = () => {
                         {types[1].label}
                     </IText>
                 </TouchableOpacity>
-                <View style={{ width: 8 }} />
+                {/* <View style={{ width: 8 }} />
                 <TouchableOpacity
                     activeOpacity={0.8}
                     onPress={() => changeType(types[2])}
@@ -106,7 +106,7 @@ export const KenoScreen = () => {
                         {types[2].label}
                     </IText>
                 </TouchableOpacity>
-                <View style={{ width: 8 }} />
+                <View style={{ width: 8 }} /> */}
             </View>
 
             <>

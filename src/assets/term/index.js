@@ -184,7 +184,7 @@ Trường hợp bạn vi phạm bất kỳ Quy định nào trong Điều kho�
 
 Thông tin liên hệ
 © 2023, Công ty TNHH Giải trí số LuckyKing 
-Hotline: 0866.79.88.79  - Email: luckyking8879@LuckyKing.vn
+Hotline: 0866.79.88.79  - Email: luckyking8879@gmail.vn
 
 Địa chỉ: Tầng 4, Tòa Nhà Mỹ Đình Plaza 2, Số 2 Nguyễn Hoàng, Phường Mỹ Đình 2, Quận Nam Từ Liêm, Thành Phố Hà Nội, Việt Nam
 `

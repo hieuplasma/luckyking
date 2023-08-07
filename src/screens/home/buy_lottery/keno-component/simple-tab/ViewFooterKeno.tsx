@@ -52,7 +52,7 @@ export const ViewFooterKeno = React.memo(({ totalCost, bookLottery }: ViewFooter
                     {"ĐẶT VÉ NGAY"}
                 </IText>
                 <IText style={{ color: Color.white, fontStyle: 'italic', fontSize: 12, marginTop: -1 }}>
-                    {`Thời gian đặt vé kì #${kenoFirstDraw.drawCode} còn lại: ${printNumber(timeRemaining.minutes)}:${printNumber(timeRemaining.seconds)}`}
+                    {`Thời gian đặt vé kì #${kenoFirstDraw ? kenoFirstDraw.drawCode : 'undefined'} còn lại: ${printNumber(timeRemaining.minutes)}:${printNumber(timeRemaining.seconds)}`}
                 </IText>
             </TouchableOpacity >
         </>

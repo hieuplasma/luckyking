@@ -69,7 +69,7 @@ export function printNumber(number: any) {
     if (isNaN(number)) return 'TC'
     if (typeof number === 'string' && number.length == 3) return number
     if (number === false) return ""
-    if (number < 10) return '0' + number
+    if (number < 10) return '0' + parseInt(number)
     return number
 }
 

@@ -351,8 +351,8 @@ export const Max3dPlusTab = React.memo((props: Props) => {
                                             <TouchableOpacity style={styles.buttonBets} onPress={() => openNumberSheet(index)}>
                                                 <IText style={{ fontSize: 16, color: Color.blue }}>{printMoneyK(bets[index])}</IText>
                                             </TouchableOpacity>
-                                            <View style={{ flexDirection: 'row', alignItems: 'center', width: 60, justifyContent: 'space-between' }}>
-                                                <Image source={Images.nofilled_heart} style={{ width: 22, height: 22, }}></Image>
+                                            <View style={{ flexDirection: 'row', alignItems: 'center', width: 26, justifyContent: 'space-between' }}>
+                                                {/* <Image source={Images.nofilled_heart} style={{ width: 22, height: 22, }}></Image> */}
                                                 {(item[0] !== false && item[1] !== false) ?
                                                     <TouchableOpacity onPress={() => deleteNumber(index)}>
                                                         <Image source={Images.trash} style={{ width: 26, height: 26 }}></Image>

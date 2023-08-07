@@ -224,10 +224,10 @@ export const LotteryBasicItem = React.memo(({ lottery, tab, navigation }: Lotter
                 tab == 'complete' ?
                     <View style={styles.imgContainer}>
                         <TouchableWithoutFeedback onPress={() => showImg(lottery.imageFront)}>
-                            <Image source={lottery.imageFront ? { uri: API_HOST + lottery.imageFront } : Images.no_picture} style={styles.img} resizeMode="contain" />
+                            <Image source={lottery.imageFront ? { uri: API_HOST + lottery.imageFront } : Images.no_picture} style={styles.img} resizeMode="cover" />
                         </TouchableWithoutFeedback>
                         <TouchableWithoutFeedback onPress={() => showImg(lottery.imageBack)}>
-                            <Image source={lottery.imageBack ? { uri: API_HOST + lottery.imageBack } : Images.no_picture} style={styles.img} resizeMode="contain" />
+                            <Image source={lottery.imageBack ? { uri: API_HOST + lottery.imageBack } : Images.no_picture} style={styles.img} resizeMode="cover" />
                         </TouchableWithoutFeedback>
                     </View>
                     : <></>
@@ -295,12 +295,12 @@ const styles = StyleSheet.create({
     textBall: { fontSize: 14, marginHorizontal: 5 },
     imgContainer: {
         flexDirection: 'row', width: '100%',
-        height: 100, justifyContent: 'space-between',
+        height: 150, justifyContent: 'space-between',
         marginTop: 5
     },
     img: {
         width: '49%',
-        height: 100,
+        height: 150,
         borderWidth: 1, borderColor: 'rgba(160, 160, 160, 0.6)'
     },
     btnStatus: {

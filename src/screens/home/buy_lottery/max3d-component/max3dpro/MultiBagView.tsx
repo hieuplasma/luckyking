@@ -147,7 +147,7 @@ const Wiget = forwardRef(({ changeCost, changeGenerated, changeBets, changeNumbe
                                 )
                             })}
                         </View>
-                        <Image source={Images.nofilled_heart} style={{ width: 22, height: 22 }}></Image>
+                        {/* <Image source={Images.nofilled_heart} style={{ width: 22, height: 22 }}></Image> */}
                     </View>
 
                 </View>

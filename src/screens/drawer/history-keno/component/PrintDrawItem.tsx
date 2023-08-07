@@ -120,7 +120,7 @@ export const PrintDrawItem = React.memo(({ lottery, expand, toggle, lottColor, n
                         {renderWinning()}
                         <View style={styles.imgContainer}>
                             <TouchableWithoutFeedback onPress={() => showImg(lottery.imageFront)}>
-                                <Image source={lottery.imageFront ? { uri: API_HOST + lottery.imageFront } : Images.no_picture} style={styles.img} resizeMode="contain" />
+                                <Image source={lottery.imageFront ? { uri: API_HOST + lottery.imageFront } : Images.no_picture} style={styles.img} resizeMode="cover" />
                             </TouchableWithoutFeedback>
                             {/* <TouchableWithoutFeedback onPress={() => showImg(lottery.imageBack)}>
                                 <Image source={lottery.imageBack ? { uri: API_HOST + lottery.imageBack } : Images.no_picture} style={styles.img} resizeMode="contain" />
@@ -167,12 +167,12 @@ const styles = StyleSheet.create({
     },
     imgContainer: {
         flexDirection: 'row', width: '100%',
-        height: 100, justifyContent: 'center',
+        height: 150, justifyContent: 'center',
         marginBottom: 5
     },
     img: {
         width: '100%', alignSelf: 'center',
-        height: 100, borderRadius: 10,
+        height: 150, borderRadius: 10,
         borderWidth: 1, borderColor: 'rgba(160, 160, 160, 0.6)'
     },
     btnViewResult: {

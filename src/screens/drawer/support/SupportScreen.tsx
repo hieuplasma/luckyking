@@ -15,7 +15,7 @@ export interface SupportScreenParamsList { }
 
 //@ts-ignore
 const phoneNumber = HOT_LINE.replaceAll('.', '')
-const EMAIL = 'luckyking8879@LuckyKing.vn'
+const EMAIL = 'luckyking8879@gmail.vn'
 const ADDRESS = 'Tầng 4, Tòa Nhà Mỹ Đình Plaza 2, Số 2 Nguyễn Hoàng, Phường Mỹ Đình 2, Quận Nam Từ Liêm, Thành Phố Hà Nội, Việt Nam'
 
 export const SupportScreen = React.memo(() => {
