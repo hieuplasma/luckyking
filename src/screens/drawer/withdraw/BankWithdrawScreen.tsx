@@ -29,15 +29,33 @@ export const BankWithdrawScreen = () => {
     const [disable, setDisable] = useState(true)
 
     const [amount, setAmount]: any = useState("")
+    const [list, setList] = useState<number[]>([])
+
     const onChangeAmount = useCallback((text: string) => {
         setAmount(text)
+        if (!doNotExits(text)) {
+            const number = parseInt(text)
+            if (number > 0) {
+                let tmp = []
+                let curr = number
+                while (curr < 1000000000) {
+                    if (curr >= 100000) {
+                        tmp.push(curr)
+                    }
+                    curr = curr * 10
+                }
+                if (!tmp.includes(rewardWalletBalance)) tmp.push(rewardWalletBalance)
+                setList(tmp)
+            }
+        }
+        else setList([])
     }, [])
 
     const [bank, setBank]: any = useState(false)
     const onChangeBank = useCallback((param: any) => {
         setBank(param)
         setAccountNumber(param.accountNumber)
-        setUserName(param.userName)
+        if (!doNotExits(param.userName)) setUserName(param.userName)
     }, [])
 
     const [userName, setUserName]: any = useState(user.fullName)
@@ -116,7 +134,7 @@ export const BankWithdrawScreen = () => {
                 style={{ flex: 1 }}>
                 <ScrollView style={styles.body}>
                     <View style={{ flexDirection: 'row', marginTop: 16, marginLeft: 8 }}>
-                        <Image source={Images.trophy} style={{ width: 40, height: 40 }} tintColor={Color.luckyKing}/>
+                        <Image source={Images.trophy} style={{ width: 40, height: 40 }} tintColor={Color.luckyKing} />
                         <View style={{ marginLeft: 8 }}>
                             <IText style={{ lineHeight: 16.8 }}>{"Tiền thưởng"}</IText>
                             <IText style={{ lineHeight: 16.8, color: Color.luckyKing }}>{`${printMoney(rewardWalletBalance)}đ`}</IText>
@@ -125,7 +143,7 @@ export const BankWithdrawScreen = () => {
 
                     <View style={styles.line} />
 
-                    <View style={styles.borderItem}>
+                    {/* <View style={styles.borderItem}>
                         <View style={{ flexDirection: 'row' }}>
                             <Image source={Images.wallet} style={{ width: 40, height: 40 }} />
                             <View style={{ marginLeft: 8 }}>
@@ -133,11 +151,15 @@ export const BankWithdrawScreen = () => {
                                 <IText style={{ lineHeight: 16.8, color: Color.luckyKing }}>{`${printMoney(luckykingBalance)}đ`}</IText>
                             </View>
                         </View>
-                    </View>
+                    </View> */}
 
-                    <IText style={{ fontSize: 15, fontWeight: 'bold', marginLeft: 16 }}>
-                        {"Chọn TK từ danh sách đã lưu"}
-                    </IText>
+                    {
+                        user.bankAccount.length > 0 ?
+                            <IText style={{ fontSize: 15, fontWeight: 'bold', marginLeft: 16 }}>
+                                {"Chọn TK từ danh sách đã lưu"}
+                            </IText>
+                            : <></>
+                    }
                     {
                         user.bankAccount.map((item: any) => {
                             return (
@@ -167,6 +189,20 @@ export const BankWithdrawScreen = () => {
                             keyboardType="decimal-pad"
                         />
                     </View>
+
+                    {list.length > 0 ?
+                        <View style={{ marginHorizontal: 16, flexDirection: 'row', flexWrap: 'wrap' }}>
+                            {
+                                list.map((number: number) => {
+                                    return (
+                                        <TouchableOpacity key={number} style={styles.boxChoose} onPress={() => onChangeAmount(number.toString())}>
+                                            <IText style={{ fontSize: 16 }}>{printMoney(number)}</IText>
+                                        </TouchableOpacity>
+                                    )
+                                })
+                            }
+                        </View>
+                        : <></>}
 
                     <TouchableOpacity style={[styles.borderItem, { paddingHorizontal: 16 }]} onPress={openBankSheet}>
                         {
@@ -253,7 +289,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center', alignItems: 'center', marginBottom: 32
     },
     boxChoose: {
-        width: 80, height: 30,
+        width: 100, height: 30,
         justifyContent: 'center', alignItems: 'center',
         marginTop: 10, marginHorizontal: 4,
         backgroundColor: "#DADADA", borderRadius: 5

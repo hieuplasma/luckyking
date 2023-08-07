@@ -17,7 +17,7 @@ type NavigationRoute = RouteProp<WithdrawStackParamList, 'LuckyKingWithdrawScree
 
 export interface LuckyKingWithdrawScreenParamsList { }
 
-const list = [10000, 30000, 100000, 1000000]
+// const list = [10000, 30000, 100000, 1000000]
 
 export const LuckyKingWithdrawScreen = () => {
     const navigation = useNavigation<NavigationProp>();
@@ -32,6 +32,7 @@ export const LuckyKingWithdrawScreen = () => {
 
     const [amount, setAmount]: any = useState("")
     const [disable, setDisable] = useState(true)
+    const [list, setList] = useState<number[]>([])
 
     useEffect(() => {
         if (doNotExits(amount)) setDisable(true)
@@ -42,9 +43,25 @@ export const LuckyKingWithdrawScreen = () => {
         }
     }, [amount])
 
-    const onChangeText = (text: string) => {
+    const onChangeText = useCallback((text: string) => {
         setAmount(text)
-    }
+        if (!doNotExits(text)) {
+            const number = parseInt(text)
+            if (number > 0) {
+                let tmp = []
+                let curr = number
+                while (curr < 1000000000) {
+                    if (curr >= 100000) {
+                        tmp.push(curr)
+                    }
+                    curr = curr * 10
+                }
+                if (!tmp.includes(rewardWalletBalance)) tmp.push(rewardWalletBalance)
+                setList(tmp)
+            }
+        }
+        else setList([])
+    }, [])
 
     const withdraw = async () => {
         const money = parseInt(amount)
@@ -112,17 +129,19 @@ export const LuckyKingWithdrawScreen = () => {
                     <IText uppercase style={{ fontWeight: 'bold', fontSize: 16, color: Color.white }}>{"ĐỔI THƯỞNG"}</IText>
                 </TouchableOpacity>
 
-                <View style={{ marginHorizontal: 12, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
-                    {
-                        list.map((number: number) => {
-                            return (
-                                <TouchableOpacity key={number} style={styles.boxChoose} onPress={() => onChangeText(number.toString())}>
-                                    <IText style={{ fontSize: 16 }}>{printMoney(number)}</IText>
-                                </TouchableOpacity>
-                            )
-                        })
-                    }
-                </View>
+                {list.length > 0 ?
+                    <View style={{ marginHorizontal: 12, flexDirection: 'row', flexWrap: 'wrap' }}>
+                        {
+                            list.map((number: number) => {
+                                return (
+                                    <TouchableOpacity key={number} style={styles.boxChoose} onPress={() => onChangeText(number.toString())}>
+                                        <IText style={{ fontSize: 16 }}>{printMoney(number)}</IText>
+                                    </TouchableOpacity>
+                                )
+                            })
+                        }
+                    </View>
+                    : <></>}
             </View>
         </View>
     )
@@ -158,7 +177,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center', alignItems: 'center'
     },
     boxChoose: {
-        width: 80, height: 30,
+        width: 100, height: 30,
         justifyContent: 'center', alignItems: 'center',
         marginTop: 10, marginHorizontal: 4,
         backgroundColor: "#DADADA", borderRadius: 5
