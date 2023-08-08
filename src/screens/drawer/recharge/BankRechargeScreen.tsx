@@ -8,7 +8,7 @@ import { SafeAreaView, StyleSheet, View, Dimensions, TouchableOpacity, Alert } f
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
 import Clipboard from '@react-native-clipboard/clipboard';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 
 type NavigationProp = StackNavigationProp<RechargeStackParamList, 'BankRechargeScreen'>;
 type NavigationRoute = RouteProp<RechargeStackParamList, 'BankRechargeScreen'>;
@@ -46,6 +46,8 @@ const listBank = [
     },
 ]
 
+const listCopy = Array(listBank.length + 1).fill(false)
+
 export interface BankRechargeScreenParamsList { }
 
 export const BankRechargeScreen = () => {
@@ -55,9 +57,11 @@ export const BankRechargeScreen = () => {
 
     const user = useSelector((state: any) => state.userReducer)
 
+    const [copied, setCopied] = useState<number>(-1)
+
     const copyToClipboard = (text: string, extra: string = '') => {
         Clipboard.setString(text);
-        Alert.alert("Thông báo", `Đã sao chép ${extra}!`)
+        // Alert.alert("Thông báo", `Đã sao chép ${extra}!`)
     };
 
     const copyContent = useCallback(() => {
@@ -67,6 +71,16 @@ export const BankRechargeScreen = () => {
     const copySTK = useCallback((STK: string) => {
         copyToClipboard(`${STK}`, 'số tài khoản')
     }, [])
+
+    const changeCopyState = useCallback((index: number, text: string = '') => {
+        setCopied(index)
+        if (index < listCopy.length - 1) {
+            copySTK(text)
+        }
+        else {
+            copyContent()
+        }
+    }, [listCopy.length])
 
     return (
         <View style={{ flex: 1 }}>
@@ -113,16 +127,21 @@ export const BankRechargeScreen = () => {
                     </TouchableOpacity>
                 </View> */}
                 {
-                    listBank.map(item => {
+                    listBank.map((item, index: number) => {
                         return (
                             <View style={styles.boxBankAccount} key={item.shortName}>
-                                <Image source={{ uri: item.logo }} style={{ width: 45, height: 45 }} resizeMode='contain' />
+                                <Image source={{ uri: item.logo }} style={{ width: 70, height: 35 }} resizeMode='contain' />
                                 <View style={{ marginLeft: 4, justifyContent: 'center', flex: 1 }}>
                                     <IText style={{ fontWeight: 'bold' }}>{item.STK}</IText>
                                     <IText>{item.name}</IText>
                                 </View>
-                                <TouchableOpacity style={styles.boxCopy} onPress={() => copySTK(item.STK)}>
+                                <TouchableOpacity style={styles.boxCopy} onPress={() => changeCopyState(index, item.STK)}>
                                     <IText style={{ fontWeight: 'bold', fontSize: 16, color: Color.blue }}>{"Sao chép"}</IText>
+                                    {
+                                        copied == index ?
+                                            <Image style={styles.checkbox} source={Images.checked_box} tintColor={Color.green} />
+                                            : <></>
+                                    }
                                 </TouchableOpacity>
                             </View>
                         )
@@ -136,8 +155,13 @@ export const BankRechargeScreen = () => {
                     <View style={styles.boxInside}>
                         <IText uppercase style={styles.textInside}>{`NAP${user.phoneNumber}`}</IText>
                     </View>
-                    <TouchableOpacity style={[styles.boxInside, { paddingHorizontal: 4 }]} onPress={copyContent}>
+                    <TouchableOpacity style={[styles.boxInside2]} onPress={() => changeCopyState(listCopy.length - 1)}>
                         <IText style={styles.textInside}>{"Sao chép"}</IText>
+                        {
+                            (copied == listCopy.length - 1) ?
+                                <Image style={styles.checkbox} source={Images.checked_box} tintColor={Color.green} />
+                                : <></>
+                        }
                     </TouchableOpacity>
                 </View>
 
@@ -179,7 +203,12 @@ const styles = StyleSheet.create({
     boxInside: {
         height: 26, backgroundColor: Color.white,
         borderRadius: 5, alignItems: 'center',
-        paddingHorizontal: 3
+        paddingHorizontal: 8, flexDirection: 'row', justifyContent:'center'
+    },
+    boxInside2: {
+        height: 26, backgroundColor: Color.white,
+        borderRadius: 5, alignItems: 'center',
+        width: 100, flexDirection: 'row', justifyContent:'center'
     },
     textInside: {
         fontWeight: 'bold',
@@ -201,6 +230,9 @@ const styles = StyleSheet.create({
         borderRadius: 10, borderColor: Color.blue,
         borderWidth: 1,
         alignItems: 'center', justifyContent: 'center',
-        width: 92, height: 36
+        width: 100, height: 36, flexDirection: 'row'
+    },
+    checkbox: {
+        width: 20, height: 20, marginLeft: 4
     }
 })

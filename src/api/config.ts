@@ -7,16 +7,15 @@ export const RESPONSE_TIMEOUT = 10000;
 export const TIMEOUT_MESSAGE = "request timeout"
 
 /** config for debug */
-// const config = {
-//   // host: 'http://192.168.246.47:3001',
-//   // host: 'http://192.168.246.46:3001'
-//   host: 'http://192.168.246.47:3001'
-// };
+const config = {
+  // host: 'http://192.168.246.46:3001'
+  host: 'http://192.168.246.47:3001'
+};
 
 /** config for VPS */
-const config = {
-  host: 'http://103.162.31.84:3003',
-};
+// const config = {
+//   host: 'http://103.162.31.84:3003',
+// };
 
 /** config for Production */
 // const config = {
@@ -80,7 +79,7 @@ export const API_URI = {
 
   VIEW_JACKPOT: "/result/jackpot",
   GET_CONFIG: "/system/config",
-  GET_POPUP:"/system/popup",
+  GET_POPUP: "/system/popup",
 
   GET_LIST_ITEM_CART: "/cart/list",
   ADD_POWER_MEGA_CART: "/cart/add-power-mega",
