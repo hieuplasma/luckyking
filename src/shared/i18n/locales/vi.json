@@ -11,7 +11,7 @@
   },
   "label": {
     "login": "Đăng nhập",
-    "signup": "Đăng kí",
+    "signup": "Đăng ký",
     "otp": "Nhập OTP",
     "confirmOtp": "Nhập mã OTP",
     "forget": "Quên mật khẩu"
@@ -49,7 +49,7 @@
   },
   "button": {
     "login": "Đăng nhập",
-    "signUp": "Đăng kí",
+    "signUp": "Đăng ký",
     "forgetPassword": "Quên mật khẩu",
     "verifyOTP": "Nhập OTP",
     "submit": "Xác nhận",

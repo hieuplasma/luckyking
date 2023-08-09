@@ -32,8 +32,8 @@ export const StatusOrderLine = React.memo(({ status, printedCount,
                         <IText style={{ marginLeft: 8, color: Color.black }}>{`Đã in: `}
                             <IText style={{ fontWeight: 'bold', color: Color.black }}>
                                 {`${printedCount}/${totalLottery}`}
-                                <IText style={{fontWeight:'normal'}}>
-                                    {errorCount>0? ` (Hoàn huỷ: ${errorCount})`:''}
+                                <IText style={{ fontWeight: 'normal' }}>
+                                    {errorCount > 0 ? ` (Hoàn huỷ: ${errorCount})` : ''}
                                 </IText>
                             </IText>
                         </IText>
@@ -63,7 +63,8 @@ export const StatusOrderLine = React.memo(({ status, printedCount,
                     benefits == 0 &&
                     <View style={styles.lineItem}>
                         <IText style={{ color: colorStatus, fontWeight: 'bold' }}>
-                            {colorStatus == Color.keno ? 'Đợi quay thưởng' : ''}
+                            {colorStatus == Color.keno ?
+                                (printedCount > 0 ? 'Đợi quay thưởng' : 'Đợi in vé') : ''}
                             {colorStatus == Color.blue || colorStatus == Color.luckyKing ?
                                 'Không trúng' : ''}
                             {colorStatus == Color.gray ? 'Đơn hoàn huỷ' : ''}
@@ -75,7 +76,7 @@ export const StatusOrderLine = React.memo(({ status, printedCount,
                     (status != OrderStatus.ERROR && status != OrderStatus.RETURNED && benefits > 0) ?
                         <View style={styles.lineItem}>
                             <Image source={Images.trophy} style={[styles.iconStatus, { tintColor: colorStatus }]} />
-                            <IText style={{ marginLeft: 8, color: colorStatus, fontWeight:'bold' }}>{"Tiền thưởng: "}</IText>
+                            <IText style={{ marginLeft: 8, color: colorStatus, fontWeight: 'bold' }}>{"Tiền thưởng: "}</IText>
                             {/* <View style={{ flex: 1 }} /> */}
                             <IText style={{ fontWeight: 'bold', color: colorStatus }}>{`${printMoney(benefits)}đ`}</IText>
                             {/* <View style={{ flex: 1 }} /> */}

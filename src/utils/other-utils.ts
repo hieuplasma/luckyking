@@ -1,5 +1,5 @@
 import { Images } from "@assets"
-import { LotteryType, ZALO_LINK } from "@common"
+import { LotteryType, PASSWORD_MAX, PASSWORD_MIN, ZALO_LINK } from "@common"
 import { Color } from "@styles"
 import { Alert, Linking, Platform } from "react-native"
 
@@ -67,6 +67,20 @@ export function isVietnamesePhoneNumber(number?: string) {
     return /((^(\+84|84|0|0084){1})(3|5|7|8|9))+([0-9]{8})$/.test(number);
 }
 
+const start = ["84", "0084", "+84"]
+export function normalizePhoneNumber(number?: string) {
+    if (!number) return number
+    let digitsOnly = number.trim()
+    for (const element of start) {
+        if (digitsOnly.startsWith(element)) {
+            digitsOnly = digitsOnly.replace(element, '0');
+            break;
+        }
+    }
+    console.log("digitsOnly", digitsOnly)
+    return digitsOnly
+}
+
 export function isValidPassword(param?: string) {
     if (!param) return false
     const password = param.trim()
@@ -75,13 +89,13 @@ export function isValidPassword(param?: string) {
     // var disallowedChars = /[~`!@#$%^&*()\-_=+[{\]}\\|:;"'<,>.?/]/;
     // if (disallowedChars.test(password)) return false
 
-    if (password.length < 8 || password.length > 16) return false
+    if (password.length < PASSWORD_MIN || password.length > PASSWORD_MAX) return false
 
     return true
 }
 
 export function checkIdentify(val: string) {
-    if (val.trim().length != 12) return false;
+    if (val.trim().length != 12 && val.trim().length != 9) return false;
     if (!/^\d+$/.test(val.trim())) return false;
     return true;
 }

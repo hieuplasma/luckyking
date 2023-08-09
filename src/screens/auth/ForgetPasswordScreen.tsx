@@ -1,5 +1,5 @@
 import { AuthenticationStackParamList, ScreenName } from '@navigation';
-import { RouteProp, useNavigation } from '@react-navigation/native';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import {
   translate,
@@ -22,7 +22,9 @@ import { authApi } from '@api';
 type NavigationProp = StackNavigationProp<AuthenticationStackParamList, 'Forget'>;
 type NavigationRoute = RouteProp<AuthenticationStackParamList, 'Forget'>;
 
-export interface ForgetScreenRouteParams { }
+export interface ForgetScreenRouteParams {
+  token?: string
+}
 export interface ForgetScreenProps { }
 
 interface ErrorBody {
@@ -34,6 +36,7 @@ interface ErrorBody {
 export const ForgetPassword = React.memo(() => {
   const height = useHeaderHeight()
   const navigation = useNavigation<NavigationProp>();
+  const route = useRoute<NavigationRoute>()
 
   const [phoneNumber, setPhoneNumber] = useState<string | undefined>(undefined);
   const [password, setPassword] = useState<string | undefined>(undefined);
@@ -52,29 +55,48 @@ export const ForgetPassword = React.memo(() => {
       setErrorMessage({ phonenumber: FORM_ERROR.INVALID_PHONE })
       return 0;
     }
-    if (doNotExits(password)) {
-      setErrorMessage({ password: FORM_ERROR.EMPTY_PASS })
-      return 0;
+
+    if (route.params?.token) {
+      if (doNotExits(password)) {
+        setErrorMessage({ password: FORM_ERROR.EMPTY_PASS })
+        return 0;
+      }
+      if (password != repeatPassword) {
+        setErrorMessage({ repeatpassword: FORM_ERROR.NOT_MATCH_REPEATE_PASS })
+        return 0;
+      }
+      if (!isValidPassword(password)) {
+        setErrorMessage({ password: FORM_ERROR.INVALID_PASS })
+        return 0;
+      }
     }
-    if (password != repeatPassword) {
-      setErrorMessage({ repeatpassword: FORM_ERROR.NOT_MATCH_REPEATE_PASS })
-      return 0;
-    }
-    if (!isValidPassword(password)) {
-      setErrorMessage({ password: FORM_ERROR.INVALID_PASS })
-      return 0;
-    }
+
     setErrorMessage(undefined)
 
-    window.loadingIndicator.show()
-    const res = await authApi.checkPhoneNumber({ phoneNumber: phoneNumber })
-    window.loadingIndicator.hide()
-    if (res) {
-      if (!res.data.registered) {
-        return Alert.alert('Thông báo', RES_MES.NOT_EXIST_PHONE);
+    if (route.params?.token) {
+      const body = {
+        phoneNumber: phoneNumber,
+        newPassword: password
       }
-      else setIsVisible(true)
+      const res = await authApi.verifiedForgotPass(body, route.params?.token)
+      if (res) {
+        Alert.alert("Thông báo", "Đã đổi mật khẩu thành công!")
+        NavigationUtils.navigate(navigation, ScreenName.Authentications.Login)
+      }
     }
+
+    else {
+      window.loadingIndicator.show()
+      const res = await authApi.checkPhoneNumber({ phoneNumber: phoneNumber })
+      window.loadingIndicator.hide()
+      if (res) {
+        if (!res.data.registered) {
+          return Alert.alert('Thông báo', RES_MES.NOT_EXIST_PHONE);
+        }
+        else setIsVisible(true)
+      }
+    }
+
   }, [navigation, phoneNumber, password, repeatPassword]);
 
   const onConfirm = useCallback(() => {
@@ -86,7 +108,7 @@ export const ForgetPassword = React.memo(() => {
       },
       type: RequestType.changepass
     });
-  }, [navigation, phoneNumber, password])
+  }, [navigation, phoneNumber, password, route.params?.token])
 
   const onCancel = useCallback(() => {
     setIsVisible(false)
@@ -123,8 +145,8 @@ export const ForgetPassword = React.memo(() => {
         editable={true}
         keyboardType="default"
         value={password}
-        placeholder={translate('input.password')}
-        label={translate('input.password')}
+        placeholder={"Nhập mật khẩu mới"}
+        label={"Mật khẩu mới"}
         onChangeText={onChangePassword}
         containerStyle={[Style.Space.MarginTop.xLarge_24]}
         errorMessage={errorMessage?.password}
@@ -155,7 +177,7 @@ export const ForgetPassword = React.memo(() => {
     return (
       <Button.Widget
         disableTranslate={true}
-        text={'Cập nhật mật khẩu'}
+        text={route.params?.token ? 'Cập nhật mật khẩu' : 'Xác thực bằng mã OTP'}
         type="primary"
         style={[
           Style.Self.Center,
@@ -164,7 +186,7 @@ export const ForgetPassword = React.memo(() => {
         onClicked={onSubmit}
       />
     );
-  }, [onSubmit]);
+  }, [onSubmit, route.params?.token]);
 
   return (
     <View style={styles.container}>
@@ -178,12 +200,24 @@ export const ForgetPassword = React.memo(() => {
           <View style={{ width: '100%', marginTop: 37, alignItems: 'center' }}>
             <Image source={Images.big_lock} style={{ width: 65, height: 65 }}></Image>
           </View>
-          {renderNumberInput()}
-          {renderPasswordInput()}
-          {renderRepeatPasswordInput()}
-          <IText style={{ fontSize: 14, color: Color.luckyKing, marginTop: 16, marginLeft: 8 }}>
-            {"Chú ý: Độ dài mật khẩu phải từ 8 - 16 kí tự"}
-          </IText>
+          {
+            route.params?.token ?
+              <IText style={{ fontWeight: 'bold', marginTop: 32, fontSize: 18 }}>
+                {"Số điện thoại: " + phoneNumber}
+              </IText>
+              : renderNumberInput()
+          }
+          {
+            route.params?.token ?
+              <>
+                {renderPasswordInput()}
+                {renderRepeatPasswordInput()}
+                <IText style={{ fontSize: 14, color: Color.luckyKing, marginTop: 16, marginLeft: 8 }}>
+                  {"Chú ý: Độ dài mật khẩu phải từ 8 - 16 kí tự"}
+                </IText>
+              </>
+              : <></>
+          }
           {renderConfirmButton()}
         </ScrollView>
       </KeyboardAvoidingView>

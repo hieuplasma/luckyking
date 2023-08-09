@@ -98,11 +98,12 @@ export const VerifyOTPScreen = React.memo((props?: any) => {
     }
 
     if (route.params.type == RequestType.changepass) {
-      const res = await authApi.verifiedForgotPass(route.params.body, token)
-      if (res) {
-        Alert.alert("Thông báo", "Đã đổi mật khẩu thành công!")
-        NavigationUtils.navigate(navigation, ScreenName.Authentications.Login)
-      }
+      // const res = await authApi.verifiedForgotPass(route.params.body, token)
+      // if (res) {
+      //   Alert.alert("Thông báo", "Đã đổi mật khẩu thành công!")
+      //   NavigationUtils.navigate(navigation, ScreenName.Authentications.Login)
+      // }
+      NavigationUtils.navigate(navigation, ScreenName.Authentications.Forget, { token: token })
     }
 
     if (route.params.type == RequestType.login) {

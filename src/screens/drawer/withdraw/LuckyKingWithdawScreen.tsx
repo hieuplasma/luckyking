@@ -125,16 +125,12 @@ export const LuckyKingWithdrawScreen = () => {
                     />
                 </View>
 
-                <TouchableOpacity style={[styles.button, { opacity: disable ? 0.6 : 1 }]} disabled={disable} onPress={withdraw}>
-                    <IText uppercase style={{ fontWeight: 'bold', fontSize: 16, color: Color.white }}>{"ĐỔI THƯỞNG"}</IText>
-                </TouchableOpacity>
-
                 {list.length > 0 ?
                     <View style={{ marginHorizontal: 12, flexDirection: 'row', flexWrap: 'wrap' }}>
                         {
                             list.map((number: number) => {
                                 return (
-                                    <TouchableOpacity key={number} style={styles.boxChoose} onPress={() => onChangeText(number.toString())}>
+                                    <TouchableOpacity activeOpacity={0.7} key={number} style={styles.boxChoose} onPress={() => onChangeText(number.toString())}>
                                         <IText style={{ fontSize: 16 }}>{printMoney(number)}</IText>
                                     </TouchableOpacity>
                                 )
@@ -142,6 +138,10 @@ export const LuckyKingWithdrawScreen = () => {
                         }
                     </View>
                     : <></>}
+
+                <TouchableOpacity style={[styles.button, { opacity: disable ? 0.6 : 1 }]} disabled={disable} onPress={withdraw}>
+                    <IText uppercase style={{ fontWeight: 'bold', fontSize: 16, color: Color.white }}>{"ĐỔI THƯỞNG"}</IText>
+                </TouchableOpacity>
             </View>
         </View>
     )

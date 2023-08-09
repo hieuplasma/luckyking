@@ -35,6 +35,6 @@ export const FORM_ERROR = {
     NOT_MATCH_REPEATE_PASS: 'Mật khẩu và mật khẩu xác nhận phải giống nhau',
     INVALID_PASS: "Độ dài mật khẩu phải từ 8 - 16 ký tự",
     EMPTY_NAME: 'Bạn chưa nhập họ tên',
-    EMPTY_IDENTIFY: 'Bạn chưa nhập CCCD/CMND',
-    INVALID_IDENTIFY: 'CCCD/CMND không hợp lệ',
+    EMPTY_IDENTIFY: 'Bạn chưa nhập CCCD',
+    INVALID_IDENTIFY: 'CCCD không hợp lệ',
 }

@@ -91,10 +91,10 @@ export const UserScreen = React.memo(() => {
             return Alert.alert('Thông báo', 'Bạn không được để trống Họ và tên');
         }
         if (doNotExits(identify)) {
-            return Alert.alert('Thông báo', 'Bạn không được để trống CMND/CCCD');
+            return Alert.alert('Thông báo', 'Bạn không được để trống CCCD');
         }
         if (!checkIdentify(identify)) {
-            return Alert.alert('Thông báo', 'Số CMND/CCCD không hợp lệ!');
+            return Alert.alert('Thông báo', 'Số CCCD không hợp lệ!');
         }
 
         setLoading(true);
@@ -174,7 +174,7 @@ export const UserScreen = React.memo(() => {
                         {'(Gồm 8 số như 12345678, 66666666, 88888888....)'}
                     </IText> */}
                     <ItemView
-                        label={'CMND/CCCD'}
+                        label={'CCCD'}
                         value={identify}
                         setValue={(text: string) => setIdentify(text)}
                         force={true}

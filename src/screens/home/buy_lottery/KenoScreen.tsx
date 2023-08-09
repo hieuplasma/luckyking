@@ -26,7 +26,7 @@ const types = [
     { label: "Nuôi Keno", value: 2 }
 ]
 
-const alertContentKeno = 'Do đặc thù thời gian quay số Keno rất ngắn, nên trong các trường hợp bất khả kháng như lỗi đường truyền, lỗi máy in vé của Viẹtlott..., kỳ QSMT thực tế in trên vé có thể khác so với kỳ QSMT mà Quý khách lựa chọn. Vé Keno mà Quý khách nhận được sẽ được in ở kỳ QSMT gần nhất mà hệ thống có thể đáp ứng sau khi Quý khách thanh toán thành công.'
+const alertContentKeno = 'Do đặc thù thời gian quay số Keno rất ngắn, nên trong các trường hợp bất khả kháng như lỗi đường truyền, lỗi máy in vé của Vietlott..., kỳ QSMT thực tế in trên vé có thể khác so với kỳ QSMT mà Quý khách lựa chọn. Vé Keno mà Quý khách nhận được sẽ được in ở kỳ QSMT gần nhất mà hệ thống có thể đáp ứng sau khi Quý khách thanh toán thành công.'
 
 export const KenoScreen = () => {
 

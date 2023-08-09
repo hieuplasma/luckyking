@@ -135,7 +135,7 @@ export const OrderScreen = React.memo(() => {
                     <IText>{user.phoneNumber}</IText>
                 </View>
                 <View style={styles.borderItem}>
-                    <IText style={{ fontWeight: 'bold' }}>{"Số CMND/CCCD"}</IText>
+                    <IText style={{ fontWeight: 'bold' }}>{"Số CCCD"}</IText>
                     <IText>{user.identify}</IText>
                 </View>
 

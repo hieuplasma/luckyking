@@ -215,7 +215,7 @@ export const SignUpScreen = React.memo((props?: SignUpScreenProps) => {
         editable={true}
         keyboardType='phone-pad'
         value={identify}
-        placeholder={'Nhập số CCCD hoặc số CMND'}
+        placeholder={'Nhập số CCCD'}
         onChangeText={onChangeIdentify}
         containerStyle={[Style.Space.MarginTop.large_16]}
         errorMessage={errorMessage?.identify}

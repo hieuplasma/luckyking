@@ -18,6 +18,9 @@ export const DELAY_SCREEN = 100 // miliseconds
 export const HOT_LINE = '0866.79.88.79'
 export const ZALO_LINK = 'https://zalo.me/2096217051699563199'
 
+export const PASSWORD_MIN = 6
+export const PASSWORD_MAX = 16
+
 export const LIST_STATUS = {
     PRINTED: [OrderStatus.CONFIRMED, OrderStatus.WON, OrderStatus.PAID, OrderStatus.NO_PRIZE],
     BOOKED: [OrderStatus.PENDING, OrderStatus.LOCK,

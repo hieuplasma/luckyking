@@ -13,6 +13,7 @@ import { userApi } from '@api';
 import { useSelector } from 'react-redux';
 import { IText, ImageHeader } from '@components';
 import { UserStackParamList } from '@navigation';
+import { PASSWORD_MAX, PASSWORD_MIN } from '@common';
 
 type NavigationProp = StackNavigationProp<UserStackParamList, 'ChangePassScreen'>;
 type NavigationRoute = RouteProp<UserStackParamList, 'ChangePassScreen'>;
@@ -48,8 +49,8 @@ export const ChangePassScreen = React.memo(() => {
         if (newPass.trim() !== confirmPass.trim()) {
             return Alert.alert("Thông báo", "Xác nhận mật khẩu không chính xác")
         }
-        if (newPass.trim().length < 8 || newPass.trim().length > 116) {
-            return Alert.alert("Thông báo", "Độ dài mật khẩu phải từ 8 - 16 kí tự")
+        if (newPass.trim().length < PASSWORD_MIN || newPass.trim().length > PASSWORD_MAX) {
+            return Alert.alert("Thông báo", "Độ dài mật khẩu phải từ " + PASSWORD_MIN + " - " + PASSWORD_MAX + " kí tự")
         }
         setLoading(true)
         const body = {

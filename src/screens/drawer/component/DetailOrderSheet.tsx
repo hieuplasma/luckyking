@@ -130,7 +130,7 @@ const Wiget = forwardRef(({ order }: Props, ref) => {
                     <IText>{user.fullName}</IText>
                 </View>
                 <View style={styles.lineTx}>
-                    <IText>{"Số CMND/CCCD:"}</IText>
+                    <IText>{"Số CCCD:"}</IText>
                     <IText>{user.identify}</IText>
                 </View>
                 <View style={styles.lineTx}>

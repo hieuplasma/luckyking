@@ -4,7 +4,7 @@ import { RechargeStackParamList, } from '@navigation';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Color } from '@styles';
-import { SafeAreaView, StyleSheet, View, Dimensions, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, View, Dimensions, TouchableOpacity, Alert } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
 import Clipboard from '@react-native-clipboard/clipboard';
@@ -203,12 +203,12 @@ const styles = StyleSheet.create({
     boxInside: {
         height: 26, backgroundColor: Color.white,
         borderRadius: 5, alignItems: 'center',
-        paddingHorizontal: 8, flexDirection: 'row', justifyContent:'center'
+        paddingHorizontal: 8, flexDirection: 'row', justifyContent: 'center'
     },
     boxInside2: {
         height: 26, backgroundColor: Color.white,
         borderRadius: 5, alignItems: 'center',
-        width: 100, flexDirection: 'row', justifyContent:'center'
+        width: 100, flexDirection: 'row', justifyContent: 'center'
     },
     textInside: {
         fontWeight: 'bold',
