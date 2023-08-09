@@ -1,4 +1,4 @@
-import {  userApi } from '@api';
+import { userApi } from '@api';
 import { Images, Image } from '@assets';
 import { ImageHeader, IText } from '@components';
 import { RechargeStackParamList, ScreenName } from '@navigation';
@@ -27,6 +27,7 @@ export const RechargeScreen = () => {
     const [sectionData, setSectionData] = useState<any[]>([])
     const [isLoading, setLoading] = useState(false)
     const [loadingBottom, setLoadingBottom] = useState(false)
+    const [showHistory, setShowHistory] = useState(false)
 
     const onRefresh = async () => {
         setLoading(true)
@@ -55,6 +56,10 @@ export const RechargeScreen = () => {
     useEffect(() => {
         setSectionData(groupBySortedFlucs(listTransaction))
     }, [listTransaction])
+
+    const toggleHistory = useCallback(() => {
+        setShowHistory(!showHistory)
+    }, [showHistory])
 
     return (
         <View style={styles.container}>
@@ -97,40 +102,44 @@ export const RechargeScreen = () => {
                     <Image source={Images.right_arrow} style={styles.rightArrow} tintColor={Color.black} />
                 </TouchableOpacity> */}
 
-                <IText style={{ marginTop: 10, marginLeft: 16, fontWeight: 'bold' }}>
-                    {"Lịch sử  Ví LuckyKing:"}
+                <IText style={styles.txtHistory} onPress={toggleHistory}>
+                    {"Lịch sử  Ví LuckyKing"}
                 </IText>
 
-                <SectionList
-                    style={{ marginTop: 8 }}
-                    sections={sectionData}
-                    renderItem={({ item, index }: any) => {
-                        return (
-                            <ItemTransaction item={item} />
-                        )
-                    }}
-                    renderSectionHeader={({ section: { key } }) => (
-                        <View style={styles.itemHeader}>
-                            <IText style={{ fontWeight: 'bold' }}>
-                                {key}
-                            </IText>
-                        </View>
-                    )}
-                    keyExtractor={(item: any, index) => String(item.id)}
-                    refreshControl={
-                        <RefreshControl refreshing={isLoading} onRefresh={onRefresh} />
-                    }
-                    ListFooterComponent={<View style={{ height: 100, justifyContent: 'center', alignItems: 'center' }}>
-                        {loadingBottom ?
-                            <ActivityIndicator size={"large"} color={Color.gray} />
-                            : <></>}
-                    </View>}
-                      ListEmptyComponent={
-                        <View style={{ marginTop: 16, justifyContent: 'center', alignItems: 'center' }}>
-                            <IText style={{ fontSize: 16, color: Color.luckyKing, fontWeight: 'bold' }}>{ERR_MES.NO_TRANSACTION}</IText>
-                        </View>}
-                    onEndReached={loadMore}
-                />
+                {
+                    showHistory ?
+                        <SectionList
+                            style={{ marginTop: 8 }}
+                            sections={sectionData}
+                            renderItem={({ item, index }: any) => {
+                                return (
+                                    <ItemTransaction item={item} />
+                                )
+                            }}
+                            renderSectionHeader={({ section: { key } }) => (
+                                <View style={styles.itemHeader}>
+                                    <IText style={{ fontWeight: 'bold' }}>
+                                        {key}
+                                    </IText>
+                                </View>
+                            )}
+                            keyExtractor={(item: any, index) => String(item.id)}
+                            refreshControl={
+                                <RefreshControl refreshing={isLoading} onRefresh={onRefresh} />
+                            }
+                            ListFooterComponent={<View style={{ height: 100, justifyContent: 'center', alignItems: 'center' }}>
+                                {loadingBottom ?
+                                    <ActivityIndicator size={"large"} color={Color.gray} />
+                                    : <></>}
+                            </View>}
+                            ListEmptyComponent={
+                                <View style={{ marginTop: 16, justifyContent: 'center', alignItems: 'center' }}>
+                                    <IText style={{ fontSize: 16, color: Color.luckyKing, fontWeight: 'bold' }}>{ERR_MES.NO_TRANSACTION}</IText>
+                                </View>}
+                            onEndReached={loadMore}
+                        />
+                        : <></>
+                }
             </View>
         </View>
     )
@@ -161,5 +170,10 @@ const styles = StyleSheet.create({
         marginVertical: 4, paddingVertical: 8,
     },
     rightArrow: { width: 10, height: 20 },
-    itemHeader: { height: 40, justifyContent: 'center', backgroundColor: Color.historyBackground, paddingLeft: 8 }
+    itemHeader: { height: 40, justifyContent: 'center', backgroundColor: Color.historyBackground, paddingLeft: 8 },
+    txtHistory: {
+        marginTop: 10, textAlign: 'center', fontWeight: 'bold',
+        textDecorationLine: 'underline',
+        color: Color.blue
+    }
 })

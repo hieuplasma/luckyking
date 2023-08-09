@@ -1,5 +1,5 @@
 import { Images } from "@assets"
-import { LotteryType, PASSWORD_MAX, PASSWORD_MIN, ZALO_LINK } from "@common"
+import { HOT_LINE, LotteryType, PASSWORD_MAX, PASSWORD_MIN, ZALO_LINK } from "@common"
 import { Color } from "@styles"
 import { Alert, Linking, Platform } from "react-native"
 
@@ -137,4 +137,28 @@ export function openZalo() {
     }
     else Linking.openURL(url);
     Linking.openURL(url);
+}
+
+export function callHotline() {
+    //@ts-ignore
+    const phoneNumber = HOT_LINE.replaceAll('.', '')
+    let url = phoneNumber
+    if (Platform.OS !== 'android') {
+        url = `telprompt:${phoneNumber}`;
+    }
+    else {
+        url = `tel:${phoneNumber}`;
+    }
+    if (Platform.OS !== 'android') {
+        Linking.canOpenURL(url)
+            .then(supported => {
+                if (!supported) {
+                    Alert.alert('Thông báo', 'Số điện thoại CSKH của chúng tôi hiện đang bảo trì!');
+                } else {
+                    return Linking.openURL(url);
+                }
+            })
+            .catch(err => console.log(err));
+    }
+    else Linking.openURL(url);
 }

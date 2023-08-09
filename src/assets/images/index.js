@@ -80,5 +80,6 @@ export const Images = {
   address: require('./address.png'),
   cash_flow: require('./cash_flow.png'),
   cskh: require('./cskh.png'),
-  exit: require('./exit.png')
+  exit: require('./exit.png'),
+  copy: require('./copy.png')
 };

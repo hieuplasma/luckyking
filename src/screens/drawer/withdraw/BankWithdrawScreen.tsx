@@ -195,7 +195,7 @@ export const BankWithdrawScreen = () => {
                             {
                                 list.map((number: number) => {
                                     return (
-                                        <TouchableOpacity activeOpacity={0.7} key={number} style={styles.boxChoose} onPress={() => onChangeAmount(number.toString())}>
+                                        <TouchableOpacity activeOpacity={0.8} key={number} style={styles.boxChoose} onPress={() => onChangeAmount(number.toString())}>
                                             <IText style={{ fontSize: 16 }}>{printMoney(number)}</IText>
                                         </TouchableOpacity>
                                     )

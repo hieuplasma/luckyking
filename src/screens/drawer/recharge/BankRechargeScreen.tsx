@@ -9,6 +9,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { useCallback, useState } from 'react';
+import { callHotline, openZalo } from '@utils';
 
 type NavigationProp = StackNavigationProp<RechargeStackParamList, 'BankRechargeScreen'>;
 type NavigationRoute = RouteProp<RechargeStackParamList, 'BankRechargeScreen'>;
@@ -130,19 +131,27 @@ export const BankRechargeScreen = () => {
                     listBank.map((item, index: number) => {
                         return (
                             <View style={styles.boxBankAccount} key={item.shortName}>
-                                <Image source={{ uri: item.logo }} style={{ width: 70, height: 35 }} resizeMode='contain' />
+                                <Image source={{ uri: item.logo }} style={{ width: 120, height: 60 }} resizeMode='contain' />
                                 <View style={{ marginLeft: 4, justifyContent: 'center', flex: 1 }}>
-                                    <IText style={{ fontWeight: 'bold' }}>{item.STK}</IText>
+                                    <View style={{ flexDirection: 'row' }}>
+                                        <IText style={{ fontWeight: 'bold' }}>{item.STK}</IText>
+                                        <TouchableOpacity onPress={() => changeCopyState(index, item.STK)} activeOpacity={1}>
+                                            <Image style={styles.checkbox}
+                                                source={copied == index ? Images.checked_box : Images.copy}
+                                                tintColor={copied == index ? Color.green : Color.gray}
+                                            />
+                                        </TouchableOpacity>
+                                    </View>
                                     <IText>{item.name}</IText>
                                 </View>
-                                <TouchableOpacity style={styles.boxCopy} onPress={() => changeCopyState(index, item.STK)}>
+                                {/* <TouchableOpacity style={styles.boxCopy} onPress={() => changeCopyState(index, item.STK)}>
                                     <IText style={{ fontWeight: 'bold', fontSize: 16, color: Color.blue }}>{"Sao chép"}</IText>
                                     {
                                         copied == index ?
                                             <Image style={styles.checkbox} source={Images.checked_box} tintColor={Color.green} />
                                             : <></>
                                     }
-                                </TouchableOpacity>
+                                </TouchableOpacity> */}
                             </View>
                         )
                     })
@@ -155,11 +164,11 @@ export const BankRechargeScreen = () => {
                     <View style={styles.boxInside}>
                         <IText uppercase style={styles.textInside}>{`NAP${user.phoneNumber}`}</IText>
                     </View>
-                    <TouchableOpacity style={[styles.boxInside2]} onPress={() => changeCopyState(listCopy.length - 1)}>
+                    <TouchableOpacity style={[styles.boxInside2]} onPress={() => changeCopyState(listCopy.length - 1)} activeOpacity={1}>
                         <IText style={styles.textInside}>{"Sao chép"}</IText>
                         {
                             (copied == listCopy.length - 1) ?
-                                <Image style={styles.checkbox} source={Images.checked_box} tintColor={Color.green} />
+                                <Image style={[styles.checkbox, { marginTop: 0 }]} source={Images.checked_box} tintColor={Color.green} />
                                 : <></>
                         }
                     </TouchableOpacity>
@@ -170,17 +179,23 @@ export const BankRechargeScreen = () => {
                     {" Nếu Quý khách ghi sai hoặc quên ghi nội dung Chuyển khoản vui lòng liên hệ với bộ phận CSKH của LuckyKing "}
                 </IText>
 
-                <View style={{ marginTop: 4, flexDirection: 'row', alignItems: 'center' }}>
+                <TouchableOpacity
+                    style={{ marginTop: 4, flexDirection: 'row', alignItems: 'center' }}
+                    activeOpacity={1}
+                    onPress={() => callHotline()}>
                     <Image source={Images.phone} style={{ width: 30, height: 30 }} />
                     <IText style={{ fontWeight: 'bold', marginLeft: 12 }}>{"Hotline: 0866.79.88.79"}</IText>
-                </View>
-                <View style={{ marginTop: 4, flexDirection: 'row', alignItems: 'center' }}>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={{ marginTop: 4, flexDirection: 'row', alignItems: 'center' }}
+                    activeOpacity={1}
+                    onPress={() => openZalo()}>
                     <Image source={Images.zalo} style={{ width: 30, height: 30 }} />
                     <View style={{ marginLeft: 12, justifyContent: 'center', width: windowWidth - 58 }}>
                         <IText style={{ fontWeight: 'bold' }}>{"Zalo: LuckyKing"}</IText>
                         <IText style={{ fontStyle: 'italic' }}>{"(Vui lòng gửi kèm hình ảnh chuyển khoản thành công)"}</IText>
                     </View>
-                </View>
+                </TouchableOpacity>
 
                 <IText style={{ fontStyle: 'italic', marginTop: 8, color: Color.luckyKing }}>
                     {"(*) Lưu ý: Nếu sau 4h tài khoản vẫn chưa được nạp vui lòng liên hệ với bộ phận CSKH của LuckyKing như trên."}
@@ -233,6 +248,6 @@ const styles = StyleSheet.create({
         width: 100, height: 36, flexDirection: 'row'
     },
     checkbox: {
-        width: 20, height: 20, marginLeft: 4
+        width: 24, height: 24, marginLeft: 4, marginTop: -6
     }
 })
