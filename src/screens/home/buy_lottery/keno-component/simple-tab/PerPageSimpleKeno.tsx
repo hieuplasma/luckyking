@@ -46,11 +46,15 @@ export const PerPageSimpleKeno = React.memo(({ listNumber, bet, onChangeNumber, 
     }, [bet])
 
     const fastPick = useCallback(() => {
+        setList([])
+        onChangeNumber([])
         if (pickingType == 'fastpick') setPickingType('default')
         else setPickingType('fastpick')
     }, [pickingType])
 
     const selfPick = useCallback(() => {
+        setList([])
+        onChangeNumber([])
         // return window.myalert.show({ title: 'Tính năng đang phát triển' })
         if (pickingType == 'selfpick') setPickingType('default')
         else setPickingType('selfpick')
@@ -68,7 +72,8 @@ export const PerPageSimpleKeno = React.memo(({ listNumber, bet, onChangeNumber, 
 
     useEffect(() => {
         setPickingType('default')
-        const newList = [...listChoose]
+        let newList = [...listChoose]
+        if (listChoose.includes('TC')) newList = []
         if (toggleObj.value) {
             if (toggleObj.number > 80 || newList[0] > 80) newList.length = 0
             if (newList.length < MAX_LENGTH) newList.push(toggleObj.number)

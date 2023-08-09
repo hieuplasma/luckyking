@@ -126,6 +126,7 @@ export const SimpleKenoTab = React.memo(({ showBottomSheet, navigation }: Props)
     const openNumberSheet = useCallback(async (page: number) => {
         await setNumbersFake(numberSet)
         setPageNumber(page)
+        setPickingType('default')
         chooseNumberRef.current?.openSheet()
     }, [chooseNumberRef, numberSet])
     const renderNumberSheet = useCallback(() => {

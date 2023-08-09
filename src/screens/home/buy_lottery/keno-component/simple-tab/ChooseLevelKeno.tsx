@@ -1,6 +1,6 @@
 import { IText } from "@components"
 import { Color } from "@styles"
-import React, { useCallback, useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import { StyleSheet, TouchableOpacity, View } from "react-native"
 
 interface ChooseLevelKenoProps {
@@ -56,6 +56,10 @@ export const ChooseLevelKeno = React.memo(({ onChoose, onChooseForAll, pickingTy
         if (onChoose) onChoose(random1Row(value))
         if (onChooseForAll) onChooseForAll(random6Row(value))
     }, [onChoose, onChooseForAll, pickingType])
+
+    useEffect(() => {
+        setCurrent(0)
+    }, [pickingType])
     return (
         <>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 8 }}>
