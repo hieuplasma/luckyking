@@ -17,6 +17,7 @@ export const DELAY_SCREEN = 100 // miliseconds
 
 export const HOT_LINE = '0866.79.88.79'
 export const ZALO_LINK = 'https://zalo.me/2096217051699563199'
+export const WEBSITE = 'https://luckyking.vn'
 
 export const PASSWORD_MIN = 6
 export const PASSWORD_MAX = 16

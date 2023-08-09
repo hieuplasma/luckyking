@@ -20,7 +20,7 @@ export interface HomeTicketLongFormComponent extends ViewProps {
   leftView?: () => JSX.Element;
   rightView?: () => JSX.Element;
   centerView?: () => JSX.Element;
-  type?: LotteryType;
+  type: LotteryType;
   jackpot?: string
 }
 

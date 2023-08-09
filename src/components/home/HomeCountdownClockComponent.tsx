@@ -1,12 +1,12 @@
 import { lotteryApi } from '@api';
 import { LotteryType } from '@common';
-import { deleteFirstDrawKeno } from '@redux';
+import { deleteFirstDrawKeno, getKenoDraw, getMax3dDraw, getMax3dProDraw, getMegaDraw, getPowerDraw } from '@redux';
 import { Label } from '@shared';
 import { Style } from '@styles';
 import { printNumber } from '@utils';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { StyleProp, TextStyle, View, ViewProps } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 export interface HomeCountdownClockComponentProps extends ViewProps {
   targetTime: Date;
@@ -20,12 +20,41 @@ export const HomeCountdownClockComponent = React.memo(
       undefined,
     );
 
+    const listDrawKeno = useSelector((state: any) => state.drawReducer.kenoListDraw)
+
     const dispatch = useDispatch()
 
     const resetScheduleKeno = useCallback(async (interval: any) => {
       try {
-        dispatch(deleteFirstDrawKeno())
+
+        if (listDrawKeno.length < 20) {
+          lotteryApi.getScheduleKeno({ type: LotteryType.Keno, take: 40, skip: 0 })
+            .then(listKeno => { if (listKeno?.data?.length > 0) dispatch(getKenoDraw(listKeno.data)) })
+        }
+        else {
+          dispatch(deleteFirstDrawKeno())
+        }
       } catch (error) {
+        clearInterval(interval);
+        setTimeRemaining({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+      }
+    }, [])
+
+    const resetScheduleOther = useCallback(async (interval: any) => {
+      try {
+        lotteryApi.getSchedulePower({ take: 6, skip: 0 })
+          .then(listPower => { if (listPower?.data?.length > 0) dispatch(getPowerDraw(listPower.data)) }),
+
+          lotteryApi.getScheduleMega({ take: 6, skip: 0 })
+            .then(listMega => { if (listMega?.data?.length > 0) dispatch(getMegaDraw(listMega.data)) }),
+
+          lotteryApi.getScheduleMax3d({ type: LotteryType.Max3D, take: 6, skip: 0 })
+            .then(listMax3d => { if (listMax3d?.data?.length > 0) dispatch(getMax3dDraw(listMax3d.data)) }),
+
+          lotteryApi.getScheduleMax3d({ type: LotteryType.Max3DPro, take: 6, skip: 0 })
+            .then(listMax3dPro => { if (listMax3dPro?.data?.length > 0) dispatch(getMax3dProDraw(listMax3dPro.data)) })
+      }
+      catch (error) {
         clearInterval(interval);
         setTimeRemaining({ days: 0, hours: 0, minutes: 0, seconds: 0 });
       }
@@ -37,10 +66,7 @@ export const HomeCountdownClockComponent = React.memo(
         const distance = props.targetTime.getTime() - now;
         if (distance < 0) {
           if (props.type == LotteryType.Keno) resetScheduleKeno(interval)
-          else {
-            clearInterval(interval);
-            setTimeRemaining({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-          }
+          else resetScheduleOther(interval)
         } else {
           const days = Math.floor(distance / (1000 * 60 * 60 * 24));
           const hours = Math.floor(

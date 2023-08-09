@@ -1,5 +1,5 @@
 import { Image, Images } from "@assets";
-import { HOT_LINE, ZALO_LINK } from "@common";
+import { HOT_LINE, WEBSITE, ZALO_LINK } from "@common";
 import { IText, ImageHeader } from "@components";
 import { SupportStackParamList } from "@navigation";
 import { RouteProp, useNavigation } from "@react-navigation/native";
@@ -110,8 +110,21 @@ export const SupportScreen = React.memo(() => {
                     // onPress={}
                     activeOpacity={1}>
                     <Image source={Images.address} style={{ width: 30, height: 30 }} />
-                    <IText style={{ fontWeight: 'bold', marginLeft: 12, textAlign: 'justify', width: windowWidth - 74 }}>
+                    <IText style={{ fontWeight: 'bold', marginLeft: 12, textAlign: 'justify', flex: 1 }}>
                         {`Địa chỉ: ${ADDRESS}`}
+                    </IText>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                    style={styles.item}
+                    onPress={() => Linking.openURL(WEBSITE)}
+                    activeOpacity={1}>
+                    <Image source={Images.website} style={{ width: 30, height: 30 }} />
+                    <IText style={{ fontWeight: 'bold', marginLeft: 12 }}>
+                        {`Trang web: `}
+                        <IText style={{ textDecorationLine: 'underline', color: Color.blue }}>
+                            {WEBSITE}
+                        </IText>
                     </IText>
                 </TouchableOpacity>
             </View>
