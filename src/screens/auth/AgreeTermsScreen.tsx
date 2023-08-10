@@ -7,7 +7,7 @@ import { updateToken } from "@redux";
 import { Color } from "@styles";
 import { NavigationUtils } from "@utils";
 import React, { useCallback, useState } from "react";
-import { StyleSheet, View, Dimensions, ScrollView, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Dimensions, ScrollView, TouchableOpacity, Platform } from "react-native";
 import { useDispatch } from "react-redux";
 
 type NavigationProp = StackNavigationProp<AuthenticationStackParamList, 'AgreeTerms'>;
@@ -43,7 +43,7 @@ export const AgreeTermsScreen = React.memo(() => {
             <ImageHeader navigation={navigation} title={'ĐIỀU KHOẢN SỬ DỤNG'} />
             <ScrollView style={{ flex: 1, paddingHorizontal: 6 }}>
                 <IText style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 18 }} children={termResource.bigTitle} />
-                <IText style={{ textAlign: 'justify' }} children={termResource.content} />
+                <IText style={{ textAlign: Platform.OS !== 'android' ? 'justify' : 'auto' }} children={termResource.content} />
                 <View style={{ height: 60 }} />
             </ScrollView>
 

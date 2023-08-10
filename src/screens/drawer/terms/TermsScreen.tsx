@@ -5,7 +5,7 @@ import { RouteProp, useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Color } from "@styles";
 import React from "react";
-import { StyleSheet, View, Dimensions, ScrollView } from "react-native";
+import { StyleSheet, View, Dimensions, ScrollView, Platform } from "react-native";
 
 type NavigationProp = StackNavigationProp<TermsStackParamList, 'TermsScreen'>;
 type NavigationRoute = RouteProp<TermsStackParamList, 'TermsScreen'>;
@@ -19,7 +19,7 @@ export const TermScreen = React.memo(() => {
             <ImageHeader navigation={navigation} title={'ĐIỀU KHOẢN SỬ DỤNG'} />
             <ScrollView style={{ flex: 1, paddingHorizontal: 6 }}>
                 <IText style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 18 }} children={termResource.bigTitle} />
-                <IText style={{ textAlign: 'justify' }} children={termResource.content} />
+                <IText style={{ textAlign: Platform.OS !== 'android' ? 'justify' : 'auto' }} children={termResource.content} />
                 <View style={{ height: 30 }} />
             </ScrollView>
         </View>

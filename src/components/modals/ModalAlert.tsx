@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Dimensions, Modal, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Dimensions, Modal, Platform, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { IText } from '../texts';
 import { Image, Images } from '@assets';
 import { Color } from '@styles';
@@ -51,7 +51,7 @@ export const ModalAlert = React.memo(({ visible, alertContent, typeAlert, popupI
                         <IText uppercase style={{ fontWeight: 'bold', color: Color.white }}>{"Thông báo"}</IText>
                     </View>
                     <View style={styles.body}>
-                        <IText style={{ textAlign: 'justify', fontWeight: 'bold' }}>
+                        <IText style={{ textAlign: Platform.OS !== 'android' ? 'justify' : 'auto', fontWeight: 'bold' }}>
                             {alertContent}
                         </IText>
 

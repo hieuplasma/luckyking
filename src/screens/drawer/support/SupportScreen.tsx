@@ -16,7 +16,7 @@ export interface SupportScreenParamsList { }
 //@ts-ignore
 const phoneNumber = HOT_LINE.replaceAll('.', '')
 const EMAIL = 'luckyking8879@gmail.vn'
-const ADDRESS = 'Tầng 4, Tòa Nhà Mỹ Đình Plaza 2, Số 2 Nguyễn Hoàng, Phường Mỹ Đình 2, Quận Nam Từ Liêm, Thành Phố Hà Nội, Việt Nam'
+const ADDRESS = 'Tầng 4, Tòa nhà Mỹ Đình Plaza 2, Số 2 Nguyễn Hoàng, Phường Mỹ Đình 2, Quận Nam Từ Liêm, Thành phố Hà Nội, Việt Nam'
 
 export const SupportScreen = React.memo(() => {
     const navigation = useNavigation<NavigationProp>();
@@ -110,7 +110,8 @@ export const SupportScreen = React.memo(() => {
                     // onPress={}
                     activeOpacity={1}>
                     <Image source={Images.address} style={{ width: 30, height: 30 }} />
-                    <IText style={{ fontWeight: 'bold', marginLeft: 12, textAlign: 'justify', flex: 1 }}>
+                    <IText style={{
+                        fontWeight: 'bold', marginLeft: 12,  width: windowWidth - 66 }}>
                         {`Địa chỉ: ${ADDRESS}`}
                     </IText>
                 </TouchableOpacity>
@@ -141,7 +142,7 @@ const styles = StyleSheet.create({
         backgroundColor: Color.white,
     },
     body: {
-        flex: 1, padding: 16
+        flex: 1, padding: 12
     },
-    item: { flexDirection: 'row', alignItems: 'center', marginTop: 16 }
+    item: { flexDirection: 'row', alignItems: 'center', marginTop: 12 }
 })

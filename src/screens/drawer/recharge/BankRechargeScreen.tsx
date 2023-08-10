@@ -4,7 +4,7 @@ import { RechargeStackParamList, } from '@navigation';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Color } from '@styles';
-import { StyleSheet, View, Dimensions, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, View, Dimensions, TouchableOpacity, Alert, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
 import Clipboard from '@react-native-clipboard/clipboard';
@@ -175,7 +175,7 @@ export const BankRechargeScreen = () => {
                 </View>
 
                 <IText style={{ fontStyle: 'italic', marginTop: 8 }}>
-                    <IText style={{ fontWeight: 'bold', textAlign: 'justify' }}>{"Lưu ý:"}</IText>
+                    <IText style={{ fontWeight: 'bold', textAlign: Platform.OS !== 'android' ? 'justify' : 'auto' }}>{"Lưu ý:"}</IText>
                     {" Nếu Quý khách ghi sai hoặc quên ghi nội dung Chuyển khoản vui lòng liên hệ với bộ phận CSKH của LuckyKing "}
                 </IText>
 
