@@ -103,10 +103,10 @@ export const SignUpScreen = React.memo((props?: SignUpScreenProps) => {
       error.identify = FORM_ERROR.EMPTY_IDENTIFY
       check = false
     }
-    if (!checkIdentify) {
-      error.identify = FORM_ERROR.INVALID_IDENTIFY
-      check = false
-    }
+    // if (!checkIdentify) {
+    //   error.identify = FORM_ERROR.INVALID_IDENTIFY
+    //   check = false
+    // }
 
     if (!check) {
       setErrorMessage(error)

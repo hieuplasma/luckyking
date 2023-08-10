@@ -605,20 +605,20 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = luckyking_app_react/luckyking_app_react.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 5UL575SQBG;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = luckyking_app_react/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "LuckyKing version 8 (1.0.3)";
+				INFOPLIST_KEY_CFBundleDisplayName = "LuckyKing version 9 (1.0.4)";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.3;
+				MARKETING_VERSION = 1.0.4;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -628,7 +628,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = vn.luckyking.luckyking;
 				PRODUCT_NAME = luckyking_app_react;
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "LuckyKingDevelopment (Hieu's Mac)";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "LuckyKingDistribution (Hieu's Mac)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -643,19 +643,19 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = luckyking_app_react/luckyking_app_react.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 5UL575SQBG;
 				INFOPLIST_FILE = luckyking_app_react/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "LuckyKing version 8 (1.0.3)";
+				INFOPLIST_KEY_CFBundleDisplayName = "LuckyKing version 9 (1.0.4)";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.3;
+				MARKETING_VERSION = 1.0.4;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -665,7 +665,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = vn.luckyking.luckyking;
 				PRODUCT_NAME = luckyking_app_react;
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "LuckyKingDevelopment (Hieu's Mac)";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "LuckyKingDistribution (Hieu's Mac)";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

@@ -213,7 +213,7 @@ export const ForgetPassword = React.memo(() => {
                 {renderPasswordInput()}
                 {renderRepeatPasswordInput()}
                 <IText style={{ fontSize: 14, color: Color.luckyKing, marginTop: 16, marginLeft: 8 }}>
-                  {"Chú ý: Độ dài mật khẩu phải từ 8 - 16 kí tự"}
+                  {"Chú ý: Độ dài mật khẩu phải từ 6 - 16 kí tự"}
                 </IText>
               </>
               : <></>

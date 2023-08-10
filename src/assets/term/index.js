@@ -33,6 +33,8 @@ Người dùng khi sử dụng LuckyKing để tham gia dự thưởng xổ s�
 + Người dùng đã nhận được hình ảnh của vé có ghi đầy đủ thông tin và không có phản hồi Báo lỗi vé như quy định tại Điều 5: Quy định về in vé, ghi thông tin và gửi hình ảnh của vé của Điều khoản chính sách này.
         + Đối với những đơn hàng không thành công, LuckyKing sẽ có nghĩa vụ và trách nhiệm gửi thông báo và  thực hiện hoàn tiền (chậm nhất sau 05 ngày làm việc) theo giá trị đơn hàng cho Người dùng.
 Trong suốt quá trình mua vé và nhận thưởng, Người dùng phải tuân thủ đầy đủ các Quy định về thanh toán; về in vé, ghi thông tin và gửi hình ảnh vé; về trả thưởng như các Quy định dưới đây.
+(5) Phí dịch vụ giữ vé cho vé Keno là 2%, các loại vé khác là 0% (tính theo giá trị đơn hàng). Phí này sẽ thay đổi linh hoạt tùy từng giai đoạn cụ thể do công ty quy định.
+
 
    Điều 4: Quy định về thanh toán
 

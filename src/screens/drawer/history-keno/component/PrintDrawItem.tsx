@@ -36,7 +36,7 @@ export const PrintDrawItem = React.memo(({ lottery, expand, toggle, lottColor, n
 
     const showImg = useCallback((uri: string) => {
         if (doNotExits(uri)) { }
-        else window.image.show(uri)
+        else window.image.show([uri])
     }, [])
 
     const result = lottery.result

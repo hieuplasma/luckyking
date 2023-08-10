@@ -26,7 +26,7 @@ interface LoadingProps {
 }
 
 interface ImageProps {
-  show: (uri: string) => void
+  show: (uri: string[], index?: number) => void
   hide: () => void
 }
 

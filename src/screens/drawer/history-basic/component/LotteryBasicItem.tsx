@@ -17,17 +17,19 @@ interface LotteryItem {
 
 const getStatusName: any = {
     PENDING: {
-        label: 'Đợi in',
+        label: 'Đợi in vé',
         borderColor: LOTTRERY_COLOR_STATUS[OrderStatus.PENDING],
         bgColor: Color.white
     },
     LOCK: {
-        label: 'Đang khoá',
+        // label: 'Đang khoá',
+        label: "Đợi in vé",
         borderColor: LOTTRERY_COLOR_STATUS[OrderStatus.LOCK],
         bgColor: Color.white
     },
     PRINTED: {
-        label: 'Đã in',
+        // label: 'Đã in',
+        label: "Đợi in vé",
         borderColor: LOTTRERY_COLOR_STATUS[OrderStatus.PRINTED],
         bgColor: Color.white
     },
@@ -67,9 +69,11 @@ export const LotteryBasicItem = React.memo(({ lottery, tab, navigation }: Lotter
 
     const numberDetail = lottery.NumberLottery.numberDetail as INumberDetail[]
 
-    const showImg = useCallback((uri: string) => {
-        if (doNotExits(uri)) { }
-        else window.image.show(uri)
+    const showImg = useCallback((uri1: string, uri2: string, index: number) => {
+        let tmp: string[] = []
+        if (!doNotExits(uri1)) tmp.push(uri1)
+        if (!doNotExits(uri2)) tmp.push(uri2)
+        if (tmp.length > index) window.image.show(tmp, index)
     }, [])
 
     const checking = useCallback((number: number, level = 0) => {
@@ -187,7 +191,7 @@ export const LotteryBasicItem = React.memo(({ lottery, tab, navigation }: Lotter
                                             {(it.tuChon ? ' (TC)' : '')}
                                         </IText>
                                     </IText>
-                                    <View style={{ marginLeft: 5, flexDirection: 'row', flexWrap: 'wrap', marginVertical: 8, flex: 1}}>
+                                    <View style={{ marginLeft: 5, flexDirection: 'row', flexWrap: 'wrap', marginVertical: 8, flex: 1 }}>
                                         {
                                             numbers.map((number: any, id2: number) => {
                                                 const check = checking(number)
@@ -221,12 +225,12 @@ export const LotteryBasicItem = React.memo(({ lottery, tab, navigation }: Lotter
             </IText>
 
             {
-                tab == 'complete' ?
+                lottery.imageFront || lottery.imageBack ?
                     <View style={styles.imgContainer}>
-                        <TouchableWithoutFeedback onPress={() => showImg(lottery.imageFront)}>
+                        <TouchableWithoutFeedback onPress={() => showImg(lottery.imageFront, lottery.imageBack, 0)}>
                             <Image source={lottery.imageFront ? { uri: API_HOST + lottery.imageFront } : Images.no_picture} style={styles.img} resizeMode="cover" />
                         </TouchableWithoutFeedback>
-                        <TouchableWithoutFeedback onPress={() => showImg(lottery.imageBack)}>
+                        <TouchableWithoutFeedback onPress={() => showImg(lottery.imageFront, lottery.imageBack, 1)}>
                             <Image source={lottery.imageBack ? { uri: API_HOST + lottery.imageBack } : Images.no_picture} style={styles.img} resizeMode="cover" />
                         </TouchableWithoutFeedback>
                     </View>

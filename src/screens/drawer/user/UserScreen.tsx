@@ -93,9 +93,9 @@ export const UserScreen = React.memo(() => {
         if (doNotExits(identify)) {
             return Alert.alert('Thông báo', 'Bạn không được để trống CCCD');
         }
-        if (!checkIdentify(identify)) {
-            return Alert.alert('Thông báo', 'Số CCCD không hợp lệ!');
-        }
+        // if (!checkIdentify(identify)) {
+        //     return Alert.alert('Thông báo', 'Số CCCD không hợp lệ!');
+        // }
 
         setLoading(true);
         const body = {

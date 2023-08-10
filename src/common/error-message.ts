@@ -33,7 +33,7 @@ export const FORM_ERROR = {
     INVALID_PHONE: 'Vui lòng nhập số điện thoại Việt Nam hợp lệ',
     EMPTY_PASS: 'Bạn chưa nhập mật khẩu',
     NOT_MATCH_REPEATE_PASS: 'Mật khẩu và mật khẩu xác nhận phải giống nhau',
-    INVALID_PASS: "Độ dài mật khẩu phải từ 8 - 16 ký tự",
+    INVALID_PASS: "Độ dài mật khẩu phải từ 6 - 16 ký tự",
     EMPTY_NAME: 'Bạn chưa nhập họ tên',
     EMPTY_IDENTIFY: 'Bạn chưa nhập CCCD',
     INVALID_IDENTIFY: 'CCCD không hợp lệ',
