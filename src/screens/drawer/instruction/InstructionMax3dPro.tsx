@@ -64,10 +64,10 @@ Max 3D Pro quay số mở thưởng vào 18h00 các ngày thứ 3, th
 const title1 = `1. Cơ cấu và giá trị giải thưởng cho cách chơi hai bộ 3 số cơ bản`
 
 const content1 = `a) Gồm 8 hạng giải và được quay số mở thưởng 20 lần trong mỗi kỳ quay số mở thưởng để chọn ra 20 bộ số trúng giải, cụ thể như sau:
-- Bộ số Giải Đặc biệt: Quay số mở thưởng 02 lần chọn ra 2 bộ ba số, mỗi bộ ba số có 3 số.
-- Bộ số Giải Nhất: Quay số mở thưởng 04 lần chọn ra 4 bộ ba số, mỗi bộ ba số có 3 số.
-- Bộ số Giải Nhì: Quay số mở thưởng 06 lần chọn ra 6 bộ ba số, mỗi bộ ba số có 3 chữ số.
-- Bộ số Giải Ba: Quay số mở thưởng 08 lần chọn ra 8 bộ ba số, mỗi bộ ba số có 3 chữ số.
+- Bộ số Giải Đặc biệt: Quay số mở thưởng 02 lần chọn ra 2 bộ ba số.
+- Bộ số Giải Nhất: Quay số mở thưởng 04 lần chọn ra 4 bộ ba số.
+- Bộ số Giải Nhì: Quay số mở thưởng 06 lần chọn ra 6 bộ ba số.
+- Bộ số Giải Ba: Quay số mở thưởng 08 lần chọn ra 8 bộ ba số.
 b) Cơ cấu giải thưởng tương ứng với giá trị một (01) lần tham gia dự thưởng mệnh giá 10.000 đồng cụ thể như sau:`
 
 const note1 = `- Cơ cấu giải thưởng này áp dụng với vé dự thưởng gồm hai bộ ba số khác nhau. Nếu người tham gia dự thưởng chọn hai bộ ba số giống nhau, giá trị giải thưởng sẽ cao gấp hai lần giá trị nêu ở bảng trên cho các hạng giải thưởng từ giải Nhất đến giải Sáu, bằng tổng giá trị giải Đặc biệt và giải phụ Đặc biệt cho hạng giải Đặc biệt/phụ Đặc biệt.

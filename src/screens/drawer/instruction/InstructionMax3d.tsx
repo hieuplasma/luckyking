@@ -57,10 +57,10 @@ const intro = `Chỉ từ 10.000 đồng, chọn 3 chữ số từ 000-999 để
 const title1 = `1. Cơ cấu và giá trị giải thưởng cho cách chơi một số có 3 chữ số (Max 3D cơ bản)`
 
 const content1 = `a) Gồm 4 hạng giải và được quay số mở thưởng 20 lần trong mỗi kỳ quay số mở thưởng để chọn ra 20 số trúng giải, cụ thể như sau:
-Giải Nhất: Quay số mở thưởng 02 lần chọn ra 2 số có 3 chữ số.
-Giải Nhì: Quay số mở thưởng 04 lần chọn ra 4 số, mỗi số có 3 chữ số.
-Giải Ba: Quay số mở thưởng 06 lần chọn ra 6 số, mỗi số có 3 chữ số.
-Giải Khuyến khích: Quay số mở thưởng 08 lần chọn ra 8 số, mỗi số có 3 chữ số.
+Giải Đặc biệt: Quay số mở thưởng 02 lần chọn ra 2 số có 3 chữ số.
+Giải Nhất: Quay số mở thưởng 04 lần chọn ra 4 số, mỗi số có 3 chữ số.
+Giải Nhì: Quay số mở thưởng 06 lần chọn ra 6 số, mỗi số có 3 chữ số.
+Giải Ba: Quay số mở thưởng 08 lần chọn ra 8 số, mỗi số có 3 chữ số.
 b) Cơ cấu giải thưởng tương ứng với giá trị một (01) lần tham gia dự thưởng mệnh giá 10.000 đồng cụ thể như sau:`
 
 const note1 = `Trường hợp người tham gia dự thưởng có số tham gia dự thưởng trúng nhiều giải thưởng, người tham gia dự thưởng được lĩnh thưởng bằng tổng số giải thưởng:

@@ -75,7 +75,7 @@ Giá trị lĩnh thưởng của các giải thưởng từ Giải Nhất đến
 const title2 = `2. Cách chơi Bao`
 
 const content2 = `Khách hàng có thể chọn cách chơi vé bao sẽ có xác suất trúng cao hơn và trúng được nhiều giải khác nhau.
-Vé bao là khi khách hàng chọn mua nhiều hơn 6 con số và hệ thống sẽ tự động đảo các con số đó thành nhiều bộ, mỗi bộ có 6 con số không giống nhau và số lượng bộ tuỳ theo bao nhiều ít con hay bao nhiều con.
+Vé bao là khi khách hàng chọn mua nhiều hơn 6 con số và hệ thống sẽ tự động đảo các con số đó thành nhiều bộ, mỗi bộ có 6 con số không giống nhau và số lượng bộ tuỳ theo bao ít con hay bao nhiều con.
 Cơ cấu giải thưởng vé chơi Bao:`
 
 const bao5 = [
