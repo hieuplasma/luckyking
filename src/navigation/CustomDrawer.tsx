@@ -214,7 +214,6 @@ const styles = StyleSheet.create({
   icon_arrow: { width: 6, height: 12 }
 })
 
-
 const listItem1 = [
   {
     screenId: 2,
@@ -282,6 +281,14 @@ const listItem2 = [
     title: "Điều khoản sử dụng",
     subTitle: undefined,
     screen: ScreenName.Drawer.TermsStack
+  },
+  {
+    screenId: 8,
+    icon: Images.instruction,
+    icStyle: styles.icon_default,
+    title: "Hướng dẫn chơi",
+    subTitle: undefined,
+    screen: ScreenName.Drawer.InstructionStack
   },
   // {
   //   screenId: undefined,

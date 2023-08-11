@@ -52,7 +52,7 @@ export const ImageHeader = React.memo(({ navigation, title }: ImageHeaderProps) 
 })
 
 const styles = StyleSheet.create({
-    textTitle: { color: Color.white, fontWeight: 'bold', fontSize: 16, lineHeight: 20 },
+    textTitle: { color: Color.white, fontWeight: 'bold', fontSize: 16, lineHeight: 24 },
     headerContainer: {
         flexDirection: 'row',
         height: 100,

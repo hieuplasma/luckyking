@@ -4,7 +4,7 @@ import {
 } from '@react-navigation/bottom-tabs';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import {
-   StatisticalScreen,
+  StatisticalScreen,
 } from '@screen';
 import { Label, LineSeparator, translate } from '@shared';
 import { Icon } from '@assets'
@@ -155,6 +155,13 @@ const hideTabBar = [
   ScreenName.Drawer.HistoryKenoScreen,
   ScreenName.Drawer.OrderBasicScreen,
   ScreenName.Drawer.OrderKenoScreen,
+  ScreenName.Drawer.InstructionStack,
+  ScreenName.Drawer.InstructionScreen,
+  ScreenName.Drawer.InstructionKeno,
+  ScreenName.Drawer.InstructionPower,
+  ScreenName.Drawer.InstructionMega,
+  ScreenName.Drawer.InstructionMax3D,
+  ScreenName.Drawer.InstructionMax3DPro,
 
   ScreenName.ResultChild.DetailKeno,
   ScreenName.ResultChild.DetailMega,

@@ -10,7 +10,9 @@ const initialState = {
     popupId: 0,
 
     surchargeLKK: 0,
-    kenoSurchargeLKK: 0
+    kenoSurchargeLKK: 0,
+
+    kenoSalesStoppageTime: 0
 }
 
 // Create Redux state slice
@@ -40,11 +42,15 @@ const systemSlice = createSlice({
         savePopupId: (state, action) => {
             state.popupId = action.payload.popupId || state.popupId
         },
+        saveKenoStoptime: (state, action) => {
+            state.kenoSalesStoppageTime = action.payload.kenoSalesStoppageTime !== 0 ?
+                (action.payload.kenoSalesStoppageTime || newState.kenoSalesStoppageTime) : 0
+        }
     },
 })
 
 export const { saveExpandKeno, saveExpandBasic,
     saveAlertKeno, saveAlertTesting,
     saveSurchargeLKK, saveAlertCart,
-    savePopupId } = systemSlice.actions
+    savePopupId, saveKenoStoptime } = systemSlice.actions
 export default systemReducer = systemSlice.reducer

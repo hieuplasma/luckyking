@@ -13,6 +13,7 @@ import React from 'react';
 import { RechargeNavigation, RechargeStackParamList } from '../drawer/RechargeNavigation';
 import { HistoryBasicNavigation, HistoryBasicStackParamList } from '../drawer/HistoryBasicNavigation';
 import { HistoryKenoNavigation, HistoryKenoStackParamList } from '../drawer/HistoryKenoNavigation';
+import { InstructionNavigation, InstructionStackParamList } from '../drawer/InstructionNavigation';
 
 export type HomeStackParamList = {
   HomeScreen: HomeScreenParamsList;
@@ -21,12 +22,13 @@ export type HomeStackParamList = {
   Max3dScreen: Max3dScreenParamsList;
   Max3dProScreen: Max3dProScreenParamsList;
   KenoScreen: KenoScreenParamsList;
-  CartScreen: CartScreenParamsList,
+  CartScreen: CartScreenParamsList;
   OrderScreen: OrderScreenParamsList;
 
-  RechargeStack: RechargeStackParamList,
-  HistoryBasicStack: HistoryBasicStackParamList,
-  HistoryKenoStack: HistoryKenoStackParamList
+  RechargeStack: RechargeStackParamList;
+  HistoryBasicStack: HistoryBasicStackParamList;
+  HistoryKenoStack: HistoryKenoStackParamList;
+  InstructionStack: InstructionStackParamList
 };
 
 const HomeStack = createStackNavigator<HomeStackParamList>();
@@ -87,6 +89,11 @@ export function HomeNavigation() {
       <HomeStack.Screen
         name={'HistoryKenoStack'}
         component={HistoryKenoNavigation}
+        options={{ headerShown: false, title: undefined }}
+      />
+      <HomeStack.Screen
+        name={'InstructionStack'}
+        component={InstructionNavigation}
         options={{ headerShown: false, title: undefined }}
       />
     </HomeStack.Navigator>

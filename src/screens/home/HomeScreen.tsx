@@ -1,4 +1,4 @@
-import { CartIcon, HomeTicketLongFormComponent, ModalAlert, ModalContact } from '@components';
+import { CartIcon, HomeTicketLongFormComponent, IText, ModalAlert, ModalContact } from '@components';
 import { useBackButtonWithNavigation } from '@hooks';
 import { HomeStackParamList, ScreenName } from '@navigation';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
@@ -37,6 +37,8 @@ export const HomeScreen = React.memo((props?: HomeScreenProps) => {
   const jackpots = useSelector((state: any) => state.drawReducer.jackpots)
 
   const currentPopupId = useSelector((state: any) => state.systemReducer.popupId)
+  const kenoSalesStoppageTime = useSelector((state: any) => state.systemReducer.kenoSalesStoppageTime)
+  console.log("kenoSalesStoppageTime", kenoSalesStoppageTime)
 
   const [contactVisible, setContactVisible] = useState(false)
   const [popupVisisble, setPopupVisisble] = useState(false)
@@ -156,12 +158,12 @@ export const HomeScreen = React.memo((props?: HomeScreenProps) => {
       <HomeTicketLongFormComponent
         image="https://media.vietlott.vn//main/06.2018/cms/game/keno.png"
         type={LotteryType.Keno}
-        targetTime={kenoFirstDraw ? new Date(kenoFirstDraw.drawTime) : undefined}
+        targetTime={kenoFirstDraw ? new Date(new Date(kenoFirstDraw.drawTime).getTime() - kenoSalesStoppageTime * 1000) : undefined}
         action={() => NavigationUtils.navigate(navigation, ScreenName.HomeChild.KenoScreen)}
         jackpot='Lên đến 10 tỷ '
       />
     );
-  }, [kenoFirstDraw]);
+  }, [kenoFirstDraw, kenoSalesStoppageTime]);
 
   const renderMegaTicket = useCallback(() => {
     return (
@@ -219,6 +221,17 @@ export const HomeScreen = React.memo((props?: HomeScreenProps) => {
     );
   }, [max3dProFirstDraw]);
 
+  const renderInstructionBlock = useCallback(() => {
+    return (
+      <TouchableOpacity style={styles.instruction} activeOpacity={1}
+        onPress={() => NavigationUtils.navigate(navigation, ScreenName.Drawer.InstructionStack)}>
+        <IText style={{ fontWeight: 'bold', color: Color.white, fontSize: 16 }}>
+          {"Hướng dẫn chơi"}
+        </IText>
+      </TouchableOpacity>
+    )
+  }, [])
+
   return (
     <>
       <Image style={[Style.Size.MatchParent, Style.Background.Red]}
@@ -233,6 +246,8 @@ export const HomeScreen = React.memo((props?: HomeScreenProps) => {
           {renderMegaTicket()}
           {renderMaxTicket()}
           {renderMax3dProTicket()}
+          {renderInstructionBlock()}
+          <View style={{ height: 50 }} />
         </ScrollView>
 
         <TouchableOpacity style={styles.btnContact} onPress={() => setContactVisible(!contactVisible)} activeOpacity={1}>
@@ -257,5 +272,13 @@ const styles = StyleSheet.create({
     borderRadius: 99,
     position: 'absolute',
     right: 25, bottom: 75
+  },
+  instruction: {
+    marginTop: 16,
+    width: '100%', height: 40,
+    backgroundColor: Color.luckyKing,
+    justifyContent: 'center', alignItems: 'center',
+    borderWidth: 1, borderColor: Color.white,
+    borderRadius: 10
   }
 })

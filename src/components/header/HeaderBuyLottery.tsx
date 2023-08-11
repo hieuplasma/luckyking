@@ -1,10 +1,11 @@
 import { Icon, Image, Images } from "@assets";
 import { LotteryType } from "@common";
 import { Color, Style } from "@styles";
-import { ScreenUtils } from "@utils";
+import { NavigationUtils, ScreenUtils, getColorLott } from "@utils";
 import React, { useCallback, useEffect, useState } from "react";
 import { StatusBar, StyleSheet, TouchableOpacity, View } from "react-native";
 import { CartIcon } from "../icon-specials";
+import { ScreenName } from "@navigation";
 
 interface HeaderBuyLotteryProps {
     navigation: any
@@ -49,6 +50,30 @@ export const HeaderBuyLottery = React.memo(({ navigation, lotteryType }: HeaderB
         }
     }, [lotteryType])
 
+    const navToInstruction = useCallback(() => {
+        let destination = ScreenName.Drawer.InstructionKeno
+        switch (lotteryType) {
+            case LotteryType.Keno:
+                destination = ScreenName.Drawer.InstructionKeno
+                break;
+            case LotteryType.Power:
+                destination = ScreenName.Drawer.InstructionPower
+                break;
+            case LotteryType.Mega:
+                destination = ScreenName.Drawer.InstructionMega
+                break;
+            case LotteryType.Max3D:
+                destination = ScreenName.Drawer.InstructionMax3D
+                break;
+            case LotteryType.Max3DPro:
+                destination = ScreenName.Drawer.InstructionMax3DPro
+                break;
+            default:
+                break;
+        }
+        NavigationUtils.navigate(navigation, ScreenName.Drawer.InstructionStack, { screen: destination })
+    }, [lotteryType])
+
     return (
         <>
             <StatusBar translucent={true} barStyle={'dark-content'} backgroundColor={"transparent"} />
@@ -64,7 +89,11 @@ export const HeaderBuyLottery = React.memo(({ navigation, lotteryType }: HeaderB
                     />
                 </TouchableOpacity>
                 <Image source={logo.source} style={logo.style} />
-                <View style={{ flex: 1, alignItems: 'flex-end' }}>
+                <View style={{ flex: 1, alignItems: 'flex-end', flexDirection: 'row' }}>
+                    <View style={{ flex: 1 }} />
+                    <TouchableOpacity onPress={navToInstruction}>
+                        <Image source={Images.instruction} style={{ width: 30, height: 30, marginRight: 12 }} tintColor={getColorLott(lotteryType)} />
+                    </TouchableOpacity>
                     <CartIcon navigation={navigation} />
                 </View>
             </View>

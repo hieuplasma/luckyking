@@ -82,5 +82,10 @@ export const Images = {
   cskh: require('./cskh.png'),
   exit: require('./exit.png'),
   copy: require('./copy.png'),
-  website: require('./website.png')
+  website: require('./website.png'),
+  instruction: require('./instruction.png'),
+  co_cau_keno: require('./co_cau_keno.jpg'),
+  co_cau_keno2: require('./co_cau_keno2.jpg'),
+  co_cau_power: require('./co_cau_power.jpg'),
+  co_cau_mega: require('./co_cau_mega.jpg')
 };

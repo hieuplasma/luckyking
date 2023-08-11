@@ -38,7 +38,15 @@ export const ScreenName = {
     SupportScreen: "SupportScreen",
 
     TermsStack: "TermsStack",
-    TermsScreen: "TermsScreen"
+    TermsScreen: "TermsScreen",
+
+    InstructionStack: "InstructionStack",
+    InstructionScreen: "InstructionScreen",
+    InstructionKeno: "InstructionKeno",
+    InstructionPower: "InstructionPower",
+    InstructionMega: "InstructionMega",
+    InstructionMax3D: "InstructionMax3D",
+    InstructionMax3DPro: "InstructionMax3DPro"
   },
 
   BottomTab: "BottomTab",

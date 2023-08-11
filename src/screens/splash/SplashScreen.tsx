@@ -9,7 +9,7 @@ import {
   getCart, getJackpot,
   getKenoDraw, getMax3dDraw,
   getMax3dProDraw, getMegaDraw,
-  getPowerDraw, saveSurchargeLKK, updateToken, updateUser
+  getPowerDraw, saveKenoStoptime, saveSurchargeLKK, updateToken, updateUser
 } from '@redux';
 import { Color } from '@styles';
 import { doNotExits, NavigationUtils } from '@utils';
@@ -66,10 +66,13 @@ export const SplashScreen = React.memo(() => {
         lotteryApi.getJackpot().then(jackpots => { if (jackpots) dispatch(getJackpot(jackpots.data)) }),
 
         lotteryApi.getConfig().then(config => {
-          if (config) dispatch(saveSurchargeLKK({
-            surcharge: config.data.surcharge,
-            kenoSurcharge: config.data.kenoSurcharge
-          }))
+          if (config) {
+            dispatch(saveSurchargeLKK({
+              surcharge: config.data.surcharge,
+              kenoSurcharge: config.data.kenoSurcharge
+            }))
+            dispatch(saveKenoStoptime({ kenoSalesStoppageTime: config.data.kenoSalesStoppageTime }))
+          }
         })
       ])
 

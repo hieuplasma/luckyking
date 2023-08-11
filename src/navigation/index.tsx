@@ -113,6 +113,7 @@ export * from './drawer/HistoryBasicNavigation'
 
 export * from './drawer/SupportNavigation'
 export * from './drawer/TermsNaviagation'
+export * from './drawer/InstructionNavigation'
 
 
 export { AuthenticationStackParamList };

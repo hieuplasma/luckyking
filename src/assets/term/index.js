@@ -33,8 +33,6 @@ Người dùng khi sử dụng LuckyKing để tham gia dự thưởng xổ s�
 + Người dùng đã nhận được hình ảnh của vé có ghi đầy đủ thông tin và không có phản hồi Báo lỗi vé như quy định tại Điều 5: Quy định về in vé, ghi thông tin và gửi hình ảnh của vé của Điều khoản chính sách này.
         + Đối với những đơn hàng không thành công, LuckyKing sẽ có nghĩa vụ và trách nhiệm gửi thông báo và  thực hiện hoàn tiền (chậm nhất sau 05 ngày làm việc) theo giá trị đơn hàng cho Người dùng.
 Trong suốt quá trình mua vé và nhận thưởng, Người dùng phải tuân thủ đầy đủ các Quy định về thanh toán; về in vé, ghi thông tin và gửi hình ảnh vé; về trả thưởng như các Quy định dưới đây.
-(5) Phí dịch vụ giữ vé cho vé Keno là 2%, các loại vé khác là 0% (tính theo giá trị đơn hàng). Phí này sẽ thay đổi linh hoạt tùy từng giai đoạn cụ thể do công ty quy định.
-
 
    Điều 4: Quy định về thanh toán
 
@@ -44,7 +42,7 @@ Người dùng có thể sử dụng những hình thức sau để thanh toán 
      + VPBank Hà Nội: 888879 (Chủ TK: Công ty TNHH Giải trí số LuckyKing)
 Người dùng thanh toán giá trị đơn hàng, bao gồm:
 (1) Giá trị của các bộ số đã chọn (được bán đúng với giá niêm yết theo quy định của các công ty xổ số và Bộ tài chính),
-(2) Chi phí lưu trữ vé ( Vé của Khách hàng đã mua sẽ được Đại lý lưu trữ, bảo quản hộ vé).
+(2) Phí dịch vụ lưu trữ, bảo quản hộ vé cho vé Keno là 2%, các loại vé khác là 0% (tính theo giá trị đơn hàng). Phí này sẽ thay đổi linh hoạt tùy từng giai đoạn cụ thể do công ty quy định.
 
    Điều 5:  Quy định về in vé, ghi thông tin và gửi hình ảnh vé
 
@@ -74,9 +72,9 @@ Thời gian xử lý yêu cầu chuyển thưởng: không quá 3 ngày làm vi�
 -       Theo đó, khi trúng thưởng, toàn bộ tiền thưởng sẽ được chuyển vào Tài khoản trả thưởng trên ứng dụng LuckyKing của Người dùng sau khi khấu trừ thuế thu nhập cá nhân. Người dùng có thể tuỳ ý chuyển tiền từ Tài khoản trả thưởng:
 (1)   Vào Tài khoản LuckyKing (Tài khoản LuckyKing chỉ dùng để mua vé và không được rút ra).
 (2)   Về Tài khoản Ngân hàng của Người dùng với mức tiền chuyển khoản tối thiểu là 100.000đ và theo nguyên tắc sau:
--        Từ 100,000đ tới 20,000,000đ: 2% tổng số tiền chuyển khoản
--        Từ trên 20,000,000đ tới 50,000,000đ: 1% tổng số tiền chuyển khoản
--        Từ trên 50,000,000đ: 0.5% tổng số tiền chuyển khoản
+-        Từ 100,000đ tới 20,000,000đ: Phí chuyển khoản là 2% tổng số tiền chuyển khoản
+-        Từ trên 20,000,000đ tới 50,000,000đ: Phí chuyển khoản là 1% tổng số tiền chuyển khoản
+-        Từ trên 50,000,000đ: Phí chuyển khoản là 0.5% tổng số tiền chuyển khoản
 Đối với vé trúng thưởng trên 50,000,000đ đến 10 tỷ đồng: Theo quy định của Vielott và Đại lý cấp1, không quá 60 ngày kể từ ngày trúng thưởng, Người dùng cần cung cấp cho LuckyKing các thông tin sau để làm thủ tục nhận thưởng: CMND/CCCD/Hộ chiếu, Hộ khẩu.
 Đối với vé trúng thưởng trên 10 tỷ, người trúng thưởng phải đến trụ sở của LuckyKing (mang theo CMND/CCCD/Hộ chiếu, Hộ khẩu) để nhận lại vé trúng thưởng. LuckyKing sẽ hỗ trợ người trúng thưởng hoàn thiện hồ sơ & thủ tục nhận thưởng theo quy định của Vietlott và Đại lý cấp1.
 
