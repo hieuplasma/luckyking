@@ -13,12 +13,13 @@ interface ViewFooterKenoProps {
 export const ViewFooterKeno = React.memo(({ totalCost, bookLottery }: ViewFooterKenoProps) => {
 
     const kenoFirstDraw = useSelector((state: any) => state.drawReducer.kenoFirstDraw)
+    const kenoSalesStoppageTime = useSelector((state: any) => state.systemReducer.kenoSalesStoppageTime)
 
     const [timeRemaining, setTimeRemaining] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 })
     useEffect(() => {
         const interval = setInterval(() => {
             const now = new Date().getTime();
-            const distance = new Date(kenoFirstDraw.drawTime).getTime() - now;
+            const distance = new Date(kenoFirstDraw.drawTime).getTime() - kenoSalesStoppageTime * 1000 - now;
             if (distance < 0) {
                 setTimeRemaining({ days: 0, hours: 0, minutes: 0, seconds: 0 });
             } else {
@@ -38,7 +39,7 @@ export const ViewFooterKeno = React.memo(({ totalCost, bookLottery }: ViewFooter
         }, 1000);
 
         return () => clearInterval(interval);
-    }, [kenoFirstDraw]);
+    }, [kenoFirstDraw, kenoSalesStoppageTime]);
 
     return (
         <>
