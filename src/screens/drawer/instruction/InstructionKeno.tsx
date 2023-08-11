@@ -30,6 +30,8 @@ export const InstructionKeno = React.memo(() => {
                 <IText style={styles.title} uppercase>{title2}</IText>
                 <IText style={styles.content}>{content2}</IText>
                 <ImageZoom source={Images.co_cau_keno2} style={styles.img} />
+
+                <IText style={styles.content}>{note2}</IText>
                 <View style={{ height: 100 }} />
             </ScrollView>
         </View>
@@ -65,7 +67,8 @@ CƠ CẤU GIẢI THƯỞNG KENO CƠ BẢN
 const title2 = `2. Cách Keno chơi bổ sung`
 
 const content2 = `Các cách chơi bổ sung dựa vào kết quả Quay số mở thưởng của cách chơi cơ bản để xác định giải thưởng.
-Cơ cấu giải thưởng cho một (01) vé tham gia dự thưởng mệnh giá 10.000 đồng cụ thể như sau.
-Người trúng thưởng chỉ được lĩnh một hạng giải thưởng duy nhất tương ứng với mỗi cách chơi bổ sung.
+Cơ cấu giải thưởng cho một (01) vé tham gia dự thưởng mệnh giá 10.000 đồng cụ thể như sau.`
+
+const note2 = `Người trúng thưởng chỉ được lĩnh một hạng giải thưởng duy nhất tương ứng với mỗi cách chơi bổ sung.
 Giá trị lĩnh thưởng đươc tính theo số lần tham gia dự thưởng của cách chơi bổ sung (01 lần tham gia dự thưởng mệnh giá 10.000 đồng) nhân với giá trị giải thưởng tương ứng với 01 lần tham gia dự thưởng.
 Trường hợp có sự thay đổi về số lượng, cơ cấu, giá trị của các giải thưởng thì Vietlott sẽ có thông báo bổ sung.`

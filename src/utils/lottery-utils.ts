@@ -1,5 +1,5 @@
 import { EVEN_ODD, LotteryType, SMALL_BIG } from "@common";
-import { dateConvert, dateTimeConvert, fullDateTimeConvert, getWeekDate } from "./time-utils";
+import { dateConvert, dateTimeConvert, fullDateTimeConvert, fullDateTimeConvert3, getWeekDate } from "./time-utils";
 import { Images } from "@assets";
 import { doNotExits } from "./other-utils";
 
@@ -55,6 +55,12 @@ export function printDraw2(param: any) {
     const code = parseInt(param.drawCode.toString())
     const date = new Date(param.drawTime)
     return "#" + code.toString().padStart(7, "0") + " - " + fullDateTimeConvert(date)
+}
+
+export function printDraw3(param: any) {
+    const code = parseInt(param.drawCode.toString())
+    const date = new Date(param.drawTime)
+    return "#" + code.toString().padStart(7, "0") + " - " + fullDateTimeConvert3(date)
 }
 
 export function printDrawWeekDate(param: any) {

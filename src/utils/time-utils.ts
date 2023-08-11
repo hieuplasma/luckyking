@@ -33,6 +33,16 @@ export function fullDateTimeConvert2(param: Date) {
     return smallThan10(hour) + ":" + smallThan10(min) + ":" + smallThan10(second) + " - " + smallThan10(date) + "/" + smallThan10(month) + "/" + year
 }
 
+export function fullDateTimeConvert3(param: Date) {
+    const date = param.getDate()
+    const month = param.getMonth() + 1
+    const year = param.getFullYear()
+    const hour = param.getHours()
+    const min = param.getMinutes()
+    return smallThan10(hour) + ":" + smallThan10(min) + " - " + smallThan10(date) + "/" + smallThan10(month) + "/" + (year - 2000)
+}
+
+
 export function smallThan10(param: number) {
     return param < 10 ? "0" + parseInt(param.toString()) : '' + param
 }

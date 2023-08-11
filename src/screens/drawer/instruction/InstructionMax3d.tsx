@@ -34,6 +34,8 @@ export const InstructionMax3D = React.memo(() => {
                 <TableZoom title={"Cơ cấu giải thưởng vé số Max3D+"} data={max3dplus} flexPart={[1, 3, 1]} />
 
                 <IText style={styles.content}>{note2}</IText>
+
+                <View style={{ height: 100 }} />
             </ScrollView>
         </View>
     )

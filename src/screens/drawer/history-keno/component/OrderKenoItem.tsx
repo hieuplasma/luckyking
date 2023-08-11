@@ -2,10 +2,9 @@ import { Image, Images } from "@assets";
 import { LIST_STATUS, OrderStatus } from "@common";
 import { IText } from "@components";
 import { Color } from "@styles";
-import { dateConvert, printDisplayId, printDraw2, printMoney } from "@utils";
+import { dateConvert, printDisplayId, printDraw3, printMoney } from "@utils";
 import React, { useEffect, useState } from "react";
 import { ColorValue, Dimensions, StyleSheet, TouchableOpacity, View } from "react-native";
-import { useSelector } from "react-redux";
 import { StatusOrderLine } from "../../component/StatusOrderLine";
 
 interface OrderItemProps {
@@ -58,7 +57,7 @@ export const OrderItem = React.memo(({ order, onPress }: OrderItemProps) => {
                 <View>
                     {listDraw.map((item: any, index: number) => {
                         return (
-                            <IText style={styles.txItem} key={'' + index}>{printDraw2(item)}</IText>
+                            <IText style={styles.txItem} key={'' + index}>{"Kỳ " + printDraw3(item)}</IText>
                         )
                     })}
                 </View>

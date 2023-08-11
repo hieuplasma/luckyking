@@ -221,16 +221,16 @@ export const HomeScreen = React.memo((props?: HomeScreenProps) => {
     );
   }, [max3dProFirstDraw]);
 
-  const renderInstructionBlock = useCallback(() => {
-    return (
-      <TouchableOpacity style={styles.instruction} activeOpacity={1}
-        onPress={() => NavigationUtils.navigate(navigation, ScreenName.Drawer.InstructionStack)}>
-        <IText style={{ fontWeight: 'bold', color: Color.white, fontSize: 16 }}>
-          {"Hướng dẫn chơi"}
-        </IText>
-      </TouchableOpacity>
-    )
-  }, [])
+  // const renderInstructionBlock = useCallback(() => {
+  //   return (
+  //     <TouchableOpacity style={styles.instruction} activeOpacity={1}
+  //       onPress={() => NavigationUtils.navigate(navigation, ScreenName.Drawer.InstructionStack)}>
+  //       <IText style={{ fontWeight: 'bold', color: Color.white, fontSize: 16 }}>
+  //         {"Hướng dẫn chơi"}
+  //       </IText>
+  //     </TouchableOpacity>
+  //   )
+  // }, [])
 
   return (
     <>
@@ -246,7 +246,7 @@ export const HomeScreen = React.memo((props?: HomeScreenProps) => {
           {renderMegaTicket()}
           {renderMaxTicket()}
           {renderMax3dProTicket()}
-          {renderInstructionBlock()}
+          {/* {renderInstructionBlock()} */}
           <View style={{ height: 50 }} />
         </ScrollView>
 
@@ -276,7 +276,7 @@ const styles = StyleSheet.create({
   instruction: {
     marginTop: 16,
     width: '100%', height: 40,
-    backgroundColor: Color.luckyKing,
+    backgroundColor: Color.transparent,
     justifyContent: 'center', alignItems: 'center',
     borderWidth: 1, borderColor: Color.white,
     borderRadius: 10
