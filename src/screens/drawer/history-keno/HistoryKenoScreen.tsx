@@ -2,7 +2,7 @@ import { lotteryApi } from '@api';
 import { ERR_MES, LIST_STATUS, OrderStatus } from '@common';
 import { ImageHeader, IText } from '@components';
 import { HistoryKenoStackParamList, ScreenName } from '@navigation';
-import { RouteProp, useIsFocused, useNavigation } from '@react-navigation/native';
+import { RouteProp, useIsFocused, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Color } from '@styles';
 import { NavigationUtils } from '@utils';
@@ -13,7 +13,7 @@ import { OrderItem } from './component/OrderKenoItem';
 type NavigationProp = StackNavigationProp<HistoryKenoStackParamList, 'HistoryKenoScreen'>;
 type NavigationRoute = RouteProp<HistoryKenoStackParamList, 'HistoryKenoScreen'>;
 
-export interface HistoryKenocreenParamsList { }
+export interface HistoryKenocreenParamsList { navDetailOrder?: any }
 
 type Status = 'booked' | 'returned'
 
@@ -24,6 +24,8 @@ export const HistoryKenoScreen = React.memo(() => {
 
     const navigation = useNavigation<NavigationProp>();
     const isFocused = useIsFocused();
+    const route = useRoute<NavigationRoute>();
+
 
     const [listOrderKeno, setListOrderKeno] = useState([])
     const [isLoading, setLoading] = useState(false)
@@ -48,6 +50,14 @@ export const HistoryKenoScreen = React.memo(() => {
         if (isFocused)
             onRefresh()
     }, [isFocused])
+
+    useEffect(() => {
+        if (route?.params?.navDetailOrder) {
+            const navParam = route.params.navDetailOrder;
+            NavigationUtils.navigate(navigation, ScreenName.Drawer.OrderKenoScreen,
+                { order: navParam.order })
+        }
+    }, [route])
 
     return (
         <View style={styles.container}>

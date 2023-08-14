@@ -13,7 +13,7 @@ import { OrderBasicItem } from './component/OrderBasicItem';
 type NavigationProp = StackNavigationProp<HistoryBasicStackParamList, 'HistoryBasicScreen'>;
 type NavigationRoute = RouteProp<HistoryBasicStackParamList, 'HistoryBasicScreen'>;
 
-export interface HistoryBasicScreenParamsList { }
+export interface HistoryBasicScreenParamsList { navDetailOrder?: any }
 
 type Status = 'pending' | 'complete' | 'returned'
 
@@ -21,6 +21,7 @@ export const HistoryBasicScreen = React.memo(() => {
 
     const isFocused = useIsFocused();
     const navigation = useNavigation<NavigationProp>();
+    const route = useRoute<NavigationRoute>();
 
     const [listOrder, setListOrder] = useState([])
     const [isLoading, setLoading] = useState(false)
@@ -37,14 +38,36 @@ export const HistoryBasicScreen = React.memo(() => {
         window.loadingIndicator.hide()
     }, [status])
 
+    const onRefresh2 = useCallback(async () => {
+        setLoading(true)
+        window.loadingIndicator.show()
+        const res = await lotteryApi.getAllOrder2({ ticketType: 'basic', status: status })
+        if (res) {
+            if (res.data.length == 0 && status == 'pending') {
+                setStatus('complete')
+            }
+            else setListOrder(res.data)
+        }
+        setLoading(false)
+        window.loadingIndicator.hide()
+    }, [status])
+
     useEffect(() => {
         onRefresh()
     }, [status])
 
     useEffect(() => {
         if (isFocused)
-            onRefresh()
+            onRefresh2()
     }, [isFocused])
+
+    useEffect(() => {
+        if (route?.params?.navDetailOrder) {
+            const navParam = route.params.navDetailOrder;
+            NavigationUtils.navigate(navigation, ScreenName.Drawer.OrderBasicScreen,
+                { order: navParam.order, status: navParam.status })
+        }
+    }, [route])
 
     return (
         <View style={styles.container}>

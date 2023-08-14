@@ -75,3 +75,7 @@ export enum KenoStatistical {
     BIG_SMALL = "big_small",
     ADVANCE = "advance"
 }
+
+export enum RemoteMessageType {
+    HISTORY = 'history'
+}

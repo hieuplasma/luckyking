@@ -21,7 +21,7 @@ type NavigationRoute = RouteProp<HistoryBasicStackParamList, 'OrderBasicScreen'>
 
 type Status = 'pending' | 'complete' | 'returned'
 
-export interface OrderBasicScreenParamsList { order: any, status: Status }
+export interface OrderBasicScreenParamsList { order: any, status?: Status }
 
 export const OrderBasicScreen = React.memo(({ }: any) => {
 
@@ -191,7 +191,7 @@ export const OrderBasicScreen = React.memo(({ }: any) => {
                     data={sectionData}
                     extraData={sectionData}
                     renderItem={({ item, index }: any) => {
-                        return (<LotteryBasicItem lottery={item} tab={status} navigation={navigation} />)
+                        return (<LotteryBasicItem lottery={item} navigation={navigation} />)
                     }
                     }
                     keyExtractor={(item: any, index) => item.id}

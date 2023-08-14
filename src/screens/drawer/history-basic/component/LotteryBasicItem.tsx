@@ -11,7 +11,7 @@ import { ScreenName } from "@navigation"
 type Status = 'pending' | 'complete' | 'returned'
 interface LotteryItem {
     lottery: any,
-    tab: Status,
+    tab?: Status,
     navigation: any
 }
 

@@ -102,7 +102,7 @@ export const OrderKenoScreen = React.memo(({ }: any) => {
             <HeaderOrder
                 amount={thisOrder.amount + thisOrder.surcharge}
                 returnAmount={returnAmount}
-                benefits={order.benefits}
+                benefits={thisOrder.benefits}
             />
 
             <View style={styles.body}>

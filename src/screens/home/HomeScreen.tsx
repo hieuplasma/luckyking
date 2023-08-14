@@ -38,7 +38,6 @@ export const HomeScreen = React.memo((props?: HomeScreenProps) => {
 
   const currentPopupId = useSelector((state: any) => state.systemReducer.popupId)
   const kenoSalesStoppageTime = useSelector((state: any) => state.systemReducer.kenoSalesStoppageTime)
-  console.log("kenoSalesStoppageTime", kenoSalesStoppageTime)
 
   const [contactVisible, setContactVisible] = useState(false)
   const [popupVisisble, setPopupVisisble] = useState(false)

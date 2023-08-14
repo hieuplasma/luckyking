@@ -7,8 +7,8 @@ import { WithDrawNavigation } from "./drawer/WithDrawNavigation";
 import { HistoryKenoNavigation } from "./drawer/HistoryKenoNavigation";
 import { HistoryBasicNavigation } from "./drawer/HistoryBasicNavigation";
 import { useCallback, useEffect, useRef } from "react";
-import { authApi, userApi } from "@api";
-import messaging from '@react-native-firebase/messaging'
+import { authApi, lotteryApi, userApi } from "@api";
+import messaging, { FirebaseMessagingTypes } from '@react-native-firebase/messaging'
 import DeviceInfo from 'react-native-device-info';
 import { useDispatch, useSelector } from "react-redux";
 import { NavigationUtils, doNotExits } from "@utils";
@@ -19,6 +19,7 @@ import { InstructionNavigation, RootStackParamsList, SupportNavigation, TermsNav
 
 import { AppState, PermissionsAndroid, Platform } from 'react-native';
 import { updateToken, updateUser } from "@redux";
+import { LIST_STATUS, RemoteMessageType } from "@common";
 
 export type MainDrawerParamList = {
     BottomTab: {}
@@ -109,6 +110,56 @@ export function MainNavigation(props: any) {
         }
         else NavigationUtils.resetGlobalStackWithScreen(navigation, ScreenName.Authentication)
     }, [doNotExits(token)])
+
+    useEffect(() => {
+        // Assume a message-notification contains a "type" property in the data payload of the screen to open
+        messaging().onNotificationOpenedApp(remoteMessage => {
+            console.log(
+                'Notification caused app to open from background state:',
+                remoteMessage.notification,
+            );
+            navigateBackground(remoteMessage)
+        });
+
+        // Check whether an initial notification is available
+        messaging()
+            .getInitialNotification()
+            .then(remoteMessage => {
+                if (remoteMessage) {
+                    console.log(
+                        'Notification caused app to open from quit state:',
+                        remoteMessage.notification,
+                    );
+                    navigateBackground(remoteMessage)
+                }
+            });
+    }, []);
+
+    const navigateBackground = useCallback(async (remoteMessage: FirebaseMessagingTypes.RemoteMessage) => {
+        if (remoteMessage.data?.type == RemoteMessageType.HISTORY) {
+            const res = await lotteryApi.getOrderById({ orderId: remoteMessage.data.orderId })
+            if (res) {
+                const order = res.data
+                if (order.ticketType == 'basic') {
+                    let status = 'pending'
+                    if (LIST_STATUS.PRINTED.includes(order.status)) status = 'complete'
+                    else if (LIST_STATUS.ERROR.includes(order.status)) status = 'returned'
+                    NavigationUtils.navigate(navigation, ScreenName.Drawer.HistoryBasicStack, {
+                        screen: ScreenName.Drawer.HistoryBasicScreen,
+                        params: { navDetailOrder: { order: order, status: status } }
+                    })
+                }
+                if (order.ticketType == 'keno') {
+                    // let status = 'booked'
+                    // if (LIST_STATUS.ERROR.includes(order.status)) status = 'returned'
+                    NavigationUtils.navigate(navigation, ScreenName.Drawer.HistoryKenoStack, {
+                        screen: ScreenName.Drawer.HistoryKenoScreen,
+                        params: { navDetailOrder: { order: order } }
+                    })
+                }
+            }
+        }
+    }, [])
 
     const syncBalance = useCallback(async () => {
         if (!doNotExits(token)) {
