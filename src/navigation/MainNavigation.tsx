@@ -136,7 +136,7 @@ export function MainNavigation(props: any) {
     }, []);
 
     const navigateBackground = useCallback(async (remoteMessage: FirebaseMessagingTypes.RemoteMessage) => {
-        if (remoteMessage.data?.type == RemoteMessageType.HISTORY) {
+        if (remoteMessage.data?.type == RemoteMessageType.DETAIL_ORDER) {
             const res = await lotteryApi.getOrderById({ orderId: remoteMessage.data.orderId })
             if (res) {
                 const order = res.data
@@ -158,6 +158,30 @@ export function MainNavigation(props: any) {
                     })
                 }
             }
+        }
+
+        else if (remoteMessage.data?.type == RemoteMessageType.LUCKYKING_WALLET) {
+            NavigationUtils.navigate(navigation, ScreenName.Drawer.RechargeStack, {
+                screen: ScreenName.Drawer.RechargeScreen,
+                params: { expandHistory: true }
+            })
+        }
+
+        else if (remoteMessage.data?.type == RemoteMessageType.REWARD_WALLET) {
+            NavigationUtils.navigate(navigation, ScreenName.Drawer.WithDrawStack, {
+                screen: ScreenName.Drawer.WithDrawScreen,
+                params: { expandHistory: true }
+            })
+        }
+
+        else if (remoteMessage.data?.type == RemoteMessageType.RESULT_DRAW) {
+            NavigationUtils.navigate(navigation, ScreenName.BottomTab, {
+                screen: ScreenName.Tabs.ResultStack,
+                params: {
+                    screen: ScreenName.ResultChild.Result,
+                    params: { tab: remoteMessage.data.lotteryType }
+                }
+            })
         }
     }, [])
 

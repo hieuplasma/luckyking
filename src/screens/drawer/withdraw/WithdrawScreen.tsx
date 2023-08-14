@@ -3,7 +3,7 @@ import { Images, Image } from '@assets';
 import { ERR_MES } from '@common';
 import { ImageHeader, IText } from '@components';
 import { ScreenName, WithdrawStackParamList } from '@navigation';
-import { RouteProp, useNavigation } from '@react-navigation/native';
+import { RouteProp, useIsFocused, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Color } from '@styles';
 import { NavigationUtils, printMoney } from '@utils';
@@ -16,10 +16,12 @@ import { groupBySortedFlucs } from '../component/groupData';
 type NavigationProp = StackNavigationProp<WithdrawStackParamList, 'WithdrawScreen'>;
 type NavigationRoute = RouteProp<WithdrawStackParamList, 'WithdrawScreen'>;
 
-export interface WithdrawScreenParamsList { }
+export interface WithdrawScreenParamsList { expandHistory?: boolean }
 
 export const WithdrawScreen = () => {
     const navigation = useNavigation<NavigationProp>();
+    const route = useRoute<NavigationRoute>();
+    const isFocused = useIsFocused();
 
     const rewardWalletBalance = useSelector((state: any) => state.userReducer.rewardWalletBalance)
 
@@ -44,9 +46,9 @@ export const WithdrawScreen = () => {
         window.loadingIndicator.hide()
     }
 
-    useEffect(() => {
-        onRefresh()
-    }, [])
+    // useEffect(() => {
+    //     onRefresh()
+    // }, [])
 
     const loadMore = useCallback(async () => {
         setLoadingBottom(true)
@@ -63,7 +65,17 @@ export const WithdrawScreen = () => {
 
     const toggleHistory = useCallback(() => {
         setShowHistory(!showHistory)
-    }, [showHistory])
+        if (!showHistory) onRefresh()
+    }, [showHistory, onRefresh])
+
+    useEffect(() => {
+        if (route?.params?.expandHistory == true
+            && isFocused) {
+            setShowHistory(true)
+            onRefresh()
+        }
+    }, [isFocused])
+
 
     return (
         <View style={styles.container}>

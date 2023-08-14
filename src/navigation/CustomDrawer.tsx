@@ -56,7 +56,7 @@ const DrawerCustom = React.memo((props: any) => {
         }
       >
         {
-          listItem1.map((item: any) => {
+          listItem1.map(item => {
             return (
               <LineItem1
                 key={item.screen}
@@ -118,7 +118,7 @@ const LineItem1 = React.memo(({ navigateTo, icon, icStyle, money, screen, btn }:
   const user = useSelector((state: any) => state.userReducer)
   const handlePress = useCallback(() => {
     navigateTo(screen)
-  }, [])
+  }, [navigateTo])
 
   const [sercure, setSercure] = useState(false)
   const toggleSercure = useCallback(() => {
@@ -221,7 +221,8 @@ const listItem1 = [
     icStyle: { width: 26, height: 26 },
     money: 'luckykingBalance',
     screen: ScreenName.Drawer.RechargeStack,
-    btn: "NẠP"
+    btn: "NẠP",
+    param: { expandHistory: false }
   },
   {
     screenId: 3,
@@ -230,6 +231,7 @@ const listItem1 = [
     money: 'rewardWalletBalance',
     screen: ScreenName.Drawer.WithDrawStack,
     btn: "ĐỔI",
+    param: { expandHistory: false }
   }
 ]
 

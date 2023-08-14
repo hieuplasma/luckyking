@@ -2,7 +2,7 @@ import { userApi } from '@api';
 import { Images, Image } from '@assets';
 import { ImageHeader, IText } from '@components';
 import { RechargeStackParamList, ScreenName } from '@navigation';
-import { RouteProp, useNavigation } from '@react-navigation/native';
+import { RouteProp, useIsFocused, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Color } from '@styles';
 import { NavigationUtils, printMoney } from '@utils';
@@ -16,10 +16,12 @@ import { ERR_MES } from '@common';
 type NavigationProp = StackNavigationProp<RechargeStackParamList, 'RechargeScreen'>;
 type NavigationRoute = RouteProp<RechargeStackParamList, 'RechargeScreen'>;
 
-export interface RechargeScreenParamsList { }
+export interface RechargeScreenParamsList { expandHistory?: boolean }
 
 export const RechargeScreen = () => {
     const navigation = useNavigation<NavigationProp>();
+    const route = useRoute<NavigationRoute>();
+    const isFocused = useIsFocused();
 
     const luckykingBalance = useSelector((state: any) => state.userReducer.luckykingBalance)
 
@@ -40,9 +42,9 @@ export const RechargeScreen = () => {
         window.loadingIndicator.hide()
     }
 
-    useEffect(() => {
-        onRefresh()
-    }, [])
+    // useEffect(() => {
+    //     onRefresh()
+    // }, [])
 
     const loadMore = useCallback(async () => {
         setLoadingBottom(true)
@@ -59,7 +61,16 @@ export const RechargeScreen = () => {
 
     const toggleHistory = useCallback(() => {
         setShowHistory(!showHistory)
-    }, [showHistory])
+        if (!showHistory) onRefresh()
+    }, [showHistory, onRefresh])
+
+    useEffect(() => {
+        if (route?.params?.expandHistory == true
+            && isFocused) {
+            setShowHistory(true)
+            onRefresh()
+        }
+    }, [isFocused])
 
     return (
         <View style={styles.container}>

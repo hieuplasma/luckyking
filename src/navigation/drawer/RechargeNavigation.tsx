@@ -19,6 +19,7 @@ export function RechargeNavigation() {
                 name={'RechargeScreen'}
                 component={RechargeScreen}
                 options={{ headerShown: false, title: undefined }}
+                initialParams={{ expandHistory: false }}
             />
             <RechargeStack.Screen
                 name={'BankRechargeScreen'}

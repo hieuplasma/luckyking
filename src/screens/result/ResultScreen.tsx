@@ -1,12 +1,12 @@
 import { IText, ImageHeader } from '@components';
 import { ResultStackParamList } from '@navigation';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { RouteProp, useIsFocused, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import PagerView from 'react-native-pager-view';
 import Animated from 'react-native-reanimated';
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { LotteryType } from '@common';
 import { Color } from '@styles';
 import { useBackButtonWithNavigation } from '@hooks';
@@ -14,7 +14,7 @@ import { useBackButtonWithNavigation } from '@hooks';
 type NavigationProp = StackNavigationProp<ResultStackParamList, 'Result'>;
 type NavigationRoute = RouteProp<ResultStackParamList, 'Result'>;
 
-export interface ResultScreenParamsList { }
+export interface ResultScreenParamsList { tab: LotteryType }
 
 const list_type = [
   {
@@ -58,6 +58,7 @@ export const ResultScreen = () => {
   const navigation = useNavigation<NavigationProp>();
   const route = useRoute<NavigationRoute>();
   const safeAreaInsets = useSafeAreaInsets();
+  const isFocused = useIsFocused();
 
   const pagerRef = useRef<PagerView>(null)
 
@@ -76,6 +77,17 @@ export const ResultScreen = () => {
       setRenderedPages([...renderedPages, position]);
     }
   }, [renderedPages])
+
+  useEffect(() => {
+    if (route?.params?.tab && isFocused) {
+      const tab = route.params.tab
+      if (tab == LotteryType.Keno) setPage(0)
+      else if (tab == LotteryType.Mega) setPage(1)
+      else if (tab == LotteryType.Power) setPage (2)
+      else if (tab == LotteryType.Max3D || tab == LotteryType.Max3DPlus) setPage(3)
+      else if (tab == LotteryType.Max3DPro) setPage(4)
+    }
+  }, [route?.params?.tab, isFocused])
 
   return (
     <View style={styles.container}>
