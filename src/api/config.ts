@@ -60,6 +60,7 @@ export const API_URI = {
   BOOK_LOTTERY_POWER_MEGA: "/order/add-power-mega",
   BOOK_LOTTERY_MAX3D: "/order/add-max3d",
   BOOK_LOTTERY_CART: "/order/add-multi",
+  RE_ORDER: "/order/re-order",
   GET_ALL_ORDER: "/order/get-all",
   GET_ALL_ORDER2: "/order/get-all-group",
   GET_ORDER_DRAW: "/order/get-by-draw",

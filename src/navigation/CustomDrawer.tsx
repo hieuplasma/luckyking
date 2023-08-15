@@ -22,8 +22,14 @@ const DrawerCustom = React.memo((props: any) => {
     setCurrentId(props.state.index)
   }, [props?.state?.index])
 
-  const navigateTo = useCallback((screen: any) => {
-    NavigationUtils.navigate(navigation, screen)
+  const navigateTo = useCallback((screen: string, initScreen?: string) => {
+    if (initScreen) {
+      NavigationUtils.navigate(navigation, screen, {
+        screen: initScreen,
+        param: {}
+      })
+    }
+    else NavigationUtils.navigate(navigation, screen)
   }, [props?.state?.index])
 
   const [loading, setLoading] = useState(false)
@@ -71,7 +77,7 @@ const DrawerCustom = React.memo((props: any) => {
           })
         }
         {
-          listItem2.map((item: any) => {
+          listItem2.map(item => {
             return (
               <LineItem2
                 key={item.title}
@@ -81,6 +87,7 @@ const DrawerCustom = React.memo((props: any) => {
                 subTitle={item.subTitle}
                 navigateTo={navigateTo}
                 screen={item.screen}
+                initScreen={item.initScreen}
                 focusing={currentIdScreen == item.screenId ? true : false}
               />
             )
@@ -139,9 +146,10 @@ const LineItem1 = React.memo(({ navigateTo, icon, icStyle, money, screen, btn }:
   )
 })
 
-const LineItem2 = React.memo(({ navigateTo, icon, icStyle, title, subTitle, screen, focusing }: any) => {
+const LineItem2 = React.memo(({ navigateTo, icon, icStyle, title, subTitle, screen, initScreen, focusing }: any) => {
   const handlePress = useCallback(() => {
-    navigateTo(screen)
+    if (initScreen) navigateTo(screen, initScreen)
+    else navigateTo(screen)
   }, [])
   return (
     <TouchableOpacity
@@ -250,7 +258,8 @@ const listItem2 = [
     icStyle: styles.icon_history,
     title: "Lịch sử đặt vé Keno",
     subTitle: "(Keno, bao Keno, nuôi Keno)",
-    screen: ScreenName.Drawer.HistoryKenoStack
+    screen: ScreenName.Drawer.HistoryKenoStack,
+    initScreen: ScreenName.Drawer.HistoryKenoScreen
   },
   {
     screenId: 5,
@@ -258,7 +267,8 @@ const listItem2 = [
     icStyle: styles.icon_history,
     title: "Lịch sử đặt vé cơ bản",
     subTitle: "(Power, Mega, Max3D/3D+, Max3DPro)",
-    screen: ScreenName.Drawer.HistoryBasicStack
+    screen: ScreenName.Drawer.HistoryBasicStack,
+    initScreen: ScreenName.Drawer.HistoryBasicScreen
   },
   // {
   //   screenId: undefined,

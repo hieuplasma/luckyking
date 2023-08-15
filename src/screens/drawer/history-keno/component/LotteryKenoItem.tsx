@@ -16,8 +16,8 @@ const lottColor = Color.keno
 export const LotteryKenoItem = React.memo(({ section, navigation }: LotteryItem) => {
 
     const numberDetail: NumberDetail[] = section.boSo
-    const [expandNumber, setExpandNumber] = useState(-1)
-    const [drawResult, setDrawResult] = useState<any>(false)
+    const [expandNumber, setExpandNumber] = useState(0)
+    const [drawResult, setDrawResult] = useState<any>(section.lotteries[0]?.result ? section.lotteries[0]?.result : false)
     const lotteries = section.lotteries.sort((a: any, b: any) => a.drawCode - b.drawCode)
 
     // useEffect(() => {

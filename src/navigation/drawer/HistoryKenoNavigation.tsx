@@ -2,14 +2,16 @@ import { createStackNavigator } from '@react-navigation/stack';
 import {
     HistoryKenoScreen, HistoryKenocreenParamsList,
     OrderKenoScreen, OrderKenoScreenParamsList,
-    DetailResultKeno, ResultKenoParamsList
+    DetailResultKeno, ResultKenoParamsList, ReorderScreenParamsList, ReorderScreen, OrderScreenParamsList, OrderScreen
 } from '@screen';
 import React from 'react';
 
 export type HistoryKenoStackParamList = {
     HistoryKenoScreen: HistoryKenocreenParamsList,
     OrderKenoScreen: OrderKenoScreenParamsList,
-    DetailKeno: ResultKenoParamsList
+    DetailKeno: ResultKenoParamsList,
+    ReoderScreen: ReorderScreenParamsList,
+    OrderScreen: OrderScreenParamsList
 };
 
 const Stack = createStackNavigator<HistoryKenoStackParamList>();
@@ -30,6 +32,16 @@ export function HistoryKenoNavigation() {
             <Stack.Screen
                 name={'DetailKeno'}
                 component={DetailResultKeno}
+                options={{ headerShown: false, title: undefined }}
+            />
+            <Stack.Screen
+                name={'ReoderScreen'}
+                component={ReorderScreen}
+                options={{ headerShown: false, title: undefined }}
+            />
+            <Stack.Screen
+                name={'OrderScreen'}
+                component={OrderScreen}
                 options={{ headerShown: false, title: undefined }}
             />
         </Stack.Navigator>

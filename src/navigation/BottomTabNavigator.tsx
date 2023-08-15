@@ -147,6 +147,7 @@ const hideTabBar = [
   ScreenName.HomeChild.Max3dProScreen,
   ScreenName.HomeChild.CartScreen,
   ScreenName.HomeChild.OrderScreen,
+  ScreenName.HomeChild.ReorderScreen,
 
   ScreenName.Drawer.RechargeStack,
   ScreenName.Drawer.HistoryKenoStack,

@@ -42,8 +42,7 @@ export const PowerScreen = React.memo((props: PowerScreenProps) => {
     const dispatch = useDispatch()
 
     const listDraw = useSelector((state: any) => state.drawReducer.powerListDraw)
-    const luckykingBalance = useSelector((state: any) => state.userReducer.luckykingBalance);
-
+    
     const [showBottomSheet, setShowBottomSheet] = useState(false)
     const [typePlay, setType]: any = useState({ label: "Cơ bản", value: 6 });
     const [drawSelected, setDraw]: any = useState(listDraw.length > 0 ? [listDraw[0]] : [])

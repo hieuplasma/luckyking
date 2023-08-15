@@ -89,6 +89,8 @@ export function calSurcharge(cost: number, percent = 0) {
 
 export function printTypePlay(value: number, type: string) {
     switch (type) {
+        case LotteryType.Keno:
+            return 'Keno'
         case LotteryType.Power:
         case LotteryType.Mega:
             return PowerMegaType(value);

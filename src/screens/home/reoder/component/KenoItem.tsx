@@ -1,20 +1,35 @@
-import { INumberDetail, NumberDetail } from "@common";
+import { INumberDetail, LotteryType, NumberDetail } from "@common";
 import { ConsolasText, IText, LogoIcon } from "@components";
 import { Color } from "@styles";
-import { getColorLott, printDrawCode, printMoney, printNumber, printTypePlay, printWeekDate } from "@utils";
-import React from "react";
+import { getColorLott, getSpecialValueKeno, printMoney, printNumber, printTypePlay } from "@utils";
+import React, { useCallback } from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
-import { RenderFooterItem } from "./RenderFooterItem";
+import { FooterItem } from "./FooterItem";
+// import { RenderFooterItem } from "./RenderFooterItem";
 
 interface Props {
     item: any,
-    openModalDeleteLottery: () => void
+    deleteLottery?: () => void,
+    changeDraw: (drawSelected: any[],
+        onChangeDraw: (draw: any) => void,
+        listDraw: any[],
+        type: LotteryType) => void,
+    init?: boolean,
+    onPickedDraw: (picked: any[]) => void
 }
 
-export const RenderPowerMegaItem = React.memo(({ item, openModalDeleteLottery }: Props) => {
+export const KenoItem = React.memo(({ item, deleteLottery, changeDraw, init, onPickedDraw }: Props) => {
+
+    const printNumberScan = useCallback((number: any) => {
+        if (parseInt(number) > 80) {
+            return getSpecialValueKeno(number)
+        }
+        else return printNumber(number)
+    }, [])
+
 
     const numberDetail = item.NumberLottery.numberDetail as INumberDetail[]
-    const lottColor = getColorLott(item.type)
+    const lottColor = Color.keno
     return (
         <View style={styles.borderItem}>
             <LogoIcon type={item.type} />
@@ -28,23 +43,27 @@ export const RenderPowerMegaItem = React.memo(({ item, openModalDeleteLottery }:
                                 <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 8 }}>
                                     <IText style={{ fontSize: 18, fontWeight: 'bold', color: Color.black }}>
                                         {String.fromCharCode(65 + id)}
-                                        <IText style={{ fontSize: 10 }}>
-                                            {(it.tuChon ? ' (TC)' : '')}
-                                        </IText>
                                     </IText>
                                     <View style={{ marginLeft: 5, flexDirection: 'row', flexWrap: 'wrap', flex: 1 }}>
                                         {
                                             numbers.map((number: number, id2: number) => {
+
                                                 return (
-                                                    <View key={number + '' + id2} style={[styles.ball, { backgroundColor: lottColor }]}>
-                                                        <ConsolasText style={styles.textBall}>
-                                                            {`${printNumber(number)}`}
+                                                    <View key={number + '' + id2}
+                                                        style={[styles.ball, { width: number > 80 ? 100 : 24, backgroundColor: lottColor }]}
+                                                    >
+                                                        <ConsolasText style={[styles.textBall]}>
+                                                            {`${printNumberScan(number)}`}
                                                         </ConsolasText>
                                                     </View>
                                                 )
                                             })
                                         }
                                     </View>
+
+                                    <IText style={{ fontSize: 16, fontWeight: 'bold', color: Color.black }}>
+                                        {`${printMoney(it.tienCuoc)}đ`}
+                                    </IText>
                                 </View>
                                 <View style={styles.underLine} />
                             </View>
@@ -52,10 +71,13 @@ export const RenderPowerMegaItem = React.memo(({ item, openModalDeleteLottery }:
                     })
                 }
             </View>
-            <RenderFooterItem
+            <FooterItem
                 lottColor={lottColor}
                 item={item}
-                openModalDeleteLottery={openModalDeleteLottery}
+                deleteLottery={deleteLottery}
+                changeDraw={changeDraw}
+                init={init}
+                onPickedDraw={onPickedDraw}
             />
         </View>
     )

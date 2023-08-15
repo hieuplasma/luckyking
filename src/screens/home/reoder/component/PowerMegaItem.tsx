@@ -1,17 +1,23 @@
-import { INumberDetail, NumberDetail } from "@common";
+import { INumberDetail, LotteryType, NumberDetail } from "@common";
 import { ConsolasText, IText, LogoIcon } from "@components";
 import { Color } from "@styles";
-import { getColorLott, printDrawCode, printMoney, printNumber, printTypePlay, printWeekDate } from "@utils";
+import { getColorLott, printNumber, printTypePlay } from "@utils";
 import React from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
-import { RenderFooterItem } from "./RenderFooterItem";
+import { FooterItem } from "./FooterItem";
 
 interface Props {
     item: any,
-    openModalDeleteLottery: () => void
+    deleteLottery?: () => void,
+    changeDraw: (drawSelected: any[],
+        onChangeDraw: (draw: any) => void,
+        listDraw: any[],
+        type: LotteryType) => void,
+    init?: boolean,
+    onPickedDraw: (picked: any[]) => void
 }
 
-export const RenderPowerMegaItem = React.memo(({ item, openModalDeleteLottery }: Props) => {
+export const PowerMegaItem = React.memo(({ item, deleteLottery, changeDraw, init, onPickedDraw }: Props) => {
 
     const numberDetail = item.NumberLottery.numberDetail as INumberDetail[]
     const lottColor = getColorLott(item.type)
@@ -28,9 +34,6 @@ export const RenderPowerMegaItem = React.memo(({ item, openModalDeleteLottery }:
                                 <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 8 }}>
                                     <IText style={{ fontSize: 18, fontWeight: 'bold', color: Color.black }}>
                                         {String.fromCharCode(65 + id)}
-                                        <IText style={{ fontSize: 10 }}>
-                                            {(it.tuChon ? ' (TC)' : '')}
-                                        </IText>
                                     </IText>
                                     <View style={{ marginLeft: 5, flexDirection: 'row', flexWrap: 'wrap', flex: 1 }}>
                                         {
@@ -52,10 +55,13 @@ export const RenderPowerMegaItem = React.memo(({ item, openModalDeleteLottery }:
                     })
                 }
             </View>
-            <RenderFooterItem
+            <FooterItem
                 lottColor={lottColor}
                 item={item}
-                openModalDeleteLottery={openModalDeleteLottery}
+                deleteLottery={deleteLottery}
+                changeDraw={changeDraw}
+                init={init}
+                onPickedDraw={onPickedDraw}
             />
         </View>
     )

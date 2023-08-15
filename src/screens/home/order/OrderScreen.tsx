@@ -35,7 +35,6 @@ export const OrderScreen = React.memo(() => {
     const [percent, setPercent] = useState(surchargeLKK)
 
     useEffect(() => {
-        console.log(bodyPay)
         if (bodyPay.lotteryType == LotteryType.Keno) {
             setSurcharge(calSurcharge(bodyPay.amount, kenoSurchargeLKK))
             setPercent(kenoSurchargeLKK)
@@ -69,7 +68,8 @@ export const OrderScreen = React.memo(() => {
         tmp.method = OrderMethod.Keep
         window.loadingIndicator.show()
         let res = null
-        switch (bodyPay.lotteryType) {
+        if (bodyPay.orderType == 'reorder') res = await lotteryApi.reorder(tmp)
+        else switch (bodyPay.lotteryType) {
             case LotteryType.Keno:
                 res = await lotteryApi.bookLotteryKeno(tmp)
                 break;

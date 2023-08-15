@@ -113,6 +113,10 @@ export const OrderBasicScreen = React.memo(({ }: any) => {
         setSectionData(tmp.sort((a: any, b: any) => b.displayId - a.displayId))
     }, [value, valueStatus, thisOrder])
 
+    const reoder = useCallback(() => {
+        navigation.navigate('ReoderScreen', { lotteries: thisOrder.Lottery, ticketType: 'basic' })
+    }, [thisOrder])
+
     return (
         <View style={{ flex: 1 }}>
             <BasicHeader
@@ -202,6 +206,12 @@ export const OrderBasicScreen = React.memo(({ }: any) => {
                 />
             </View>
 
+            <View style={{ marginBottom: 30, alignItems: 'center' }}>
+                <TouchableOpacity style={styles.btnReoder} onPress={reoder}>
+                    <IText style={{ fontWeight: 'bold', fontSize: 14, color: Color.white }}>{'MUA LẠI'}</IText>
+                </TouchableOpacity>
+            </View>
+
             {showBottomSheet ? renderSheet() : <></>}
         </View>
     )
@@ -223,5 +233,11 @@ const styles = StyleSheet.create({
     },
     body: {
         flex: 1, padding: 16, paddingTop: 4, zIndex: -100
+    },
+    btnReoder: {
+        borderRadius: 10,
+        height: 44, width: 120,
+        backgroundColor: Color.luckyKing,
+        justifyContent: 'center', alignItems: 'center'
     }
 })

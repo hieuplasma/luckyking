@@ -71,7 +71,8 @@ export const ScreenName = {
     CartScreen: "CartScreen",
     Max3dScreen: "Max3dScreen",
     Max3dProScreen: "Max3dProScreen",
-    OrderScreen: "OrderScreen"
+    OrderScreen: "OrderScreen",
+    ReorderScreen: "ReorderScreen"
   },
 
   ResultChild: {

@@ -8,3 +8,4 @@ export * from './buy_lottery/KenoScreen'
 
 export * from './cart/CartScreen'
 export * from './order/OrderScreen'
+export * from './reoder/ReOrderScreen'

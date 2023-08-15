@@ -68,6 +68,11 @@ class LotteryApi {
         let fullUrl = API_URI.BOOK_LOTTERY_CART;
         return await window.connection.POST(fullUrl, body)
     }
+
+    reorder = async (body: any) => {
+        let fullUrl = API_URI.RE_ORDER;
+        return await window.connection.POST(fullUrl, body)
+    }
     // ---- End -----
 
     // Add Lottery to Cart

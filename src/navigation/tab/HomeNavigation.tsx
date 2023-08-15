@@ -7,7 +7,8 @@ import {
   Max3dScreen, Max3dScreenParamsList,
   Max3dProScreen, Max3dProScreenParamsList,
   KenoScreen, KenoScreenParamsList,
-  OrderScreen, OrderScreenParamsList
+  OrderScreen, OrderScreenParamsList,
+  ReorderScreenParamsList, ReorderScreen
 } from '@screen';
 import React from 'react';
 import { RechargeNavigation, RechargeStackParamList } from '../drawer/RechargeNavigation';
@@ -24,6 +25,8 @@ export type HomeStackParamList = {
   KenoScreen: KenoScreenParamsList;
   CartScreen: CartScreenParamsList;
   OrderScreen: OrderScreenParamsList;
+
+  ReorderScreen: ReorderScreenParamsList;
 
   RechargeStack: RechargeStackParamList;
   HistoryBasicStack: HistoryBasicStackParamList;
@@ -94,6 +97,12 @@ export function HomeNavigation() {
       <HomeStack.Screen
         name={'InstructionStack'}
         component={InstructionNavigation}
+        options={{ headerShown: false, title: undefined }}
+      />
+
+      <HomeStack.Screen
+        name={'ReorderScreen'}
+        component={ReorderScreen}
         options={{ headerShown: false, title: undefined }}
       />
     </HomeStack.Navigator>

@@ -6,6 +6,10 @@ import {
     HistoryBasicScreen, HistoryBasicScreenParamsList,
     OrderBasicScreen,
     OrderBasicScreenParamsList,
+    OrderScreen,
+    OrderScreenParamsList,
+    ReorderScreen,
+    ReorderScreenParamsList,
     ResultMax3dParamsList, ResultMegaParamsList, ResultPowerParamsList
 } from '@screen';
 import React from 'react';
@@ -16,6 +20,8 @@ export type HistoryBasicStackParamList = {
     DetailMega: ResultMegaParamsList,
     DetailPower: ResultPowerParamsList,
     DetailMax3d: ResultMax3dParamsList,
+    ReoderScreen: ReorderScreenParamsList,
+    OrderScreen: OrderScreenParamsList
 };
 
 const Stack = createStackNavigator<HistoryBasicStackParamList>();
@@ -46,6 +52,17 @@ export function HistoryBasicNavigation() {
             <Stack.Screen
                 name={'DetailPower'}
                 component={DetailResultPower}
+                options={{ headerShown: false, title: undefined }}
+            />
+
+            <Stack.Screen
+                name={'ReoderScreen'}
+                component={ReorderScreen}
+                options={{ headerShown: false, title: undefined }}
+            />
+            <Stack.Screen
+                name={'OrderScreen'}
+                component={OrderScreen}
                 options={{ headerShown: false, title: undefined }}
             />
         </Stack.Navigator>

@@ -3,7 +3,7 @@ import { BasicHeader, IText } from "@components";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Color } from "@styles";
-import { printDisplayId, printMoney } from "@utils";
+import { NavigationUtils, printDisplayId, printMoney } from "@utils";
 import React, { useCallback, useEffect, useRef, useState } from "react"
 import { FlatList, RefreshControl, StyleSheet, TouchableOpacity, View } from "react-native";
 import { HistoryKenoStackParamList } from "src/navigation/drawer/HistoryKenoNavigation";
@@ -11,6 +11,8 @@ import { DetailOrderSheet } from "../component/DetailOrderSheet";
 import { LotteryKenoItem } from "./component/LotteryKenoItem";
 import { DELAY_SCREEN, TransactionType } from "@common";
 import { HeaderOrder } from "../component/HeaderOrder";
+import { ScreenName } from "@navigation";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 type NavigationProp = StackNavigationProp<HistoryKenoStackParamList, 'OrderKenoScreen'>;
 type NavigationRoute = RouteProp<HistoryKenoStackParamList, 'OrderKenoScreen'>;
@@ -24,6 +26,7 @@ export const OrderKenoScreen = React.memo(({ }: any) => {
     const order = route.params.order
     const [thisOrder, setThisOrder] = useState(route.params.order)
     const [isLoading, setLoading] = useState(false)
+    const safeAreaInsets = useSafeAreaInsets();
 
     const onRefresh = useCallback(async () => {
         setLoading(true)
@@ -87,6 +90,10 @@ export const OrderKenoScreen = React.memo(({ }: any) => {
         )
     }, [sheetRef, thisOrder])
 
+    const reoder = useCallback(() => {
+        navigation.navigate('ReoderScreen', { lotteries: thisOrder.Lottery, ticketType: 'keno' })
+    }, [thisOrder])
+
     return (
         <View style={{ flex: 1 }}>
             <BasicHeader
@@ -121,6 +128,11 @@ export const OrderKenoScreen = React.memo(({ }: any) => {
                 />
             </View>
 
+            <View style={{ alignItems: 'center', position: 'absolute', bottom: safeAreaInsets.bottom, left: 0, width: '100%' }}>
+                <TouchableOpacity style={styles.btnReoder} onPress={reoder}>
+                    <IText style={{ fontWeight: 'bold', fontSize: 14, color: Color.white }}>{'MUA LẠI'}</IText>
+                </TouchableOpacity>
+            </View>
             {showBottomSheet ? renderSheet() : <></>}
         </View>
     )
@@ -135,5 +147,11 @@ const styles = StyleSheet.create({
     },
     body: {
         flex: 1, padding: 16, paddingTop: 4
+    },
+    btnReoder: {
+        borderRadius: 10,
+        height: 44, width: 120,
+        backgroundColor: Color.luckyKing,
+        justifyContent: 'center', alignItems: 'center'
     }
 })
