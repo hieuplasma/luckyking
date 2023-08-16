@@ -1,3 +1,4 @@
+import { OTPSender } from '@common'
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
@@ -12,7 +13,9 @@ const initialState = {
     surchargeLKK: 0,
     kenoSurchargeLKK: 0,
 
-    kenoSalesStoppageTime: 0
+    kenoSalesStoppageTime: 0,
+
+    otpSender: OTPSender.VOICE_OTP
 }
 
 // Create Redux state slice
@@ -45,12 +48,16 @@ const systemSlice = createSlice({
         saveKenoStoptime: (state, action) => {
             state.kenoSalesStoppageTime = action.payload.kenoSalesStoppageTime !== 0 ?
                 (action.payload.kenoSalesStoppageTime || newState.kenoSalesStoppageTime) : 0
-        }
+        },
+        saveOTPSender: (state, action) => {
+            state.otpSender = action.payload.otpSender || state.otpSender
+        },
     },
 })
 
 export const { saveExpandKeno, saveExpandBasic,
     saveAlertKeno, saveAlertTesting,
     saveSurchargeLKK, saveAlertCart,
-    savePopupId, saveKenoStoptime } = systemSlice.actions
+    savePopupId, saveKenoStoptime,
+    saveOTPSender } = systemSlice.actions
 export default systemReducer = systemSlice.reducer

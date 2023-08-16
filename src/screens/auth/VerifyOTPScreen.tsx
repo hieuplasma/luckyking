@@ -18,6 +18,7 @@ import { IText, InputComponent } from '@components';
 import { authApi } from '@api';
 import { HOT_LINE } from '@common';
 import { Linking } from 'react-native';
+import { useSelector } from 'react-redux';
 
 type NavigationProp = StackNavigationProp<AuthenticationStackParamList, 'VerifyOTP'>;
 type NavigationRoute = RouteProp<AuthenticationStackParamList, 'VerifyOTP'>;
@@ -44,6 +45,7 @@ export const VerifyOTPScreen = React.memo((props?: any) => {
   const navigation = useNavigation<NavigationProp>();
   const route = useRoute<NavigationRoute>();
   const verifyOtpHooks = useVerifyOtp();
+  const otpSender = useSelector((state: any) => state.systemReducer.otpSender)
 
   const [keySession, setKeySession] = useState<any>(false)
 
@@ -54,12 +56,12 @@ export const VerifyOTPScreen = React.memo((props?: any) => {
   ]);
 
   const signInWithPhoneNumber = useCallback(async () => {
-    const res = await authApi.createOTP({ phoneNumber: route.params.body.phoneNumber })
+    const res = await authApi.createOTP({ phoneNumber: route.params.body.phoneNumber, otpSender: otpSender })
     if (res) {
       setKeySession(res.data.id)
     }
     verifyOtpHooks.onResendOtp()
-  }, [verifyOtpHooks.onResendOtp, route.params.body.phoneNumber])
+  }, [verifyOtpHooks.onResendOtp, route.params.body.phoneNumber, otpSender])
 
   useEffect(() => {
     signInWithPhoneNumber()
