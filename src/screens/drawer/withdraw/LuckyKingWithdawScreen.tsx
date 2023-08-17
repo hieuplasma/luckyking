@@ -11,6 +11,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, View, Dimensions, StatusBar, TouchableOpacity, SafeAreaView, TextInput, Alert } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
+import { DocTienBangChu } from './docTien';
 
 type NavigationProp = StackNavigationProp<WithdrawStackParamList, 'LuckyKingWithdrawScreen'>;
 type NavigationRoute = RouteProp<WithdrawStackParamList, 'LuckyKingWithdrawScreen'>;
@@ -24,6 +25,8 @@ export const LuckyKingWithdrawScreen = () => {
     const route = useRoute<NavigationRoute>();
     const safeAreaInsets = useSafeAreaInsets();
     const dispatch = useDispatch()
+    let docTien = new DocTienBangChu();
+
 
     const user = useSelector((state: any) => state.userReducer)
 
@@ -51,12 +54,12 @@ export const LuckyKingWithdrawScreen = () => {
                 let tmp = []
                 let curr = number
                 while (curr < 1000000000) {
-                    if (curr >= 100000) {
+                    if (curr >= 1000) {
                         tmp.push(curr)
                     }
                     curr = curr * 10
                 }
-                if (!tmp.includes(rewardWalletBalance)) tmp.push(rewardWalletBalance)
+                // if (!tmp.includes(rewardWalletBalance)) tmp.push(rewardWalletBalance)
                 setList(tmp)
             }
         }
@@ -106,7 +109,7 @@ export const LuckyKingWithdrawScreen = () => {
                     <View style={{ flexDirection: 'row' }}>
                         <Image source={Images.wallet} style={{ width: 40, height: 40 }} />
                         <View style={{ marginLeft: 8 }}>
-                            <IText style={{ lineHeight: 16.8 }}>{"Số dư"}</IText>
+                            <IText style={{ lineHeight: 16.8 }}>{"Số dư TK LuckyKing"}</IText>
                             <IText style={{ lineHeight: 16.8, color: Color.luckyKing }}>{`${printMoney(luckykingBalance)}đ`}</IText>
                         </View>
                     </View>
@@ -125,19 +128,27 @@ export const LuckyKingWithdrawScreen = () => {
                     />
                 </View>
 
-                {list.length > 0 ?
-                    <View style={{ marginHorizontal: 12, flexDirection: 'row', flexWrap: 'wrap' }}>
-                        {
-                            list.map((number: number) => {
-                                return (
-                                    <TouchableOpacity activeOpacity={0.7} key={number} style={styles.boxChoose} onPress={() => onChangeText(number.toString())}>
-                                        <IText style={{ fontSize: 16 }}>{printMoney(number)}</IText>
-                                    </TouchableOpacity>
-                                )
-                            })
-                        }
-                    </View>
+                {!doNotExits(amount) ?
+                    <IText style={{ marginLeft: 16, fontStyle: 'italic' }}>
+                        {docTien.doc(amount)}
+                    </IText>
                     : <></>}
+
+                <View style={{ marginHorizontal: 8, flexDirection: 'row', flexWrap: 'wrap' }}>
+                    {
+                        list.length > 0 ? list.map((number: number) => {
+                            return (
+                                <TouchableOpacity activeOpacity={0.7} key={number} style={styles.boxChoose} onPress={() => onChangeText(number.toString())}>
+                                    <IText style={{ fontSize: 16 }}>{printMoney(number)}</IText>
+                                </TouchableOpacity>
+                            )
+                        })
+                            : <></>
+                    }
+                    <TouchableOpacity activeOpacity={0.7} style={styles.boxChoose} onPress={() => onChangeText(rewardWalletBalance.toString())}>
+                        <IText style={{ fontSize: 16 }}>{'Tất cả'}</IText>
+                    </TouchableOpacity>
+                </View>
 
                 <TouchableOpacity style={[styles.button, { opacity: disable ? 0.6 : 1 }]} disabled={disable} onPress={withdraw}>
                     <IText uppercase style={{ fontWeight: 'bold', fontSize: 16, color: Color.white }}>{"ĐỔI THƯỞNG"}</IText>
@@ -163,7 +174,7 @@ const styles = StyleSheet.create({
         width: '100%', marginTop: 8
     },
     borderItem: {
-        width: windowWidth - 32, marginHorizontal: 16,
+        width: windowWidth - 24, marginHorizontal: 12,
         borderRadius: 10,
         borderWidth: 1, borderColor: '#DADADA',
         alignItems: 'center',
@@ -172,8 +183,8 @@ const styles = StyleSheet.create({
     },
     rightArrow: { width: 10, height: 20 },
     button: {
-        width: windowWidth - 32, height: 44,
-        backgroundColor: Color.luckyKing, borderRadius: 10, marginTop: 12, marginHorizontal: 16,
+        width: windowWidth - 24, height: 44,
+        backgroundColor: Color.luckyKing, borderRadius: 10, marginTop: 12, marginHorizontal: 12,
         justifyContent: 'center', alignItems: 'center'
     },
     boxChoose: {

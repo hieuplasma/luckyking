@@ -11,6 +11,7 @@ import { StyleSheet, View, Dimensions, StatusBar, TouchableOpacity, TextInput, A
 import { useDispatch, useSelector } from 'react-redux';
 import { useHeaderHeight } from '@react-navigation/elements'
 import { ChooseBankSheet } from './ChooseBankSheet';
+import { DocTienBangChu } from './docTien';
 
 type NavigationProp = StackNavigationProp<WithdrawStackParamList, 'LuckyKingWithdrawScreen'>;
 type NavigationRoute = RouteProp<WithdrawStackParamList, 'LuckyKingWithdrawScreen'>;
@@ -22,6 +23,7 @@ export const BankWithdrawScreen = () => {
     const height = useHeaderHeight()
 
     const user = useSelector((state: any) => state.userReducer)
+    let docTien = new DocTienBangChu();
 
     const rewardWalletBalance = useSelector((state: any) => state.userReducer.rewardWalletBalance)
     const luckykingBalance = useSelector((state: any) => state.userReducer.luckykingBalance)
@@ -44,7 +46,7 @@ export const BankWithdrawScreen = () => {
                     }
                     curr = curr * 10
                 }
-                if (!tmp.includes(rewardWalletBalance)) tmp.push(rewardWalletBalance)
+                // if (!tmp.includes(rewardWalletBalance)) tmp.push(rewardWalletBalance)
                 setList(tmp)
             }
         }
@@ -190,21 +192,28 @@ export const BankWithdrawScreen = () => {
                         />
                     </View>
 
-                    {list.length > 0 ?
-                        <View style={{ marginHorizontal: 16, flexDirection: 'row', flexWrap: 'wrap' }}>
-                            {
-                                list.map((number: number) => {
-                                    return (
-                                        <TouchableOpacity activeOpacity={0.8} key={number} style={styles.boxChoose} onPress={() => onChangeAmount(number.toString())}>
-                                            <IText style={{ fontSize: 16 }}>{printMoney(number)}</IText>
-                                        </TouchableOpacity>
-                                    )
-                                })
-                            }
-                        </View>
+                    {!doNotExits(amount) ?
+                        <IText style={{marginLeft: 16, fontStyle:'italic'}}>
+                            {docTien.doc(amount)}
+                        </IText>
                         : <></>}
 
-                    <TouchableOpacity style={[styles.borderItem, { paddingHorizontal: 16 }]} onPress={openBankSheet}>
+                    <View style={{ marginHorizontal: 8, flexDirection: 'row', flexWrap: 'wrap' }}>
+                        {
+                            list.length > 0 ? list.map((number: number) => {
+                                return (
+                                    <TouchableOpacity activeOpacity={0.8} key={number} style={styles.boxChoose} onPress={() => onChangeAmount(number.toString())}>
+                                        <IText style={{ fontSize: 16 }}>{printMoney(number)}</IText>
+                                    </TouchableOpacity>
+                                )
+                            }) : <></>
+                        }
+                        <TouchableOpacity activeOpacity={0.7} style={styles.boxChoose} onPress={() => onChangeAmount(rewardWalletBalance.toString())}>
+                            <IText style={{ fontSize: 16 }}>{'Tất cả'}</IText>
+                        </TouchableOpacity>
+                    </View>
+
+                    <TouchableOpacity style={[styles.borderItem, { paddingHorizontal: 8 }]} onPress={openBankSheet}>
                         {
                             bank ?
                                 <>
@@ -275,7 +284,7 @@ const styles = StyleSheet.create({
         width: '100%', marginTop: 8
     },
     borderItem: {
-        width: windowWidth - 32, marginHorizontal: 16,
+        width: windowWidth - 24, marginHorizontal: 12,
         borderRadius: 10,
         borderWidth: 1, borderColor: '#DADADA',
         alignItems: 'center',
@@ -284,8 +293,8 @@ const styles = StyleSheet.create({
     },
     rightArrow: { width: 10, height: 20 },
     button: {
-        width: windowWidth - 32, height: 44,
-        backgroundColor: Color.luckyKing, borderRadius: 10, marginTop: 12, marginHorizontal: 16,
+        width: windowWidth - 24, height: 44,
+        backgroundColor: Color.luckyKing, borderRadius: 10, marginTop: 12, marginHorizontal: 12,
         justifyContent: 'center', alignItems: 'center', marginBottom: 32
     },
     boxChoose: {

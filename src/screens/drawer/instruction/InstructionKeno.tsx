@@ -62,7 +62,7 @@ const title1 = `1. Cách chơi Keno cơ bản`
 
 const content1 = `Trong xổ số Keno Vietlott ngoài việc bạn chọn 10 con số để tham gia dự thưởng thì bạn có thể chọn 1,2,3,4,5,6,7,8 hoặc 9 số mỗi số lượng số bạn chọn tương ứng với bậc 1,2,3,4,5,6,7,8 hoặc 9.
 CƠ CẤU GIẢI THƯỞNG KENO CƠ BẢN
-(Cơ cấu giả thưởng cho tờ vé 10.000 đồng, nếu tham gia nhiều hơn thì giải thưởng nhận được gấp nhiều lần tương ứng)`
+(Cơ cấu giải thưởng cho tờ vé 10.000 đồng, nếu tham gia nhiều hơn thì giải thưởng nhận được gấp nhiều lần tương ứng)`
 
 const title2 = `2. Cách Keno chơi bổ sung`
 

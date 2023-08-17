@@ -4,7 +4,7 @@ import { OrderStatus, getLotteyNameStatus } from "@common";
 import { IText } from "@components";
 import { ScreenName } from "@navigation";
 import { Color } from "@styles";
-import { NavigationUtils, caculateLotteryBenefits, doNotExits, printDisplayId, printDraw2, printMoney } from "@utils";
+import { NavigationUtils, caculateLotteryBenefits, doNotExits, printDisplayId, printDraw2, printDraw3, printMoney } from "@utils";
 import React, { useCallback, } from "react";
 import { ColorValue, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
 
@@ -97,7 +97,7 @@ export const PrintDrawItem = React.memo(({ lottery, expand, toggle, lottColor, n
                     </IText>
                     <IText>
                         <IText style={{ fontWeight: 'bold' }}>{"Kỳ: "}</IText>
-                        {printDraw2({ drawCode: lottery.drawCode, drawTime: lottery.drawTime })}
+                        {printDraw3({ drawCode: lottery.drawCode, drawTime: lottery.drawTime })}
                     </IText>
                 </View>
 
