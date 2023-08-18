@@ -45,6 +45,8 @@ export const API_URI = {
   CREATE_OTP: '/otp/create-otp',
   CONFIRM_OTP: '/otp/confirm-otp',
 
+  GET_PRIORITY: '/auth/priority-number',
+
   CHECK_PHONENUMBER: "/auth/check",
 
   GET_USER_INFO: "/users/get-info",

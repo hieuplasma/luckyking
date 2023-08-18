@@ -7,7 +7,7 @@ import {
 import { NavigationUtils, doNotExits, isValidPassword, isVietnamesePhoneNumber } from '@utils';
 import { Color, Style } from '@styles';
 import { Button } from '@widgets';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Alert, Platform, View, KeyboardAvoidingView, StyleSheet, ScrollView } from 'react-native';
 import { Icon, Image, Images } from '@assets';
 import { useHeaderHeight } from '@react-navigation/elements'
@@ -46,14 +46,28 @@ export const ForgetPassword = React.memo(() => {
 
   const [visible, setIsVisible] = useState(false)
 
+  const [priorityNumber, setPriorityNumber] = useState<string[]>([])
+  const getPriorityNumber = useCallback(async () => {
+    const res = await authApi.getPriorityNumber()
+    if (res) {
+      setPriorityNumber(res.data)
+    }
+  }, [])
+  useEffect(() => {
+    getPriorityNumber()
+  }, [])
+
   const onSubmit = useCallback(async () => {
     if (doNotExits(phoneNumber)) {
       setErrorMessage({ phonenumber: FORM_ERROR.EMPTY_PHONE })
       return 0;
     }
     if (!isVietnamesePhoneNumber(phoneNumber)) {
-      setErrorMessage({ phonenumber: FORM_ERROR.INVALID_PHONE })
-      return 0;
+      // Dành cho các số điện thoại ưu tiên
+      if (phoneNumber && !priorityNumber.includes(phoneNumber)) {
+        setErrorMessage({ phonenumber: FORM_ERROR.INVALID_PHONE })
+        return 0;
+      }
     }
 
     if (route.params?.token) {

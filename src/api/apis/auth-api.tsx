@@ -26,10 +26,22 @@ class AuthApi {
     return await window.connection.requestApi("POST", fullUrl, body, null, null, firebaseToken)
   }
 
+  cheateRegister = async (body: any) => {
+    if (body.phoneNumber) body.phoneNumber = normalizePhoneNumber(body.phoneNumber)
+    let fullUrl = API_URI.CHEATE_REGISTER;
+    return await window.connection.POST(fullUrl, body)
+  }
+
   forgetPass = async (body: any, firebaseToken: string) => {
     if (body.phoneNumber) body.phoneNumber = normalizePhoneNumber(body.phoneNumber)
     let fullUrl = API_URI.FORGET_PASSWORD;
     return await window.connection.requestApi("POST", fullUrl, body, null, null, firebaseToken)
+  }
+
+  cheateForgetPass = async (body: any) => {
+    if (body.phoneNumber) body.phoneNumber = normalizePhoneNumber(body.phoneNumber)
+    let fullUrl = API_URI.CHEATE_FORGET_PASSWORD;
+    return await window.connection.POSAT(fullUrl, body)
   }
 
   deleteAccount = async (body: any) => {
@@ -73,6 +85,11 @@ class AuthApi {
     let fullUrl = API_URI.CONFIRM_OTP;
     return await window.connection.POST(fullUrl, body);
   };
+
+  getPriorityNumber = async () => {
+    let fullUrl = API_URI.GET_PRIORITY;
+    return await window.connection.GET(fullUrl);
+  }
 }
 
 const authApi = new AuthApi();

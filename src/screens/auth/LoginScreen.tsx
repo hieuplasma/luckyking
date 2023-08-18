@@ -1,12 +1,10 @@
 import { AuthenticationStackParamList, ScreenName } from '@navigation';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import {
-  useBase,
-} from '@shared';
+import { useBase } from '@shared';
 import { NavigationUtils, doNotExits, isVietnamesePhoneNumber } from '@utils'
 import { Color, Style } from '@styles';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { View, Platform, KeyboardAvoidingView, ScrollView, StyleSheet, Alert } from 'react-native';
 import { Button } from '@widgets';
 import DeviceInfo from 'react-native-device-info';
@@ -41,10 +39,48 @@ export const LoginWidget = React.memo((props: any) => {
 
   const [visible, setIsVisible] = useState(false)
 
+  const [priorityNumber, setPriorityNumber] = useState<string[]>([])
+  const getPriorityNumber = useCallback(async () => {
+    const res = await authApi.getPriorityNumber()
+    if (res) {
+      setPriorityNumber(res.data)
+    }
+  }, [])
+  useEffect(() => {
+    getPriorityNumber()
+  }, [])
+
   const onLoginPress = useCallback(async () => {
+    const deviceId = await DeviceInfo.getUniqueId()
     if (doNotExits(phoneNumber)) {
       setErrorMessage({ phonenumber: FORM_ERROR.EMPTY_PHONE })
       return 0;
+    }
+
+    // Dành cho các số điện thoại ưu tiên
+    if (!phoneNumber) { }
+    else {
+      const tmpPhone: string = phoneNumber?.trim()
+      const deviceId = await DeviceInfo.getUniqueId()
+      if (priorityNumber.includes(tmpPhone)) {
+        const body = {
+          phoneNumber: phoneNumber,
+          password: password,
+          deviceId: deviceId,
+        }
+        const res = await authApi.login(body)
+        if (res) {
+          NavigationUtils.navigate(navigation, ScreenName.Authentications.AgreeTerms,
+            {
+              authInfo: {
+                token: res.data.accessToken,
+                phoneNumber: phoneNumber,
+                password: password
+              }
+            })
+        }
+        return 0;
+      }
     }
 
     if (!isVietnamesePhoneNumber(phoneNumber)) {
@@ -60,7 +96,6 @@ export const LoginWidget = React.memo((props: any) => {
     setErrorMessage(undefined)
     setLoading(true);
 
-    const deviceId = await DeviceInfo.getUniqueId()
     const body = {
       phoneNumber: phoneNumber,
       password: password,
@@ -81,7 +116,7 @@ export const LoginWidget = React.memo((props: any) => {
       else setIsVisible(true)
     }
     setLoading(false)
-  }, [phoneNumber, password])
+  }, [phoneNumber, password, priorityNumber])
 
   const onChangePhoneNumber = useCallback((phoneNumber?: string) => {
     setPhoneNumber(phoneNumber);

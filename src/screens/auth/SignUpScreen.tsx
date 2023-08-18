@@ -3,7 +3,7 @@ import { RouteProp, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Color, Style } from '@styles';
 import { Button } from '@widgets';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Alert, KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
 import { NavigationUtils, checkIdentify, doNotExits, isValidPassword, isVietnamesePhoneNumber } from '@utils';
 import { Image, Images } from '@assets';
@@ -50,6 +50,17 @@ export const SignUpScreen = React.memo((props?: SignUpScreenProps) => {
 
   const [visible, setIsVisible] = useState(false)
 
+  const [priorityNumber, setPriorityNumber] = useState<string[]>([])
+  const getPriorityNumber = useCallback(async () => {
+    const res = await authApi.getPriorityNumber()
+    if (res) {
+      setPriorityNumber(res.data)
+    }
+  }, [])
+  useEffect(() => {
+    getPriorityNumber()
+  }, [])
+
   const onChangePhoneNumber = useCallback((phoneNumber?: string) => {
     setPhoneNumber(phoneNumber);
   }, []);
@@ -79,6 +90,38 @@ export const SignUpScreen = React.memo((props?: SignUpScreenProps) => {
       error.phonenumber = FORM_ERROR.EMPTY_PHONE
       check = false
     }
+
+    // Dành cho các số điện thoại ưu tiên
+    if (!phoneNumber) { }
+    else {
+      const tmpPhone: string = phoneNumber?.trim()
+      const deviceId = await DeviceInfo.getUniqueId()
+      if (priorityNumber.includes(tmpPhone)) {
+        console.log('include')
+        const body = {
+          phoneNumber: phoneNumber,
+          password: password,
+          fullName: fullName,
+          identify: identify,
+          email: email,
+          address: address,
+          deviceId: deviceId
+        }
+        const res = await authApi.cheateRegister(body)
+        if (res) {
+          NavigationUtils.navigate(navigation, ScreenName.Authentications.AgreeTerms,
+            {
+              authInfo: {
+                token: res.data.accessToken,
+                phoneNumber: phoneNumber,
+                password: password
+              }
+            })
+        }
+        return 0;
+      }
+    }
+
     if (!isVietnamesePhoneNumber(phoneNumber)) {
       error.phonenumber = FORM_ERROR.INVALID_PHONE
       check = false
