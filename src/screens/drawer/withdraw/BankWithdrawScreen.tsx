@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHeaderHeight } from '@react-navigation/elements'
 import { ChooseBankSheet } from './ChooseBankSheet';
 import { DocTienBangChu } from './docTien';
+import { updateUser } from '@redux';
 
 type NavigationProp = StackNavigationProp<WithdrawStackParamList, 'LuckyKingWithdrawScreen'>;
 type NavigationRoute = RouteProp<WithdrawStackParamList, 'LuckyKingWithdrawScreen'>;
@@ -21,6 +22,7 @@ export interface BankWithdrawScreenParamsList { }
 export const BankWithdrawScreen = () => {
     const navigation = useNavigation<NavigationProp>();
     const height = useHeaderHeight()
+    const dispatch = useDispatch()
 
     const user = useSelector((state: any) => state.userReducer)
     let docTien = new DocTienBangChu();
@@ -34,6 +36,13 @@ export const BankWithdrawScreen = () => {
     const [list, setList] = useState<number[]>([])
     const [listBank, setListBank] = useState(user.bankAccount)
 
+    const syncBalance = useCallback(async () => {
+        const resBalance = await userApi.getBalance()
+        if (resBalance) {
+            dispatch(updateUser(resBalance.data))
+        }
+    }, [])
+
     const getBank = useCallback(async () => {
         const res = await userApi.getAllBank()
         if (res) {
@@ -42,6 +51,7 @@ export const BankWithdrawScreen = () => {
     }, [])
     useEffect(() => {
         getBank()
+        syncBalance()
     }, [])
 
     const onChangeAmount = useCallback((text: string) => {
@@ -122,7 +132,8 @@ export const BankWithdrawScreen = () => {
         window.loadingIndicator.show()
         const res = await lotteryApi.withdrawBankAccount(body)
         if (res) {
-            Alert.alert("Tạo yêu cầu đổi thưởng thành công, vui lòng chở xử lý!")
+            Alert.alert("Yêu cầu rút thưởng của Quý khách đã được LuckyKing tiếp nhận và sẽ được xử lý. Thời gian xử lý tối đa không quá 2 ngày làm việc (trừ thứ 7, chủ nhật, ngày lễ…)!")
+            dispatch(updateUser({ rewardWalletBalance: rewardWalletBalance - amount }))
             setAmount("")
             getBank()
         }

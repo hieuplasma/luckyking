@@ -220,7 +220,7 @@ const styles = StyleSheet.create({
     btn: {
         marginBottom: 10,
         minWidth: 120,
-        backgroundColor: 'black',
+        backgroundColor: '#F0000C',
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 10

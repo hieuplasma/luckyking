@@ -9,9 +9,10 @@ import { Color } from '@styles';
 import { NavigationUtils, printMoney } from '@utils';
 import { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, View, Dimensions, TouchableOpacity, RefreshControl, SectionList, ActivityIndicator } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { ItemTransaction } from '../component/ItemTransaction';
 import { groupBySortedFlucs } from '../component/groupData';
+import { updateUser } from '@redux';
 
 type NavigationProp = StackNavigationProp<WithdrawStackParamList, 'WithdrawScreen'>;
 type NavigationRoute = RouteProp<WithdrawStackParamList, 'WithdrawScreen'>;
@@ -22,6 +23,7 @@ export const WithdrawScreen = () => {
     const navigation = useNavigation<NavigationProp>();
     const route = useRoute<NavigationRoute>();
     const isFocused = useIsFocused();
+    const dispatch = useDispatch()
 
     const rewardWalletBalance = useSelector((state: any) => state.userReducer.rewardWalletBalance)
 
@@ -35,6 +37,13 @@ export const WithdrawScreen = () => {
     const [loadingBottom, setLoadingBottom] = useState(false)
     const [showHistory, setShowHistory] = useState(false)
 
+    const syncBalance = useCallback(async () => {
+        const resBalance = await userApi.getBalance()
+        if (resBalance) {
+            dispatch(updateUser(resBalance.data))
+        }
+    }, [])
+
     const onRefresh = async () => {
         setLoading(true)
         window.loadingIndicator.show()
@@ -42,6 +51,7 @@ export const WithdrawScreen = () => {
         if (res) {
             setListTransaction(res.data)
         }
+        await syncBalance()
         setLoading(false)
         window.loadingIndicator.hide()
     }

@@ -66,7 +66,6 @@ Trong các trường hợp sau, vé do Người dùng đặt mua sẽ được h
 Áp dụng trong trường hợp vé đặt hộ qua ứng dụng của LuckyKing được trúng thưởng và Khách hàng lựa chọn hình thức uỷ quyền cho Đại lý giữ hộ vé.
 Nguyên tắc trả thưởng:
 Theo quy định của nhà cung cấp (Vietlott và các công ty xổ số khác), các yêu cầu chuyển thưởng hợp lệ là yêu cầu chuyển thưởng phát sinh trong vòng 60 (sáu mươi) ngày kể từ ngày quay số mở thưởng. LuckyKing sẽ tự động trừ khoản thuế thu nhập cá nhân theo quy định của Pháp luật.
-Thời gian xử lý yêu cầu chuyển thưởng: không quá 3 ngày làm việc (trừ thứ 7, chủ nhật, ngày lễ…) kể từ khi nhận được yêu cầu của khách hàng.
 -     Theo  quy định của Vietlott, Đại lý cấp 1 và các điểm bán trong hệ thống được Vietlott uỷ quyền trả thưởng cho Người dùng đối với các giải thưởng có giá trị từ 10 tỷ đồng trở xuống.
 -       Dựa trên hợp đồng hợp tác kinh doanh số 01/HN/2023/BDM – CÔNG TY TNHH GIẢI TRÍ SỐ LUCKYKING với Hộ kinh doanh Bùi Đức Minh, một trong số các đại lý cấp 1 có quy mô hoạt động lớn nhất của Vietlott, để thuận tiện cho Người dùng, LuckyKing sẽ chủ động ứng tiền trúng thưởng trước cho Người dùng trước, sau đó nộp vé trúng thưởng và thanh toán với Đại lý Bùi Đức Minh trong thời gian không quá 3 ngày làm việc (trừ thứ 7, chủ nhật, ngày lễ…).
 -       Theo đó, khi trúng thưởng, toàn bộ tiền thưởng sẽ được chuyển vào Tài khoản trả thưởng trên ứng dụng LuckyKing của Người dùng sau khi khấu trừ thuế thu nhập cá nhân. Người dùng có thể tuỳ ý chuyển tiền từ Tài khoản trả thưởng:
@@ -77,6 +76,8 @@ Thời gian xử lý yêu cầu chuyển thưởng: không quá 3 ngày làm vi�
 -        Từ trên 50.000.000đ: Phí chuyển khoản là 0.5% tổng số tiền chuyển khoản
 Đối với vé trúng thưởng trên 50.000.000đ đến 10 tỷ đồng: Theo quy định của Vielott và Đại lý cấp1, không quá 60 ngày kể từ ngày trúng thưởng, Người dùng cần cung cấp cho LuckyKing các thông tin sau để làm thủ tục nhận thưởng: CMND/CCCD/Hộ chiếu, Hộ khẩu.
 Đối với vé trúng thưởng trên 10 tỷ, người trúng thưởng phải đến trụ sở của LuckyKing (mang theo CMND/CCCD/Hộ chiếu, Hộ khẩu) để nhận lại vé trúng thưởng. LuckyKing sẽ hỗ trợ người trúng thưởng hoàn thiện hồ sơ & thủ tục nhận thưởng theo quy định của Vietlott và Đại lý cấp1.
+
+Thời gian xử lý yêu cầu chuyển thưởng: không quá 2 ngày làm việc (trừ thứ 7, chủ nhật, ngày lễ…) kể từ khi nhận được yêu cầu của khách hàng.
 
    Điều 8: Quy định về lưu trữ vé
 
