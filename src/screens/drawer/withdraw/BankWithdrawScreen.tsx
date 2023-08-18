@@ -1,11 +1,11 @@
-import { lotteryApi } from '@api';
+import { lotteryApi, userApi } from '@api';
 import { Images, Image } from '@assets';
 import { BasicHeader, IText } from '@components';
-import { WithdrawStackParamList } from '@navigation';
+import { ScreenName, WithdrawStackParamList } from '@navigation';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Color } from '@styles';
-import { doNotExits, printMoney } from '@utils';
+import { NavigationUtils, doNotExits, printMoney } from '@utils';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { StyleSheet, View, Dimensions, StatusBar, TouchableOpacity, TextInput, Alert, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -32,6 +32,17 @@ export const BankWithdrawScreen = () => {
 
     const [amount, setAmount]: any = useState("")
     const [list, setList] = useState<number[]>([])
+    const [listBank, setListBank] = useState(user.bankAccount)
+
+    const getBank = useCallback(async () => {
+        const res = await userApi.getAllBank()
+        if (res) {
+            setListBank(res.data)
+        }
+    }, [])
+    useEffect(() => {
+        getBank()
+    }, [])
 
     const onChangeAmount = useCallback((text: string) => {
         setAmount(text)
@@ -113,6 +124,7 @@ export const BankWithdrawScreen = () => {
         if (res) {
             Alert.alert("Tạo yêu cầu đổi thưởng thành công, vui lòng chở xử lý!")
             setAmount("")
+            getBank()
         }
         window.loadingIndicator.hide()
     }
@@ -128,6 +140,10 @@ export const BankWithdrawScreen = () => {
         )
     }, [chooseBankRef, onChangeBank])
 
+    const goToRequestList = useCallback(() => {
+        NavigationUtils.navigate(navigation, ScreenName.Drawer.WithdrawRequestScreen)
+    }, [navigation])
+
     return (
         <View style={styles.container}>
             <BasicHeader navigation={navigation} title={"Đổi thưởng về TK ngân hàng"} />
@@ -135,12 +151,18 @@ export const BankWithdrawScreen = () => {
             <KeyboardAvoidingView keyboardVerticalOffset={height + 45} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
                 style={{ flex: 1 }}>
                 <ScrollView style={styles.body}>
-                    <View style={{ flexDirection: 'row', marginTop: 16, marginLeft: 8 }}>
+                    <View style={{ flexDirection: 'row', marginTop: 16, marginHorizontal: 8 }}>
                         <Image source={Images.trophy} style={{ width: 40, height: 40 }} tintColor={Color.luckyKing} />
                         <View style={{ marginLeft: 8 }}>
                             <IText style={{ lineHeight: 16.8 }}>{"Tiền thưởng"}</IText>
                             <IText style={{ lineHeight: 16.8, color: Color.luckyKing }}>{`${printMoney(rewardWalletBalance)}đ`}</IText>
                         </View>
+                        <View style={{ flex: 1 }} />
+                        <TouchableOpacity
+                            style={{ padding: 10, borderRadius: 10, backgroundColor: Color.luckyKing }}
+                            onPress={goToRequestList}>
+                            <IText style={{ color: Color.white }}>{"Danh sách yêu cầu"}</IText>
+                        </TouchableOpacity>
                     </View>
 
                     <View style={styles.line} />
@@ -156,14 +178,14 @@ export const BankWithdrawScreen = () => {
                     </View> */}
 
                     {
-                        user.bankAccount.length > 0 ?
+                        listBank.length > 0 ?
                             <IText style={{ fontSize: 15, fontWeight: 'bold', marginLeft: 16 }}>
                                 {"Chọn TK từ danh sách đã lưu"}
                             </IText>
                             : <></>
                     }
                     {
-                        user.bankAccount.map((item: any) => {
+                        listBank.map((item: any) => {
                             return (
                                 <TouchableOpacity
                                     style={[styles.borderItem,
@@ -193,7 +215,7 @@ export const BankWithdrawScreen = () => {
                     </View>
 
                     {!doNotExits(amount) ?
-                        <IText style={{marginLeft: 16, fontStyle:'italic'}}>
+                        <IText style={{ marginLeft: 16, fontStyle: 'italic' }}>
                             {docTien.doc(amount)}
                         </IText>
                         : <></>}

@@ -15,7 +15,7 @@ export interface SupportScreenParamsList { }
 
 //@ts-ignore
 const phoneNumber = HOT_LINE.replaceAll('.', '')
-const EMAIL = 'luckyking8879@gmail.vn'
+const EMAIL = 'support@luckyking.vn'
 const ADDRESS = 'Tầng 4, Tòa nhà Mỹ Đình Plaza 2, Số 2 Nguyễn Hoàng, Phường Mỹ Đình 2, Quận Nam Từ Liêm, Thành phố Hà Nội, Việt Nam'
 
 export const SupportScreen = React.memo(() => {
@@ -111,7 +111,8 @@ export const SupportScreen = React.memo(() => {
                     activeOpacity={1}>
                     <Image source={Images.address} style={{ width: 30, height: 30 }} />
                     <IText style={{
-                        fontWeight: 'bold', marginLeft: 12,  width: windowWidth - 66 }}>
+                        fontWeight: 'bold', marginLeft: 12, width: windowWidth - 66
+                    }}>
                         {`Địa chỉ: ${ADDRESS}`}
                     </IText>
                 </TouchableOpacity>

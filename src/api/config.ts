@@ -7,15 +7,15 @@ export const RESPONSE_TIMEOUT = 10000;
 export const TIMEOUT_MESSAGE = "request timeout"
 
 /** config for debug */
-// const config = {
-//   // host: 'http://192.168.246.46:3001'
-//   host: 'http://192.168.246.47:3001'
-// };
+const config = {
+  // host: 'http://192.168.246.46:3001'
+  host: 'http://192.168.246.47:3001'
+};
 
 /** config for VPS */
-const config = {
-  host: 'http://103.162.31.84:3003',
-};
+// const config = {
+//   host: 'http://103.162.31.84:3003',
+// };
 
 /** config for Production */
 // const config = {
@@ -50,6 +50,8 @@ export const API_URI = {
   GET_USER_INFO: "/users/get-info",
   UPDATE_USER_INFO: "/users/update-info",
   GET_BALANCE: "/users/get-all-wallet",
+  GET_ALL_BANK: "/users/get-all-bank",
+  GET_ALL_BANK_WITHDRAW: "/users/get-all-bank-withdraw",
 
   UPDATE_PASSWORD: "/auth/update-password",
 
@@ -65,7 +67,6 @@ export const API_URI = {
   GET_ALL_ORDER2: "/order/get-all-group",
   GET_ORDER_DRAW: "/order/get-by-draw",
   GET_ORDER_BY_ID: "/order/get-by-id",
-
 
   GET_SCHEDULE_KENO: "/result/schedule/keno",
   GET_SCHEDULE_POWER: "/result/schedule/power",

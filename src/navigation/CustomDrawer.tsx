@@ -107,7 +107,7 @@ const HeaderDrawer = React.memo(({ navigateTo }: any) => {
   const user = useSelector((state: any) => state.userReducer)
   return (
     <Image source={Images.draw_top} style={styles.imgAvatar}>
-      <Image source={user.avatar != "" ? { uri: user.avatar } : Images.default_avatar} style={{ width: 76, height: 76 }}></Image>
+      <Image source={user.avatar != "" ? { uri: user.avatar } : Images.luckyking_logo} style={{ width: 76, height: 76, borderRadius: 99 }}></Image>
       <TouchableOpacity style={{ flexDirection: 'row' }} activeOpacity={0.7} onPress={() => navigateTo(ScreenName.Drawer.UserStack)}>
         <View style={{ marginLeft: 8, justifyContent: 'center' }}>
           <IText style={{ fontSize: 18, fontWeight: 'bold', color: Color.white }}>{user.fullName}</IText>

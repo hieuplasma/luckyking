@@ -25,6 +25,7 @@ export const ScreenName = {
     WithDrawScreen: "WithdrawScreen",
     LuckyKingWithdrawScreen: "LuckyKingWithdrawScreen",
     BankWithdrawScreen: "BankWithdrawScreen",
+    WithdrawRequestScreen: "WithdrawRequestScreen",
 
     HistoryKenoStack: "HistoryKenoStack",
     HistoryKenoScreen: "HistoryKenoScreen",

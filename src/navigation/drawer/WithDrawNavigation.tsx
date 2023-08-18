@@ -3,6 +3,8 @@ import {
     BankWithdrawScreen,
     BankWithdrawScreenParamsList,
     LuckyKingWithdrawScreen, LuckyKingWithdrawScreenParamsList,
+    WithdrawRequestScreen,
+    WithdrawRequestScreenParamsList,
     WithdrawScreen, WithdrawScreenParamsList
 } from '@screen';
 import React from 'react';
@@ -10,7 +12,8 @@ import React from 'react';
 export type WithdrawStackParamList = {
     WithdrawScreen: WithdrawScreenParamsList,
     LuckyKingWithdrawScreen: LuckyKingWithdrawScreenParamsList,
-    BankWithdrawScreen: BankWithdrawScreenParamsList
+    BankWithdrawScreen: BankWithdrawScreenParamsList,
+    WithdrawRequestScreen: WithdrawRequestScreenParamsList
 };
 
 const WithDrawStack = createStackNavigator<WithdrawStackParamList>();
@@ -31,6 +34,11 @@ export function WithDrawNavigation() {
             <WithDrawStack.Screen
                 name={'BankWithdrawScreen'}
                 component={BankWithdrawScreen}
+                options={{ headerShown: false, title: undefined }}
+            />
+              <WithDrawStack.Screen
+                name={'WithdrawRequestScreen'}
+                component={WithdrawRequestScreen}
                 options={{ headerShown: false, title: undefined }}
             />
         </WithDrawStack.Navigator>

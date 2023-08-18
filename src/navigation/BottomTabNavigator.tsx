@@ -150,6 +150,7 @@ const hideTabBar = [
   ScreenName.HomeChild.ReorderScreen,
 
   ScreenName.Drawer.RechargeStack,
+  ScreenName.Drawer.WithDrawStack,
   ScreenName.Drawer.HistoryKenoStack,
   ScreenName.Drawer.HistoryBasicStack,
   ScreenName.Drawer.HistoryBasicScreen,

@@ -37,7 +37,7 @@ Trong suốt quá trình mua vé và nhận thưởng, Người dùng phải tu�
    Điều 4: Quy định về thanh toán
 
 Người dùng có thể sử dụng những hình thức sau để thanh toán cho đơn hàng:
--      Thanh toán bằng Tài khoản mua vé LuckyKing: Người dùng có thể nạp một khoản tiền nhất định (là bội số của 10,000đ) vào tài khoản LuckyKing của mình để có thể mua nhiều lần tiếp theo. Tài khoản này là tài khoản Người dùng chỉ dùng để mua vé và không được rút tiền ra. Người dùng có thể nạp tiền vào tài khoản mua vé qua hình thức chuyển khoản qua Internet Banking/Mobile Banking vào các tài khoản sau của công ty TNHH Giải trí số LuckyKing:
+-      Thanh toán bằng Tài khoản mua vé LuckyKing: Người dùng có thể nạp một khoản tiền nhất định (là bội số của 10.000đ) vào tài khoản LuckyKing của mình để có thể mua nhiều lần tiếp theo. Tài khoản này là tài khoản Người dùng chỉ dùng để mua vé và không được rút tiền ra. Người dùng có thể nạp tiền vào tài khoản mua vé qua hình thức chuyển khoản qua Internet Banking/Mobile Banking vào các tài khoản sau của công ty TNHH Giải trí số LuckyKing:
 	+ MBBank Hà Nội: 586.8888.79 (Chủ TK: Công ty TNHH Giải trí số LuckyKing)
      + VPBank Hà Nội: 888879 (Chủ TK: Công ty TNHH Giải trí số LuckyKing)
 Người dùng thanh toán giá trị đơn hàng, bao gồm:
@@ -57,7 +57,7 @@ Người dùng chịu trách nhiệm hoàn toàn về tính chính xác của th
    Điều 6:  Quy định về hoàn tiền và hủy vé
 
 Trong các trường hợp sau, vé do Người dùng đặt mua sẽ được hủy và hoàn tiền (Chậm nhất sau 3 ngày làm việc (trừ thứ 7, chủ nhật, ngày lễ…)):
--   Bộ số mà Người dùng đặt mua đã hết ( Max3D, Max3D+, Max3DPro).
+-   Bộ số mà Người dùng đặt mua đã hết (Max3D, Max3D+, Max3DPro).
 -   Vé đã in, ghi thông tin và chụp ảnh gửi đến Người dùng nhận được phản hồi từ Người dùng có sự sai sót thông tin.
 -   Vé mà Người dùng đặt mua vì những lý do bất khả kháng (ví dụ: Hệ thống gặp sự cố về đường truyền, máy chủ Vietlott có sự cố ...) mà LuckyKing không kịp ghi thông tin và chụp ảnh gửi đến Người dùng.
 
@@ -72,10 +72,10 @@ Thời gian xử lý yêu cầu chuyển thưởng: không quá 3 ngày làm vi�
 -       Theo đó, khi trúng thưởng, toàn bộ tiền thưởng sẽ được chuyển vào Tài khoản trả thưởng trên ứng dụng LuckyKing của Người dùng sau khi khấu trừ thuế thu nhập cá nhân. Người dùng có thể tuỳ ý chuyển tiền từ Tài khoản trả thưởng:
 (1)   Vào Tài khoản LuckyKing (Tài khoản LuckyKing chỉ dùng để mua vé và không được rút ra).
 (2)   Về Tài khoản Ngân hàng của Người dùng với mức tiền chuyển khoản tối thiểu là 100.000đ và theo nguyên tắc sau:
--        Từ 100,000đ tới 20,000,000đ: Phí chuyển khoản là 2% tổng số tiền chuyển khoản
--        Từ trên 20,000,000đ tới 50,000,000đ: Phí chuyển khoản là 1% tổng số tiền chuyển khoản
--        Từ trên 50,000,000đ: Phí chuyển khoản là 0.5% tổng số tiền chuyển khoản
-Đối với vé trúng thưởng trên 50,000,000đ đến 10 tỷ đồng: Theo quy định của Vielott và Đại lý cấp1, không quá 60 ngày kể từ ngày trúng thưởng, Người dùng cần cung cấp cho LuckyKing các thông tin sau để làm thủ tục nhận thưởng: CMND/CCCD/Hộ chiếu, Hộ khẩu.
+-        Từ 100.000đ tới 20.000.000đ: Phí chuyển khoản là 2% tổng số tiền chuyển khoản
+-        Từ trên 20.000.000đ tới 50.000.000đ: Phí chuyển khoản là 1% tổng số tiền chuyển khoản
+-        Từ trên 50.000.000đ: Phí chuyển khoản là 0.5% tổng số tiền chuyển khoản
+Đối với vé trúng thưởng trên 50.000.000đ đến 10 tỷ đồng: Theo quy định của Vielott và Đại lý cấp1, không quá 60 ngày kể từ ngày trúng thưởng, Người dùng cần cung cấp cho LuckyKing các thông tin sau để làm thủ tục nhận thưởng: CMND/CCCD/Hộ chiếu, Hộ khẩu.
 Đối với vé trúng thưởng trên 10 tỷ, người trúng thưởng phải đến trụ sở của LuckyKing (mang theo CMND/CCCD/Hộ chiếu, Hộ khẩu) để nhận lại vé trúng thưởng. LuckyKing sẽ hỗ trợ người trúng thưởng hoàn thiện hồ sơ & thủ tục nhận thưởng theo quy định của Vietlott và Đại lý cấp1.
 
    Điều 8: Quy định về lưu trữ vé
@@ -184,7 +184,7 @@ Trường hợp bạn vi phạm bất kỳ Quy định nào trong Điều kho�
 
 Thông tin liên hệ
 © 2023, Công ty TNHH Giải trí số LuckyKing 
-Hotline: 0866.79.88.79  - Email: luckyking8879@gmail.vn
+Hotline: 0866.79.88.79  - Email: support@luckyking.vn
 
 Địa chỉ: Tầng 4, Tòa Nhà Mỹ Đình Plaza 2, Số 2 Nguyễn Hoàng, Phường Mỹ Đình 2, Quận Nam Từ Liêm, Thành Phố Hà Nội, Việt Nam
 `

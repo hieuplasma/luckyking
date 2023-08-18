@@ -40,6 +40,16 @@ class UserApi {
     let fullUrl = API_URI.REWARD_WALLET_HISTORY;
     return await window.connection.GET(fullUrl, body)
   }
+
+  getAllBank = async () => {
+    let fullUrl = API_URI.GET_ALL_BANK;
+    return await window.connection.GET(fullUrl)
+  }
+
+  getAllBankWithdraw = async () => {
+    let fullUrl = API_URI.GET_ALL_BANK_WITHDRAW;
+    return await window.connection.GET(fullUrl)
+  }
 }
 
 const userApi = new UserApi
