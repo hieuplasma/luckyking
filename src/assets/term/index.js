@@ -56,7 +56,7 @@ Người dùng chịu trách nhiệm hoàn toàn về tính chính xác của th
 
    Điều 6:  Quy định về hoàn tiền và hủy vé
 
-Trong các trường hợp sau, vé do Người dùng đặt mua sẽ được hủy và hoàn tiền (Chậm nhất sau 3 ngày làm việc (trừ thứ 7, chủ nhật, ngày lễ…)):
+Trong các trường hợp sau, vé do Người dùng đặt mua sẽ được hủy và hoàn tiền (Chậm nhất sau 3 ngày làm việc, trừ thứ 7, chủ nhật, ngày lễ…):
 -   Bộ số mà Người dùng đặt mua đã hết (Max3D, Max3D+, Max3DPro).
 -   Vé đã in, ghi thông tin và chụp ảnh gửi đến Người dùng nhận được phản hồi từ Người dùng có sự sai sót thông tin.
 -   Vé mà Người dùng đặt mua vì những lý do bất khả kháng (ví dụ: Hệ thống gặp sự cố về đường truyền, máy chủ Vietlott có sự cố ...) mà LuckyKing không kịp ghi thông tin và chụp ảnh gửi đến Người dùng.
@@ -74,10 +74,9 @@ Theo quy định của nhà cung cấp (Vietlott và các công ty xổ số kh�
 -        Từ 100.000đ tới 20.000.000đ: Phí chuyển khoản là 2% tổng số tiền chuyển khoản
 -        Từ trên 20.000.000đ tới 50.000.000đ: Phí chuyển khoản là 1% tổng số tiền chuyển khoản
 -        Từ trên 50.000.000đ: Phí chuyển khoản là 0.5% tổng số tiền chuyển khoản
+Thời gian xử lý yêu cầu chuyển thưởng: không quá 2 ngày làm việc (trừ thứ 7, chủ nhật, ngày lễ…) kể từ khi nhận được yêu cầu của khách hàng.
 Đối với vé trúng thưởng trên 50.000.000đ đến 10 tỷ đồng: Theo quy định của Vielott và Đại lý cấp1, không quá 60 ngày kể từ ngày trúng thưởng, Người dùng cần cung cấp cho LuckyKing các thông tin sau để làm thủ tục nhận thưởng: CMND/CCCD/Hộ chiếu, Hộ khẩu.
 Đối với vé trúng thưởng trên 10 tỷ, người trúng thưởng phải đến trụ sở của LuckyKing (mang theo CMND/CCCD/Hộ chiếu, Hộ khẩu) để nhận lại vé trúng thưởng. LuckyKing sẽ hỗ trợ người trúng thưởng hoàn thiện hồ sơ & thủ tục nhận thưởng theo quy định của Vietlott và Đại lý cấp1.
-
-Thời gian xử lý yêu cầu chuyển thưởng: không quá 2 ngày làm việc (trừ thứ 7, chủ nhật, ngày lễ…) kể từ khi nhận được yêu cầu của khách hàng.
 
    Điều 8: Quy định về lưu trữ vé
 

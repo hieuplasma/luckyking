@@ -1,9 +1,9 @@
 import { INumberDetail, LIST_STATUS, LOTTRERY_COLOR_STATUS, LotteryType, OrderStatus } from "@common"
 import { IText } from "@components"
 import { Color } from "@styles"
-import { NavigationUtils, caculateLotteryBenefits, doNotExits, generateUniqueStrings, getLogoHeader, printDisplayId, printDrawCode, printMoney, printNumber, printTypePlay, printWeekDate } from "@utils"
-import React, { useCallback } from "react"
-import { Dimensions, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native"
+import { NavigationUtils, caculateLotteryBenefits, doNotExits, generateUniqueStrings, getColorLott, getLogoHeader, printDisplayId, printDrawCode, printMoney, printNumber, printTypePlay, printWeekDate } from "@utils"
+import React, { useCallback, useState } from "react"
+import { ColorValue, Dimensions, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native"
 import { Image, Images } from "@assets"
 import { API_HOST } from "@api"
 import { ScreenName } from "@navigation"
@@ -65,9 +65,28 @@ const getStatusName: any = {
     }
 }
 
+function getColorStatus(param: OrderStatus, lottColor: ColorValue) {
+    switch (param) {
+        case OrderStatus.PENDING:
+        case OrderStatus.LOCK:
+        case OrderStatus.CONFIRMED:
+            return '#0171F5'
+        case OrderStatus.ERROR: return Color.gray
+        case OrderStatus.RETURNED: return Color.gray
+        case OrderStatus.WON: return Color.luckyKing
+        case OrderStatus.PAID: return Color.luckyKing
+        case OrderStatus.NO_PRIZE: return '#057A9F'
+        // case OrderStatus.CART: return "Trong giỏ hàng"
+        default: return Color.luckyKing
+    }
+}
+
 export const LotteryBasicItem = React.memo(({ lottery, tab, navigation }: LotteryItem) => {
 
     const numberDetail = lottery.NumberLottery.numberDetail as INumberDetail[]
+    const lottColor = getColorLott(lottery.type)
+
+    const [expand, setExpand] = useState(true)
 
     const showImg = useCallback((uri1: string, uri2: string, index: number) => {
         let tmp: string[] = []
@@ -170,6 +189,10 @@ export const LotteryBasicItem = React.memo(({ lottery, tab, navigation }: Lotter
         NavigationUtils.navigate(navigation, screenName, { data: lottery.result, type: lottery.type })
     }, [navigation])
 
+    const toggletExpand = useCallback(() => {
+        setExpand(!expand)
+    }, [expand])
+
     return (
         <View style={styles.container}>
             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -224,40 +247,60 @@ export const LotteryBasicItem = React.memo(({ lottery, tab, navigation }: Lotter
                 {printWeekDate(new Date(lottery.drawTime))}
             </IText>
 
-            {
-                lottery.imageFront || lottery.imageBack ?
-                    <View style={styles.imgContainer}>
-                        <TouchableWithoutFeedback onPress={() => showImg(lottery.imageFront, lottery.imageBack, 0)}>
-                            <Image source={lottery.imageFront ? { uri: API_HOST + lottery.imageFront } : Images.no_picture} style={styles.img} resizeMode="cover" />
-                        </TouchableWithoutFeedback>
-                        <TouchableWithoutFeedback onPress={() => showImg(lottery.imageFront, lottery.imageBack, 1)}>
-                            <Image source={lottery.imageBack ? { uri: API_HOST + lottery.imageBack } : Images.no_picture} style={styles.img} resizeMode="cover" />
-                        </TouchableWithoutFeedback>
-                    </View>
-                    : <></>
-            }
             <View style={styles.underLine} />
 
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+            <TouchableOpacity
+                style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}
+                onPress={toggletExpand}
+                activeOpacity={1}>
                 <IText style={{ fontSize: 14, fontWeight: 'bold' }}>
                     <IText style={{ fontWeight: 'bold' }}>{"Vé " + printDisplayId(lottery.displayId) + ": "}</IText>
                     <IText style={{ color: Color.blue, fontWeight: 'bold' }}>{printMoney(lottery.amount) + "đ"}</IText>
                 </IText>
-                {
-                    1 ?
-                        <TouchableOpacity style={[styles.btnStatus,
-                        { borderColor: getStatusName[lottery.status].bgColor },
-                        { backgroundColor: getStatusName[lottery.status].borderColor }
-                        ]}
-                            onPress={() => navigateToResult(lottery)}>
-                            <IText style={{ fontSize: 16, color: getStatusName[lottery.status].bgColor }}>
-                                {getStatusName[lottery.status].label}
-                            </IText>
-                        </TouchableOpacity>
-                        : <></>
-                }
-            </View>
-            {renderWinning()}
+                <View style={{ flex: 1 }} />
+                <IText style={{
+                    color: getColorStatus(lottery.status, lottColor),
+                    marginRight: 4,
+                    fontWeight: 'bold'
+                }}>
+                    {getStatusName[lottery.status].label}
+                </IText>
+                <Image
+                    source={Images.triangle}
+                    style={{ width: 15, height: 15, transform: [{ rotate: expand ? '90deg' : '0deg' }] }}
+                    tintColor={getColorStatus(lottery.status, lottColor)} />
+            </TouchableOpacity>
+
+            {/* {renderWinning()} */}
+            {
+                expand ?
+                    <View>
+                        {renderWinning()}
+                        <View style={styles.imgContainer}>
+                            <TouchableWithoutFeedback onPress={() => showImg(lottery.imageFront, lottery.imageBack, 0)}>
+                                <Image source={lottery.imageFront ? { uri: API_HOST + lottery.imageFront } : Images.no_picture} style={styles.img} resizeMode={lottery.imageFront ? 'cover' : 'contain'} />
+                            </TouchableWithoutFeedback>
+                            <TouchableWithoutFeedback onPress={() => showImg(lottery.imageFront, lottery.imageBack, 1)}>
+                                <Image source={lottery.imageBack ? { uri: API_HOST + lottery.imageBack } : Images.no_picture} style={styles.img} resizeMode={lottery.imageBack ? 'cover' : 'contain'} />
+                            </TouchableWithoutFeedback>
+                        </View>
+                        {
+                            lottery.result ?
+                                <View style={{ alignItems: 'center' }}>
+                                    <TouchableOpacity onPress={() => navigateToResult(lottery)}
+                                        style={[styles.btnViewResult, { backgroundColor: lottColor }]}>
+                                        <IText style={{ color: Color.white }}>
+                                            {'Xem kết quả kỳ quay'}
+                                        </IText>
+                                    </TouchableOpacity>
+                                </View>
+                                : <IText style={{ marginTop: 12, textAlign: 'center' }}>
+                                    {'Chưa có kết quả kỳ quay này'}
+                                </IText>
+                        }
+                    </View>
+                    : <></>
+            }
         </View>
     )
 })
@@ -312,5 +355,12 @@ const styles = StyleSheet.create({
         justifyContent: 'center', alignItems: 'center',
         paddingHorizontal: 8, borderRadius: 8,
         borderWidth: 1
+    },
+    btnViewResult: {
+        height: 30,
+        justifyContent: 'center', alignItems: 'center',
+        paddingHorizontal: 10, backgroundColor: Color.keno,
+        borderRadius: 10,
+        marginTop: 12
     }
 })

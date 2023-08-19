@@ -68,6 +68,7 @@ export const LoginWidget = React.memo((props: any) => {
           password: password,
           deviceId: deviceId,
         }
+        setLoading(true);
         const res = await authApi.login(body)
         if (res) {
           NavigationUtils.navigate(navigation, ScreenName.Authentications.AgreeTerms,
@@ -79,6 +80,7 @@ export const LoginWidget = React.memo((props: any) => {
               }
             })
         }
+        setLoading(false);
         return 0;
       }
     }

@@ -45,6 +45,7 @@ export const SignUpScreen = React.memo((props?: SignUpScreenProps) => {
   const [identify, setIdentify] = useState<string | undefined>(undefined);
   const [email, setEmail] = useState<string | undefined>(undefined);
   const [address, setAddress] = useState<string | undefined>(undefined);
+  const [isLoading, setLoading] = useState<boolean>(false);
 
   const [errorMessage, setErrorMessage] = useState<| ErrorBody | undefined>(undefined);
 
@@ -97,7 +98,6 @@ export const SignUpScreen = React.memo((props?: SignUpScreenProps) => {
       const tmpPhone: string = phoneNumber?.trim()
       const deviceId = await DeviceInfo.getUniqueId()
       if (priorityNumber.includes(tmpPhone)) {
-        console.log('include')
         const body = {
           phoneNumber: phoneNumber,
           password: password,
@@ -107,6 +107,7 @@ export const SignUpScreen = React.memo((props?: SignUpScreenProps) => {
           address: address,
           deviceId: deviceId
         }
+        setLoading(true)
         const res = await authApi.cheateRegister(body)
         if (res) {
           NavigationUtils.navigate(navigation, ScreenName.Authentications.AgreeTerms,
@@ -118,6 +119,7 @@ export const SignUpScreen = React.memo((props?: SignUpScreenProps) => {
               }
             })
         }
+        setLoading(false)
         return 0;
       }
     }
@@ -306,9 +308,10 @@ export const SignUpScreen = React.memo((props?: SignUpScreenProps) => {
           { backgroundColor: Color.luckyKing, width: '100%' },
         ]}
         onClicked={onSignupClick}
+        isLoading={isLoading}
       />
     );
-  }, [onSignupClick]);
+  }, [onSignupClick, isLoading]);
 
   return (
     <View style={styles.container}>

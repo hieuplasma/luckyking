@@ -133,7 +133,8 @@ export const BankWithdrawScreen = () => {
         const res = await lotteryApi.withdrawBankAccount(body)
         if (res) {
             Alert.alert("Yêu cầu rút thưởng của Quý khách đã được LuckyKing tiếp nhận và sẽ được xử lý. Thời gian xử lý tối đa không quá 2 ngày làm việc (trừ thứ 7, chủ nhật, ngày lễ…)!")
-            dispatch(updateUser({ rewardWalletBalance: rewardWalletBalance - amount }))
+            // dispatch(updateUser({ rewardWalletBalance: rewardWalletBalance - amount }))
+            syncBalance()
             setAmount("")
             getBank()
         }
