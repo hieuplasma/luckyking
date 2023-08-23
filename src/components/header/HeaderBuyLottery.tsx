@@ -23,27 +23,27 @@ export const HeaderBuyLottery = React.memo(({ navigation, lotteryType }: HeaderB
         }
     }, [navigation, block]);
 
-    const [logo, setLogo] = useState({ source: Images.power_logo, style: { height: 44.12, width: 60 } })
+    const [logo, setLogo] = useState({ source: Images.power_logo, style: { height: 50, width: 90 } })
     useEffect(() => {
         switch (lotteryType) {
             case LotteryType.Power:
-                setLogo({ source: Images.power_logo, style: { height: 44.12, width: 60 } })
+                setLogo({ source: Images.power_logo, style: { height: 50, width: 90 } })
                 break;
             case LotteryType.Mega:
-                setLogo({ source: Images.mega_logo, style: { height: 44, width: 78.57 } })
+                setLogo({ source: Images.mega_logo, style: { height: 50, width: 90 } })
                 break;
             case LotteryType.Max3D:
             case LotteryType.Max3DPlus:
-                setLogo({ source: Images.max3d_logo, style: { height: 82.79, width: 90 } })
+                setLogo({ source: Images.max3d_logo, style: { height: 50, width: 90 } })
                 break;
             // case LotteryType.Max3DPlus:
             //     setLogo({ source: Images.max3dplus_logo, style: { height: 44, width: 80 } })
             //     break;
             case LotteryType.Max3DPro:
-                setLogo({ source: Images.max3dpro_logo, style: { height: 50, width: 75 } })
+                setLogo({ source: Images.max3dpro_logo, style: { height: 50, width: 90 } })
                 break;
             case LotteryType.Keno:
-                setLogo({ source: Images.keno_logo, style: { height: 50, width: 75 } })
+                setLogo({ source: Images.keno_logo, style: { height: 50, width: 90 } })
                 break;
             default:
                 break;
@@ -74,6 +74,30 @@ export const HeaderBuyLottery = React.memo(({ navigation, lotteryType }: HeaderB
         NavigationUtils.navigate(navigation, ScreenName.Drawer.InstructionStack, { screen: destination })
     }, [lotteryType])
 
+    const navToStatistical = useCallback(() => {
+        let destination = ScreenName.StatisticalChild.StatisticalKeno
+        // switch (lotteryType) {
+        //     case LotteryType.Keno:
+        //         destination = ScreenName.Drawer.InstructionKeno
+        //         break;
+        //     case LotteryType.Power:
+        //         destination = ScreenName.Drawer.InstructionPower
+        //         break;
+        //     case LotteryType.Mega:
+        //         destination = ScreenName.Drawer.InstructionMega
+        //         break;
+        //     case LotteryType.Max3D:
+        //         destination = ScreenName.Drawer.InstructionMax3D
+        //         break;
+        //     case LotteryType.Max3DPro:
+        //         destination = ScreenName.Drawer.InstructionMax3DPro
+        //         break;
+        //     default:
+        //         break;
+        // }
+        NavigationUtils.navigate(navigation, destination)
+    }, [lotteryType, navigation])
+
     return (
         <>
             <StatusBar translucent={true} barStyle={'dark-content'} backgroundColor={"transparent"} />
@@ -88,13 +112,17 @@ export const HeaderBuyLottery = React.memo(({ navigation, lotteryType }: HeaderB
                         onPressed={onGoBack}
                     />
                 </TouchableOpacity>
-                <Image source={logo.source} style={logo.style} />
+                <Image source={logo.source} style={logo.style} resizeMode='contain' />
                 <View style={{ flex: 1, alignItems: 'flex-end', flexDirection: 'row' }}>
                     <View style={{ flex: 1 }} />
                     <TouchableOpacity onPress={navToInstruction}>
-                        <Image source={Images.instruction} style={{ width: 30, height: 30, marginRight: 12 }} tintColor={getColorLott(lotteryType)} />
+                        <Image source={Images.instruction} style={{ width: 25, height: 25, marginRight: 12 }} tintColor={getColorLott(lotteryType)} />
                     </TouchableOpacity>
-                    <CartIcon navigation={navigation} />
+                    <TouchableOpacity onPress={navToStatistical}>
+                        <Image source={Images.statistical} style={{ width: 25, height: 25, marginRight: 12 }} tintColor={getColorLott(lotteryType)} />
+                    </TouchableOpacity>
+                    {lotteryType !== LotteryType.Keno ?
+                        <CartIcon navigation={navigation} /> : <></>}
                 </View>
             </View>
         </>

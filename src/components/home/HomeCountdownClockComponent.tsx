@@ -1,12 +1,12 @@
 import { lotteryApi } from '@api';
 import { LotteryType } from '@common';
 import { deleteFirstDrawKeno, getKenoDraw, getMax3dDraw, getMax3dProDraw, getMegaDraw, getPowerDraw } from '@redux';
-import { Label } from '@shared';
-import { Style } from '@styles';
+import { Color, Style } from '@styles';
 import { printNumber } from '@utils';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { StyleProp, TextStyle, View, ViewProps } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { DigitalText } from '../texts';
 
 export interface HomeCountdownClockComponentProps extends ViewProps {
   targetTime: Date;
@@ -87,7 +87,7 @@ export const HomeCountdownClockComponent = React.memo(
 
     return (
       <View style={[props?.style]}>
-        <Label.Widget
+        {/* <Label.Widget
           style={[
             Style.Label.Bold.GrayContentXL_16,
             Style.Space.MarginTop.small_8,
@@ -97,7 +97,11 @@ export const HomeCountdownClockComponent = React.memo(
           ]}>
           {printNumber(timeRemaining?.days)} :{' '}{printNumber(timeRemaining?.hours)} :{' '}
           {printNumber(timeRemaining?.minutes)} : {printNumber(timeRemaining?.seconds)}
-        </Label.Widget>
+        </Label.Widget> */}
+        <DigitalText style={{ fontWeight: 'bold', fontSize: 14, marginTop: 8, color: Color.gray }}>
+          {printNumber(timeRemaining?.days)} :{' '}{printNumber(timeRemaining?.hours)} :{' '}
+          {printNumber(timeRemaining?.minutes)} : {printNumber(timeRemaining?.seconds)}
+        </DigitalText>
       </View>
     );
   },

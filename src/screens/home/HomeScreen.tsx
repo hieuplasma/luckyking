@@ -155,7 +155,7 @@ export const HomeScreen = React.memo((props?: HomeScreenProps) => {
   const renderKenoTicket = useCallback(() => {
     return (
       <HomeTicketLongFormComponent
-        image="https://media.vietlott.vn//main/06.2018/cms/game/keno.png"
+        image={Images.keno_logo}
         type={LotteryType.Keno}
         targetTime={kenoFirstDraw ? new Date(new Date(kenoFirstDraw.drawTime).getTime() - kenoSalesStoppageTime * 1000) : undefined}
         action={() => NavigationUtils.navigate(navigation, ScreenName.HomeChild.KenoScreen)}
@@ -167,7 +167,7 @@ export const HomeScreen = React.memo((props?: HomeScreenProps) => {
   const renderMegaTicket = useCallback(() => {
     return (
       <HomeTicketLongFormComponent
-        image="https://media.vietlott.vn//main/06.2018/cms/game/mega-645_full-color_cut-copy.png"
+        image={Images.mega_logo}
         type={LotteryType.Mega}
         targetTime={megaFirstDraw ? new Date(megaFirstDraw.drawTime) : undefined}
         action={() => NavigationUtils.navigate(navigation, ScreenName.HomeChild.MegaScreen)}
@@ -181,7 +181,7 @@ export const HomeScreen = React.memo((props?: HomeScreenProps) => {
   const renderMaxTicket = useCallback(() => {
     return (
       <HomeTicketLongFormComponent
-        image="https://media.vietlott.vn//main/04.2019/bcc/game/thumbnail_max3d-01.jpg"
+        image={Images.max3d_logo}
         type={LotteryType.Max3D}
         targetTime={max3dFirstDraw ? new Date(max3dFirstDraw.drawTime) : undefined}
         action={() => NavigationUtils.navigate(navigation, ScreenName.HomeChild.Max3dScreen)}
@@ -195,7 +195,7 @@ export const HomeScreen = React.memo((props?: HomeScreenProps) => {
   const renderPowerTicket = useCallback(() => {
     return (
       <HomeTicketLongFormComponent
-        image="https://media.vietlott.vn//main/06.2018/cms/game/Power655.png"
+        image={Images.power_logo}
         type={LotteryType.Power}
         targetTime={powerFirstDraw ? new Date(powerFirstDraw.drawTime) : undefined}
         action={() => NavigationUtils.navigate(navigation, ScreenName.HomeChild.PowerScreen)}
@@ -209,7 +209,7 @@ export const HomeScreen = React.memo((props?: HomeScreenProps) => {
   const renderMax3dProTicket = useCallback(() => {
     return (
       <HomeTicketLongFormComponent
-        image="https://media.vietlott.vn//main/logo/logomax3dpro.png"
+        image={Images.max3dpro_logo}
         type={LotteryType.Max3DPro}
         targetTime={max3dProFirstDraw ? new Date(max3dProFirstDraw.drawTime) : undefined}
         action={() => NavigationUtils.navigate(navigation, ScreenName.HomeChild.Max3dProScreen)}

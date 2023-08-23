@@ -1,7 +1,7 @@
 import { DELAY_SCREEN, DELAY_TAB, LotteryType } from '@common';
 import { HeaderBuyLottery, IText, ModalAlert } from '@components';
 import { HomeStackParamList } from '@navigation';
-import { useNavigation } from '@react-navigation/native';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Color } from '@styles';
 import { useCallback, useEffect, useState } from 'react';
@@ -12,12 +12,14 @@ import { SimpleKenoTab } from './keno-component/SimpleKenoTab';
 import { BagKenoTab } from './keno-component/BagKenoTab';
 import { NurturingKenoTab } from './keno-component/NurturingKenoTab';
 import { useDispatch, useSelector } from 'react-redux';
-import { saveAlertKeno } from '@redux';
 
 type NavigationProp = StackNavigationProp<HomeStackParamList, 'KenoScreen'>;
-// type NavigationRoute = RouteProp<HomeStackParamList, 'KenoScreen'>;
+type NavigationRoute = RouteProp<HomeStackParamList, 'KenoScreen'>;
 
-export interface KenoScreenParamsList { }
+export interface KenoScreenParamsList {
+    numbers?: number[]
+    type?: string
+}
 
 const lottColor = getColorLott(LotteryType.Keno)
 const types = [
@@ -31,6 +33,7 @@ const alertContentKeno = 'Do đặc thù thời gian quay số Keno rất ngắn
 export const KenoScreen = () => {
 
     const navigation = useNavigation<NavigationProp>();
+    const route = useRoute<NavigationRoute>()
     const dispatch = useDispatch()
 
     const alertKeno = useSelector((state: any) => state.systemReducer.alertKeno)
@@ -57,19 +60,18 @@ export const KenoScreen = () => {
         return () => clearTimeout(timer);
     }, []);
 
-    // useEffect(() => {
-    //     if (alertKeno) {
-    //         Alert.alert("Lưu ý", alertContent,
-    //             [{
-    //                 text: 'Không hiển thị lần sau',
-    //                 onPress: () => dispatch(saveAlertKeno({ expand: false }))
-    //             },
-    //             {
-    //                 text: 'Đã hiểu',
-    //                 onPress: () => console.log('cancel')
-    //             }])
-    //     }
-    // }, [])
+    const [numbers, setNumbers] = useState<number[] | undefined>(undefined)
+
+    useEffect(() => {
+        if (route.params?.numbers) {
+            setNumbers(route.params.numbers)
+        }
+        if (route.params?.type) {
+            if (route.params.type == 'normal') changeType(types[0])
+            else if (route.params.type == 'bag') changeType(types[1])
+        }
+
+    }, [route.params])
 
     return (
         <SafeAreaView style={styles.container}>
@@ -111,9 +113,9 @@ export const KenoScreen = () => {
 
             <>
                 {type.value == 0 ?
-                    <SimpleKenoTab showBottomSheet={showBottomSheet} navigation={navigation} />
+                    <SimpleKenoTab showBottomSheet={showBottomSheet} navigation={navigation} paramNumber={numbers} />
                     : type.value == 1 ?
-                        <BagKenoTab showBottomSheet={showBottomSheet} navigation={navigation} />
+                        <BagKenoTab showBottomSheet={showBottomSheet} navigation={navigation} paramNumber={numbers}/>
                         : <NurturingKenoTab showBottomSheet={showBottomSheet} />
                 }
             </>

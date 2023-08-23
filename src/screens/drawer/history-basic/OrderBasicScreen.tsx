@@ -152,6 +152,7 @@ export const OrderBasicScreen = React.memo(({ }: any) => {
                             textStyle={{ fontSize: 13 }}
                             containerStyle={{ width: 120, minHeight: 30 }}
                             style={{ minHeight: 30 }}
+                            props={{ activeOpacity: 1 }}
                         />
                     </View>
                     :
@@ -169,6 +170,7 @@ export const OrderBasicScreen = React.memo(({ }: any) => {
                                 textStyle={{ fontSize: 13 }}
                                 containerStyle={{ width: 120, minHeight: 30, marginTop: 8 }}
                                 style={{ minHeight: 30 }}
+                                props={{ activeOpacity: 1 }}
                             />
                         </View>
                         <View>
@@ -184,6 +186,7 @@ export const OrderBasicScreen = React.memo(({ }: any) => {
                                 textStyle={{ fontSize: 13 }}
                                 containerStyle={{ width: 150, minHeight: 30, marginTop: 8 }}
                                 style={{ minHeight: 30 }}
+                                props={{ activeOpacity: 1 }}
                             />
                         </View>
                     </View>

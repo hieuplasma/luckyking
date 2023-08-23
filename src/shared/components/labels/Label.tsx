@@ -1,6 +1,6 @@
-import {translate} from '../../i18n';
+import { translate } from '../../i18n';
 import React from 'react';
-import {Text, TextProps} from 'react-native';
+import { Text, TextProps } from 'react-native';
 
 export interface Props extends TextProps {
   autoTranslate?: boolean;
@@ -36,16 +36,16 @@ export interface Props extends TextProps {
 
 class Widget extends React.Component<Props> {
   render() {
-    let {style} = this.props;
+    let { style } = this.props;
     return (
-      <Text {...this.props} style={[style]}>
+      <Text {...this.props} style={[style, { fontFamily: 'myriadpro-regular' }]}>
         {this.getChildText()}
       </Text>
     );
   }
 
   getChildText() {
-    let {children, autoTranslate, uppercase} = this.props;
+    let { children, autoTranslate, uppercase } = this.props;
     if (
       (children instanceof Array && children.every(child => typeof child === 'string')) ||
       typeof children === 'string'
@@ -69,4 +69,4 @@ class Widget extends React.Component<Props> {
   }
 }
 
-export {Widget};
+export { Widget };

@@ -18,7 +18,7 @@ export const FirstItemMega = React.memo(({ data, navigation, hideBtm }: FirstIte
 
     if (!data.drawn) return (
         <View >
-            <Image style={{ width: windowWidth - 20, height: 170, marginVertical: 8 }} resizeMode="stretch" source={Images.mega_banner}>
+            <Image style={{ width: windowWidth - 20, height: 170, marginVertical: 8, marginLeft: 10 }} resizeMode="stretch" source={Images.mega_banner}>
                 <View style={styles.above}>
                     <IText style={styles.titleFirstItem}>
                         {`Kỳ quay ${printDrawWeekDate(data)}`}
@@ -43,7 +43,7 @@ export const FirstItemMega = React.memo(({ data, navigation, hideBtm }: FirstIte
     }, [navigation, data])
 
     return (
-        <TouchableOpacity onPress={navigate} activeOpacity={1}>
+        <TouchableOpacity onPress={navigate} activeOpacity={1} style={{marginLeft: 10}}>
             <Image style={{ width: windowWidth - 20, height: hideBtm ? 270 : 305, marginVertical: 8 }} resizeMode="stretch" source={Images.mega_banner}>
                 <View style={styles.above}>
                     <IText style={styles.titleFirstItem}>
@@ -159,6 +159,7 @@ const styles = StyleSheet.create({
         borderTopWidth: 1,
         paddingTop: 10,
         width: windowWidth - 20,
+        marginLeft: 10
     },
     txt_draw: {
         fontSize: 15,

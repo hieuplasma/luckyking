@@ -24,7 +24,7 @@ export const FirstItemMax3d = React.memo(({ data, type, navigation, hideBtm }: F
 
     if (!data.drawn) return (
         <View >
-            <Image style={{ width: windowWidth - 20, height: 170, marginVertical: 8 }} resizeMode="stretch" source={Images.max3d_banner}>
+            <Image style={{ width: windowWidth - 20, height: 170, marginVertical: 8, marginLeft: 10 }} resizeMode="stretch" source={Images.max3d_banner}>
                 <View style={styles.above}>
                     <IText style={styles.titleFirstItem}>
                         {`Kỳ quay ${printDrawWeekDate(data)}`}
@@ -47,7 +47,7 @@ export const FirstItemMax3d = React.memo(({ data, type, navigation, hideBtm }: F
     }, [navigation, data, type])
 
     return (
-        <TouchableOpacity onPress={navigate} activeOpacity={1}>
+        <TouchableOpacity onPress={navigate} activeOpacity={1} style={{marginLeft: 10}}>
             <Image style={[styles.img_cont, { height: hideBtm ? 130 : 160 }]} resizeMode="stretch" source={Images.max3d_banner}>
                 <View style={styles.above}>
                     <IText style={styles.titleFirstItem}>
@@ -226,6 +226,7 @@ const styles = StyleSheet.create({
         borderTopWidth: 1,
         paddingTop: 10,
         width: windowWidth - 20,
+        marginLeft: 10
     },
     per_result: {
         height: 70, width: '100%',

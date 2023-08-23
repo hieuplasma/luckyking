@@ -5,7 +5,6 @@ import { StyleSheet, TouchableOpacity } from "react-native"
 import { StatusBar, View } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { IText } from "../texts"
-import _ from "lodash"
 
 interface ImageHeaderProps {
     navigation?: any,

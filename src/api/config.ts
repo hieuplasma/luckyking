@@ -3,19 +3,19 @@ export enum TYPE_API {
   GET = 'GET'
 }
 
-export const RESPONSE_TIMEOUT = 10000;
+export const RESPONSE_TIMEOUT = 15000;
 export const TIMEOUT_MESSAGE = "request timeout"
 
 /** config for debug */
-// const config = {
-//   // host: 'http://192.168.246.46:3001'
-//   host: 'http://192.168.246.47:3001'
-// };
+const config = {
+  // host: 'http://192.168.246.46:3001'
+  host: 'http://192.168.246.47:3001'
+};
 
 /** config for VPS */
-const config = {
-  host: 'http://103.162.31.84:3003',
-};
+// const config = {
+//   host: 'http://103.162.31.84:3003',
+// };
 
 /** config for Production */
 // const config = {
@@ -97,5 +97,11 @@ export const API_URI = {
   WITHDRAW_TO_LUCKYKING: "/transaction/withdraw-luckyking",
   WITHDRAW_TO_BANK: "/transaction/withdraw-bank-acount",
   MONEY_ACCOUNT_HISTORY: "/transaction/money-account",
-  REWARD_WALLET_HISTORY: "/transaction/reward-wallet"
+  REWARD_WALLET_HISTORY: "/transaction/reward-wallet",
+
+  STATISTICAL_KENO_NUMBER: "/statistical/keno-number",
+  STATISTICAL_KENO_HEADTAIL: "/statistical/keno-headtail",
+  STATISTICAL_KENO_BIGSMALL: "/statistical/keno-bigsmall",
+  STATISTICAL_KENO_EVENODD: "/statistical/keno-evenodd"
+
 }

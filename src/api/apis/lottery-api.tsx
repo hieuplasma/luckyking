@@ -159,6 +159,27 @@ class LotteryApi {
         let fullUrl = API_URI.GET_POPUP;
         return await window.connection.GET(fullUrl)
     }
+
+    //Statistical
+    getStatisticalKenoNumber = async (body: any) => {
+        let fullUrl = API_URI.STATISTICAL_KENO_NUMBER;
+        return await window.connection.GET(fullUrl, body)
+    }
+
+    getStatisticalKenoHeadTail = async (body: any) => {
+        let fullUrl = API_URI.STATISTICAL_KENO_HEADTAIL;
+        return await window.connection.GET(fullUrl, body)
+    }
+
+    getStatisticalKenoBigSmall = async (body: any) => {
+        let fullUrl = API_URI.STATISTICAL_KENO_BIGSMALL;
+        return await window.connection.GET(fullUrl, body)
+    }
+
+    getStatisticalKenoEvenOdd = async (body: any) => {
+        let fullUrl = API_URI.STATISTICAL_KENO_EVENODD;
+        return await window.connection.GET(fullUrl, body)
+    }
 }
 
 const lotteryApi = new LotteryApi

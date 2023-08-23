@@ -16,12 +16,13 @@ import { ScreenName } from "@navigation";
 
 interface Props {
     showBottomSheet: boolean,
-    navigation: any
+    navigation: any,
+    paramNumber?: number[]
 }
 
 const initNumber = [false, false, false]
 
-export const BagKenoTab = React.memo(({ showBottomSheet, navigation }: Props) => {
+export const BagKenoTab = React.memo(({ showBottomSheet, navigation, paramNumber }: Props) => {
 
     const [typePlay, setType]: any = useState({ bag: 3, level: 2 });
     const listDraw = useSelector((state: any) => state.drawReducer.kenoListDraw)
@@ -43,6 +44,13 @@ export const BagKenoTab = React.memo(({ showBottomSheet, navigation }: Props) =>
     const [generated, setGenerated]: any = useState([])
     const [bet, setBet] = useState(10000)
     const [totalCost, setTotalCost] = useState(0)
+
+    useEffect(() => {
+        if (paramNumber) {
+            setNumbers(paramNumber)
+            setType({ bag: paramNumber.length, level: 2 })
+        }
+    }, [paramNumber])
 
     const randomNumber = useCallback(() => {
         const randomNumbers = new Set();

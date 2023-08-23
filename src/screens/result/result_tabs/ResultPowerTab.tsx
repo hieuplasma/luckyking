@@ -48,7 +48,7 @@ const ExpensiveRerender = React.memo(({ navigation }: any) => {
     return (
         <View style={{ flex: 1 }}>
             <FlatList
-                style={{ flex: 1, width: windowWidth, paddingHorizontal: -10 }}
+                style={{ flex: 1, width: windowWidth, marginHorizontal: -10 }}
                 data={list}
                 extraData={list}
                 keyExtractor={(item: any, index: number) => String(item.id)}

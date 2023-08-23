@@ -18,7 +18,7 @@ export const FirstItemPower = React.memo(({ data, navigation, hideBtm }: FirstIt
 
     if (!data.drawn) return (
         <View >
-            <Image style={{ width: windowWidth - 20, height: 170, marginVertical: 8 }} resizeMode="stretch" source={Images.power_banner}>
+            <Image style={{ width: windowWidth - 20, height: 170, marginVertical: 8, marginLeft: 10 }} resizeMode="stretch" source={Images.power_banner}>
                 <View style={styles.above}>
                     <IText style={styles.titleFirstItem}>
                         {`Kỳ quay ${printDrawWeekDate(data)}`}
@@ -43,7 +43,7 @@ export const FirstItemPower = React.memo(({ data, navigation, hideBtm }: FirstIt
     }, [navigation, data])
 
     return (
-        <TouchableOpacity onPress={navigate} activeOpacity={1}>
+        <TouchableOpacity onPress={navigate} activeOpacity={1} style={{ marginLeft: 10 }}>
             <Image style={{ width: windowWidth - 20, height: hideBtm ? 320 : 356, marginVertical: 8 }} resizeMode="stretch" source={Images.power_banner}>
                 <View style={styles.above}>
                     <IText style={styles.titleFirstItem}>
@@ -116,7 +116,7 @@ export const PerItemPower = React.memo(({ data, navigation }: any) => {
     }, [navigation, data])
 
     return (
-        <TouchableOpacity style={styles.per_item_container} onPress={navigate} activeOpacity={1}>
+        <TouchableOpacity style={styles.per_item_container} onPress={navigate} activeOpacity={1} >
             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                 <IText style={styles.txt_draw}>
                     <IText style={{ fontWeight: 'bold' }}>{"Kỳ: "}</IText>
@@ -178,6 +178,7 @@ const styles = StyleSheet.create({
         borderTopWidth: 1,
         paddingTop: 10,
         width: windowWidth - 20,
+        marginLeft: 10
     },
     txt_draw: {
         fontSize: 15,

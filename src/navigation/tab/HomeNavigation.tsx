@@ -8,7 +8,7 @@ import {
   Max3dProScreen, Max3dProScreenParamsList,
   KenoScreen, KenoScreenParamsList,
   OrderScreen, OrderScreenParamsList,
-  ReorderScreenParamsList, ReorderScreen
+  ReorderScreenParamsList, ReorderScreen, StatisticalKenoParamsList, StatisticalKenoTab
 } from '@screen';
 import React from 'react';
 import { RechargeNavigation, RechargeStackParamList } from '../drawer/RechargeNavigation';
@@ -31,7 +31,9 @@ export type HomeStackParamList = {
   RechargeStack: RechargeStackParamList;
   HistoryBasicStack: HistoryBasicStackParamList;
   HistoryKenoStack: HistoryKenoStackParamList;
-  InstructionStack: InstructionStackParamList
+  InstructionStack: InstructionStackParamList;
+
+  StatisticalKeno: StatisticalKenoParamsList
 };
 
 const HomeStack = createStackNavigator<HomeStackParamList>();
@@ -103,6 +105,12 @@ export function HomeNavigation() {
       <HomeStack.Screen
         name={'ReorderScreen'}
         component={ReorderScreen}
+        options={{ headerShown: false, title: undefined }}
+      />
+
+      <HomeStack.Screen
+        name={'StatisticalKeno'}
+        component={StatisticalKenoTab}
         options={{ headerShown: false, title: undefined }}
       />
     </HomeStack.Navigator>

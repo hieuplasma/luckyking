@@ -88,5 +88,14 @@ export const ScreenName = {
   ScanChild: {
     ScanScreen: "Scan",
     ScanResult: "ScanResult"
+  },
+
+  StatisticalChild: {
+    Statistical: "Statistical",
+    StatisticalKeno: "StatisticalKeno",
+    StatisticalMega: "StatisticalMega",
+    StatisticalPower: "StatisticalPower",
+    StatisticalMax3d: "StatisticalMax3d",
+    StatisticalMax3dPro: "StatisticalMax3dPro"
   }
 };

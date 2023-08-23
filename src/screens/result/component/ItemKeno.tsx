@@ -31,22 +31,20 @@ interface FirstItemProps {
 export const FirstItemKeno = React.memo(({ data, navigation, hideBtm }: FirstItemProps) => {
 
     if (!data.drawn) return (
-        <View >
-            <Image style={{ width: windowWidth - 20, height: 160, marginVertical: 8 }} resizeMode="stretch" source={Images.keno_banner}>
-                <View style={styles.above}>
-                    <IText style={styles.titleFirstItem}>
-                        {`Kỳ quay ${printDraw2(data)}`}
-                    </IText>
-                </View>
-                <Image source={Images.keno_logo} style={{ height: 64.71, marginTop: 48 }} resizeMode="contain" />
-                <IText style={{
-                    fontWeight: 'bold', color: Color.white,
-                    fontSize: 20, alignSelf: 'center',
-                    marginTop: 16
-                }}>{"Chưa có kết quả"}
+        <Image style={{ width: windowWidth - 20, height: 160, marginVertical: 8 }} resizeMode="stretch" source={Images.keno_banner}>
+            <View style={styles.above}>
+                <IText style={styles.titleFirstItem}>
+                    {`Kỳ quay ${printDraw2(data)}`}
                 </IText>
-            </Image>
-        </View>
+            </View>
+            <Image source={Images.keno_logo} style={{ height: 64.71, marginTop: 48 }} resizeMode="contain" />
+            <IText style={{
+                fontWeight: 'bold', color: Color.white,
+                fontSize: 20, alignSelf: 'center',
+                marginTop: 16
+            }}>{"Chưa có kết quả"}
+            </IText>
+        </Image>
     )
 
     const result = data.result.split("-").map(Number)
@@ -59,7 +57,7 @@ export const FirstItemKeno = React.memo(({ data, navigation, hideBtm }: FirstIte
 
     return (
         <TouchableOpacity onPress={navigate} activeOpacity={1}>
-            <Image style={{ width: windowWidth - 20, height: hideBtm ? 280 : 305, marginVertical: 8 }} resizeMode="stretch" source={Images.keno_banner}>
+            <Image style={{ width: windowWidth - 20, height: hideBtm ? 280 : 305, marginVertical: 8, marginLeft: 10 }} resizeMode="stretch" source={Images.keno_banner}>
                 <View style={styles.above}>
                     <IText style={styles.titleFirstItem}>
                         {`Kỳ quay ${printDraw2(data)}`}
@@ -225,6 +223,7 @@ const styles = StyleSheet.create({
         borderTopWidth: 1,
         paddingTop: 10,
         width: windowWidth - 20,
+        marginLeft: 10
     },
     txt_draw: {
         fontSize: 15,

@@ -8,7 +8,7 @@ import { TouchableOpacity, View, ViewProps } from 'react-native';
 import { LotteryType } from '@common';
 
 export interface HomeTicketLongFormComponent extends ViewProps {
-  image?: string;
+  image?: any;
   title?: string;
   totalPrize?: string;
   countdownTime?: string;
@@ -104,9 +104,7 @@ export const HomeTicketLongFormComponent = React.memo((props?: HomeTicketLongFor
             : <></>
         }
         <Image
-          source={{
-            uri: props?.image,
-          }}
+          source={props?.image}
           style={[Style.Size.WidthMatchParent, Style.Size.HeightMatchParent]}
           resizeMode="contain"
         />
@@ -119,11 +117,16 @@ export const HomeTicketLongFormComponent = React.memo((props?: HomeTicketLongFor
       <View>
         <View
           style={[Style.Size.FlexRow, Style.ContentFlexRow.CenterInVertical]}>
-          <Label.Widget style={[Style.Label.Regular.GrayContent_13]}>
+          {/* <Label.Widget style={[Style.Label.Regular.GrayContent_13]}>
             {props?.type !== 'keno'
               ? 'Kỳ QSMT ' + `${props?.nextDate}`
               : 'Keno/Bao Keno/AI Keno'}
-          </Label.Widget>
+          </Label.Widget> */}
+          <IText style={{color: Color.gray}}>
+          {props?.type !== 'keno'
+              ? 'Kỳ QSMT ' + `${props?.nextDate}`
+              : 'Keno/Bao Keno/AI Keno'}
+          </IText>
           <Label.Widget
             style={[
               Style.Label.Regular.RedContent_13,
@@ -139,14 +142,17 @@ export const HomeTicketLongFormComponent = React.memo((props?: HomeTicketLongFor
             {props?.QSMT ? props?.QSMT : props?.type !== 'keno' ? 'T4, T6, CN' : 'Cả tuần'}
           </Label.Widget>
         </View>
-        <Label.Widget
+        {/* <Label.Widget
           style={[
             Style.Label.Bold.GrayContentXL_16,
             Style.Space.MarginTop.small_8,
             { color: mainColor },
           ]}>
           {props?.jackpot}
-        </Label.Widget>
+        </Label.Widget> */}
+        <IText style={{ fontWeight: 'bold', marginTop: 8, color: mainColor , fontSize: 20}}>
+          {props?.jackpot}
+        </IText>
         <HomeCountdownClockComponent
           targetTime={props?.targetTime ? props.targetTime : new Date('2023-30-12T18:00:00Z')}
           type={props?.type}

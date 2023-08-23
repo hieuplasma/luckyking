@@ -105,7 +105,7 @@ export const WithdrawScreen = () => {
                 <IText style={{ marginTop: 10, marginLeft: 16, fontWeight: 'bold' }}>{"Các hình thức đổi thưởng:"}</IText>
 
                 <TouchableOpacity style={styles.borderItem} onPress={() => navigate(ScreenName.Drawer.LuckyKingWithdrawScreen)}>
-                    <Image source={Images.luckyking_baw} style={{ width: 28, height: 28 }} />
+                    <Image source={Images.luckyking_logo} style={{ width: 28, height: 28 }} />
                     <IText style={{ marginLeft: 16 }}>{"Đổi thưởng về TK đặt vé LuckyKing"}</IText>
                     <View style={{ flex: 1 }} />
                     <Image source={Images.right_arrow} style={styles.rightArrow} tintColor={Color.black} />

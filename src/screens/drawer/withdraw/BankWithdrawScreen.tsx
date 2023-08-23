@@ -55,20 +55,22 @@ export const BankWithdrawScreen = () => {
     }, [])
 
     const onChangeAmount = useCallback((text: string) => {
-        setAmount(text)
+        const tmp = text.replaceAll('.', '')
+        if (doNotExits(tmp)) setAmount('')
+        else setAmount(printMoney(tmp))
         if (!doNotExits(text)) {
-            const number = parseInt(text)
+            const number = parseInt(tmp)
             if (number > 0) {
-                let tmp = []
+                let arr = []
                 let curr = number
                 while (curr < 1000000000) {
-                    if (curr >= 100000) {
-                        tmp.push(curr)
+                    if (curr >= 1000) {
+                        arr.push(curr)
                     }
                     curr = curr * 10
                 }
                 // if (!tmp.includes(rewardWalletBalance)) tmp.push(rewardWalletBalance)
-                setList(tmp)
+                setList(arr)
             }
         }
         else setList([])
@@ -104,7 +106,8 @@ export const BankWithdrawScreen = () => {
     }, [amount, userName, accountNumber, bank])
 
     const withdraw = async () => {
-        const money = parseInt(amount)
+        const tmp = amount.replaceAll('.', '')
+        const money = parseInt(tmp)
         if (money < 1000)
             return Alert.alert("Thông báo", "Số tiền phải lớn hơn 1000!")
         if (money % 1000 != 0)
@@ -227,8 +230,8 @@ export const BankWithdrawScreen = () => {
                     </View>
 
                     {!doNotExits(amount) ?
-                        <IText style={{ marginLeft: 16, fontStyle: 'italic' }}>
-                            {docTien.doc(amount)}
+                        <IText style={{ marginLeft: 16, fontStyle: 'italic', color: Color.blue, fontSize: 16 }}>
+                            {docTien.doc(amount.replaceAll('.', ''))}
                         </IText>
                         : <></>}
 

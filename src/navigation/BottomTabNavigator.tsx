@@ -17,6 +17,7 @@ import { LiveNavigation } from './tab/LiveNavigation';
 import { HomeNavigation } from './tab/HomeNavigation';
 import { ResultNavigation } from './tab/ResultNavigation';
 import { ScanNavigation } from './tab/ScanNavigation';
+import { StatisticalNavigation } from './tab/StatisticalNavigation';
 
 type MainBottomTabParamList = {
   HomeStack: {};
@@ -39,7 +40,7 @@ const getTabBarIcon = (args?: {
       <Icon.Default
         name={args?.focused ? args?.activeIconName : args?.inactiveIconName}
         size={Dimension.tabIcon}
-        color={args?.focused ? Color.orange : Color.tabInActive}
+        color={args?.focused ? Color.luckyKing : Color.tabInActive}
         style={[Style.Space.Padding.Zero]}
       />
       {getTabBarLabel(args?.title, args?.focused)}
@@ -54,7 +55,7 @@ const getTabBarLabel = (label?: string, focused?: boolean) => {
       ellipsizeMode="tail"
       style={[
         focused ? Style.Label.Tab.active : Style.Label.Tab.inActive,
-        { color: focused ? Color.orange : Color.tabInActive },
+        { color: focused ? Color.luckyKing : Color.tabInActive },
         Style.Space.MarginTop.tiny_4,
       ]}
       autoTranslate={false}>
@@ -69,7 +70,7 @@ const TabBar = (props: BottomTabBarProps) => {
     const state = props.state;
     const descriptors = props.descriptors;
     const navigation = props?.navigation;
-    const focusedName = props?.state?.routes[props?.state?.index]?.name ?? 'Home';
+    const focusedName = props?.state?.routes[props?.state?.index]?.name ?? 'HomeStack';
 
     if (props?.state?.routeNames?.includes(focusedName) === false) {
       return null;
@@ -96,7 +97,14 @@ const TabBar = (props: BottomTabBarProps) => {
               });
 
               if (!isFocused && !event.defaultPrevented) {
-                navigation?.navigate(route.name);
+                if ((route.name == 'HomeStack' || route.name == 'StatisticalStack') && route.state?.routeNames && route.state.routeNames[0]) {
+                  navigation?.navigate(route.name, {
+                    screen: route.state.routeNames[0]
+                  });
+                }
+                else {
+                  navigation.navigate(route.name)
+                }
               }
             };
 
@@ -170,8 +178,17 @@ const hideTabBar = [
   ScreenName.ResultChild.DetailPower,
   ScreenName.ResultChild.DetailMax3d,
 
-  ScreenName.ScanChild.ScanResult
+  ScreenName.ScanChild.ScanResult,
+
+  ScreenName.StatisticalChild.StatisticalKeno
 ]
+// const showTabbar = [
+//   ScreenName.HomeChild.HomeScreen,
+//   ScreenName.ScanChild.ScanScreen,
+//   ScreenName.LiveChild.LiveScreen,
+//   ScreenName.StatisticalChild.Statistical,
+//   ScreenName.ResultChild.Result
+// ]
 
 export function BottomTabNavigator() {
   const insets = useSafeAreaInsets();
@@ -181,6 +198,7 @@ export function BottomTabNavigator() {
     const routeName = getFocusedRouteNameFromRoute(props.state.routes[index]) ?? ""
     console.log("current screen::::" + index + ":::::=> " + routeName)
     return hideTabBar.includes(routeName) ? null : <TabBar {...props} />
+    // return showTabbar.includes(routeName) ? <TabBar {...props} /> : null
   }, [])
 
   return (
@@ -198,7 +216,7 @@ export function BottomTabNavigator() {
           ...Style.Content.CenterInVertical,
         }
       }}>
-      {/* <BottomTab.Screen
+      <BottomTab.Screen
         name='LiveStack'
         component={LiveNavigation}
         options={{
@@ -210,7 +228,7 @@ export function BottomTabNavigator() {
               focused,
             }),
         }}
-      /> */}
+      />
       <BottomTab.Screen
         name='ResultStack'
         component={ResultNavigation}
@@ -250,9 +268,9 @@ export function BottomTabNavigator() {
             }),
         }}
       />
-      {/* <BottomTab.Screen
+      <BottomTab.Screen
         name='StatisticalStack'
-        component={StatisticalScreen}
+        component={StatisticalNavigation}
         options={{
           tabBarIcon: ({ focused }) =>
             getTabBarIcon({
@@ -262,7 +280,7 @@ export function BottomTabNavigator() {
               focused,
             }),
         }}
-      /> */}
+      />
     </BottomTab.Navigator>
   );
 }

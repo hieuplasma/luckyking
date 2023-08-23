@@ -15,13 +15,14 @@ import { Image, Images } from "@assets";
 
 interface Props {
     showBottomSheet: boolean,
-    navigation: any
+    navigation: any,
+    paramNumber?: number[]
 }
 
 const initBets = [10000, 10000, 10000, 10000, 10000, 10000]
 const initNumber = [[], [], [], [], [], []]
 
-export const SimpleKenoTab = React.memo(({ showBottomSheet, navigation }: Props) => {
+export const SimpleKenoTab = React.memo(({ showBottomSheet, navigation, paramNumber }: Props) => {
 
     const [typePlay, setType]: any = useState({ label: "Cơ bản", value: 1 });
     const listDraw = useSelector((state: any) => state.drawReducer.kenoListDraw)
@@ -46,6 +47,13 @@ export const SimpleKenoTab = React.memo(({ showBottomSheet, navigation }: Props)
     const [pageNumber, setPageNumber] = useState(0)
     const [bets, setBets] = useState(initBets)
     const [totalCost, setTotalCost] = useState(0)
+
+    useEffect(() => {
+        if (paramNumber) {
+            setNumbers([paramNumber, [], [], [], [], []])
+        }
+    }, [paramNumber])
+
 
     const [randomLine, setRandomLine] = useState(-1)
 
