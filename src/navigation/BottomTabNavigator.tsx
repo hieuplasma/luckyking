@@ -97,7 +97,7 @@ const TabBar = (props: BottomTabBarProps) => {
               });
 
               if (!isFocused && !event.defaultPrevented) {
-                if ((route.name == 'HomeStack' || route.name == 'StatisticalStack') && route.state?.routeNames && route.state.routeNames[0]) {
+                if (route.state?.routeNames && route.state.routeNames[0]) {
                   navigation?.navigate(route.name, {
                     screen: route.state.routeNames[0]
                   });
@@ -180,7 +180,11 @@ const hideTabBar = [
 
   ScreenName.ScanChild.ScanResult,
 
-  ScreenName.StatisticalChild.StatisticalKeno
+  ScreenName.StatisticalChild.StatisticalKeno,
+  ScreenName.StatisticalChild.StatisticalPower,
+  ScreenName.StatisticalChild.StatisticalMega,
+  ScreenName.StatisticalChild.StatisticalMax3d,
+  ScreenName.StatisticalChild.StatisticalMax3dPro
 ]
 // const showTabbar = [
 //   ScreenName.HomeChild.HomeScreen,

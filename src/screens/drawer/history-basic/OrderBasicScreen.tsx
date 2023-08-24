@@ -15,6 +15,7 @@ import { DELAY_SCREEN, OrderStatus, TransactionType } from "@common";
 import { lotteryApi } from "@api";
 import { Image, Images } from "@assets";
 import { HeaderOrder } from "../component/HeaderOrder";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 type NavigationProp = StackNavigationProp<HistoryBasicStackParamList, 'OrderBasicScreen'>;
 type NavigationRoute = RouteProp<HistoryBasicStackParamList, 'OrderBasicScreen'>;
@@ -27,6 +28,7 @@ export const OrderBasicScreen = React.memo(({ }: any) => {
 
     const navigation = useNavigation<NavigationProp>();
     const route = useRoute<NavigationRoute>();
+    const safeAreaInsets = useSafeAreaInsets();
 
     const [showBottomSheet, setShowBottomSheet] = useState(false)
     useEffect(() => {
@@ -209,7 +211,7 @@ export const OrderBasicScreen = React.memo(({ }: any) => {
                 />
             </View>
 
-            <View style={{ marginBottom: 30, alignItems: 'center' }}>
+            <View style={{ marginBottom: safeAreaInsets.bottom, alignItems: 'center' }}>
                 <TouchableOpacity style={styles.btnReoder} onPress={reoder}>
                     <IText style={{ fontWeight: 'bold', fontSize: 14, color: Color.white }}>{'MUA LẠI'}</IText>
                 </TouchableOpacity>

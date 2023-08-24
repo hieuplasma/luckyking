@@ -102,6 +102,10 @@ export const API_URI = {
   STATISTICAL_KENO_NUMBER: "/statistical/keno-number",
   STATISTICAL_KENO_HEADTAIL: "/statistical/keno-headtail",
   STATISTICAL_KENO_BIGSMALL: "/statistical/keno-bigsmall",
-  STATISTICAL_KENO_EVENODD: "/statistical/keno-evenodd"
+  STATISTICAL_KENO_EVENODD: "/statistical/keno-evenodd",
+
+  STATISTICAL_POME_NUMBER: "/statistical/pome-number",
+  STATISTICAL_POME_HEADTAIL: "/statistical/pome-headtail",
+  STATISTICAL_POME_EVENODD: "/statistical/pome-evenodd",
 
 }

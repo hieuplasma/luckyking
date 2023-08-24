@@ -5,7 +5,7 @@ export const BTN_LABEL = {
 export const ERR_MES = {
     INVALID_DRAW: "Kỳ quay không hợp lệ!",
     NONE_NUMBER: "Bạn chưa chọn bộ số nào!",
-    EMPTY_CART: "Giỏ hàng hiện đang trống rỗng!",
+    EMPTY_CART: "Giỏ hàng hiện đang trống!",
     NO_LOTTERY:"Không có vé nào!",
     NO_ORDER:"Không có đơn nào!",
     NO_TRANSACTION:"Không có giao dịch nào!"

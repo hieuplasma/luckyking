@@ -76,25 +76,25 @@ export const HeaderBuyLottery = React.memo(({ navigation, lotteryType }: HeaderB
 
     const navToStatistical = useCallback(() => {
         let destination = ScreenName.StatisticalChild.StatisticalKeno
-        // switch (lotteryType) {
-        //     case LotteryType.Keno:
-        //         destination = ScreenName.Drawer.InstructionKeno
-        //         break;
-        //     case LotteryType.Power:
-        //         destination = ScreenName.Drawer.InstructionPower
-        //         break;
-        //     case LotteryType.Mega:
-        //         destination = ScreenName.Drawer.InstructionMega
-        //         break;
-        //     case LotteryType.Max3D:
-        //         destination = ScreenName.Drawer.InstructionMax3D
-        //         break;
-        //     case LotteryType.Max3DPro:
-        //         destination = ScreenName.Drawer.InstructionMax3DPro
-        //         break;
-        //     default:
-        //         break;
-        // }
+        switch (lotteryType) {
+            case LotteryType.Keno:
+                destination = ScreenName.StatisticalChild.StatisticalKeno
+                break;
+            case LotteryType.Power:
+                destination = ScreenName.StatisticalChild.StatisticalPower
+                break;
+            case LotteryType.Mega:
+                destination = ScreenName.StatisticalChild.StatisticalMega
+                break;
+            case LotteryType.Max3D:
+                destination = ScreenName.StatisticalChild.StatisticalMax3d
+                break;
+            case LotteryType.Max3DPro:
+                destination = ScreenName.StatisticalChild.StatisticalPower
+                break;
+            default:
+                break;
+        }
         NavigationUtils.navigate(navigation, destination)
     }, [lotteryType, navigation])
 

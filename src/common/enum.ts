@@ -76,6 +76,12 @@ export enum KenoStatistical {
     ADVANCE = "advance"
 }
 
+export enum PowerMegaStatistical {
+    EVEN_ODD = "even_odd",
+    HEAD_TAIL = "head_tail",
+    NUMBER = "number"
+}
+
 export enum RemoteMessageType {
     DETAIL_ORDER = 'detailorder',
     LUCKYKING_WALLET = 'luckykingwallet',

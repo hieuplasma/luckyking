@@ -86,6 +86,25 @@ export const StatisticalScreen = React.memo(() => {
 
   const navigateTo = useCallback((type: LotteryType) => {
     let destination = ScreenName.StatisticalChild.StatisticalKeno
+    switch (type) {
+      case LotteryType.Keno:
+        destination = ScreenName.StatisticalChild.StatisticalKeno
+        break;
+      case LotteryType.Power:
+        destination = ScreenName.StatisticalChild.StatisticalPower
+        break;
+      case LotteryType.Mega:
+        destination = ScreenName.StatisticalChild.StatisticalMega
+        break;
+      case LotteryType.Max3D:
+        destination = ScreenName.StatisticalChild.StatisticalMax3d
+        break;
+      case LotteryType.Max3DPro:
+        destination = ScreenName.StatisticalChild.StatisticalMax3dPro
+        break;
+      default:
+        break;
+    }
     NavigationUtils.navigate(navigation, destination)
   }, [navigation])
 

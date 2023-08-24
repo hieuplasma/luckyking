@@ -2,11 +2,9 @@ import { lotteryApi } from "@api"
 import { Color } from "@styles"
 import React, { useCallback, useEffect, useState } from "react"
 import { Dimensions, RefreshControl, ScrollView, StyleSheet, View } from "react-native"
-import { BuyNowKeno } from "../component/BuyNowKeno"
-import { BuyNowKeno2 } from "../component/BuyNowKeno2"
+import { BuyNowBtn } from "../component/BuyNowBtn"
 import { TableKenoEvenOdd } from "../component/TableKenoEvenOdd"
-
-const lottColor = Color.keno
+import { LotteryType } from "@common"
 
 const KenoEvenOddStatistical = React.memo(({ navigation, take, focus }: any) => {
     return (
@@ -47,7 +45,7 @@ const ExpensiveRerender = React.memo(({ navigation, take, focus }: any) => {
                 </View>
                 <View style={{ height: 20 }} />
             </ScrollView>
-            <BuyNowKeno2 navigation={navigation} />
+            <BuyNowBtn navigation={navigation} type={LotteryType.Keno}/>
         </View>
     )
 })

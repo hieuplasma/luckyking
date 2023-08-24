@@ -3,8 +3,9 @@ import { IText } from "@components"
 import { Color } from "@styles"
 import React, { useCallback, useEffect, useState } from "react"
 import { Dimensions, RefreshControl, ScrollView, StyleSheet, View } from "react-native"
-import { BuyNowKeno2 } from "../component/BuyNowKeno2"
+import { BuyNowBtn } from "../component/BuyNowBtn"
 import { TableKenoBigSmall } from "../component/TableKenoBigSmall"
+import { LotteryType } from "@common"
 
 const lottColor = Color.keno
 
@@ -47,7 +48,7 @@ const ExpensiveRerender = React.memo(({ navigation, take, focus }: any) => {
                 </View>
                 <View style={{ height: 20 }} />
             </ScrollView>
-            <BuyNowKeno2 navigation={navigation} />
+            <BuyNowBtn navigation={navigation} type={LotteryType.Keno}/>
         </View>
     )
 })

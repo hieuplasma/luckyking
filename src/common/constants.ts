@@ -22,6 +22,8 @@ export const WEBSITE = 'https://luckyking.vn'
 export const PASSWORD_MIN = 6
 export const PASSWORD_MAX = 16
 
+export const MIN_HEIGHT_TABLE = 26
+
 export const LIST_STATUS = {
     PRINTED: [OrderStatus.CONFIRMED, OrderStatus.WON, OrderStatus.PAID, OrderStatus.NO_PRIZE],
     BOOKED: [OrderStatus.PENDING, OrderStatus.LOCK,

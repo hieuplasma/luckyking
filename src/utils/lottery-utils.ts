@@ -70,6 +70,16 @@ export function printDrawWeekDate(param: any) {
     return "#" + code.toString().padStart(5, "0") + " - " + getWeekDate(weekDate) + " - " + dateConvert(date)
 }
 
+export function printDrawCodeBasic(code: any) {
+    if (doNotExits(code)) return '---'
+    return "#" + code.toString().padStart(5, "0")
+}
+
+export function printDrawCodeKeno(code: any) {
+    if (doNotExits(code)) return '---'
+    return "#" + code.toString().padStart(7, "0")
+}
+
 
 export function printNumber(number: any) {
     if (isNaN(number)) return 'TC'

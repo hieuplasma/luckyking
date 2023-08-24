@@ -180,6 +180,21 @@ class LotteryApi {
         let fullUrl = API_URI.STATISTICAL_KENO_EVENODD;
         return await window.connection.GET(fullUrl, body)
     }
+
+    getStatisticalPoMeNumber = async (body: any) => {
+        let fullUrl = API_URI.STATISTICAL_POME_NUMBER;
+        return await window.connection.GET(fullUrl, body)
+    }
+
+    getStatisticalPoMeHeadTail = async (body: any) => {
+        let fullUrl = API_URI.STATISTICAL_POME_HEADTAIL;
+        return await window.connection.GET(fullUrl, body)
+    }
+
+    getStatisticalPoMeEvenOdd = async (body: any) => {
+        let fullUrl = API_URI.STATISTICAL_POME_EVENODD;
+        return await window.connection.GET(fullUrl, body)
+    }
 }
 
 const lotteryApi = new LotteryApi
