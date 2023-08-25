@@ -6,12 +6,11 @@ import React, { useMemo } from "react"
 import { Dimensions, StyleSheet, View } from "react-native"
 import { Cell, Table, TableWrapper } from "react-native-table-component"
 
-const lottColor = Color.keno
 const borderColor = '#BEBCBA'
 
 interface TableProps {
     data: any[],
-    mode: string // 'head' 'tail'
+    mode: string // 'head' 'tail' 'mid'
     type: LotteryType
 }
 
@@ -20,6 +19,8 @@ const flexRow = [1, 2, 3]
 export const TablePoMeHeadTail = React.memo(({ data, mode, type }: TableProps) => {
 
     const numbers = useMemo(() => {
+        if (type = LotteryType.Max3D || type == LotteryType.Max3DPlus || type == LotteryType.Max3DPro)
+            return Array.from({ length: 10 }, (_, index) => index);
         if (mode == 'head') {
             if (type == LotteryType.Power) return Array.from({ length: 6 }, (_, index) => index);
             if (type == LotteryType.Mega) return Array.from({ length: 5 }, (_, index) => index);
@@ -46,7 +47,7 @@ export const TablePoMeHeadTail = React.memo(({ data, mode, type }: TableProps) =
                                 <TableWrapper style={styles.wraper}>
                                     <Cell
                                         style={{ flex: 1, height: 26 }}
-                                        data={mode == 'head' ? "Đầu số" : "Đuôi số"}
+                                        data={mode == 'head' ? "Đầu số" : mode == 'mid' ? "Số giữa" : "Đuôi số"}
                                         textStyle={{ fontWeight: 'bold', fontSize: 16, textAlign: 'center' }}
                                     />
                                 </TableWrapper>
@@ -101,16 +102,8 @@ const windowHeight = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
     //table style: 
-    head: { height: MIN_HEIGHT_TABLE, backgroundColor: lottColor },
     textHead: { color: Color.white, alignSelf: 'center', textAlign: 'center', fontSize: 16 },
     textData: { color: Color.black, alignSelf: 'center', textAlign: 'center' },
 
     wraper: { flexDirection: 'row', minHeight: MIN_HEIGHT_TABLE },
-
-    header: {
-        width: '100%', height: 30,
-        backgroundColor: lottColor,
-        justifyContent: 'center', alignItems: 'center',
-        borderTopLeftRadius: 5, borderTopRightRadius: 5
-    }
 })

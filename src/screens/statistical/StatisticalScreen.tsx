@@ -26,12 +26,12 @@ const list_type = [
   },
   {
     type: [LotteryType.Mega],
-    title: "Mega",
+    title: "Mega 6/45",
     logo: Images.mega_logo
   },
   {
     type: [LotteryType.Power],
-    title: "Power",
+    title: "Power 6/55",
     logo: Images.power_logo
   },
   {

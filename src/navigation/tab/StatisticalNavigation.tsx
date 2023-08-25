@@ -5,6 +5,10 @@ import {
   DetailResultPower,
   KenoScreen,
   KenoScreenParamsList,
+  Max3dProScreen,
+  Max3dProScreenParamsList,
+  Max3dScreen,
+  Max3dScreenParamsList,
   // OrderBasicScreen,
   // OrderBasicScreenParamsList,
   // OrderKenoScreen,
@@ -17,6 +21,9 @@ import {
   ResultMegaParamsList,
   ResultPowerParamsList,
   StatisticalKenoParamsList, StatisticalKenoTab,
+  StatisticalMax3DProTab,
+  StatisticalMax3dParamsList,
+  StatisticalMax3dTab,
   StatisticalMegaParamsList,
   StatisticalMegaTab,
   StatisticalPowerParamsList,
@@ -32,9 +39,12 @@ export type StatisticalStackParamList = {
   StatisticalKeno: StatisticalKenoParamsList;
   StatisticalPower: StatisticalPowerParamsList;
   StatisticalMega: StatisticalMegaParamsList;
+  StatisticalMax3d: StatisticalMax3dParamsList;
 
   KenoScreen: KenoScreenParamsList;
   PowerScreen: PowerScreenParamsList;
+  Max3dScreen: Max3dScreenParamsList;
+  Max3dProScreen: Max3dProScreenParamsList;
 
   DetailMega: ResultMegaParamsList,
   DetailPower: ResultPowerParamsList,
@@ -72,6 +82,16 @@ export function StatisticalNavigation() {
         component={StatisticalMegaTab}
         options={{ headerShown: false, title: undefined }}
       />
+      <StatisticalStack.Screen
+        name={'StatisticalMax3d'}
+        component={StatisticalMax3dTab}
+        options={{ headerShown: false, title: undefined }}
+      />
+       <StatisticalStack.Screen
+        name={'StatisticalMax3dPro'}
+        component={StatisticalMax3DProTab}
+        options={{ headerShown: false, title: undefined }}
+      />
 
       <StatisticalStack.Screen
         name={'KenoScreen'}
@@ -81,6 +101,16 @@ export function StatisticalNavigation() {
       <StatisticalStack.Screen
         name={'PowerScreen'}
         component={PowerScreen}
+        options={{ headerShown: false, title: undefined }}
+      />
+      <StatisticalStack.Screen
+        name={'Max3dScreen'}
+        component={Max3dScreen}
+        options={{ headerShown: false, title: undefined }}
+      />
+      <StatisticalStack.Screen
+        name={'Max3dProScreen'}
+        component={Max3dProScreen}
         options={{ headerShown: false, title: undefined }}
       />
 

@@ -195,6 +195,11 @@ class LotteryApi {
         let fullUrl = API_URI.STATISTICAL_POME_EVENODD;
         return await window.connection.GET(fullUrl, body)
     }
+
+    getStatisticalMax3dHeadTail = async (body: any) => {
+        let fullUrl = API_URI.STATISTICAL_MAX3D_HEADTAIL;
+        return await window.connection.GET(fullUrl, body)
+    }
 }
 
 const lotteryApi = new LotteryApi

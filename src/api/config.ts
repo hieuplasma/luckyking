@@ -108,4 +108,5 @@ export const API_URI = {
   STATISTICAL_POME_HEADTAIL: "/statistical/pome-headtail",
   STATISTICAL_POME_EVENODD: "/statistical/pome-evenodd",
 
+  STATISTICAL_MAX3D_HEADTAIL: "/statistical/max3d-headtail",
 }
