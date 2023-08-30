@@ -173,7 +173,7 @@ export const HomeScreen = React.memo((props?: HomeScreenProps) => {
         action={() => NavigationUtils.navigate(navigation, ScreenName.HomeChild.MegaScreen)}
         nextDate={megaFirstDraw ? dateConvert(new Date(megaFirstDraw.drawTime)) : ""}
         QSMT={'T4, T6, CN'}
-        jackpot={`${printMoney(jackpots.JackPotMega)}`}
+        jackpot={`${printMoney(jackpots.JackPotMega)}đ`}
       />
     );
   }, [megaFirstDraw]);

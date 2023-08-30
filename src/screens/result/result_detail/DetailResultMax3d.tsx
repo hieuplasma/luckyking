@@ -39,7 +39,9 @@ export const DetailResultMax3d = React.memo(() => {
         <View style={styles.container}>
             <BasicHeader navigation={navigation} title={"Chi tiết kết quả"} />
             <ScrollView style={styles.body}>
-                <FirstItemMax3d data={route.params.data} hideBtm={true} type={route.params.type} />
+                <View style={{ marginLeft: -10 }}>
+                    <FirstItemMax3d data={route.params.data} hideBtm={true} type={route.params.type} />
+                </View>
                 <ListOrderDrawKeno
                     listOrder={listOrder}
                     navigation={navigation}
@@ -60,6 +62,6 @@ const styles = StyleSheet.create({
     },
     body: {
         flex: 1,
-        padding: 10
+        padding: 10, paddingTop: 0
     },
 })

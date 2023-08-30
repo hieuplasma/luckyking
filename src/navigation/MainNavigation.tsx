@@ -18,8 +18,8 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { InstructionNavigation, RootStackParamsList, SupportNavigation, TermsNavigation } from "@navigation";
 
 import { AppState, PermissionsAndroid, Platform } from 'react-native';
-import { updateToken, updateUser } from "@redux";
-import { LIST_STATUS, RemoteMessageType } from "@common";
+import { getKenoDraw, updateToken, updateUser } from "@redux";
+import { LIST_STATUS, LotteryType, RemoteMessageType } from "@common";
 
 export type MainDrawerParamList = {
     BottomTab: {}
@@ -40,6 +40,7 @@ const Drawer = createDrawerNavigator<MainDrawerParamList>();
 export function MainNavigation(props: any) {
 
     const navigation = useNavigation<NavigationProp>();
+    const kenoListDraw = useSelector((state: any) => state.drawReducer.kenoListDraw)
 
     const dispatch = useDispatch()
 
@@ -192,7 +193,11 @@ export function MainNavigation(props: any) {
                 dispatch(updateUser(resBalance.data))
             }
         }
-    }, [doNotExits(token)])
+        if (kenoListDraw.length <= 10) {
+            lotteryApi.getScheduleKeno({ type: LotteryType.Keno, take: 40, skip: 0 })
+                .then(listKeno => { if (listKeno?.data?.length > 0) dispatch(getKenoDraw(listKeno.data)) })
+        }
+    }, [doNotExits(token), kenoListDraw.length])
 
     useEffect(() => {
         const unsubscribe = messaging().onMessage(async remoteMessage => {

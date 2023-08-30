@@ -40,7 +40,9 @@ export const DetailResultPower = React.memo(() => {
         <View style={styles.container}>
             <BasicHeader navigation={navigation} title={"Chi tiết kết quả"} />
             <ScrollView style={styles.body}>
-                <FirstItemPower data={data} hideBtm={true} />
+                <View style={{ marginLeft: -10 }}>
+                    <FirstItemPower data={data} hideBtm={true} />
+                </View>
 
                 <PeriodStructure
                     type={LotteryType.Power}
@@ -71,6 +73,6 @@ const styles = StyleSheet.create({
     },
     body: {
         flex: 1,
-        padding: 10
+        padding: 10, paddingTop: 0
     },
 })

@@ -55,7 +55,7 @@ export const LuckyKingWithdrawScreen = () => {
             if (number > 0) {
                 let arr = []
                 let curr = number
-                while (curr < 1000000000) {
+                while (curr < rewardWalletBalance) {
                     if (curr >= 1000) {
                         arr.push(curr)
                     }
@@ -66,7 +66,7 @@ export const LuckyKingWithdrawScreen = () => {
             }
         }
         else setList([])
-    }, [])
+    }, [rewardWalletBalance])
 
     const withdraw = async () => {
         const tmp = amount.replaceAll('.', '')
@@ -148,9 +148,13 @@ export const LuckyKingWithdrawScreen = () => {
                         })
                             : <></>
                     }
-                    <TouchableOpacity activeOpacity={0.7} style={styles.boxChoose} onPress={() => onChangeText(rewardWalletBalance.toString())}>
-                        <IText style={{ fontSize: 16 }}>{'Tất cả'}</IText>
-                    </TouchableOpacity>
+                    {
+                        parseInt(amount.replaceAll('.', '')) < rewardWalletBalance ?
+                            <TouchableOpacity activeOpacity={0.7} style={styles.boxChoose} onPress={() => onChangeText(rewardWalletBalance.toString())}>
+                                <IText style={{ fontSize: 16 }}>{'Tất cả'}</IText>
+                            </TouchableOpacity>
+                            : <></>
+                    }
                 </View>
 
                 <TouchableOpacity style={[styles.button, { opacity: disable ? 0.6 : 1 }]} disabled={disable} onPress={withdraw}>

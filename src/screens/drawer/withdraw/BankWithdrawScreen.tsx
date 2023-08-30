@@ -63,7 +63,7 @@ export const BankWithdrawScreen = () => {
             if (number > 0) {
                 let arr = []
                 let curr = number
-                while (curr < 1000000000) {
+                while (curr < rewardWalletBalance) {
                     if (curr >= 1000) {
                         arr.push(curr)
                     }
@@ -74,7 +74,7 @@ export const BankWithdrawScreen = () => {
             }
         }
         else setList([])
-    }, [])
+    }, [rewardWalletBalance])
 
     const [bank, setBank]: any = useState(false)
     const onChangeBank = useCallback((param: any) => {
@@ -245,9 +245,13 @@ export const BankWithdrawScreen = () => {
                                 )
                             }) : <></>
                         }
-                        <TouchableOpacity activeOpacity={0.7} style={styles.boxChoose} onPress={() => onChangeAmount(rewardWalletBalance.toString())}>
-                            <IText style={{ fontSize: 16 }}>{'Tất cả'}</IText>
-                        </TouchableOpacity>
+                        {
+                            parseInt(amount.replaceAll('.', '')) < rewardWalletBalance ?
+                                <TouchableOpacity activeOpacity={0.7} style={styles.boxChoose} onPress={() => onChangeAmount(rewardWalletBalance.toString())}>
+                                    <IText style={{ fontSize: 16 }}>{'Tất cả'}</IText>
+                                </TouchableOpacity>
+                                : <></>
+                        }
                     </View>
 
                     <TouchableOpacity style={[styles.borderItem, { paddingHorizontal: 8 }]} onPress={openBankSheet}>

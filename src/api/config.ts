@@ -7,10 +7,10 @@ export const RESPONSE_TIMEOUT = 15000;
 export const TIMEOUT_MESSAGE = "request timeout"
 
 /** config for debug */
-const config = {
-  // host: 'http://192.168.246.46:3001'
-  host: 'http://192.168.246.47:3001'
-};
+// const config = {
+//   // host: 'http://192.168.246.46:3001'
+//   host: 'http://192.168.246.47:3001'
+// };
 
 /** config for VPS */
 // const config = {
@@ -22,9 +22,9 @@ const config = {
 //   host: 'http://42.96.40.239',
 // };
 
-// const config = {
-//   host: 'https://api.luckyking.vn',
-// };
+const config = {
+  host: 'https://api.luckyking.vn',
+};
 
 export const API_HOST = config.host;
 

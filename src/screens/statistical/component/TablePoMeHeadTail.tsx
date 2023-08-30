@@ -19,9 +19,9 @@ const flexRow = [1, 2, 3]
 export const TablePoMeHeadTail = React.memo(({ data, mode, type }: TableProps) => {
 
     const numbers = useMemo(() => {
-        if (type = LotteryType.Max3D || type == LotteryType.Max3DPlus || type == LotteryType.Max3DPro)
+        if (type == LotteryType.Max3D || type == LotteryType.Max3DPlus || type == LotteryType.Max3DPro)
             return Array.from({ length: 10 }, (_, index) => index);
-        if (mode == 'head') {
+        else if (mode == 'head') {
             if (type == LotteryType.Power) return Array.from({ length: 6 }, (_, index) => index);
             if (type == LotteryType.Mega) return Array.from({ length: 5 }, (_, index) => index);
         }
@@ -31,6 +31,7 @@ export const TablePoMeHeadTail = React.memo(({ data, mode, type }: TableProps) =
     const lottColor = getColorLott(type)
 
     return (
+        console.log(numbers),
         <View style={{ flex: 1 }}>
             {
                 data.length > 0 ?

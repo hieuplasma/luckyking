@@ -56,8 +56,8 @@ export const FirstItemKeno = React.memo(({ data, navigation, hideBtm }: FirstIte
     }, [navigation, data])
 
     return (
-        <TouchableOpacity onPress={navigate} activeOpacity={1}>
-            <Image style={{ width: windowWidth - 20, height: hideBtm ? 280 : 305, marginVertical: 8, marginLeft: 10 }} resizeMode="stretch" source={Images.keno_banner}>
+        <TouchableOpacity onPress={navigate} activeOpacity={1} style={{ marginLeft: 10 }}>
+            <Image style={{ width: windowWidth - 20, height: hideBtm ? 280 : 305, marginVertical: 8 }} resizeMode="stretch" source={Images.keno_banner}>
                 <View style={styles.above}>
                     <IText style={styles.titleFirstItem}>
                         {`Kỳ quay ${printDraw2(data)}`}

@@ -1,5 +1,7 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import {
+  CartScreen,
+  CartScreenParamsList,
   DetailResultMax3d,
   DetailResultMega,
   DetailResultPower,
@@ -9,6 +11,8 @@ import {
   Max3dProScreenParamsList,
   Max3dScreen,
   Max3dScreenParamsList,
+  MegaScreen,
+  MegaScreenParamsList,
   // OrderBasicScreen,
   // OrderBasicScreenParamsList,
   // OrderKenoScreen,
@@ -23,6 +27,7 @@ import {
   StatisticalKenoParamsList, StatisticalKenoTab,
   StatisticalMax3DProTab,
   StatisticalMax3dParamsList,
+  StatisticalMax3dProParamsList,
   StatisticalMax3dTab,
   StatisticalMegaParamsList,
   StatisticalMegaTab,
@@ -40,20 +45,23 @@ export type StatisticalStackParamList = {
   StatisticalPower: StatisticalPowerParamsList;
   StatisticalMega: StatisticalMegaParamsList;
   StatisticalMax3d: StatisticalMax3dParamsList;
+  StatisticalMax3dPro: StatisticalMax3dProParamsList;
 
   KenoScreen: KenoScreenParamsList;
+  MegaScreen: MegaScreenParamsList;
   PowerScreen: PowerScreenParamsList;
   Max3dScreen: Max3dScreenParamsList;
   Max3dProScreen: Max3dProScreenParamsList;
 
-  DetailMega: ResultMegaParamsList,
-  DetailPower: ResultPowerParamsList,
-  DetailMax3d: ResultMax3dParamsList,
+  // DetailMega: ResultMegaParamsList,
+  // DetailPower: ResultPowerParamsList,
+  // DetailMax3d: ResultMax3dParamsList,
 
   // OrderKenoScreen: OrderKenoScreenParamsList,
   // OrderBasicScreen: OrderBasicScreenParamsList
 
   OrderScreen: OrderScreenParamsList;
+  CartScreen: CartScreenParamsList;
 
 };
 
@@ -87,7 +95,7 @@ export function StatisticalNavigation() {
         component={StatisticalMax3dTab}
         options={{ headerShown: false, title: undefined }}
       />
-       <StatisticalStack.Screen
+      <StatisticalStack.Screen
         name={'StatisticalMax3dPro'}
         component={StatisticalMax3DProTab}
         options={{ headerShown: false, title: undefined }}
@@ -104,6 +112,11 @@ export function StatisticalNavigation() {
         options={{ headerShown: false, title: undefined }}
       />
       <StatisticalStack.Screen
+        name={'MegaScreen'}
+        component={MegaScreen}
+        options={{ headerShown: false, title: undefined }}
+      />
+      <StatisticalStack.Screen
         name={'Max3dScreen'}
         component={Max3dScreen}
         options={{ headerShown: false, title: undefined }}
@@ -114,7 +127,7 @@ export function StatisticalNavigation() {
         options={{ headerShown: false, title: undefined }}
       />
 
-      <StatisticalStack.Screen
+      {/* <StatisticalStack.Screen
         name={'DetailPower'}
         component={DetailResultPower}
         options={{ headerShown: false, title: undefined }}
@@ -128,11 +141,16 @@ export function StatisticalNavigation() {
         name={'DetailMax3d'}
         component={DetailResultMax3d}
         options={{ headerShown: false, title: undefined }}
-      />
+      /> */}
 
       <StatisticalStack.Screen
         name={'OrderScreen'}
         component={OrderScreen}
+        options={{ headerShown: false, title: undefined }}
+      />
+       <StatisticalStack.Screen
+        name={'CartScreen'}
+        component={CartScreen}
         options={{ headerShown: false, title: undefined }}
       />
 
